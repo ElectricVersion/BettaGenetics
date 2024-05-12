@@ -44,6 +44,8 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
     private WrappedModelPart bodyFront;
     private WrappedModelPart bodyBack;
     private WrappedModelPart head;
+    private WrappedModelPart lips;
+    private WrappedModelPart eyes;
     private WrappedModelPart finLeft;
     private WrappedModelPart finRight;
     private WrappedModelPart dorsalFin;
@@ -60,8 +62,11 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         ModelPart bBodyF = bBetta.getChild("bBodyF");
         ModelPart bBodyB = bBodyF.getChild("bBodyB");
         ModelPart bHead = bBodyF.getChild("bHead");
+        ModelPart bFinL = bBodyF.getChild("bFinL");
+        ModelPart bFinR = bBodyF.getChild("bFinR");
         ModelPart bDorsalFin = bBodyF.getChild("bDorsalFin");
         ModelPart bBottomFinF = bBodyF.getChild("bBottomFinF");
+        ModelPart bBottomFinB = bBodyB.getChild("bBottomFinB");
         ModelPart bVentralFinL = bBodyF.getChild("bVentralFinL");
         ModelPart bVentralFinR = bBodyF.getChild("bVentralFinR");
         ModelPart bTailFin = bBodyB.getChild("bTailFin");
@@ -80,8 +85,22 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
 
         theHead = new WrappedModelPart(bHead, "bHead");
         head = new WrappedModelPart("head", bHead);
+        lips = new WrappedModelPart("lips", bHead);
+        eyes = new WrappedModelPart("eyes", bHead);
         theHead.addChild(head);
+        theHead.addChild(lips);
+        theHead.addChild(eyes);
         theBodyFront.addChild(theHead);
+
+        theFinLeft = new WrappedModelPart(bFinL, "bFinL");
+        finLeft = new WrappedModelPart("finL", bFinL);
+        theFinLeft.addChild(finLeft);
+        theBodyFront.addChild(theFinLeft);
+
+        theFinRight = new WrappedModelPart(bFinR, "bFinR");
+        finRight = new WrappedModelPart("finR", bFinR);
+        theFinRight.addChild(finRight);
+        theBodyFront.addChild(theFinRight);
 
         theDorsalFin = new WrappedModelPart(bDorsalFin, "bDorsalFin");
         dorsalFin = new WrappedModelPart("dorsalFin", bDorsalFin);
@@ -92,6 +111,11 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         bottomFinFront = new WrappedModelPart("bottomFinF", bBottomFinF);
         theBottomFinFront.addChild(bottomFinFront);
         theBodyFront.addChild(theBottomFinFront);
+
+        theBottomFinBack = new WrappedModelPart(bBottomFinB, "bBottomFinB");
+        bottomFinBack = new WrappedModelPart("bottomFinB", bBottomFinB);
+        theBottomFinBack.addChild(bottomFinBack);
+        theBodyBack.addChild(theBottomFinBack);
 
         theVentralFinLeft = new WrappedModelPart(bVentralFinL, "bVentralFinL");
         ventralFinLeft = new WrappedModelPart("ventralFinL", bVentralFinL);
@@ -113,42 +137,72 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition base = meshdefinition.getRoot().addOrReplaceChild("base", CubeListBuilder.create(), PartPose.offset(0.0F, 8.0F, 0.0F));
         PartDefinition bBetta = base.addOrReplaceChild("bBetta", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
-        PartDefinition bBodyFront = bBetta.addOrReplaceChild("bBodyF", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
+        PartDefinition bBodyFront = bBetta.addOrReplaceChild("bBodyF", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, -2F, 0F, 0F, 0F));
         PartDefinition bBodyBack = bBodyFront.addOrReplaceChild("bBodyB", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, 2F, 0F, 0F, 0F));
         PartDefinition bHead = bBodyFront.addOrReplaceChild("bHead", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, -5F, 0F, 0F, 0F));
-        PartDefinition bFinLeft = bBodyFront.addOrReplaceChild("bFinL", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
-        PartDefinition bFinRight = bBodyFront.addOrReplaceChild("bFinR", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
-        PartDefinition bDorsalFin = bBodyFront.addOrReplaceChild("bDorsalFin", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
-        PartDefinition bBottomFinFront = bBodyFront.addOrReplaceChild("bBottomFinF", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, -2F, -1F, 0F, 0F, 0F));
-        PartDefinition bBottomFinBack = bBodyBack.addOrReplaceChild("bBottomFinB", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
-        PartDefinition bVentralFinLeft = bBodyFront.addOrReplaceChild("bVentralFinL", CubeListBuilder.create(), PartPose.offsetAndRotation(0.5F, -2F, -1F, 0F, 0F, 0F));
-        PartDefinition bVentralFinRight = bBodyFront.addOrReplaceChild("bVentralFinR", CubeListBuilder.create(), PartPose.offsetAndRotation(-0.5F, -2F, -1F, 0F, 0F, 0F));
-        PartDefinition bTailFin = bBodyBack.addOrReplaceChild("bTailFin", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, 1F, 0F, 0F, 0F));
+        PartDefinition bFinLeft = bBodyFront.addOrReplaceChild("bFinL", CubeListBuilder.create(), PartPose.offsetAndRotation(1F, 0F, -2F, 0F, Mth.HALF_PI*0.5F, 0F));
+        PartDefinition bFinRight = bBodyFront.addOrReplaceChild("bFinR", CubeListBuilder.create(), PartPose.offsetAndRotation(-1F, 0F, -2F, 0F, -Mth.HALF_PI*0.5F, 0F));
+        PartDefinition bDorsalFin = bBodyFront.addOrReplaceChild("bDorsalFin", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 2F, 0F, 0F, 0F, 0F));
+        PartDefinition bBottomFinFront = bBodyFront.addOrReplaceChild("bBottomFinF", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 2F, -1F, 0F, 0F, 0F));
+        PartDefinition bBottomFinBack = bBodyBack.addOrReplaceChild("bBottomFinB", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 1F, 1F, 0F, 0F, 0F));
+        PartDefinition bVentralFinLeft = bBodyFront.addOrReplaceChild("bVentralFinL", CubeListBuilder.create(), PartPose.offsetAndRotation(0.5F, 2F, -1F, 0F, 0F, 0F));
+        PartDefinition bVentralFinRight = bBodyFront.addOrReplaceChild("bVentralFinR", CubeListBuilder.create(), PartPose.offsetAndRotation(-0.5F, 2F, -1F, 0F, 0F, 0F));
+        PartDefinition bTailFin = bBodyBack.addOrReplaceChild("bTailFin", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 4F, 1F, 0F, 0F, 0F));
 
         bBodyFront.addOrReplaceChild("bodyF", CubeListBuilder.create()
                         .texOffs(1, 1)
-                        .addBox(-1F, -2F, -2F, 2, 4, 4),
+                        .addBox(-1F, 2F, -2F, 2, 4, 4),
                 PartPose.ZERO
         );
         bBodyBack.addOrReplaceChild("bodyB", CubeListBuilder.create()
                         .texOffs(3, 12)
-                        .addBox(-1F, -2F, 0F, 2, 4, 2),
+                        .addBox(-1F, 2F, 0F, 2, 4, 2),
                 PartPose.ZERO
         );
         bHead.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(16, 10)
-                        .addBox(-2F, -2F, 0.5F, 4, 4, 4, new CubeDeformation(-0.5F)),
+                        .addBox(-2F, 2F, 0.5F, 4, 4, 4, new CubeDeformation(-0.5F)),
+                PartPose.ZERO
+        );
+
+        bHead.addOrReplaceChild("lips", CubeListBuilder.create()
+                        .texOffs(20, 2)
+                        .addBox(-1F, -1F, -1F, 2, 2, 2, new CubeDeformation(-0.375F)),
+                PartPose.offsetAndRotation(0F,4.125F,1F,-Mth.HALF_PI*0.05F,0F,0F)
+        );
+        bHead.addOrReplaceChild("eyes", CubeListBuilder.create()
+                        .texOffs(39, 21)
+                        .addBox(1.51F, -1.5F, -1.5F, 0, 3, 3, new CubeDeformation(0F,-0.5F, -0.5F))
+                        .texOffs(28, 21)
+                        .addBox(-1.51F, -1.5F, -1.5F, 0, 3, 3, new CubeDeformation(0F,-0.5F, -0.5F)),
+                PartPose.offset(0F, 4F, 2F)
+        );
+
+        bFinLeft.addOrReplaceChild("finL", CubeListBuilder.create()
+                        .texOffs(2, 16)
+                        .addBox(0F, 2F, -1F, 0, 5, 6),
+                PartPose.ZERO
+        );
+
+        bFinRight.addOrReplaceChild("finR", CubeListBuilder.create()
+                        .texOffs(2, 24)
+                        .addBox(0F, 2F, -1F, 0, 5, 6),
                 PartPose.ZERO
         );
 
         bDorsalFin.addOrReplaceChild("dorsalFin", CubeListBuilder.create()
                         .texOffs(36, -3)
-                        .addBox(0F, -7F, 0F, 0, 5, 5),
+                        .addBox(0F, -5F, 0F, 0, 5, 5),
                 PartPose.ZERO
         );
 
         bBottomFinFront.addOrReplaceChild("bottomFinF", CubeListBuilder.create()
                         .texOffs(36, 10)
+                        .addBox(0F, 4F, 0F, 0, 4, 5),
+                PartPose.ZERO
+        );
+        bBottomFinBack.addOrReplaceChild("bottomFinB", CubeListBuilder.create()
+                        .texOffs(50, 10)
                         .addBox(0F, 4F, 0F, 0, 5, 5),
                 PartPose.ZERO
         );

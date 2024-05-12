@@ -34,7 +34,10 @@ import static mokiyoki.enhancedanimals.init.FoodSerialiser.pigFoodMap;
 
 public class EnhancedBetta extends EnhancedAnimalAbstract {
     private static final String[] TEXTURES_BASE = new String[] {
-            "bettabase.png"
+            "wildtype.png"
+    };
+    private static final String[] TEXTURES_EYES = new String[] {
+            "eyes.png"
     };
     private boolean resetTexture = true;
 
@@ -103,6 +106,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
         if (this.getGenes() != null) {
             TextureGrouping rootGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(rootGroup, TEXTURES_BASE, 0, l -> true);
+            addTextureToAnimalTextureGrouping(rootGroup, TEXTURES_EYES, 0, l -> true);
             this.setTextureGrouping(rootGroup);
         }
     }
@@ -113,6 +117,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
 
     public void initilizeAnimalSize() {
         this.setAnimalSize(1.0F);
+    }
+
+    @Override
+    protected EnhancedAnimalAbstract createEnhancedChild(Level level, EnhancedAnimalAbstract enhancedAnimalAbstract) {
+        return null;
     }
 
     protected void createAndSpawnEnhancedChild(Level inWorld) {

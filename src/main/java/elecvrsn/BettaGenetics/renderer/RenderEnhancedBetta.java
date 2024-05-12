@@ -51,7 +51,7 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
 
             try {
                 resourcelocation = new ResourceLocation(s);
-                Minecraft.getInstance().getTextureManager().register(resourcelocation, new EnhancedLayeredTexturer(ENHANCED_BETTA_TEXTURE_LOCATION, textureGrouping, colourRGB));
+                Minecraft.getInstance().getTextureManager().register(resourcelocation, new EnhancedLayeredTexturer(ENHANCED_BETTA_TEXTURE_LOCATION, textureGrouping, colourRGB, 128, 128));
 
                 textureCache.putInCache(s, resourcelocation);
             } catch (IllegalStateException e) {
