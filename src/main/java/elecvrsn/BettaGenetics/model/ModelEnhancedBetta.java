@@ -3,12 +3,13 @@ package elecvrsn.BettaGenetics.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
 import elecvrsn.BettaGenetics.entity.EnhancedBetta;
 import elecvrsn.BettaGenetics.model.modeldata.BettaModelData;
 import elecvrsn.BettaGenetics.model.modeldata.BettaPhenotype;
 import mokiyoki.enhancedanimals.model.EnhancedAnimalModel;
+import mokiyoki.enhancedanimals.model.modeldata.AnimalModelData;
 import mokiyoki.enhancedanimals.model.modeldata.Phenotype;
-import mokiyoki.enhancedanimals.model.modeldata.PigModelData;
 import mokiyoki.enhancedanimals.model.util.WrappedModelPart;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -26,7 +27,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
     private BettaModelData bettaModelData;
 
     /*** BONES ***/
-    private static WrappedModelPart theBetta;
+    private WrappedModelPart theBetta;
     private WrappedModelPart theBodyFront;
     private WrappedModelPart theBodyBack;
     private WrappedModelPart theHead;
@@ -139,7 +140,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         PartDefinition bBetta = base.addOrReplaceChild("bBetta", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
         PartDefinition bBodyFront = bBetta.addOrReplaceChild("bBodyF", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, -2F, 0F, 0F, 0F));
         PartDefinition bBodyBack = bBodyFront.addOrReplaceChild("bBodyB", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, 2F, 0F, 0F, 0F));
-        PartDefinition bHead = bBodyFront.addOrReplaceChild("bHead", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, -5F, 0F, 0F, 0F));
+        PartDefinition bHead = bBodyFront.addOrReplaceChild("bHead", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 4F, -1.5F, 0F, 0F, 0F));
         PartDefinition bFinLeft = bBodyFront.addOrReplaceChild("bFinL", CubeListBuilder.create(), PartPose.offsetAndRotation(1F, 0F, -2F, 0F, Mth.HALF_PI*0.5F, 0F));
         PartDefinition bFinRight = bBodyFront.addOrReplaceChild("bFinR", CubeListBuilder.create(), PartPose.offsetAndRotation(-1F, 0F, -2F, 0F, -Mth.HALF_PI*0.5F, 0F));
         PartDefinition bDorsalFin = bBodyFront.addOrReplaceChild("bDorsalFin", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 2F, 0F, 0F, 0F, 0F));
@@ -161,21 +162,21 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         );
         bHead.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(16, 10)
-                        .addBox(-2F, 2F, 0.5F, 4, 4, 4, new CubeDeformation(-0.5F)),
+                        .addBox(-2F, -2F, -3F, 4, 4, 4, new CubeDeformation(-0.5F)),
                 PartPose.ZERO
         );
 
         bHead.addOrReplaceChild("lips", CubeListBuilder.create()
                         .texOffs(20, 2)
                         .addBox(-1F, -1F, -1F, 2, 2, 2, new CubeDeformation(-0.375F)),
-                PartPose.offsetAndRotation(0F,4.125F,1F,-Mth.HALF_PI*0.05F,0F,0F)
+                PartPose.offsetAndRotation(0F,0.125F,-2.5F,-Mth.HALF_PI*0.05F,0F,0F)
         );
         bHead.addOrReplaceChild("eyes", CubeListBuilder.create()
                         .texOffs(39, 21)
                         .addBox(1.51F, -1.5F, -1.5F, 0, 3, 3, new CubeDeformation(0F,-0.5F, -0.5F))
                         .texOffs(28, 21)
                         .addBox(-1.51F, -1.5F, -1.5F, 0, 3, 3, new CubeDeformation(0F,-0.5F, -0.5F)),
-                PartPose.offset(0F, 4F, 2F)
+                PartPose.offset(0F, 0F, -1.5F)
         );
 
         bFinLeft.addOrReplaceChild("finL", CubeListBuilder.create()
@@ -242,10 +243,6 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         setBaseInitialModelData(bettaModelData, enhancedBetta);
     }
 
-    @Override
-    public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.bettaModelData = getCreateBettaModelData(entityIn);
-    }
     private void resetCubes() {
 
     }
@@ -266,5 +263,43 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
 
             poseStack.popPose();
         }
+    }
+
+
+    private void setupInitialAnimationValues(AnimalModelData data, float netHeadYaw, float headPitch, BettaPhenotype axolotl) {
+        Map<String, Vector3f> map = data.offsets;
+        if (map.isEmpty()) {
+            this.theHead.setRotation(0.0F, 0.0F, 0.0F);
+            this.theBodyBack.setRotation(0.0F, 0.0F, 0.0F);
+        } else {
+            this.setRotationFromVector(this.theHead, map.get("bHead"));
+            this.setRotationFromVector(this.theBodyBack, map.get("bBodyB"));
+        }
+    }
+
+    protected void saveAnimationValues(AnimalModelData data) {
+        Map<String, Vector3f> map = data.offsets;
+        map.put("bHead", this.getRotationVector(this.theHead));
+        map.put("bBodyB", this.getRotationVector(this.theBodyBack));
+    }
+    @Override
+    public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.bettaModelData = getCreateBettaModelData(entityIn);
+        if (this.bettaModelData != null && this.bettaModelData.getPhenotype() != null) {
+            BettaPhenotype betta = this.bettaModelData.getPhenotype();
+            this.setupInitialAnimationValues(this.bettaModelData, netHeadYaw, headPitch, betta);
+
+            this.setupSwimmingIdleAnimation(ageInTicks, headPitch);
+
+            this.saveAnimationValues(this.bettaModelData);
+        }
+    }
+
+    private void setupSwimmingIdleAnimation(float ageInTicks, float headPitch) {
+        float f = ageInTicks * 0.33F;
+        float f1 = Mth.sin(f);
+        float f2 = Mth.cos(f);
+        this.theHead.setYRot(-f1 * (float)Mth.HALF_PI*0.15F);
+        this.theBodyBack.setYRot(-f1 * (float)Mth.HALF_PI*0.15F);
     }
 }
