@@ -1,6 +1,6 @@
 package elecvrsn.BettaGenetics.util;
 
-    public class Reference {
+    public class AddonReference {
 
         public static final String MODID = "bettagenetics";
         public static final String NAME = "Bettas";

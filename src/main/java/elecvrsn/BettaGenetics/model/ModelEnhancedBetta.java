@@ -141,13 +141,13 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         PartDefinition bBodyFront = bBetta.addOrReplaceChild("bBodyF", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, -2F, 0F, 0F, 0F));
         PartDefinition bBodyBack = bBodyFront.addOrReplaceChild("bBodyB", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, 2F, 0F, 0F, 0F));
         PartDefinition bHead = bBodyFront.addOrReplaceChild("bHead", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 4F, -1.5F, 0F, 0F, 0F));
-        PartDefinition bFinLeft = bBodyFront.addOrReplaceChild("bFinL", CubeListBuilder.create(), PartPose.offsetAndRotation(1F, 0F, -2F, 0F, Mth.HALF_PI*0.5F, 0F));
-        PartDefinition bFinRight = bBodyFront.addOrReplaceChild("bFinR", CubeListBuilder.create(), PartPose.offsetAndRotation(-1F, 0F, -2F, 0F, -Mth.HALF_PI*0.5F, 0F));
+        PartDefinition bFinLeft = bBodyFront.addOrReplaceChild("bFinL", CubeListBuilder.create(), PartPose.offsetAndRotation(1F, 0F, -1F, 0F, Mth.HALF_PI*0.5F, 0F));
+        PartDefinition bFinRight = bBodyFront.addOrReplaceChild("bFinR", CubeListBuilder.create(), PartPose.offsetAndRotation(-1F, 0F, -1F, 0F, -Mth.HALF_PI*0.5F, 0F));
         PartDefinition bDorsalFin = bBodyFront.addOrReplaceChild("bDorsalFin", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 2F, 0F, 0F, 0F, 0F));
         PartDefinition bBottomFinFront = bBodyFront.addOrReplaceChild("bBottomFinF", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 2F, -1F, 0F, 0F, 0F));
         PartDefinition bBottomFinBack = bBodyBack.addOrReplaceChild("bBottomFinB", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 1F, 1F, 0F, 0F, 0F));
-        PartDefinition bVentralFinLeft = bBodyFront.addOrReplaceChild("bVentralFinL", CubeListBuilder.create(), PartPose.offsetAndRotation(0.5F, 2F, -1F, 0F, 0F, 0F));
-        PartDefinition bVentralFinRight = bBodyFront.addOrReplaceChild("bVentralFinR", CubeListBuilder.create(), PartPose.offsetAndRotation(-0.5F, 2F, -1F, 0F, 0F, 0F));
+        PartDefinition bVentralFinLeft = bBodyFront.addOrReplaceChild("bVentralFinL", CubeListBuilder.create(), PartPose.offsetAndRotation(0.5F, 2F, -1F, 0F, Mth.HALF_PI*0.15F, 0F));
+        PartDefinition bVentralFinRight = bBodyFront.addOrReplaceChild("bVentralFinR", CubeListBuilder.create(), PartPose.offsetAndRotation(-0.5F, 2F, -1F, 0F, -Mth.HALF_PI*0.15F, 0F));
         PartDefinition bTailFin = bBodyBack.addOrReplaceChild("bTailFin", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 4F, 1F, 0F, 0F, 0F));
 
         bBodyFront.addOrReplaceChild("bodyF", CubeListBuilder.create()
@@ -271,9 +271,15 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         if (map.isEmpty()) {
             this.theHead.setRotation(0.0F, 0.0F, 0.0F);
             this.theBodyBack.setRotation(0.0F, 0.0F, 0.0F);
+            this.theFinLeft.setRotation(0.0F, Mth.HALF_PI*0.5F, 0.0F);
+            this.theFinRight.setRotation(0.0F, -Mth.HALF_PI*0.5F, 0.0F);
+            this.theTailFin.setRotation(0.0F, 0.0F, 0.0F);
         } else {
             this.setRotationFromVector(this.theHead, map.get("bHead"));
             this.setRotationFromVector(this.theBodyBack, map.get("bBodyB"));
+            this.setRotationFromVector(this.theFinLeft, map.get("bFinL"));
+            this.setRotationFromVector(this.theFinRight, map.get("bFinR"));
+            this.setRotationFromVector(this.theTailFin, map.get("bTailFin"));
         }
     }
 
@@ -281,6 +287,9 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         Map<String, Vector3f> map = data.offsets;
         map.put("bHead", this.getRotationVector(this.theHead));
         map.put("bBodyB", this.getRotationVector(this.theBodyBack));
+        map.put("bFinL", this.getRotationVector(this.theFinLeft));
+        map.put("bFinR", this.getRotationVector(this.theFinRight));
+        map.put("bTailFin", this.getRotationVector(this.theTailFin));
     }
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
@@ -289,17 +298,20 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             BettaPhenotype betta = this.bettaModelData.getPhenotype();
             this.setupInitialAnimationValues(this.bettaModelData, netHeadYaw, headPitch, betta);
 
-            this.setupSwimmingIdleAnimation(ageInTicks, headPitch);
+            this.setupSwimmingAnimation(ageInTicks, headPitch);
 
             this.saveAnimationValues(this.bettaModelData);
         }
     }
 
-    private void setupSwimmingIdleAnimation(float ageInTicks, float headPitch) {
+    private void setupSwimmingAnimation(float ageInTicks, float headPitch) {
         float f = ageInTicks * 0.33F;
         float f1 = Mth.sin(f);
-        float f2 = Mth.cos(f);
-        this.theHead.setYRot(-f1 * (float)Mth.HALF_PI*0.15F);
-        this.theBodyBack.setYRot(-f1 * (float)Mth.HALF_PI*0.15F);
+        float f2 = Mth.sin(f*2F);
+        this.theHead.setYRot(f1 * (float)Mth.HALF_PI*0.10F);
+        this.theBodyBack.setYRot(f1 * (float)Mth.HALF_PI*0.075F);
+        this.theTailFin.setYRot(f1 * (float)Mth.HALF_PI*0.05F);
+        this.theFinLeft.setYRot(Mth.HALF_PI*0.5F + (f2 * (float)Mth.HALF_PI*0.15F));
+        this.theFinRight.setYRot(-Mth.HALF_PI*0.5F + (f2 * (float)Mth.HALF_PI*0.15F));
     }
 }

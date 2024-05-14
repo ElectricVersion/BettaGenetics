@@ -3,17 +3,16 @@ package elecvrsn.BettaGenetics.util.handlers;
 
 import elecvrsn.BettaGenetics.model.ModelEnhancedBetta;
 import elecvrsn.BettaGenetics.renderer.RenderEnhancedBetta;
-import mokiyoki.enhancedanimals.model.*;
-import elecvrsn.BettaGenetics.util.Reference;
+import elecvrsn.BettaGenetics.util.AddonReference;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import static elecvrsn.BettaGenetics.init.ModEntities.ENHANCED_BETTA;
+import static elecvrsn.BettaGenetics.init.AddonEntities.ENHANCED_BETTA;
 
-@Mod.EventBusSubscriber(modid = Reference.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = AddonReference.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientEventRegistry {
 
     @OnlyIn(Dist.CLIENT)

@@ -4,7 +4,7 @@ import elecvrsn.BettaGenetics.init.breeds.BettaBreeds;
 import mokiyoki.enhancedanimals.entity.genetics.AbstractGeneticsInitialiser;
 import mokiyoki.enhancedanimals.util.Breed;
 import mokiyoki.enhancedanimals.util.Genes;
-import elecvrsn.BettaGenetics.util.Reference;
+import elecvrsn.BettaGenetics.util.AddonReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.LevelAccessor;
@@ -28,8 +28,8 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         return super.generateWithBreed(world, pos, this.breeds, breed);
     }
     public Genes generateLocalWildGenetics(Holder<Biome> biomeHolder, boolean isFlat) {
-        int[] sexlinkedGenes = new int[Reference.BETTA_SEXLINKED_GENES_LENGTH];
-        int[] autosomalGenes = new int[Reference.BETTA_AUTOSOMAL_GENES_LENGTH];
+        int[] sexlinkedGenes = new int[AddonReference.BETTA_SEXLINKED_GENES_LENGTH];
+        int[] autosomalGenes = new int[AddonReference.BETTA_AUTOSOMAL_GENES_LENGTH];
         Biome biome = biomeHolder.value();
 
         return new Genes(sexlinkedGenes, autosomalGenes);

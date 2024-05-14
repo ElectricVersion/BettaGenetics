@@ -6,11 +6,10 @@ import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
 import elecvrsn.BettaGenetics.entity.genetics.BettaGeneticsInitialiser;
 import mokiyoki.enhancedanimals.init.FoodSerialiser;
 import mokiyoki.enhancedanimals.model.modeldata.AnimalModelData;
-import mokiyoki.enhancedanimals.model.modeldata.PigModelData;
 import mokiyoki.enhancedanimals.renderer.texture.TextureGrouping;
 import mokiyoki.enhancedanimals.renderer.texture.TexturingType;
 import mokiyoki.enhancedanimals.util.Genes;
-import elecvrsn.BettaGenetics.util.Reference;
+import elecvrsn.BettaGenetics.util.AddonReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
@@ -29,7 +28,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
-import static elecvrsn.BettaGenetics.init.ModEntities.ENHANCED_BETTA;
+import static elecvrsn.BettaGenetics.init.AddonEntities.ENHANCED_BETTA;
 import static mokiyoki.enhancedanimals.init.FoodSerialiser.pigFoodMap;
 
 public class EnhancedBetta extends EnhancedAnimalAbstract {
@@ -44,7 +43,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
     @OnlyIn(Dist.CLIENT)
     private BettaModelData bettaModelData;
     public EnhancedBetta(EntityType<? extends EnhancedBetta> entityType, Level worldIn) {
-        super(entityType, worldIn, 2, Reference.BETTA_AUTOSOMAL_GENES_LENGTH, true);
+        super(entityType, worldIn, 2, AddonReference.BETTA_AUTOSOMAL_GENES_LENGTH, true);
         this.initilizeAnimalSize();
     }
 

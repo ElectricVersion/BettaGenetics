@@ -2,7 +2,7 @@ package elecvrsn.BettaGenetics.renderer;
 
 import elecvrsn.BettaGenetics.entity.EnhancedBetta;
 import elecvrsn.BettaGenetics.model.ModelEnhancedBetta;
-import elecvrsn.BettaGenetics.util.Reference;
+import elecvrsn.BettaGenetics.util.AddonReference;
 import mokiyoki.enhancedanimals.entity.util.Colouration;
 import mokiyoki.enhancedanimals.renderer.texture.EnhancedLayeredTexturer;
 import mokiyoki.enhancedanimals.renderer.texture.TextureGrouping;
@@ -22,7 +22,7 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
     private static final String ENHANCED_BETTA_TEXTURE_LOCATION = "bettagenetics:textures/entities/betta/";
     private static final ResourceLocation ERROR_TEXTURE_LOCATION = new ResourceLocation("bettagenetics:textures/entities/betta/bettabase.png");
 
-    public static final ModelLayerLocation BETTA_LAYER = new ModelLayerLocation(new ResourceLocation(Reference.MODID, "betta"), "betta_layer");
+    public static final ModelLayerLocation BETTA_LAYER = new ModelLayerLocation(new ResourceLocation(AddonReference.MODID, "betta"), "betta_layer");
     public RenderEnhancedBetta(EntityRendererProvider.Context renderManager)
     {
         super(renderManager, new ModelEnhancedBetta<>(renderManager.bakeLayer(BETTA_LAYER)), 0.8F);

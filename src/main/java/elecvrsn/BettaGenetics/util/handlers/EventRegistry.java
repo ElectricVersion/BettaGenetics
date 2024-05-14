@@ -1,6 +1,6 @@
 package elecvrsn.BettaGenetics.util.handlers;
 
-import elecvrsn.BettaGenetics.util.Reference;
+import elecvrsn.BettaGenetics.util.AddonReference;
 import net.minecraft.world.entity.*;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -8,12 +8,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import elecvrsn.BettaGenetics.entity.EnhancedBetta;
 
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import static elecvrsn.BettaGenetics.init.AddonEntities.ENHANCED_BETTA;
 
-import static elecvrsn.BettaGenetics.init.ModEntities.ENHANCED_BETTA;
-
-@Mod.EventBusSubscriber(modid = Reference.MODID, bus= Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = AddonReference.MODID, bus= Mod.EventBusSubscriber.Bus.MOD)
 public class EventRegistry {
 
     @SubscribeEvent
