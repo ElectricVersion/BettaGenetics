@@ -8,6 +8,7 @@ import elecvrsn.BettaGenetics.model.modeldata.BettaModelData;
 import elecvrsn.BettaGenetics.util.AddonReference;
 import mokiyoki.enhancedanimals.config.EanimodCommonConfig;
 import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
+import mokiyoki.enhancedanimals.entity.util.Colouration;
 import mokiyoki.enhancedanimals.init.FoodSerialiser;
 import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import mokiyoki.enhancedanimals.init.ModSensorTypes;
@@ -50,6 +51,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
     protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN);
     private static final String[] TEXTURES_BASE = new String[] {
             "wildtype.png"
+    };
+
+    private static final String[] TEXTURES_BLACK = new String[] {
+            "wildtype_black.png"
+    };
+    private static final String[] TEXTURES_RED = new String[] {
+            "wildtype_red.png"
     };
     private static final String[] TEXTURES_EYES = new String[] {
             "eyes.png"
@@ -121,9 +129,41 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
     @OnlyIn(Dist.CLIENT)
     protected void setTexturePaths() {
         if (this.getGenes() != null) {
-            TextureGrouping rootGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(rootGroup, TEXTURES_BASE, 0, l -> true);
+            /** COLORATION **/
+            float[] melanin = {0.057F, 0.521F, 0.173F};
+            float[] pheomelanin = { 0.991F, 0.978F, 0.655F };
+            float[] iridescence = { 0.525F, 0.981F, 0.925F };
+            int pheomelaninRGB = Colouration.HSBtoABGR(pheomelanin[0], pheomelanin[1], pheomelanin[2]);
+            int melaninRGB = Colouration.HSBtoABGR(melanin[0], melanin[1], melanin[2]);
+            int iridescenceRGB = Colouration.HSBtoARGB(iridescence[0], iridescence[1], iridescence[2]);
+            this.colouration.setMelaninColour(melaninRGB);
+            this.colouration.setPheomelaninColour(pheomelaninRGB);
+
+
+            /*** TEXTURES ***/
+            TextureGrouping rootGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+            TextureGrouping alphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(alphaGroup, TEXTURES_BASE, 0, l -> true);
+            addTextureToAnimalTextureGrouping(alphaGroup, TEXTURES_EYES, 0, l -> true);
+            rootGroup.addGrouping(alphaGroup);
+            /** BLACK **/
+            TextureGrouping blackGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(blackGroup, TexturingType.APPLY_BLACK, TEXTURES_BLACK, 0, l -> true);
+            rootGroup.addGrouping(blackGroup);
+            /** RED **/
+            TextureGrouping redGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(redGroup, TexturingType.APPLY_RED, TEXTURES_RED, 0, l -> true);
+            rootGroup.addGrouping(redGroup);
+            /** IRIDESCENCE **/
+            TextureGrouping iriGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(redGroup, TexturingType.APPLY_RGB, "wildtype_iridescence.png", "iri", iridescenceRGB);
+            rootGroup.addGrouping(iriGroup);
+            /** EYES **/
+            TextureGrouping eyesGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(rootGroup, "halfmoon_fins_64.png", true);
+            addTextureToAnimalTextureGrouping(rootGroup, "body_shading.png", true);
             addTextureToAnimalTextureGrouping(rootGroup, TEXTURES_EYES, 0, l -> true);
+            rootGroup.addGrouping(eyesGroup);
             this.setTextureGrouping(rootGroup);
         }
     }
