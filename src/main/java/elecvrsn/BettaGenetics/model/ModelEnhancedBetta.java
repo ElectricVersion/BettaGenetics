@@ -136,7 +136,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition base = meshdefinition.getRoot().addOrReplaceChild("base", CubeListBuilder.create(), PartPose.offset(0.0F, 8.0F, 0.0F));
+        PartDefinition base = meshdefinition.getRoot().addOrReplaceChild("base", CubeListBuilder.create(), PartPose.offset(0.0F, 17.0F, 0.0F));
         PartDefinition bBetta = base.addOrReplaceChild("bBetta", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, 0F, 0F, 0F, 0F));
         PartDefinition bBodyFront = bBetta.addOrReplaceChild("bBodyF", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, -2F, 0F, 0F, 0F));
         PartDefinition bBodyBack = bBodyFront.addOrReplaceChild("bBodyB", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, 2F, 0F, 0F, 0F));

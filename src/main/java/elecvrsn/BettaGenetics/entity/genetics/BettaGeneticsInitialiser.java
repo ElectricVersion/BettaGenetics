@@ -1,10 +1,10 @@
 package elecvrsn.BettaGenetics.entity.genetics;
 
 import elecvrsn.BettaGenetics.init.breeds.BettaBreeds;
+import elecvrsn.BettaGenetics.util.AddonReference;
 import mokiyoki.enhancedanimals.entity.genetics.AbstractGeneticsInitialiser;
 import mokiyoki.enhancedanimals.util.Breed;
 import mokiyoki.enhancedanimals.util.Genes;
-import elecvrsn.BettaGenetics.util.AddonReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.LevelAccessor;
