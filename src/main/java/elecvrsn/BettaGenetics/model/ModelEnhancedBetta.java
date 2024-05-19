@@ -297,9 +297,12 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         if (this.bettaModelData != null && this.bettaModelData.getPhenotype() != null) {
             BettaPhenotype betta = this.bettaModelData.getPhenotype();
             this.setupInitialAnimationValues(this.bettaModelData, netHeadYaw, headPitch, betta);
-
-            this.setupSwimmingAnimation(ageInTicks, headPitch);
-
+            boolean isMoving = entityIn.getDeltaMovement().horizontalDistanceSqr() > 1.0E-7D || entityIn.xOld != entityIn.getX() || entityIn.zOld != entityIn.getZ();
+            if (!isMoving) {
+                this.setupIdleAnimation(ageInTicks, headPitch);
+            } else {
+                this.setupSwimmingAnimation(ageInTicks, headPitch);
+            }
             this.saveAnimationValues(this.bettaModelData);
         }
     }
@@ -308,10 +311,18 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         float f = ageInTicks * 0.33F;
         float f1 = Mth.sin(f);
         float f2 = Mth.sin(f*2F);
+        float f3 = Mth.cos(f*2F);
         this.theHead.setYRot(f1 * (float)Mth.HALF_PI*0.10F);
         this.theBodyBack.setYRot(f1 * (float)Mth.HALF_PI*0.075F);
         this.theTailFin.setYRot(f1 * (float)Mth.HALF_PI*0.05F);
         this.theFinLeft.setYRot(Mth.HALF_PI*0.5F + (f2 * (float)Mth.HALF_PI*0.15F));
-        this.theFinRight.setYRot(-Mth.HALF_PI*0.5F + (f2 * (float)Mth.HALF_PI*0.15F));
+        this.theFinRight.setYRot(-Mth.HALF_PI*0.5F + (f3 * (float)Mth.HALF_PI*0.15F));
+    }
+    private void setupIdleAnimation(float ageInTicks, float headPitch) {
+        float f = ageInTicks * 0.33F;
+        float f2 = Mth.sin(f*1.75F);
+        float f3 = Mth.cos(f*1.75F);
+        this.theFinLeft.setYRot(Mth.HALF_PI*0.5F + (f2 * (float)Mth.HALF_PI*0.15F));
+        this.theFinRight.setYRot(-Mth.HALF_PI*0.5F + (f3 * (float)Mth.HALF_PI*0.15F));
     }
 }

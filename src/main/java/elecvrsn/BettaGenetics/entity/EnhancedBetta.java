@@ -6,8 +6,12 @@ import elecvrsn.BettaGenetics.ai.brain.betta.BettaBrain;
 import elecvrsn.BettaGenetics.entity.genetics.BettaGeneticsInitialiser;
 import elecvrsn.BettaGenetics.model.modeldata.BettaModelData;
 import elecvrsn.BettaGenetics.util.AddonReference;
+import mokiyoki.enhancedanimals.ai.general.EnhancedBreedGoal;
 import mokiyoki.enhancedanimals.config.EanimodCommonConfig;
 import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
+import mokiyoki.enhancedanimals.entity.EnhancedAxolotl;
+import mokiyoki.enhancedanimals.entity.EnhancedPig;
+import mokiyoki.enhancedanimals.entity.EntityState;
 import mokiyoki.enhancedanimals.entity.util.Colouration;
 import mokiyoki.enhancedanimals.init.FoodSerialiser;
 import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
@@ -16,9 +20,12 @@ import mokiyoki.enhancedanimals.model.modeldata.AnimalModelData;
 import mokiyoki.enhancedanimals.renderer.texture.TextureGrouping;
 import mokiyoki.enhancedanimals.renderer.texture.TexturingType;
 import mokiyoki.enhancedanimals.util.Genes;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
@@ -31,6 +38,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -42,12 +50,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
+import java.util.Random;
+
 import static elecvrsn.BettaGenetics.init.AddonEntities.ENHANCED_BETTA;
 import static mokiyoki.enhancedanimals.init.FoodSerialiser.pigFoodMap;
+import static mokiyoki.enhancedanimals.init.ModEntities.ENHANCED_PIG;
 
 public class EnhancedBetta extends EnhancedAnimalAbstract {
 
-    protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, ModSensorTypes.AXOLOTL_FOOD_TEMPTATIONS.get());
+    protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, ModSensorTypes.COW_FOOD_TEMPTATIONS.get());
     protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN);
     private static final String[] TEXTURES_BASE = new String[] {
             "wildtype.png"
@@ -156,7 +167,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             rootGroup.addGrouping(redGroup);
             /** IRIDESCENCE **/
             TextureGrouping iriGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(redGroup, TexturingType.APPLY_RGB, "wildtype_iridescence.png", "iri", iridescenceRGB);
+//            addTextureToAnimalTextureGrouping(iriGroup, TexturingType.APPLY_RGB, "wildtype_iridescence.png", "iri", iridescenceRGB);
+            addTextureToAnimalTextureGrouping(iriGroup, "iridescence_mockup.png", true);
             rootGroup.addGrouping(iriGroup);
             /** EYES **/
             TextureGrouping eyesGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
@@ -173,12 +185,24 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
     }
 
     public void initilizeAnimalSize() {
-        this.setAnimalSize(0.45F);
+        this.setAnimalSize(0.25F);
     }
 
     @Override
-    protected EnhancedAnimalAbstract createEnhancedChild(Level level, EnhancedAnimalAbstract enhancedAnimalAbstract) {
-        return null;
+    protected EnhancedAnimalAbstract createEnhancedChild(Level level, EnhancedAnimalAbstract otherParent) {
+        EnhancedBetta enhancedBetta = ENHANCED_BETTA.get().create(this.level);
+        Genes babyGenes = new Genes(this.getGenes()).makeChild(this.getOrSetIsFemale(), otherParent.getOrSetIsFemale(), otherParent.getGenes());
+        enhancedBetta.setGenes(babyGenes);
+        enhancedBetta.setSharedGenes(babyGenes);
+        enhancedBetta.setSireName(otherParent.getCustomName()==null ? "???" : otherParent.getCustomName().getString());
+        enhancedBetta.setDamName(this.getCustomName()==null ? "???" : this.getCustomName().getString());
+        enhancedBetta.setParent(this.getUUID().toString());
+        enhancedBetta.setGrowingAge();
+        enhancedBetta.setBirthTime();
+        enhancedBetta.initilizeAnimalSize();
+        enhancedBetta.setEntityStatus(EntityState.CHILD_STAGE_ONE.toString());
+        enhancedBetta.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+        return enhancedBetta;
     }
 
     protected void createAndSpawnEnhancedChild(Level inWorld) {
@@ -226,12 +250,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
 
     @Override
     public EntityDimensions getDimensions(Pose poseIn) {
-        return EntityDimensions.scalable(0.5F, 0.35F);
+        return EntityDimensions.scalable(0.4F, 0.35F);
     }
+
     @Override
     protected void registerGoals() {
-//        this.goalSelector.addGoal(0, new FloatGoal(this));
-//        this.goalSelector.addGoal(1, new FloatGoal(this));
+        super.registerGoals();
+        this.goalSelector.addGoal(1, new EnhancedBreedGoal(this, 1.0D));
     }
 
     protected Brain<?> makeBrain(Dynamic<?> p_149138_) {
@@ -303,6 +328,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             return !this.level.getBlockState(p_149224_.below()).isAir();
         }
     }
+
     protected PathNavigation createNavigation(Level p_149128_) {
         return new EnhancedBetta.BettaPathNavigation(this, p_149128_);
     }
