@@ -101,7 +101,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
 
     @Override
     protected int gestationConfig() {
-        return EanimodCommonConfig.COMMON.gestationDaysPig.get();
+        return 100;
     }
 
     @Nullable
