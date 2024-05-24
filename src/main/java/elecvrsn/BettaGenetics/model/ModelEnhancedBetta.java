@@ -252,11 +252,6 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         if (this.bettaModelData!=null && this.bettaModelData.getPhenotype() != null) {
             resetCubes();
-            int blockLight = (packedLightIn & 0xFFFF) >> 4;
-            int torchLight = (packedLightIn >> 20) & 0xFFFF;
-//            torchLight = 15;
-//            blockLight = 15;
-            int repackedLight = (torchLight << 20) | (blockLight << 4);
             super.renderToBuffer(this.bettaModelData, poseStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             Map<String, List<Float>> mapOfScale = new HashMap<>();
 
@@ -267,7 +262,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
 
 
 //            VertexConsumer vertexconsumer = multiBufferSource.getBuffer(RenderType.eyes(this.getTextureLocation(axolotl)));
-            gaRender(theBetta, mapOfScale, poseStack, vertexConsumer, repackedLight, packedOverlayIn, red, green, blue, alpha);
+            gaRender(theBetta, mapOfScale, poseStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
             poseStack.popPose();
         }
