@@ -174,10 +174,10 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         );
         bHead.addOrReplaceChild("eyes", CubeListBuilder.create()
                         .texOffs(39, 21)
-                        .addBox(1.51F, -1.5F, -1.5F, 0, 3, 3, new CubeDeformation(0F,-0.5F, -0.5F))
+                        .addBox(1.51F, -1.5F, -1.5F, 0, 3, 3, new CubeDeformation(0F,-0.45F, -0.45F))
                         .texOffs(28, 21)
-                        .addBox(-1.51F, -1.5F, -1.5F, 0, 3, 3, new CubeDeformation(0F,-0.5F, -0.5F)),
-                PartPose.offset(0F, 0F, -1.5F)
+                        .addBox(-1.51F, -1.5F, -1.5F, 0, 3, 3, new CubeDeformation(0F,-0.45F, -0.45F)),
+                PartPose.offset(0F, -0.125F, -1.5F)
         );
 
         bFinLeft.addOrReplaceChild("finL", CubeListBuilder.create()
