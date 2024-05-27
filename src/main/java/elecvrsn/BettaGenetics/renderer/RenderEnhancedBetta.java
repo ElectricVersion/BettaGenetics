@@ -115,13 +115,18 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
         boolean flag = this.isBodyVisible(betta);
         boolean flag1 = !flag && !betta.isInvisibleTo(minecraft.player);
         boolean flag2 = minecraft.shouldEntityAppearGlowing(betta);
-        RenderType rendertype = RenderType.entityTranslucent(this.getTextureLocation(betta));
-//        if (rendertype != null) {
+        RenderType mainRenderType = this.model.renderType(this.getTextureLocation(betta));
+        RenderType translucentRenderType = RenderType.entityTranslucent(this.getTextureLocation(betta));
+//        if (mainRenderType != null) {
             //Normal
-            VertexConsumer vertexConsumer = multiBufferSource.getBuffer(rendertype);
+            VertexConsumer vertexConsumer = multiBufferSource.getBuffer(translucentRenderType);
             int i1 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
             this.model.renderToBuffer(poseStack, vertexConsumer, packedLightIn, i1, 1.0F, 1.0F, 1.0F, flag1 ? 0.15F : 1.0F);
-            //Iridescence
+            VertexConsumer translucentVertexConsumer = multiBufferSource.getBuffer(RenderType.entityTranslucent(this.getEyeAndFinLocation(betta)));
+            int i2 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
+            this.model.renderToBuffer(poseStack, translucentVertexConsumer, packedLightIn, i2, 1.0F, 1.0F, 1.0F, 1.0F);
+
+        //Iridescence
 /*            int blockLight = (packedLightIn & 0xFFFF) >> 4;
             int torchLight = (packedLightIn >> 20) & 0xFFFF;
             blockLight = Math.min(15, blockLight+1);
@@ -150,8 +155,7 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post<EnhancedBetta, ModelEnhancedBetta<EnhancedBetta>>(betta, this, p_115310_, poseStack, multiBufferSource, packedLightIn));
     }
 
-
-    public ResourceLocation getIriLocation(EnhancedBetta entity) {
+    public ResourceLocation getEyeAndFinLocation(EnhancedBetta entity) {
         String s = entity.getTexture();
         Colouration colourRGB = entity.getRgb();
 
@@ -167,7 +171,7 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
 
         if (resourcelocation == null) {
 
-            TextureGrouping textureGrouping = entity.getIridescenceGroup();
+            TextureGrouping textureGrouping = entity.getFinGroup();
 
             if (textureGrouping == null || !textureGrouping.isPopulated()) {
                 return ERROR_TEXTURE_LOCATION;
@@ -186,6 +190,43 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
 
         return resourcelocation;
     }
+
+//
+//    public ResourceLocation getIriLocation(EnhancedBetta entity) {
+//        String s = entity.getTexture();
+//        Colouration colourRGB = entity.getRgb();
+//
+//        if (s == null || s.isEmpty() || colourRGB == null) {
+//            return ERROR_TEXTURE_LOCATION;
+//        }
+//
+//        s = s + "_iri";
+//
+//        s = s + colourRGB.getRGBStrings();
+//
+//        ResourceLocation resourcelocation = textureCache.getFromCache(s);
+//
+//        if (resourcelocation == null) {
+//
+//            TextureGrouping textureGrouping = entity.getIridescenceGroup();
+//
+//            if (textureGrouping == null || !textureGrouping.isPopulated()) {
+//                return ERROR_TEXTURE_LOCATION;
+//            }
+//
+//            try {
+//                resourcelocation = new ResourceLocation(s);
+//                EnhancedLayeredTexturer layeredTexture = new EnhancedLayeredTexturer(ENHANCED_BETTA_TEXTURE_LOCATION, textureGrouping, entity.colouration, 64, 64);
+//                Minecraft.getInstance().getTextureManager().register(resourcelocation, layeredTexture);
+//
+//                textureCache.putInCache(s, resourcelocation);
+//            } catch (IllegalStateException e) {
+//                return ERROR_TEXTURE_LOCATION;
+//            }
+//        }
+//
+//        return resourcelocation;
+//    }
 
     @Override
     public ResourceLocation getTextureLocation(EnhancedBetta entity) {
