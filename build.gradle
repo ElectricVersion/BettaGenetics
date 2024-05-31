@@ -17,8 +17,8 @@ apply plugin: 'net.minecraftforge.gradle'
 
 
 version = '1.0'
-group = 'com.elecvrsn.bettagenetics' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'bettagenetics'
+group = 'com.elecvrsn.geneticbettas' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'geneticbettas'
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -61,10 +61,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'bettagenetics'
+            property 'forge.enabledGameTestNamespaces', 'geneticbettas'
 
             mods {
-                bettagenetics {
+                geneticbettas {
                     source sourceSets.main
                 }
             }
@@ -78,10 +78,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'bettagenetics'
+            property 'forge.enabledGameTestNamespaces', 'geneticbettas'
 
             mods {
-                bettagenetics {
+                geneticbettas {
                     source sourceSets.main
                 }
             }
@@ -106,10 +106,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            property 'forge.enabledGameTestNamespaces', 'bettagenetics'
+            property 'forge.enabledGameTestNamespaces', 'geneticbettas'
 
             mods {
-                bettagenetics {
+                geneticbettas {
                     source sourceSets.main
                 }
             }
@@ -123,10 +123,10 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'bettagenetics', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'geneticbettas', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                bettagenetics {
+                geneticbettas {
                     source sourceSets.main
                 }
             }
@@ -157,7 +157,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    implementation fg.deobf("com.mokiyoki.enhancedanimals:GeneticAnimals:0_8_30")
+    implementation fg.deobf("com.mokiyoki.enhancedanimals:GeneticAnimals:0_8_31")
     minecraft 'net.minecraftforge:forge:1.18.2-40.2.0'
 //    implementation fg.deobf("curse.maven:genetic-animals-313213:4631412")
     // Real mod deobf dependency examples - these get remapped to your current mappings
@@ -177,7 +177,7 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "bettagenetics",
+                "Specification-Title"     : "geneticbettas",
                 "Specification-Vendor"    : "ElectricVersion",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,

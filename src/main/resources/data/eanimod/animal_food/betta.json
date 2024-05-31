@@ -1,0 +1,10 @@
+{
+  "replaceDefault": false,
+  "values": [
+    {
+      "registryName": "geneticbettas:fish_food",
+      "hungerRestored": 6000,
+      "isBreedingItem": true
+    }
+  ]
+}
