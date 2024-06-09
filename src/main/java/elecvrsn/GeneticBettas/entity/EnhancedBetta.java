@@ -53,13 +53,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
     protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN);
 //    private TextureGrouping iridescenceGroup;
     private TextureGrouping transRootGroup;
+    private TextureGrouping iridescenceGroup;
 
     private static final String[] TEXTURES_FINS = new String[] {
             "mask/wildtype.png", "mask/halfmoon.png"
     };
 
     private static final String[] TEXTURES_FIN_ALPHA = new String[] {
-            "mask/solid.png", "mask/lace_lg.png"
+            "mask/solid.png", "mask/lace_lg.png", "mask/cambodian_lg.png"
     };
 
 
@@ -68,7 +69,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
     };
     private static final String[] TEXTURES_IRI_FINS = new String[] {
             "", "iri/fin/low_fin_iri.png", "iri/fin/med_fin_iri.png", "iri/fin/high_fin_iri.png",
-
     };
 
     private static final String[] TEXTURES_IRI_BODY = new String[] {
@@ -76,10 +76,22 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             "iri/body/spread.png", "iri/body/spread_het_mask.png", "iri/body/spread_homo_mask.png"
     };
     private static final String[] TEXTURES_RED = new String[] {
-            "", "red/red_wildtype.png", "red/red_lower_1.png", "red/red_lower_2.png"
+            "", "red/wildtype.png", "red/lower_1.png", "red/lower_2.png", "red/extended.png", "red/extended_het_mask.png", "red/extended_homo_mask.png"
     };
+
+    private static final String[] TEXTURES_BUTTERFLY = new String[] {
+            "", "butterfly/long_butterfly_min.png", "butterfly/long_butterfly_medium.png", "butterfly/long_butterfly_high.png", "butterfly/long_butterfly_max.png",
+    };
+    private static final String[] TEXTURES_RED_TINT = new String[] {
+            "", "red/bodyred1.png"
+    };
+
     private static final String[] TEXTURES_EYES = new String[] {
             "eyes_wildtype.png"
+    };
+
+    private static final String[] TEXTURES_SHADING = new String[] {
+            "body_shading.png", "body_shading_light.png"
     };
     private boolean resetTexture = true;
 
@@ -187,8 +199,38 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             int fin_iri = 1;
             int fins = 1;
             int finAlpha = 0;
-            int red = 3;
+            int red = 1;
+            int red_tint = 0;
             int black = 1;
+            int shading = 0;
+            int butterfly = 0;
+            boolean cambodian = false;
+
+            /*** COLORATION ***/
+            float[] melanin = {0.0427F, 0.527F, 0.251F};
+            float[] pheomelanin = { 0.991F, 0.978F, 0.655F };
+            float[] iridescenceLight = { 0.44F, 0.978F, 0.878F };
+            float[] iridescence = { 0.530F, 0.715F, 0.634F };
+            float[] iridescenceDark = { 0.582F, 0.808F, 0.604F };
+            float[] cellophane = { 0.1025F, 0.105F, 0.972F };
+
+            //Body Iridescence Level
+            int body_iri_level = 0;
+            for (int i = 24; i < 28; i++) {
+                if (gene[i] == 2) {
+                    body_iri_level++;
+                }
+            }
+            body_iri += body_iri_level/2;
+
+            //Fin Iridescence Level
+            int fin_iri_level = 0;
+            for (int i = 28; i < 32; i++) {
+                if (gene[i] == 2) {
+                    fin_iri_level++;
+                }
+            }
+            fin_iri += fin_iri_level/2;
 
             if (gene[2] == 2 || gene[3] == 2) {
                 //Spread
@@ -202,13 +244,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                     body_iri = 5;
                 }
             }
-
-            /*** COLORATION ***/
-            float[] melanin = {0.0427F, 0.527F, 0.251F};
-            float[] pheomelanin = { 0.991F, 0.978F, 0.655F };
-            float[] iridescenceLight = { 0.44F, 0.978F, 0.878F };
-            float[] iridescence = { 0.530F, 0.715F, 0.634F };
-            float[] iridescenceDark = { 0.582F, 0.808F, 0.604F };
 
             // Iridescence Color
             if (gene[0] == 2 && gene[1] == 2) {
@@ -242,26 +277,85 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                 finAlpha = 1;
                 if (gene[6] == 2 && gene[7] == 2) {
                     //Double Black/Super Black
-                    melanin[1] = 0.24F;
-                    melanin[2] = 0.071F;
+                    melanin[1] = 0.171F;
+                    melanin[2] = 0.081F;
                 } else {
                     //Just Laced Black
-                    melanin[1] = 0.22F;
-                    melanin[2] = 0.101F;
+                    melanin[1] = 0.091F;
+                    melanin[2] = 0.151F;
                 }
             }
             else if (gene[6] == 2 && gene[7] == 2) {
                 //Melano Black
-                melanin[1] = 0.23F;
-                melanin[2] = 0.081F;
+                melanin[1] = 0.125F;
+                melanin[2] = 0.115F;
             }
 
+            if (gene[10] == 2 && gene[11] == 2) {
+                //Cambodian
+                cambodian = true;
+                finAlpha = 2;
+                shading = 1;
+                red_tint = 1;
+                melanin[0] = 0.1025F;
+                melanin[1] = 0.105F;
+                melanin[2] = 0.972F;
+            }
+
+            if (gene[12] == 2 || gene[13] == 2) {
+                //Extended Red
+                red = 4;
+                if (gene[16] == 2 && gene[17] == 2) {
+                    //Homozygous Masked
+                    red = 6;
+                }
+                else if (gene[16] == 2 || gene[17] == 2) {
+                    //Heterozygous Masked
+                    red = 5;
+                }
+            }
+
+            if (gene[14] == 2 && gene[15] == 2) {
+                //Blonde
+                melanin[1] -= 0.1F;
+                melanin[2] += 0.2F;
+                pheomelanin[1] -= 0.3F;
+                pheomelanin[2] += 0.2F;
+                iridescence[1] -= 0.3F;
+                iridescence[2] += 0.2F;
+                iridescenceLight[1] -= 0.3F;
+                iridescenceLight[2] += 0.2F;
+                iridescenceDark[1] -= 0.3F;
+                iridescenceDark[2] += 0.2F;
+            }
+
+            if (gene[18] == 2 || gene[19] == 2) {
+                //Butterfly
+                butterfly = 1;
+                //Butterfly Extensions
+                if (gene[20] == 2) {
+                    butterfly += 1;
+                }
+                if (gene[21] == 2) {
+                    butterfly += 1;
+                }
+                if (gene[22] == 2 || gene[23] == 2) {
+                    butterfly += 1;
+                }
+            }
+
+            clampRGB(melanin);
+            clampRGB(pheomelanin);
+            clampRGB(iridescenceDark);
+            clampRGB(iridescenceLight);
+            clampRGB(iridescence);
 
             int pheomelaninRGB = Colouration.HSBtoABGR(pheomelanin[0], pheomelanin[1], pheomelanin[2]);
             int melaninRGB = Colouration.HSBtoABGR(melanin[0], melanin[1], melanin[2]);
             int iriRGB = Colouration.HSBtoARGB(iridescence[0], iridescence[1], iridescence[2]);
             int iriLightRGB = Colouration.HSBtoARGB(iridescenceLight[0], iridescenceLight[1], iridescenceLight[2]);
             int iriDarkRGB = Colouration.HSBtoARGB(iridescenceDark[0], iridescenceDark[1], iridescenceDark[2]);
+            int cellophaneRGB = Colouration.HSBtoARGB(cellophane[0], cellophane[1], cellophane[2]);
             this.colouration.setMelaninColour(melaninRGB);
             this.colouration.setPheomelaninColour(pheomelaninRGB);
 
@@ -269,10 +363,23 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             transRootGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             TextureGrouping transAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             TextureGrouping finAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            addTextureToAnimalTextureGrouping(finAlphaGroup, TEXTURES_FINS, fins, l -> true);
-            addTextureToAnimalTextureGrouping(finAlphaGroup, TEXTURES_FIN_ALPHA, finAlpha, l -> true);
-            addTextureToAnimalTextureGrouping(finAlphaGroup, TexturingType.APPLY_RED, TEXTURES_RED, red, l -> l != 0);
-            addTextureToAnimalTextureGrouping(finAlphaGroup, TEXTURES_IRI_FINS, fin_iri, l -> l != 0);
+            TextureGrouping finAlphaGroup1 = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_FINS, fins, l -> true);
+            finAlphaGroup.addGrouping(finAlphaGroup1);
+            TextureGrouping finAlphaGroup2 = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(finAlphaGroup2, TEXTURES_FIN_ALPHA, finAlpha, l -> true);
+            finAlphaGroup.addGrouping(finAlphaGroup2);
+            TextureGrouping finAlphaGroup3 = new TextureGrouping(TexturingType.CUTOUT_GROUP);
+            TextureGrouping finCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+//            addTextureToAnimalTextureGrouping(finCutoutGroup, TEXTURES_BUTTERFLY, butterfly, l -> l != 0);
+            finAlphaGroup3.addGrouping(finCutoutGroup);
+            TextureGrouping finPigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_RED, red, l -> l != 0);
+            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_RED_TINT, red_tint, l -> l != 0);
+            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_IRI_BODY, body_iri, l -> l != 0);
+            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_IRI_FINS, fin_iri, l -> l != 0);
+            finAlphaGroup3.addGrouping(finPigmentGroup);
+            finAlphaGroup.addGrouping(finAlphaGroup3);
             transAlphaGroup.addGrouping(finAlphaGroup);
             TextureGrouping eyeAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(eyeAlphaGroup, "mask/eyes.png", true);
@@ -285,17 +392,21 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             rootGroup.addGrouping(bodyAlphaGroup);
 
             TextureGrouping texturesGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            /** CELLOPHANE **/
+            TextureGrouping cellophaneGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/solid.png", "cel", cellophaneRGB);
+            texturesGroup.addGrouping(cellophaneGroup);
             /** BLACK **/
             TextureGrouping blackGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-//            addTextureToAnimalTextureGrouping(blackGroup, "black_lace2.png", true);
             addTextureToAnimalTextureGrouping(blackGroup, TexturingType.APPLY_BLACK, TEXTURES_BLACK, black, l -> l != 0);
             texturesGroup.addGrouping(blackGroup);
             /** RED **/
             TextureGrouping redGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(redGroup, TexturingType.APPLY_RED, TEXTURES_RED_TINT, red_tint, l -> l != 0);
             addTextureToAnimalTextureGrouping(redGroup, TexturingType.APPLY_RED, TEXTURES_RED, red, l -> l != 0);
             texturesGroup.addGrouping(redGroup);
             /** IRIDESCENCE **/
-            TextureGrouping iridescenceGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+            iridescenceGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             TextureGrouping iriAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(iriAlphaGroup, TEXTURES_IRI_FINS, fin_iri, l -> l != 0);
             addTextureToAnimalTextureGrouping(iriAlphaGroup, TEXTURES_IRI_BODY, body_iri, l -> l != 0);
@@ -306,10 +417,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_light.png", "iri-l", iriLightRGB);
             iridescenceGroup.addGrouping(iriColorGroup);
             texturesGroup.addGrouping(iridescenceGroup);
+            /** BUTTERFLY **/
+            TextureGrouping butterflyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(butterflyGroup, TEXTURES_BUTTERFLY, butterfly, l -> l != 0);
+            texturesGroup.addGrouping(butterflyGroup);
             /** DETAILS **/
             TextureGrouping detailGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(detailGroup, "halfmoon_fins_64.png", true);
-            addTextureToAnimalTextureGrouping(detailGroup, "body_shading.png", true);
+            addTextureToAnimalTextureGrouping(detailGroup, TEXTURES_SHADING, shading, true);
             texturesGroup.addGrouping(detailGroup);
             /** EYES **/
             TextureGrouping eyeGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
@@ -436,9 +551,29 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
         return transRootGroup;
     }
 
-//    public TextureGrouping getIridescenceGroup() {
-//        return iridescenceGroup;
-//    }
+    private void clampRGB(float[] color) {
+//        if (clampHue) {
+//            float minHue = 0.020F;
+//            float maxHue = 0.101F;
+//            if (color[0] < minHue) {
+//                color[0] = minHue;
+//            }
+//            else if (color[0] > maxHue) {
+//                color[0] = maxHue;
+//            }
+//        }
+        for (int i = 0; i <= 2; i++) {
+            if (color[i] > 1.0F) {
+                color[i] = 1.0F;
+            } else if (color[i] < 0.0F) {
+                color[i] = 0.0F;
+            }
+        }
+    }
+
+    public TextureGrouping getIridescenceGroup() {
+        return iridescenceGroup;
+    }
 
     class BettaLookControl extends SmoothSwimmingLookControl {
         public BettaLookControl(EnhancedBetta pBetta, int p_149211_) {

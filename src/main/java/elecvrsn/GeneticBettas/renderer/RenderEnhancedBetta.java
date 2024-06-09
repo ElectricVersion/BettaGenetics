@@ -113,24 +113,25 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
         RenderType translucentRenderType = RenderType.entityTranslucent(this.getTextureLocation(betta));
 //        if (mainRenderType != null) {
             //Normal
-            VertexConsumer vertexConsumer = multiBufferSource.getBuffer(translucentRenderType);
+            VertexConsumer vertexConsumer = multiBufferSource.getBuffer(mainRenderType);
             int i1 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
             this.model.renderToBuffer(poseStack, vertexConsumer, packedLightIn, i1, 1.0F, 1.0F, 1.0F, flag1 ? 0.15F : 1.0F);
             VertexConsumer translucentVertexConsumer = multiBufferSource.getBuffer(RenderType.entityTranslucent(this.getEyeAndFinLocation(betta)));
-            int i2 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
-            this.model.renderToBuffer(poseStack, translucentVertexConsumer, packedLightIn, i2, 1.0F, 1.0F, 1.0F, 1.0F);
+//            int i2 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
+            this.model.renderToBuffer(poseStack, translucentVertexConsumer, packedLightIn, i1, 1.0F, 1.0F, 1.0F, 1.0F);
 
         //Iridescence
-/*            int blockLight = (packedLightIn & 0xFFFF) >> 4;
+            /*int blockLight = (packedLightIn & 0xFFFF) >> 4;
             int torchLight = (packedLightIn >> 20) & 0xFFFF;
-            blockLight = Math.min(15, blockLight+1);
-            torchLight = Math.min(15, torchLight+1);
+            blockLight = Math.min(15, blockLight+2);
+            torchLight = Math.min(15, torchLight+2);
             int repackedLight = (torchLight << 20) | (blockLight << 4);
             VertexConsumer iriVertexConsumer = multiBufferSource.getBuffer(RenderType.entityTranslucent(this.getIriLocation(betta)));
-            int i2 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
-            poseStack.scale(1.001F, 1.001F, 1.001F);
-            this.model.renderToBuffer(poseStack, iriVertexConsumer, packedLightIn, i2, 1.0F, 1.0F, 1.0F, 1.0F);*/
-//        }
+            int i3 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
+//            poseStack.scale(1.001F, 1.001F, 1.001F);
+//            poseStack.translate(0.0025F, 0.0F, 0.0F);
+            this.model.renderToBuffer(poseStack, iriVertexConsumer, repackedLight, i1, 1.0F, 1.0F, 1.0F, 1.0F);
+//        }*/
 
         if (!betta.isSpectator()) {
             for(RenderLayer<EnhancedBetta, ModelEnhancedBetta<EnhancedBetta>> renderlayer : this.layers) {
@@ -157,7 +158,7 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
             return ERROR_TEXTURE_LOCATION;
         }
 
-        s = s + "_iri";
+        s = s + "_fin";
 
         s = s + colourRGB.getRGBStrings();
 
@@ -185,42 +186,42 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
         return resourcelocation;
     }
 
-//
-//    public ResourceLocation getIriLocation(EnhancedBetta entity) {
-//        String s = entity.getTexture();
-//        Colouration colourRGB = entity.getRgb();
-//
-//        if (s == null || s.isEmpty() || colourRGB == null) {
-//            return ERROR_TEXTURE_LOCATION;
-//        }
-//
-//        s = s + "_iri";
-//
-//        s = s + colourRGB.getRGBStrings();
-//
-//        ResourceLocation resourcelocation = textureCache.getFromCache(s);
-//
-//        if (resourcelocation == null) {
-//
-//            TextureGrouping textureGrouping = entity.getIridescenceGroup();
-//
-//            if (textureGrouping == null || !textureGrouping.isPopulated()) {
-//                return ERROR_TEXTURE_LOCATION;
-//            }
-//
-//            try {
-//                resourcelocation = new ResourceLocation(s);
-//                EnhancedLayeredTexturer layeredTexture = new EnhancedLayeredTexturer(ENHANCED_BETTA_TEXTURE_LOCATION, textureGrouping, entity.colouration, 64, 64);
-//                Minecraft.getInstance().getTextureManager().register(resourcelocation, layeredTexture);
-//
-//                textureCache.putInCache(s, resourcelocation);
-//            } catch (IllegalStateException e) {
-//                return ERROR_TEXTURE_LOCATION;
-//            }
-//        }
-//
-//        return resourcelocation;
-//    }
+
+    public ResourceLocation getIriLocation(EnhancedBetta entity) {
+        String s = entity.getTexture();
+        Colouration colourRGB = entity.getRgb();
+
+        if (s == null || s.isEmpty() || colourRGB == null) {
+            return ERROR_TEXTURE_LOCATION;
+        }
+
+        s = s + "_iri";
+
+        s = s + colourRGB.getRGBStrings();
+
+        ResourceLocation resourcelocation = textureCache.getFromCache(s);
+
+        if (resourcelocation == null) {
+
+            TextureGrouping textureGrouping = entity.getIridescenceGroup();
+
+            if (textureGrouping == null || !textureGrouping.isPopulated()) {
+                return ERROR_TEXTURE_LOCATION;
+            }
+
+            try {
+                resourcelocation = new ResourceLocation(s);
+                EnhancedLayeredTexturer layeredTexture = new EnhancedLayeredTexturer(ENHANCED_BETTA_TEXTURE_LOCATION, textureGrouping, entity.colouration, 128, 128);
+                Minecraft.getInstance().getTextureManager().register(resourcelocation, layeredTexture);
+
+                textureCache.putInCache(s, resourcelocation);
+            } catch (IllegalStateException e) {
+                return ERROR_TEXTURE_LOCATION;
+            }
+        }
+
+        return resourcelocation;
+    }
 
     @Override
     public ResourceLocation getTextureLocation(EnhancedBetta entity) {

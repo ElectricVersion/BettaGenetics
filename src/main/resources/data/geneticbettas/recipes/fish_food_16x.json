@@ -1,0 +1,14 @@
+{
+  "type": "crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:kelp"
+    },
+    {
+      "item": "minecraft:cod"
+    }],
+  "result": {
+    "item": "geneticbettas:fish_food",
+    "count": 16
+  }
+}
