@@ -371,7 +371,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             finAlphaGroup.addGrouping(finAlphaGroup2);
             TextureGrouping finAlphaGroup3 = new TextureGrouping(TexturingType.CUTOUT_GROUP);
             TextureGrouping finCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-//            addTextureToAnimalTextureGrouping(finCutoutGroup, TEXTURES_BUTTERFLY, butterfly, l -> l != 0);
+            if (finAlpha == 1) {
+                addTextureToAnimalTextureGrouping(finCutoutGroup, TEXTURES_BUTTERFLY, butterfly, l -> l != 0);
+            }
             finAlphaGroup3.addGrouping(finCutoutGroup);
             TextureGrouping finPigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_RED, red, l -> l != 0);
@@ -419,7 +421,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             texturesGroup.addGrouping(iridescenceGroup);
             /** BUTTERFLY **/
             TextureGrouping butterflyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(butterflyGroup, TEXTURES_BUTTERFLY, butterfly, l -> l != 0);
+            if (finAlpha == 1) {
+                addTextureToAnimalTextureGrouping(butterflyGroup, TexturingType.APPLY_BLACK, TEXTURES_BUTTERFLY, butterfly, l -> l != 0);
+            }
+            else {
+                addTextureToAnimalTextureGrouping(butterflyGroup, TEXTURES_BUTTERFLY, butterfly, l -> l != 0);
+            }
             texturesGroup.addGrouping(butterflyGroup);
             /** DETAILS **/
             TextureGrouping detailGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
