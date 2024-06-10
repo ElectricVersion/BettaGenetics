@@ -34,7 +34,7 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
     public static final ModelLayerLocation BETTA_LAYER = new ModelLayerLocation(new ResourceLocation(AddonReference.MODID, "betta"), "betta_layer");
     public RenderEnhancedBetta(EntityRendererProvider.Context renderManager)
     {
-        super(renderManager, new ModelEnhancedBetta<>(renderManager.bakeLayer(BETTA_LAYER)), 0.8F);
+        super(renderManager, new ModelEnhancedBetta<>(renderManager.bakeLayer(BETTA_LAYER)), 0.2F);
     }
 
     @Override
