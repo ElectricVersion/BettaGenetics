@@ -15,6 +15,7 @@ import mokiyoki.enhancedanimals.model.util.WrappedModelPart;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -323,11 +324,21 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         this.theFinLeft.setYRot(Mth.HALF_PI*0.5F + (f2 * (float)Mth.HALF_PI*0.15F));
         this.theFinRight.setYRot(-Mth.HALF_PI*0.5F + (f3 * (float)Mth.HALF_PI*0.15F));
     }
+
+    private void setupBubbleAnimation(float ageInTicks, float headPitch) {
+        if (this.bettaModelData != null) {
+            this.bettaModelData.isBubbling = true;
+        }
+    }
     private void setupIdleAnimation(float ageInTicks, float headPitch) {
         float f = ageInTicks * 0.33F;
         float f2 = Mth.sin(f*1.75F);
         float f3 = Mth.cos(f*1.75F);
         this.theFinLeft.setYRot(Mth.HALF_PI*0.5F + (f2 * (float)Mth.HALF_PI*0.15F));
         this.theFinRight.setYRot(-Mth.HALF_PI*0.5F + (f3 * (float)Mth.HALF_PI*0.15F));
+        float f4 = Mth.sin(f*0.5F);
+        if (this.bettaModelData.isBubbling || f4 >= 0.95F) {
+            setupBubbleAnimation(ageInTicks, headPitch);
+        }
     }
 }

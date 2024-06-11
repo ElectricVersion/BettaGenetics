@@ -19,6 +19,7 @@ import mokiyoki.enhancedanimals.renderer.texture.TextureGrouping;
 import mokiyoki.enhancedanimals.renderer.texture.TexturingType;
 import mokiyoki.enhancedanimals.util.Genes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -84,6 +85,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
     };
     private static final String[] TEXTURES_RED_TINT = new String[] {
             "", "red/bodyred1.png"
+    };
+
+    private static final String[] TEXTURES_ALPHA = new String[] {
+            "mask/percent25.png", "mask/percent50.png", "mask/percent75.png", "mask/solid.png"
     };
 
     private static final String[] TEXTURES_EYES = new String[] {
@@ -204,6 +209,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             int black = 1;
             int shading = 0;
             int butterfly = 0;
+            int iri_intensity = 2;
             boolean cambodian = false;
 
             /*** COLORATION ***/
@@ -232,8 +238,18 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             }
             fin_iri += fin_iri_level/2;
 
+            if (gene[32] == 2 || gene[33] == 2) {
+                //Higher Iridescence Intensity
+                iri_intensity++;
+            }
+            if (gene[34] == 2 || gene[35] == 2) {
+                //Lower Iridescence Intensity
+                iri_intensity--;
+            }
+
             if (gene[2] == 2 || gene[3] == 2) {
                 //Spread
+                iri_intensity = 3;
                 body_iri = 4;
                 if (gene[4] == 2 && gene[5] == 2) {
                     //Homozygous Masked
@@ -409,7 +425,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             texturesGroup.addGrouping(redGroup);
             /** IRIDESCENCE **/
             iridescenceGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            TextureGrouping iriAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            TextureGrouping iriAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+            addTextureToAnimalTextureGrouping(iriAlphaGroup, TEXTURES_ALPHA, iri_intensity, true);
             addTextureToAnimalTextureGrouping(iriAlphaGroup, TEXTURES_IRI_FINS, fin_iri, l -> l != 0);
             addTextureToAnimalTextureGrouping(iriAlphaGroup, TEXTURES_IRI_BODY, body_iri, l -> l != 0);
             iridescenceGroup.addGrouping(iriAlphaGroup);
@@ -535,11 +552,16 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
     protected void customServerAiStep() {
         this.getBrain().tick((ServerLevel)this.level, this);
         BettaBrain.updateActivity(this);
-
     }
     public boolean canBreatheUnderwater() {
         return true;
     }
+
+    public void aiStep() {
+        super.aiStep();
+//        bubble();
+    }
+
     protected Brain.Provider<EnhancedBetta> brainProvider() {
         return Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
     }
@@ -636,4 +658,15 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             readLegacyGenes(compoundNBT.getList(key.equals("Genetics") ? "Genes" : "FatherGenes", 10), genetics);
         }
     }
+
+    public void bubble() {
+        if (this.bettaModelData != null && bettaModelData.isBubbling) {
+            double d0 = this.random.nextGaussian() * 0.02D;
+            double d1 = this.random.nextGaussian() * 0.02D;
+            double d2 = this.random.nextGaussian() * 0.02D;
+            this.level.addParticle(ParticleTypes.BUBBLE, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+            bettaModelData.isBubbling = false;
+        }
+    }
+
 }
