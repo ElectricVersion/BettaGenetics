@@ -502,7 +502,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             texturesGroup.addGrouping(redGroup);
             /** DETAILS **/
             TextureGrouping shadingGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(shadingGroup, "halfmoon_fins_64.png", true);
             addTextureToAnimalTextureGrouping(shadingGroup, TEXTURES_SHADING, shading, true);
             texturesGroup.addGrouping(shadingGroup);
             /** IRIDESCENCE **/
