@@ -113,9 +113,10 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
         RenderType translucentRenderType = RenderType.entityTranslucent(this.getTextureLocation(betta));
 //        if (mainRenderType != null) {
             //Normal
+//            int fullLight = (15 << 20) | (15 << 4);
             VertexConsumer vertexConsumer = multiBufferSource.getBuffer(mainRenderType);
             int i1 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
-            this.model.renderToBuffer(poseStack, vertexConsumer, packedLightIn, i1, 1.0F, 1.0F, 1.0F, flag1 ? 0.15F : 1.0F);
+            this.model.renderToBuffer(poseStack, vertexConsumer, packedLightIn, i1, 1.0F, 1.0F, 1.0F, 1.0F);
             VertexConsumer translucentVertexConsumer = multiBufferSource.getBuffer(RenderType.entityTranslucent(this.getEyeAndFinLocation(betta)));
 //            int i2 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
             this.model.renderToBuffer(poseStack, translucentVertexConsumer, packedLightIn, i1, 1.0F, 1.0F, 1.0F, 1.0F);
