@@ -172,16 +172,30 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
 
     public static float[] getHSBFromHex(String colourHex) {
         if (colourHex.length() == 7) {
-            System.out.println("Removing first character");
             colourHex=colourHex.substring(1,7);
         }
         int[] color =
         {
             Integer.valueOf( colourHex.substring( 0, 2 ), 16 ),
             Integer.valueOf( colourHex.substring( 2, 4 ), 16 ),
-            Integer.valueOf( colourHex.substring( 4, 6 ), 16 )};
+            Integer.valueOf( colourHex.substring( 4, 6 ), 16 )
+        };
         return Color.RGBtoHSB(color[0], color[1], color[2], (float[])null);
     }
+
+    public static int getARGBFromHex(String colourHex) {
+        if (colourHex.length() == 7) {
+            colourHex=colourHex.substring(1,7);
+        }
+        int[] color =
+                {
+                        Integer.valueOf( colourHex.substring( 0, 2 ), 16 ),
+                        Integer.valueOf( colourHex.substring( 2, 4 ), 16 ),
+                        Integer.valueOf( colourHex.substring( 4, 6 ), 16 )
+                };
+        return Integer.MIN_VALUE | Math.min(color[0], 255) << 16 | Math.min(color[1], 255) << 8 | Math.min(color[2], 255);
+    }
+
 
     protected  void incrementHunger() {
         if(this.sleeping) {
@@ -231,6 +245,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             int iri_intensity = 2;
             int pastel = 0;
             boolean cambodian = false;
+            int metallic = 0;
 
             /*** COLORATION ***/
             float[] melanin = {0.0427F, 0.527F, 0.251F};
@@ -305,30 +320,69 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                 }
             }
 
+            if (gene[48] == 2 || gene[49] == 2) {
+                metallic = gene[48] == gene[49] ? 2 : 1;
+            }
+
             // Iridescence Color
             if (gene[0] == 2 && gene[1] == 2) {
                 //Steel Blue
-                iridescenceLight[0] = 0.533F;
-                iridescenceLight[1] = 0.248F;
-                iridescenceLight[2] = 0.792F;
-                iridescence[0] = 0.556F;
-                iridescence[1] = 0.443F;
-                iridescence[2] = 0.655F;
-                iridescenceDark[0] = 0.551F;
-                iridescenceDark[1] = 0.480F;
-                iridescenceDark[2] = 0.482F;
-            }
+                if (metallic == 2) {
+                    iridescenceLight = getHSBFromHex("989b86");
+                    iridescence = getHSBFromHex("6f765e");
+                    iridescenceDark = getHSBFromHex("515543");
+                }
+                else if (metallic == 1) {
+                    iridescenceLight = getHSBFromHex("89a5a6");
+                    iridescence = getHSBFromHex("597d86");
+                    iridescenceDark = getHSBFromHex("3e5c62");
+                }
+                else {
+                    iridescenceLight[0] = 0.533F;
+                    iridescenceLight[1] = 0.248F;
+                    iridescenceLight[2] = 0.792F;
+                    iridescence[0] = 0.556F;
+                    iridescence[1] = 0.443F;
+                    iridescence[2] = 0.655F;
+                    iridescenceDark[0] = 0.551F;
+                    iridescenceDark[1] = 0.480F;
+                    iridescenceDark[2] = 0.482F;
+                }            }
             else if (gene[0] == 2 || gene[1] == 2) {
                 //Royal Blue (het steel blue)
-                iridescenceLight[0] = 0.609F;
-                iridescenceLight[1] = 0.543F;
-                iridescenceLight[2] = 0.788F;
-                iridescence[0] = 0.635F;
-                iridescence[1] = 0.706F;
-                iridescence[2] = 0.623F;
-                iridescenceDark[0] = 0.647F;
-                iridescenceDark[1] = 0.713F;
-                iridescenceDark[2] = 0.475F;
+                if (metallic == 2) {
+                    iridescenceLight = getHSBFromHex("55d9ea");
+                    iridescence = getHSBFromHex("2a8fab");
+                    iridescenceDark = getHSBFromHex("296d88");
+                }
+                else if (metallic == 1) {
+                    iridescenceLight = getHSBFromHex("5cb6dd");
+                    iridescence = getHSBFromHex("2c72a5");
+                    iridescenceDark = getHSBFromHex("2c5882");
+                }
+                else {
+                    iridescenceLight[0] = 0.609F;
+                    iridescenceLight[1] = 0.543F;
+                    iridescenceLight[2] = 0.788F;
+                    iridescence[0] = 0.635F;
+                    iridescence[1] = 0.706F;
+                    iridescence[2] = 0.623F;
+                    iridescenceDark[0] = 0.647F;
+                    iridescenceDark[1] = 0.713F;
+                    iridescenceDark[2] = 0.475F;
+                }
+            }
+            else if (metallic == 2) {
+                //Turquoise Metallic
+                iridescenceLight = getHSBFromHex("6fa970");
+                iridescence = getHSBFromHex("318c64");
+                iridescenceDark = getHSBFromHex("218074");
+            }
+            else if (metallic == 1) {
+                //Turquoise Het Metallic
+                iridescenceLight = getHSBFromHex("38c380");
+                iridescence = getHSBFromHex("349c95");
+                iridescenceDark = getHSBFromHex("217695");
             }
 
             //Main Red Color
@@ -516,8 +570,34 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_dark.png", "iri-d", iriDarkRGB);
             addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_light.png", "iri-l", iriLightRGB);
             iridescenceGroup.addGrouping(iriColorGroup);
-            TextureGrouping iriPastelGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            iridescenceGroup.addGrouping(iriPastelGroup);
+//            TextureGrouping iriPastelGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+//            iridescenceGroup.addGrouping(iriPastelGroup);
+            if (metallic != 0) {
+                TextureGrouping metallicGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+//                addTextureToAnimalTextureGrouping(metallicGroup, TEXTURES_ALPHA, metallic == 1 ? 0 : 3, true);
+                if (gene[0] == 2 && gene[1] == 2) {
+                    //Steel Blue
+                    int metallic2 = metallic == 2 ? getARGBFromHex("663b45") : getARGBFromHex("A7C7A5") ;
+                    addTextureToAnimalTextureGrouping(metallicGroup, "iri/steel_metalliclayer1.png");
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer2.png", "sb-mt2", metallic2);
+                    addTextureToAnimalTextureGrouping(metallicGroup, "iri/steel_metalliclayer3.png");
+                }
+                else if (gene[0] == 2 || gene[1] == 2) {
+                    //Royal Blue
+                    int metallic2 = metallic == 2 ? getARGBFromHex("00AC73") : getARGBFromHex("A7C7A5") ;
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer1.png", "rb-mt1", getARGBFromHex("418bb1"));
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer2.png", "rb-mt2", metallic2);
+                    addTextureToAnimalTextureGrouping(metallicGroup, "iri/royal_metalliclayer3.png");
+                }
+                else {
+                    addTextureToAnimalTextureGrouping(metallicGroup, "iri/turq_metalliclayer2.png", metallic == 2);
+                    addTextureToAnimalTextureGrouping(metallicGroup, "iri/turq_metalliclayer3.png");
+                }
+//                addTextureToAnimalTextureGrouping(metallicGroup, "body_shading_iri.png");
+                iridescenceGroup.addGrouping(metallicGroup);
+                iridescenceGroup.addGrouping(shadingGroup);
+            }
+
             texturesGroup.addGrouping(iridescenceGroup);
             /** BUTTERFLY **/
             if (butterfly !=0) {
