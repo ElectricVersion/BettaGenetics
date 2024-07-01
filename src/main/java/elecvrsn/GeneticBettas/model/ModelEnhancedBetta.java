@@ -174,11 +174,11 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
                 PartPose.offsetAndRotation(0F,0.125F,-2.5F,-Mth.HALF_PI*0.05F,0F,0F)
         );
         bHead.addOrReplaceChild("eyes", CubeListBuilder.create()
-                        .texOffs(43, 18)
-                        .addBox(1.51F, -3F, -3F, 0, 6, 6, new CubeDeformation(0F,-1.95F, -1.95F))
-                        .texOffs(28, 18)
-                        .addBox(-1.51F, -3F, -3F, 0, 6, 6, new CubeDeformation(0F,-1.95F, -1.95F)),
-                PartPose.offset(0F, -0.125F, -1.5F)
+                        .texOffs(46, 21)
+                        .addBox(1.51F, -2F, -2F, 0, 4, 4, new CubeDeformation(0F,-1.25F, -1.25F))
+                        .texOffs(29, 21)
+                        .addBox(-1.51F, -2F, -2F, 0, 4, 4, new CubeDeformation(0F,-1.25F, -1.25F)),
+                PartPose.offset(0F, 0F, -1.375F)
         );
 
         bFinLeft.addOrReplaceChild("finL", CubeListBuilder.create()

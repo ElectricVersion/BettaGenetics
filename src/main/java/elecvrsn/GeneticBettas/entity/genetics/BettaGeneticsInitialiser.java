@@ -90,17 +90,17 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         autosomalGenes[22] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[23] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
 
-        //Body Iridescence Spread [Wildtype > higher]
+        //Body Iridescence Area [Wildtype > higher]
         autosomalGenes[24] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[25] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
 
         autosomalGenes[26] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[27] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
 
-        //Fin Iridescence Spread [Wildtype > higher]
+        //Fin Iridescence Area [Wildtype > higher]
         autosomalGenes[28] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[29] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
-        //Fin Iridescence Spread [Wildtype > higher]
+        //Fin Iridescence Area [Wildtype > higher]
         autosomalGenes[30] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[31] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
 
@@ -126,16 +126,27 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         autosomalGenes[42] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(3) + 1) : 1;
         autosomalGenes[43] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(3) + 1) : 1;
 
-        //Body Iridescence Spread [Wildtype <> higher]
+        //Body Red Area [Wildtype <> higher]
         autosomalGenes[44] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[45] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
-        //Body Iridescence Spread [Wildtype <> lower]
+        //Body Red Area [Wildtype <> lower]
         autosomalGenes[46] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[47] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
 
         //Metallic [Wildtype <> Metallic]
         autosomalGenes[48] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[49] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Mask Iridescence Area [Wildtype > higher]
+        autosomalGenes[50] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[51] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        //Mask Iridescence Area [Wildtype > higher]
+        autosomalGenes[52] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[53] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        //Mask Iridescence Area 3 [Wildtype > higher]
+        autosomalGenes[54] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[55] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
 
         return new Genes(sexlinkedGenes, autosomalGenes);
     }

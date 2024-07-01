@@ -76,7 +76,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
 
     private static final String[] TEXTURES_IRI_BODY = new String[] {
             "", "iri/body/low_body_iri.png", "iri/body/med_body_iri.png", "iri/body/high_body_iri.png",
-            "iri/body/spread.png", "iri/body/spread_het_mask.png", "iri/body/spread_homo_mask.png"
+            "iri/body/spread.png",
+    };
+    private static final String[] TEXTURES_IRI_MASK = new String[] {
+            "", "iri/body/mask_low1.png", "iri/body/mask_low2.png",
+            "iri/body/mask_med1.png", "iri/body/mask_med2.png",
+            "iri/body/mask_high1.png", "iri/body/mask_high2.png",
+            "iri/body/mask_max.png",
     };
     private static final String[] TEXTURES_RED_FIN = new String[] {
             "", "red/fin/lower_1.png", "red/fin/lower_2.png", "red/fin/lower_3.png", "red/fin/wildtype.png"
@@ -101,7 +107,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             "body_shading.png", "body_shading_light.png"
     };
 
-    private static final String[] TEXTURES_PASTEL = new String[] {
+    private static final String[] TEXTURES_PASTEL_OPAQUE = new String[] {
             "", "iri/pastel.png", "iri/opaque.png"
     };
     private boolean resetTexture = true;
@@ -235,6 +241,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             /*** PHENOTYPE ***/
             int body_iri = 1;
             int fin_iri = 1;
+            int mask_iri = 0;
             int fins = 1;
             int finAlpha = 0;
             int fin_red = 4;
@@ -254,6 +261,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             float[] iridescence = { 0.530F, 0.715F, 0.634F };
             float[] iridescenceDark = { 0.582F, 0.808F, 0.604F };
             float[] cellophane = { 0.1025F, 0.105F, 0.972F };
+            float[] metallic1 = getHSBFromHex("00ab74");
+            float[] metallic2 = getHSBFromHex("00ab74");
+            float[] metallic3 = getHSBFromHex("e7d094");
+
 
             //Body Iridescence Level
             int body_iri_level = 0;
@@ -310,14 +321,34 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                 //Spread
                 iri_intensity = 3;
                 body_iri = 4;
-                if (gene[4] == 2 && gene[5] == 2) {
-                    //Homozygous Masked
-                    body_iri = 6;
+            }
+
+            if (gene[4] == 2 || gene[5] == 2) {
+                //Masked
+
+                //Mask Iridescence Level
+                int mask_iri_level = 0;
+                for (int i = 50; i < 56; i++) {
+                    if (gene[i] == 2) {
+                        mask_iri_level++;
+                    }
                 }
-                else if (gene[4] == 2 || gene[5] == 2) {
-                    //Heterozygous Masked
-                    body_iri = 5;
+                mask_iri_level = mask_iri_level/2;
+                switch (mask_iri_level) {
+                    case 0:
+                        mask_iri = 1;
+                        break;
+                    case 1:
+                        mask_iri = 3;
+                        break;
+                    case 2:
+                        mask_iri = 5;
+                        break;
+                    case 3:
+                        mask_iri = 7;
+                        break;
                 }
+
             }
 
             if (gene[48] == 2 || gene[49] == 2) {
@@ -327,6 +358,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             // Iridescence Color
             if (gene[0] == 2 && gene[1] == 2) {
                 //Steel Blue
+                metallic1 = getHSBFromHex("968967");
+                metallic2 = getHSBFromHex("663b45");
+                metallic3 = getHSBFromHex("e8cf8f");
                 if (metallic == 2) {
                     iridescenceLight = getHSBFromHex("989b86");
                     iridescence = getHSBFromHex("6f765e");
@@ -336,6 +370,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                     iridescenceLight = getHSBFromHex("89a5a6");
                     iridescence = getHSBFromHex("597d86");
                     iridescenceDark = getHSBFromHex("3e5c62");
+                    metallic2 = getHSBFromHex("A7C7A5");
                 }
                 else {
                     iridescenceLight[0] = 0.533F;
@@ -350,6 +385,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                 }            }
             else if (gene[0] == 2 || gene[1] == 2) {
                 //Royal Blue (het steel blue)
+                metallic1 = getHSBFromHex("418bb1");
+                metallic2 = getHSBFromHex("00AC73");
+                metallic3 = getHSBFromHex("88e8ff");
                 if (metallic == 2) {
                     iridescenceLight = getHSBFromHex("55d9ea");
                     iridescence = getHSBFromHex("2a8fab");
@@ -359,6 +397,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                     iridescenceLight = getHSBFromHex("5cb6dd");
                     iridescence = getHSBFromHex("2c72a5");
                     iridescenceDark = getHSBFromHex("2c5882");
+                    metallic2 = getHSBFromHex("A7C7A5");
                 }
                 else {
                     iridescenceLight[0] = 0.609F;
@@ -398,7 +437,16 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             if (gene[40] == 2 || gene[41] == 2) {
                 if (gene[40] == gene[41]) {
                     //Homo Pastel/Opaque
-                    pastel = 2;
+//                    pastel = 2;
+                    iridescenceLight = getHSBFromHex("dceef3");
+                    iridescence = getHSBFromHex("dceef3");
+                    iridescenceDark = getHSBFromHex("c4deeb");
+                    metallic1[1] -= 0.5F;
+                    metallic1[2] += 0.5F;
+                    metallic2[1] -= 0.5F;
+                    metallic2[2] += 0.5F;
+                    metallic3[1] -= 0.5F;
+                    metallic3[2] += 0.5F;
                 } else {
                     //Het Pastel/Opaque
                     if (gene[0] == 2 && gene[1] == 2) {
@@ -496,6 +544,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             clampRGB(iridescenceDark);
             clampRGB(iridescenceLight);
             clampRGB(iridescence);
+            clampRGB(metallic1);
+            clampRGB(metallic2);
+            clampRGB(metallic3);
+
+            int metallic1RGB = Colouration.HSBtoARGB(metallic1[0], metallic1[1], metallic1[2]);
+            int metallic2RGB = Colouration.HSBtoARGB(metallic2[0], metallic2[1], metallic2[2]);
+            int metallic3RGB = Colouration.HSBtoARGB(metallic3[0], metallic3[1], metallic3[2]);
 
             int pheomelaninRGB = Colouration.HSBtoABGR(pheomelanin[0], pheomelanin[1], pheomelanin[2]);
             int melaninRGB = Colouration.HSBtoABGR(melanin[0], melanin[1], melanin[2]);
@@ -505,6 +560,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             int cellophaneRGB = Colouration.HSBtoARGB(cellophane[0], cellophane[1], cellophane[2]);
             this.colouration.setMelaninColour(melaninRGB);
             this.colouration.setPheomelaninColour(pheomelaninRGB);
+
+//            char[] uuidArry = getStringUUID().toCharArray();
+//            // Texture Randomizaton
+//            if (body_iri == 5) {
+//                body_iri += uuidArry[1] % 6;
+//            }
+
 
             /*** TEXTURES ***/
             transRootGroup = new TextureGrouping(TexturingType.MASK_GROUP);
@@ -564,6 +626,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             addTextureToAnimalTextureGrouping(iriAlphaGroup, TEXTURES_ALPHA, iri_intensity, true);
             addTextureToAnimalTextureGrouping(iriAlphaGroup, TEXTURES_IRI_FINS, fin_iri, l -> l != 0);
             addTextureToAnimalTextureGrouping(iriAlphaGroup, TEXTURES_IRI_BODY, body_iri, l -> l != 0);
+            addTextureToAnimalTextureGrouping(iriAlphaGroup, TEXTURES_IRI_MASK, mask_iri, l -> l != 0);
             iridescenceGroup.addGrouping(iriAlphaGroup);
             TextureGrouping iriColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_base.png", "iri", iriRGB);
@@ -577,21 +640,21 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
 //                addTextureToAnimalTextureGrouping(metallicGroup, TEXTURES_ALPHA, metallic == 1 ? 0 : 3, true);
                 if (gene[0] == 2 && gene[1] == 2) {
                     //Steel Blue
-                    int metallic2 = metallic == 2 ? getARGBFromHex("663b45") : getARGBFromHex("A7C7A5") ;
-                    addTextureToAnimalTextureGrouping(metallicGroup, "iri/steel_metalliclayer1.png");
-                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer2.png", "sb-mt2", metallic2);
-                    addTextureToAnimalTextureGrouping(metallicGroup, "iri/steel_metalliclayer3.png");
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer1.png", "sb-mt1", metallic1RGB);
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer2.png", "sb-mt2", metallic2RGB);
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer3.png", "sb-mt3", metallic3RGB);
                 }
                 else if (gene[0] == 2 || gene[1] == 2) {
                     //Royal Blue
-                    int metallic2 = metallic == 2 ? getARGBFromHex("00AC73") : getARGBFromHex("A7C7A5") ;
-                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer1.png", "rb-mt1", getARGBFromHex("418bb1"));
-                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer2.png", "rb-mt2", metallic2);
-                    addTextureToAnimalTextureGrouping(metallicGroup, "iri/royal_metalliclayer3.png");
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer1.png", "rb-mt1", metallic1RGB);
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer2.png", "rb-mt2", metallic2RGB);
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer3.png", "rb-mt3", metallic3RGB);
                 }
                 else {
-                    addTextureToAnimalTextureGrouping(metallicGroup, "iri/turq_metalliclayer2.png", metallic == 2);
-                    addTextureToAnimalTextureGrouping(metallicGroup, "iri/turq_metalliclayer3.png");
+                    if (metallic == 2) {
+                        addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/turq_metalliclayer2.png", "t-mt2", metallic2RGB);
+                    }
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB,"iri/turq_metalliclayer3.png", "t-mt3", metallic3RGB);
                 }
 //                addTextureToAnimalTextureGrouping(metallicGroup, "body_shading_iri.png");
                 iridescenceGroup.addGrouping(metallicGroup);
