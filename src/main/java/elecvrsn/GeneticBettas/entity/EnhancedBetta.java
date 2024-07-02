@@ -607,15 +607,21 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             TextureGrouping cellophaneGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/solid.png", "cel", cellophaneRGB);
             texturesGroup.addGrouping(cellophaneGroup);
-            /** BLACK **/
-            TextureGrouping blackGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(blackGroup, TexturingType.APPLY_BLACK, TEXTURES_BLACK, black, l -> l != 0);
-            texturesGroup.addGrouping(blackGroup);
             /** RED **/
             TextureGrouping redGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(redGroup, TexturingType.APPLY_RED, TEXTURES_RED_BODY, body_red, l -> l != 0);
-            addTextureToAnimalTextureGrouping(redGroup, TexturingType.APPLY_RED, TEXTURES_RED_FIN, fin_red, l -> l != 0);
+            addTextureToAnimalTextureGrouping(redGroup, TexturingType.APPLY_RED, TEXTURES_ALPHA, 3, l -> l != 0);
             texturesGroup.addGrouping(redGroup);
+            /** BLACK **/
+            TextureGrouping blackGroup = new TextureGrouping(TexturingType.CUTOUT_GROUP);
+            TextureGrouping blackCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            //Cut the red layer out of the black
+            addTextureToAnimalTextureGrouping(blackCutoutGroup, TEXTURES_RED_BODY, body_red, l -> l != 0);
+            addTextureToAnimalTextureGrouping(blackCutoutGroup, TEXTURES_RED_FIN, fin_red, l -> l != 0);
+            blackGroup.addGrouping(blackCutoutGroup);
+            TextureGrouping blackColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(blackColorGroup, TexturingType.APPLY_BLACK, TEXTURES_ALPHA, 3, l -> l != 0);
+            blackGroup.addGrouping(blackColorGroup);
+            texturesGroup.addGrouping(blackGroup);
             /** DETAILS **/
             TextureGrouping shadingGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(shadingGroup, TEXTURES_SHADING, shading, true);
