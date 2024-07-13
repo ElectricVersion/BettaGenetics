@@ -110,7 +110,7 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
         boolean flag1 = !flag && !betta.isInvisibleTo(minecraft.player);
         boolean flag2 = minecraft.shouldEntityAppearGlowing(betta);
         RenderType mainRenderType = this.model.renderType(this.getTextureLocation(betta));
-        RenderType translucentRenderType = RenderType.entityTranslucent(this.getTextureLocation(betta));
+//        RenderType translucentRenderType = this.model.renderType(this.getEyeAndFinLocation(betta));
 //        if (mainRenderType != null) {
             //Normal
 //            int fullLight = (15 << 20) | (15 << 4);
