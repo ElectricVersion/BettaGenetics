@@ -251,13 +251,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             int fin_red = 4;
             int bodyRed = 2;
             int black = 1;
-            int shading = 0;
             int butterfly = 0;
             int iriIntensity = 2;
             boolean pastelOpaque = false;
             boolean cambodian = false;
             int metallic = 0;
             int marble_black = 0;
+            boolean dumbo = false;
 
             /*** COLORATION ***/
             float[] melanin = {0.0427F, 0.527F, 0.251F};
@@ -542,6 +542,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                 }
             }
 
+            if (gene[56] == 2 && gene[57] == 2) {
+                dumbo = true;
+            }
+
             clampRGB(melanin);
             clampRGB(pheomelanin);
             clampRGB(iridescenceDark);
@@ -577,35 +581,36 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             /*** TEXTURES ***/
             transRootGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             TextureGrouping transAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            TextureGrouping finAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            TextureGrouping finAlphaGroup1 = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_FINS, fins, l -> true);
+                TextureGrouping finAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+                    TextureGrouping finAlphaGroup1 = new TextureGrouping(TexturingType.MASK_GROUP);
+                    addTextureToAnimalTextureGrouping(finAlphaGroup1, dumbo ? "mask/solid.png" : "mask/nondumbo.png", true);
+                    addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_FINS, fins, l -> true);
             finAlphaGroup.addGrouping(finAlphaGroup1);
-            TextureGrouping finAlphaGroup2 = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(finAlphaGroup2, TEXTURES_FIN_ALPHA, finAlpha, l -> true);
-            finAlphaGroup.addGrouping(finAlphaGroup2);
-            TextureGrouping finAlphaGroup3 = new TextureGrouping(TexturingType.CUTOUT_GROUP);
-            TextureGrouping finCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            if (finAlpha == 1) {
-                addTextureToAnimalTextureGrouping(finCutoutGroup, TEXTURES_BUTTERFLY, butterfly, l -> l != 0);
-            }
-            finAlphaGroup3.addGrouping(finCutoutGroup);
-            TextureGrouping finPigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_RED_FIN, fin_red, l -> l != 0);
-            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
-            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_IRI_BODY, body_iri, l -> l != 0);
-            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_IRI_FINS, fin_iri, l -> l != 0);
-            finAlphaGroup3.addGrouping(finPigmentGroup);
-            finAlphaGroup.addGrouping(finAlphaGroup3);
-            transAlphaGroup.addGrouping(finAlphaGroup);
-            TextureGrouping eyeAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(eyeAlphaGroup, "mask/eyes.png", true);
-            transAlphaGroup.addGrouping(eyeAlphaGroup);
+                    TextureGrouping finAlphaGroup2 = new TextureGrouping(TexturingType.MERGE_GROUP);
+                        addTextureToAnimalTextureGrouping(finAlphaGroup2, TEXTURES_FIN_ALPHA, finAlpha, l -> true);
+                    finAlphaGroup.addGrouping(finAlphaGroup2);
+                    TextureGrouping finAlphaGroup3 = new TextureGrouping(TexturingType.CUTOUT_GROUP);
+                        TextureGrouping finCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                            if (finAlpha == 1) {
+                                addTextureToAnimalTextureGrouping(finCutoutGroup, TEXTURES_BUTTERFLY, butterfly, l -> l != 0);
+                            }
+                        finAlphaGroup3.addGrouping(finCutoutGroup);
+                        TextureGrouping finPigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_RED_FIN, fin_red, l -> l != 0);
+                            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
+                            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_IRI_BODY, body_iri, l -> l != 0);
+                            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_IRI_FINS, fin_iri, l -> l != 0);
+                        finAlphaGroup3.addGrouping(finPigmentGroup);
+                    finAlphaGroup.addGrouping(finAlphaGroup3);
+                transAlphaGroup.addGrouping(finAlphaGroup);
+                TextureGrouping eyeAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                  addTextureToAnimalTextureGrouping(eyeAlphaGroup, "mask/eyes.png", true);
+                transAlphaGroup.addGrouping(eyeAlphaGroup);
             transRootGroup.addGrouping(transAlphaGroup);
 
             TextureGrouping rootGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            TextureGrouping bodyAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(bodyAlphaGroup, "mask/body.png", true);
+                TextureGrouping bodyAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                addTextureToAnimalTextureGrouping(bodyAlphaGroup, "mask/body.png", true);
             rootGroup.addGrouping(bodyAlphaGroup);
 
             TextureGrouping texturesGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
@@ -632,7 +637,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             texturesGroup.addGrouping(blackGroup);
             /** DETAILS **/
             TextureGrouping shadingGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(shadingGroup, TEXTURES_SHADING, shading, true);
+            addTextureToAnimalTextureGrouping(shadingGroup, "body_shading.png", true);
             texturesGroup.addGrouping(shadingGroup);
             /** IRIDESCENCE **/
             iridescenceGroup = new TextureGrouping(TexturingType.MASK_GROUP);
@@ -652,13 +657,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                 addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri_base.png", "op", opaqueRGB);
                 addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri_dark.png", "op-d", opaqueDarkRGB);
                 addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri_light.png", "op-l", opaqueLightRGB);
+                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "body_shading_iri.png", "op-s", opaqueDarkRGB);
                 iridescenceGroup.addGrouping(opaqueColorGroup);
             }
-//            TextureGrouping iriPastelGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-//            iridescenceGroup.addGrouping(iriPastelGroup);
             if (metallic != 0) {
                 TextureGrouping metallicGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-//                addTextureToAnimalTextureGrouping(metallicGroup, TEXTURES_ALPHA, metallic == 1 ? 0 : 3, true);
                 if (gene[0] == 2 && gene[1] == 2) {
                     //Steel Blue
                     addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer1.png", "sb-mt1", metallic1RGB);
@@ -677,8 +680,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                     }
                     addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB,"iri/turq_metalliclayer3.png", "t-mt3", metallic3RGB);
                 }
-//                addTextureToAnimalTextureGrouping(metallicGroup, "body_shading_iri.png");
                 iridescenceGroup.addGrouping(metallicGroup);
+                // Metallic seems to look better with normal shading
                 iridescenceGroup.addGrouping(shadingGroup);
             }
 

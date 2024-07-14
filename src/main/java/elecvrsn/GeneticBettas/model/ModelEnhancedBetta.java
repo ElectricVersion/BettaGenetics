@@ -255,8 +255,9 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             resetCubes();
             super.renderToBuffer(this.bettaModelData, poseStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             Map<String, List<Float>> mapOfScale = new HashMap<>();
+            BettaPhenotype betta = this.bettaModelData.getPhenotype();
 
-            List<Float> pectoralFinScalings = ModelHelper.createScalings(1F, 0.75F, 0.75F, 0F, 0F, 0F);
+            List<Float> pectoralFinScalings = ModelHelper.createScalings(1F, betta.dumbo ? 1.125F : 0.75F, 0.75F, 0F, 0F, 0F);
             mapOfScale.put("finL", pectoralFinScalings);
             mapOfScale.put("finR", pectoralFinScalings);
 
