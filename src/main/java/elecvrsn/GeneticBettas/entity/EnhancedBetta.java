@@ -58,9 +58,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
     private TextureGrouping transRootGroup;
     private TextureGrouping iridescenceGroup;
 
-    private static final String[] TEXTURES_FINS = new String[] {
-            "mask/wildtype.png", "mask/halfmoon.png"
-    };
+//    private static final String[] TEXTURES_FINS = new String[] {
+//            "mask/wildtype.png", "mask/halfmoon.png"
+//    };
 
     private static final String[] TEXTURES_FIN_ALPHA = new String[] {
             "mask/solid.png", "mask/lace_lg.png", "mask/cambodian_lg.png"
@@ -114,6 +114,34 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
     private static final String[] TEXTURES_MARBLE_BLACK = new String[] {
             "", "black/marble/marble_1.png", "black/marble/marble_2.png", "black/marble/marble_4.png", "black/marble/marble_5.png",
     };
+
+    private static final String[][][] TEXTURES_FINS = new String[][][] {
+            {
+                    {"fin/plakat.png", "fin/plakat_hetcrown.png", "fin/plakat_homocrown.png"},
+                    {"fin/plakat_double.png", "fin/plakat_double_hetcrown.png", "fin/plakat_double_homocrown.png"},
+            },
+            {
+                    {"fin/dpk.png", "fin/dpk_hetcrown.png", "fin/dpk_homocrown.png"},
+                    {"fin/dpk_double.png", "fin/dpk_double_hetcrown.png", "fin/dpk_double_homocrown.png"},
+            },
+            {
+                    {"fin/hmpk.png", "fin/hmpk_hetcrown.png", "fin/hmpk_homocrown.png"},
+                    {"fin/hmpk_double.png", "fin/hmpk_double_hetcrown.png", "fin/hmpk_double_homocrown.png"},
+            },
+            {
+                    {"fin/veil.png", "fin/veil_hetcrown.png", "fin/veil_homocrown.png"},
+                    {"fin/veil_double.png", "fin/veil_double_hetcrown.png", "fin/veil_double_homocrown.png"},
+            },
+            {
+                    {"fin/delta.png", "fin/delta_hetcrown.png", "fin/delta_homocrown.png"},
+                    {"fin/delta_double.png", "fin/delta_double_hetcrown.png", "fin/delta_double_homocrown.png"},
+            },
+            {
+                    {"fin/halfmoon.png", "fin/halfmoon_hetcrown.png", "fin/halfmoon_homocrown.png"},
+                    {"fin/halfmoon_double.png", "fin/halfmoon_double_hetcrown.png", "fin/halfmoon_double_homocrown.png"},
+            },
+    };
+
     private boolean resetTexture = true;
 
     @OnlyIn(Dist.CLIENT)
@@ -584,7 +612,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                 TextureGrouping finAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                     TextureGrouping finAlphaGroup1 = new TextureGrouping(TexturingType.MASK_GROUP);
                     addTextureToAnimalTextureGrouping(finAlphaGroup1, dumbo ? "mask/solid.png" : "mask/nondumbo.png", true);
-                    addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_FINS, fins, l -> true);
+                    addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_FINS, fins, 0, 0, true);
             finAlphaGroup.addGrouping(finAlphaGroup1);
                     TextureGrouping finAlphaGroup2 = new TextureGrouping(TexturingType.MERGE_GROUP);
                         addTextureToAnimalTextureGrouping(finAlphaGroup2, TEXTURES_FIN_ALPHA, finAlpha, l -> true);
@@ -642,11 +670,26 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             /** IRIDESCENCE **/
             iridescenceGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             TextureGrouping iriAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            addTextureToAnimalTextureGrouping(iriAlphaGroup, TEXTURES_ALPHA, iriIntensity, true);
-            addTextureToAnimalTextureGrouping(iriAlphaGroup, TEXTURES_IRI_FINS, fin_iri, l -> l != 0);
-            addTextureToAnimalTextureGrouping(iriAlphaGroup, TEXTURES_IRI_BODY, body_iri, l -> l != 0);
-            addTextureToAnimalTextureGrouping(iriAlphaGroup, TEXTURES_IRI_MASK, mask_iri, l -> l != 0);
+
+            TextureGrouping iriOpacityAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_ALPHA, iriIntensity, true);
+            iriAlphaGroup.addGrouping(iriOpacityAlphaGroup);
+
+            TextureGrouping iriBodyAndFinAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_FINS, fin_iri, l -> l != 0);
+            addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_BODY, body_iri, l -> l != 0);
+            iriAlphaGroup.addGrouping(iriBodyAndFinAlphaGroup);
+
+            if (body_iri != 0) {
+                TextureGrouping iriMaskAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+                addTextureToAnimalTextureGrouping(iriMaskAlphaGroup, TEXTURES_IRI_BODY, body_iri, l -> l != 0);
+                addTextureToAnimalTextureGrouping(iriMaskAlphaGroup, "iri/body/spread.png", mask_iri == 0);
+                addTextureToAnimalTextureGrouping(iriMaskAlphaGroup, TEXTURES_IRI_MASK, mask_iri, l -> l != 0);
+                iriAlphaGroup.addGrouping(iriMaskAlphaGroup);
+            }
+
             iridescenceGroup.addGrouping(iriAlphaGroup);
+
             TextureGrouping iriColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_base.png", "iri", iriRGB);
             addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_dark.png", "iri-d", iriDarkRGB);
