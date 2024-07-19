@@ -260,6 +260,8 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             List<Float> pectoralFinScalings = ModelHelper.createScalings(1F, betta.dumbo ? 1.125F : 0.75F, 0.75F, 0F, 0F, 0F);
             mapOfScale.put("finL", pectoralFinScalings);
             mapOfScale.put("finR", pectoralFinScalings);
+            List<Float> dorsalFineScalings = ModelHelper.createScalings(1F, 1F, betta.dorsalWidth, 0F, 0F, 0F);
+            mapOfScale.put("dorsalFin", dorsalFineScalings);
 
             poseStack.pushPose();
 

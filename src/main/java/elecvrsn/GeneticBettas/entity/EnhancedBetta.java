@@ -271,12 +271,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             int[] gene = getGenes().getAutosomalGenes();
 
             /*** PHENOTYPE ***/
-            int body_iri = 1;
-            int fin_iri = 1;
-            int mask_iri = 0;
-            int fins = 1;
+            int bodyIri = 1;
+            int finIri = 1;
+            int maskIri = 0;
+            int fins = 0;
+            int doubletail = 0;
+            int crowntail = 0;
             int finAlpha = 0;
-            int fin_red = 4;
+            int finRed = 4;
             int bodyRed = 2;
             int black = 1;
             int butterfly = 0;
@@ -284,7 +286,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             boolean pastelOpaque = false;
             boolean cambodian = false;
             int metallic = 0;
-            int marble_black = 0;
+            int marbleBlack = 0;
             boolean dumbo = false;
 
             /*** COLORATION ***/
@@ -304,7 +306,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             float[] metallic2 = getHSBFromHex("00ab74");
             float[] metallic3 = getHSBFromHex("e7d094");
 
-
             //Body Iridescence Level
             int bodyIriLevel = 0;
             for (int i = 24; i < 28; i++) {
@@ -312,7 +313,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                     bodyIriLevel++;
                 }
             }
-            body_iri += bodyIriLevel/2;
+            bodyIri += bodyIriLevel/2;
 
             //Fin Iridescence Level
             int finIriLevel = 0;
@@ -321,7 +322,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                     finIriLevel++;
                 }
             }
-            fin_iri += finIriLevel/2;
+            finIri += finIriLevel/2;
 
             if (gene[32] == 2 || gene[33] == 2) {
                 //Higher Iridescence Intensity
@@ -334,7 +335,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             for (int i = 36; i < 40; i++) {
                 // Lower Fin Red
                 if (gene[i] == 2) {
-                    fin_red--;
+                    finRed--;
                 }
             }
 
@@ -359,7 +360,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             if (gene[2] == 2 || gene[3] == 2) {
                 //Spread
                 iriIntensity = 3;
-                body_iri = 4;
+                bodyIri = 4;
             }
 
             if (gene[4] == 2 || gene[5] == 2) {
@@ -374,12 +375,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                 }
                 maskIriLevel = maskIriLevel/2;
                 switch (maskIriLevel) {
-                    case 0 -> mask_iri = 1;
-                    case 1 -> mask_iri = 3;
-                    case 2 -> mask_iri = 5;
-                    case 3 -> mask_iri = 7;
+                    case 0 -> maskIri = 1;
+                    case 1 -> maskIri = 3;
+                    case 2 -> maskIri = 5;
+                    case 3 -> maskIri = 7;
                 }
-
             }
 
             if (gene[48] == 2 || gene[49] == 2) {
@@ -574,6 +574,57 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                 dumbo = true;
             }
 
+            if (gene[58] == 2 || gene[59] == 2) {
+                //Long Fins
+                if (gene[60] == 2 || gene[61] == 2) {
+                    if (gene[60] == gene[61]) {
+                        //Halfmoon
+                        fins = 5;
+                    }
+                    else {
+                        //Delta
+                        fins = 4;
+                    }
+                }
+                else {
+                    //Veil
+                    fins = 3;
+                }
+            }
+            else {
+                //Short Fins
+                if (gene[60] == 2 || gene[61] == 2) {
+                    if (gene[60] == gene[61]) {
+                        //Halfmoon Plakat
+                        fins = 2;
+                    }
+                    else {
+                        //Delta Plakat
+                        fins = 1;
+                    }
+                }
+                else {
+                    //Plakat
+                    fins = 0;
+                }
+            }
+
+            if (gene[62] == 2 && gene[63] == 2) {
+                //Doubletail
+                doubletail = 1;
+            }
+
+            if (gene[64] == 2 || gene[65] == 2) {
+                if (gene[64] == gene[65]) {
+                    //Homo Crowntail
+                    crowntail = 2;
+                }
+                else {
+                    //Het Crowntail
+                    crowntail = 1;
+                }
+            }
+
             clampRGB(melanin);
             clampRGB(pheomelanin);
             clampRGB(iridescenceDark);
@@ -601,8 +652,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
 
 //            char[] uuidArry = getStringUUID().toCharArray();
 //            // Texture Randomizaton
-//            if (body_iri == 5) {
-//                body_iri += uuidArry[1] % 6;
+//            if (bodyIri == 5) {
+//                bodyIri += uuidArry[1] % 6;
 //            }
 
 
@@ -612,7 +663,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                 TextureGrouping finAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                     TextureGrouping finAlphaGroup1 = new TextureGrouping(TexturingType.MASK_GROUP);
                     addTextureToAnimalTextureGrouping(finAlphaGroup1, dumbo ? "mask/solid.png" : "mask/nondumbo.png", true);
-                    addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_FINS, fins, 0, 0, true);
+                    addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_FINS, fins, doubletail, crowntail, true);
             finAlphaGroup.addGrouping(finAlphaGroup1);
                     TextureGrouping finAlphaGroup2 = new TextureGrouping(TexturingType.MERGE_GROUP);
                         addTextureToAnimalTextureGrouping(finAlphaGroup2, TEXTURES_FIN_ALPHA, finAlpha, l -> true);
@@ -624,10 +675,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
                             }
                         finAlphaGroup3.addGrouping(finCutoutGroup);
                         TextureGrouping finPigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_RED_FIN, fin_red, l -> l != 0);
+                            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_RED_FIN, finRed, l -> l != 0);
                             addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
-                            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_IRI_BODY, body_iri, l -> l != 0);
-                            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_IRI_FINS, fin_iri, l -> l != 0);
+                            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_IRI_BODY, bodyIri, l -> l != 0);
+                            addTextureToAnimalTextureGrouping(finPigmentGroup, TEXTURES_IRI_FINS, finIri, l -> l != 0);
                         finAlphaGroup3.addGrouping(finPigmentGroup);
                     finAlphaGroup.addGrouping(finAlphaGroup3);
                 transAlphaGroup.addGrouping(finAlphaGroup);
@@ -655,9 +706,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             TextureGrouping blackCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             //Cut the red layer out of the black
             addTextureToAnimalTextureGrouping(blackCutoutGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
-            addTextureToAnimalTextureGrouping(blackCutoutGroup, TEXTURES_RED_FIN, fin_red, l -> l != 0);
+            addTextureToAnimalTextureGrouping(blackCutoutGroup, TEXTURES_RED_FIN, finRed, l -> l != 0);
             //The marble gene(s) cut holes in each layer
-            addTextureToAnimalTextureGrouping(blackCutoutGroup, TEXTURES_MARBLE_BLACK, marble_black, l -> l != 0);
+            addTextureToAnimalTextureGrouping(blackCutoutGroup, TEXTURES_MARBLE_BLACK, marbleBlack, l -> l != 0);
             blackGroup.addGrouping(blackCutoutGroup);
             TextureGrouping blackColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(blackColorGroup, TexturingType.APPLY_BLACK, TEXTURES_ALPHA, 3, l -> l != 0);
@@ -675,16 +726,17 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_ALPHA, iriIntensity, true);
             iriAlphaGroup.addGrouping(iriOpacityAlphaGroup);
 
-            TextureGrouping iriBodyAndFinAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_FINS, fin_iri, l -> l != 0);
-            addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_BODY, body_iri, l -> l != 0);
-            iriAlphaGroup.addGrouping(iriBodyAndFinAlphaGroup);
-
-            if (body_iri != 0) {
+            if (bodyIri != 0) {
                 TextureGrouping iriMaskAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-                addTextureToAnimalTextureGrouping(iriMaskAlphaGroup, TEXTURES_IRI_BODY, body_iri, l -> l != 0);
-                addTextureToAnimalTextureGrouping(iriMaskAlphaGroup, "iri/body/spread.png", mask_iri == 0);
-                addTextureToAnimalTextureGrouping(iriMaskAlphaGroup, TEXTURES_IRI_MASK, mask_iri, l -> l != 0);
+                TextureGrouping iriBodyAndFinAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, "iri/body/spread.png");
+                addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_MASK, maskIri, l -> l != 0);
+                iriMaskAlphaGroup.addGrouping(iriBodyAndFinAlphaGroup);
+                TextureGrouping iriBodyAndFinGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_BODY, bodyIri, l -> l != 0);
+                addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_BODY, bodyIri, l -> l != 0);
+                addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_FINS, finIri, l -> l != 0);
+                iriMaskAlphaGroup.addGrouping(iriBodyAndFinGroup);
                 iriAlphaGroup.addGrouping(iriMaskAlphaGroup);
             }
 
