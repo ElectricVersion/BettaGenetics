@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import elecvrsn.GeneticBettas.ai.brain.betta.BettaBrain;
 import elecvrsn.GeneticBettas.entity.genetics.BettaGeneticsInitialiser;
+import elecvrsn.GeneticBettas.init.AddonItems;
+import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import elecvrsn.GeneticBettas.model.modeldata.BettaModelData;
 import elecvrsn.GeneticBettas.util.AddonReference;
 import mokiyoki.enhancedanimals.ai.general.EnhancedBreedGoal;
@@ -21,8 +23,15 @@ import mokiyoki.enhancedanimals.util.Genes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -34,7 +43,12 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
+import net.minecraft.world.entity.animal.Bucketable;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -45,16 +59,18 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-
 import java.awt.*;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 
-public class EnhancedBetta extends EnhancedAnimalAbstract {
+public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable {
 
     protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, ModSensorTypes.COW_FOOD_TEMPTATIONS.get());
     protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN);
-//    private TextureGrouping iridescenceGroup;
+    //    private TextureGrouping iridescenceGroup;
+    private static final EntityDataAccessor<Boolean> PREGNANT = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
+
     private TextureGrouping transRootGroup;
     private TextureGrouping iridescenceGroup;
 
@@ -179,6 +195,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
 
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.entityData.define(PREGNANT, false);
+        this.entityData.define(FROM_BUCKET, false);
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {
@@ -910,7 +928,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
 
     public void aiStep() {
         super.aiStep();
-//        bubble();
+        bubble();
     }
 
     protected Brain.Provider<EnhancedBetta> brainProvider() {
@@ -1019,5 +1037,81 @@ public class EnhancedBetta extends EnhancedAnimalAbstract {
             bettaModelData.isBubbling = false;
         }
     }
+
+    /*
+     * BUCKETABLE STUFF
+     */
+    @Override
+    public boolean fromBucket() {
+        return this.entityData.get(FROM_BUCKET);
+    }
+
+    @Override
+    public void setFromBucket(boolean p_149196_) {
+        this.entityData.set(FROM_BUCKET, p_149196_);
+    }
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        Item item = itemStack.getItem();
+
+        if (item == AddonItems.ENHANCED_BETTA_EGG.get()) {
+            return InteractionResult.SUCCESS;
+        }
+
+        return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+    }
+
+    @Override
+    protected void usePlayerItem(Player player, InteractionHand hand, ItemStack itemStack) {
+        if (itemStack.getItem() instanceof MobBucketItem) {
+            if (!player.isCreative()) {
+                player.setItemInHand(hand, new ItemStack(Items.WATER_BUCKET));
+            }
+        } else {
+            super.usePlayerItem(player, hand, itemStack);
+        }
+    }
+
+    @Override
+    public void saveToBucketTag(ItemStack stack) {
+        Bucketable.saveDefaultDataToBucketTag(this, stack);
+        if (stack.getItem() instanceof EnhancedBettaBucket) {
+            EnhancedBettaBucket.setGenes(stack, this.genetics!=null? this.genetics : getGenes());
+            EnhancedBettaBucket.setParentNames(stack, this.sireName, this.damName);
+            EnhancedBettaBucket.setEquipment(stack, this.animalInventory.getItem(1));
+            if (this.isPregnant() && this.mateGenetics != null) {
+                EnhancedBettaBucket.setMateGenes(stack, this.mateGenetics, this.mateGender);
+            }
+            EnhancedBettaBucket.setBettaUUID(stack, this.getUUID().toString());
+            EnhancedBettaBucket.setBirthTime(stack, this.getBirthTime());
+        }
+    }
+
+    public boolean isPregnant() {
+        return this.entityData.get(PREGNANT) || this.pregnant;
+    }
+
+    public void setPregnant(boolean hasEgg) {
+        this.entityData.set(PREGNANT, hasEgg);
+    }
+
+    @Override
+    public void loadFromBucketTag(CompoundTag tag) {
+        Bucketable.loadDefaultDataFromBucketTag(this, tag);
+        this.setIsFemale(tag.getCompound("Genetics"));
+        this.toggleReloadTexture();
+    }
+
+    @Override
+    public ItemStack getBucketItemStack() {
+        return new ItemStack(AddonItems.ENHANCED_BETTA_BUCKET.get());
+    }
+
+    @Override
+    public SoundEvent getPickupSound() {
+        return SoundEvents.BUCKET_FILL_FISH;
+    }
+
 
 }

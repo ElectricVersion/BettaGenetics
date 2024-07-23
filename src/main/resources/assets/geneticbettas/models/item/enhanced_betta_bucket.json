@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "geneticbettas:item/enhanced_betta_bucket"
+  }
+}
