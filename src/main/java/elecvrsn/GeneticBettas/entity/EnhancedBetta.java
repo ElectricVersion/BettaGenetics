@@ -104,9 +104,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             "", "red/fin/lower_3.png", "red/fin/lower_2.png", "red/fin/lower_1.png", "red/fin/wildtype.png"
     };
 
-    private static final String[] TEXTURES_BUTTERFLY = new String[] {
-            "", "butterfly/long_butterfly_min.png", "butterfly/long_butterfly_medium.png", "butterfly/long_butterfly_high.png", "butterfly/long_butterfly_max.png",
-    };
+//    private static final String[] TEXTURES_BUTTERFLY = new String[] {
+//            "", "butterfly/long_butterfly_min.png", "butterfly/long_butterfly_medium.png", "butterfly/long_butterfly_high.png", "butterfly/long_butterfly_max.png",
+//    };
     private static final String[] TEXTURES_RED_BODY = new String[] {
             "", "red/body/min.png", "red/body/low.png", "red/body/med.png", "red/body/high.png", "red/extended.png", "red/extended_het_mask.png", "red/extended_homo_mask.png"
     };
@@ -158,6 +158,32 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             },
     };
 
+    private static final String[][][] TEXTURES_BUTTERFLY = new String[][][] {
+            {
+                    {"butterfly/plakat_low.png", "butterfly/plakat_med.png", "butterfly/plakat_high.png", "butterfly/plakat_max.png"},
+                    {"butterfly/plakat_double_low.png", "butterfly/plakat_double_med.png", "butterfly/plakat_double_high.png", "butterfly/plakat_double_max.png"},
+            },
+            {
+                    {"butterfly/dpk_low.png", "butterfly/dpk_med.png", "butterfly/dpk_high.png", "butterfly/dpk_max.png"},
+                    {"butterfly/dpk_double_low.png", "butterfly/dpk_double_med.png", "butterfly/dpk_double_high.png", "butterfly/dpk_double_max.png"},
+            },
+            {
+                    {"butterfly/hmpk_low.png", "butterfly/hmpk_med.png", "butterfly/hmpk_high.png", "butterfly/hmpk_max.png"},
+                    {"butterfly/hmpk_double_low.png", "butterfly/hmpk_double_med.png", "butterfly/hmpk_double_high.png", "butterfly/hmpk_double_max.png"},
+            },
+            {
+                    {"butterfly/veil_low.png", "butterfly/veil_med.png", "butterfly/veil_high.png", "butterfly/veil_max.png"},
+                    {"butterfly/veil_double_low.png", "butterfly/veil_double_med.png", "butterfly/veil_double_high.png", "butterfly/veil_double_max.png"},
+            },
+            {
+                    {"butterfly/delta_low.png", "butterfly/delta_med.png", "butterfly/delta_high.png", "butterfly/delta_max.png"},
+                    {"butterfly/delta_double_low.png", "butterfly/delta_double_med.png", "butterfly/delta_double_high.png", "butterfly/delta_double_max.png"},
+            },
+            {
+                    {"butterfly/halfmoon_low.png", "butterfly/halfmoon_med.png", "butterfly/halfmoon_high.png", "butterfly/halfmoon_max.png"},
+                    {"butterfly/halfmoon_double_low.png", "butterfly/halfmoon_double_med.png", "butterfly/halfmoon_double_high.png", "butterfly/halfmoon_double_max.png"},
+            },
+    };
     private boolean resetTexture = true;
 
     @OnlyIn(Dist.CLIENT)
@@ -204,6 +230,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 .add(Attributes.MAX_HEALTH, 10.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.5D)
                 .add(Attributes.ATTACK_DAMAGE, 2.0D);
+    }
+
+    @Override
+    protected void initializeHealth(EnhancedAnimalAbstract animal, float health) {
+        int[] genes = this.genetics.getAutosomalGenes();
+        health = 0;
+
+        super.initializeHealth(animal, (health + 15F));
     }
 
     @Override
@@ -689,7 +723,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     TextureGrouping finAlphaGroup3 = new TextureGrouping(TexturingType.CUTOUT_GROUP);
                         TextureGrouping finCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                             if (finAlpha == 1) {
-                                addTextureToAnimalTextureGrouping(finCutoutGroup, TEXTURES_BUTTERFLY, butterfly, l -> l != 0);
+                                addTextureToAnimalTextureGrouping(finCutoutGroup, TEXTURES_BUTTERFLY, fins, doubletail, butterfly, butterfly != 0);
                             }
                         finAlphaGroup3.addGrouping(finCutoutGroup);
                         TextureGrouping finPigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
@@ -803,7 +837,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             if (butterfly !=0) {
                 TextureGrouping butterflyGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                 TextureGrouping butterflyMaskGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                addTextureToAnimalTextureGrouping(butterflyMaskGroup, TEXTURES_BUTTERFLY, butterfly, l -> l != 0);
+                addTextureToAnimalTextureGrouping(butterflyMaskGroup, TEXTURES_BUTTERFLY, fins, doubletail, butterfly, butterfly != 0);
                 butterflyGroup.addGrouping(butterflyMaskGroup);
                 TextureGrouping butterflyTexGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 if (finAlpha == 1) {
@@ -1030,10 +1064,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     public void bubble() {
         if (this.bettaModelData != null && bettaModelData.isBubbling) {
-            double d0 = this.random.nextGaussian() * 0.02D;
-            double d1 = this.random.nextGaussian() * 0.02D;
-            double d2 = this.random.nextGaussian() * 0.02D;
-            this.level.addParticle(ParticleTypes.BUBBLE, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+            if (this.isInWater()) {
+                double d0 = this.random.nextGaussian() * 0.02D;
+                double d1 = this.random.nextGaussian() * 0.02D;
+                double d2 = this.random.nextGaussian() * 0.02D;
+                this.level.addParticle(ParticleTypes.BUBBLE, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+            }
             bettaModelData.isBubbling = false;
         }
     }

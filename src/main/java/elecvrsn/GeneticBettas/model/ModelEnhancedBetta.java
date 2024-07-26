@@ -307,6 +307,14 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             BettaPhenotype betta = this.bettaModelData.getPhenotype();
             this.setupInitialAnimationValues(this.bettaModelData, netHeadYaw, headPitch, betta);
             boolean isMoving = entityIn.getDeltaMovement().horizontalDistanceSqr() > 1.0E-7D || entityIn.xOld != entityIn.getX() || entityIn.zOld != entityIn.getZ();
+
+            if (this.bettaModelData.bubblingTimer <= ageInTicks) {
+                bettaModelData.bubblingTimer = (int)ageInTicks + entityIn.getRandom().nextInt(600) + 30;
+            }
+            else if (this.bettaModelData.bubblingTimer <= ageInTicks + 10) {
+                setupBubbleAnimation(ageInTicks, headPitch);
+            }
+
             if (!isMoving) {
                 this.setupIdleAnimation(ageInTicks, headPitch);
             } else {
@@ -339,9 +347,5 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         float f3 = Mth.cos(f*1.75F);
         this.theFinLeft.setYRot(Mth.HALF_PI*0.5F + (f2 * (float)Mth.HALF_PI*0.15F));
         this.theFinRight.setYRot(-Mth.HALF_PI*0.5F + (f3 * (float)Mth.HALF_PI*0.15F));
-        float f4 = Mth.sin(f*0.5F);
-        if (this.bettaModelData.isBubbling || f4 >= 0.95F) {
-            setupBubbleAnimation(ageInTicks, headPitch);
-        }
     }
 }
