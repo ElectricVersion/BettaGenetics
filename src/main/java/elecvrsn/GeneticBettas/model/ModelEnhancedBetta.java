@@ -261,17 +261,17 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             List<Float> pectoralFinScalings = ModelHelper.createScalings(1F, betta.dumbo ? 1.125F : 0.75F, 0.75F, 0F, 0F, 0F);
             mapOfScale.put("finL", pectoralFinScalings);
             mapOfScale.put("finR", pectoralFinScalings);
-            List<Float> dorsalFinScalings = ModelHelper.createScalings(1F, finScaleMult, finScaleMult*betta.dorsalWidth, 0F, 0F, 0F);
+            List<Float> dorsalFinScalings = ModelHelper.createScalings(1F, betta.isFemale ? 0.625F : 1F, finScaleMult*betta.dorsalWidth, 0F, 0F, 0F);
             mapOfScale.put("dorsalFin", dorsalFinScalings);
 //            List<Float> tailFinScalings = ModelHelper.createScalings(1F, finScaleMult, finScaleMult, 0F, 0F, 0F);
-            mapOfScale.put("tailFin", ModelHelper.createScalings(1F, betta.isFemale ? 0.875F : 1F, betta.isFemale ? 0.875F : 1F, 0F, 0F, 0F));
-            List<Float> ventralFinScalings = ModelHelper.createScalings(1F, finScaleMult, finScaleMult, 0F, 0F, 0F);
+            mapOfScale.put("tailFin", ModelHelper.createScalings(1F, betta.isFemale ? 0.75F : 1F, betta.isFemale ? 0.75F : 1F, 0F, 0F, 0F));
+            List<Float> ventralFinScalings = ModelHelper.createScalings(1F, betta.isFemale ? 0.625F : 1F, finScaleMult, 0F, 0F, 0F);
             mapOfScale.put("ventralFinL", ventralFinScalings);
             mapOfScale.put("ventralFinR", ventralFinScalings);
             List<Float> bottomFinScalings = ModelHelper.createScalings(1F, finScaleMult, betta.isFemale ? 0.875F : 1F, 0F, 0F, 0F);
             mapOfScale.put("bottomFinF", bottomFinScalings);
             mapOfScale.put("bottomFinB", bottomFinScalings);
-            mapOfScale.put("bBodyF", ModelHelper.createScalings(1F, betta.isFemale ? 0.925F : 1F, 1F, 0F, 0F, 0F));
+            mapOfScale.put("bBodyF", ModelHelper.createScalings(1F, betta.isFemale ? 1F : 0.925F, 1F, 0F, 0F, 0F));
 
             poseStack.pushPose();
 
