@@ -308,7 +308,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 10.0D)
+                .add(Attributes.MAX_HEALTH, 4.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.5D)
                 .add(Attributes.ATTACK_DAMAGE, 2.0D);
     }
@@ -317,16 +317,24 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     protected void initializeHealth(EnhancedAnimalAbstract animal, float health) {
 //        int[] genes = this.genetics.getAutosomalGenes();
 //        super.initializeHealth(animal, (health + 15F));
-        calcMaxHealth();
+        calcMaxHealth(true);
     }
 
-    private void calcMaxHealth() {
+    private float calcMaxHealth() {
         int[] genes = this.getGenes().getAutosomalGenes();
         float health = 8F;
         if (genes[62] == 2 && genes[63] == 2) {
             health -= 2F;
         }
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue((double)health);
+        return health;
+    }
+    private float calcMaxHealth(boolean setHealth) {
+        float health = calcMaxHealth();
+        if (setHealth) {
+            this.setHealth(health);
+        }
+        return health;
     }
 
     @Override
@@ -403,7 +411,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
-        calcMaxHealth();
         super.readAdditionalSaveData(compound);
     }
     @Override
@@ -1037,15 +1044,17 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         enhancedBetta.initilizeAnimalSize();
         enhancedBetta.setEntityStatus(EntityState.CHILD_STAGE_ONE.toString());
         enhancedBetta.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+        enhancedBetta.calcMaxHealth(true);
         return enhancedBetta;
     }
 
     protected void createAndSpawnEnhancedChild(Level inWorld) {
-        EnhancedBetta enhancedbetta = ENHANCED_BETTA.get().create(this.level);
+        EnhancedBetta enhancedBetta = ENHANCED_BETTA.get().create(this.level);
         Genes babyGenes = new Genes(this.genetics).makeChild(this.getOrSetIsFemale(), this.mateGender, this.mateGenetics);
-        defaultCreateAndSpawn(enhancedbetta, inWorld, babyGenes, -this.getAdultAge());
+        defaultCreateAndSpawn(enhancedBetta, inWorld, babyGenes, -this.getAdultAge());
+        enhancedBetta.calcMaxHealth(true);
 
-        this.level.addFreshEntity(enhancedbetta);
+        this.level.addFreshEntity(enhancedBetta);
     }
     @Override
     protected boolean canBePregnant() {
@@ -1299,13 +1308,4 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return SoundEvents.BUCKET_FILL_FISH;
     }
 
-    @Override
-    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
-        EnhancedBetta offspring = (EnhancedBetta) super.getBreedOffspring(serverWorld, ageable);
-        if (offspring != null) {
-            System.out.println("DID IT");
-            offspring.calcMaxHealth();
-        }
-        return offspring;
-    }
 }
