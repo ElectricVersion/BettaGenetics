@@ -201,31 +201,31 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
 
         bBottomFinFront.addOrReplaceChild("bottomFinF", CubeListBuilder.create()
                         .texOffs(36, 10)
-                        .addBox(0F, 4F, 0F, 0, 4, 5),
-                PartPose.ZERO
+                        .addBox(0F, 0F, 0F, 0, 4, 5),
+                PartPose.offset(0F, 4F, 0F)
         );
         bBottomFinBack.addOrReplaceChild("bottomFinB", CubeListBuilder.create()
                         .texOffs(50, 10)
-                        .addBox(0F, 4F, 0F, 0, 5, 5),
-                PartPose.ZERO
+                        .addBox(0F, -1F, 4F, 0, 5, 5),
+                PartPose.offset(0F, 5F, -4F)
         );
 
         bVentralFinLeft.addOrReplaceChild("ventralFinL", CubeListBuilder.create()
                         .texOffs(18, 18)
-                        .addBox(0F, 4F, -2F, 0, 4, 4),
-                PartPose.ZERO
+                        .addBox(0F, 0F, -2F, 0, 4, 4),
+                PartPose.offset(0F, 4F, 0F)
         );
 
         bVentralFinRight.addOrReplaceChild("ventralFinR", CubeListBuilder.create()
                         .texOffs(18, 26)
-                        .addBox(0F, 4F, -2F, 0, 4, 4),
-                PartPose.ZERO
+                        .addBox(0F, 0F, -2F, 0, 4, 4),
+                PartPose.offset(0F, 4F, 0F)
         );
 
         bTailFin.addOrReplaceChild("tailFin", CubeListBuilder.create()
                         .texOffs(2, 41)
-                        .addBox(0F, -6F, 0F, 0, 11, 8),
-                PartPose.ZERO
+                        .addBox(0F, -6F, -1F, 0, 11, 8),
+                PartPose.offset(0F, 0F, 1F)
         );
 
         return LayerDefinition.create(meshdefinition, 64, 64);
@@ -233,7 +233,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
 
     @Override
     protected Phenotype createPhenotype(T enhancedAnimal) {
-        return new BettaPhenotype(enhancedAnimal.getGenes().getAutosomalGenes(), enhancedAnimal.getStringUUID().charAt(5));
+        return new BettaPhenotype(enhancedAnimal.getGenes().getAutosomalGenes(), enhancedAnimal.getStringUUID().charAt(5), enhancedAnimal.getOrSetIsFemale());
     }
     private BettaModelData getCreateBettaModelData(T enhancedBetta) {
         return (BettaModelData) getCreateAnimalModelData(enhancedBetta);
@@ -257,11 +257,21 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             Map<String, List<Float>> mapOfScale = new HashMap<>();
             BettaPhenotype betta = this.bettaModelData.getPhenotype();
 
+            float finScaleMult = betta.isFemale ? 0.75F : 1F;
             List<Float> pectoralFinScalings = ModelHelper.createScalings(1F, betta.dumbo ? 1.125F : 0.75F, 0.75F, 0F, 0F, 0F);
             mapOfScale.put("finL", pectoralFinScalings);
             mapOfScale.put("finR", pectoralFinScalings);
-            List<Float> dorsalFineScalings = ModelHelper.createScalings(1F, 1F, betta.dorsalWidth, 0F, 0F, 0F);
-            mapOfScale.put("dorsalFin", dorsalFineScalings);
+            List<Float> dorsalFinScalings = ModelHelper.createScalings(1F, finScaleMult, finScaleMult*betta.dorsalWidth, 0F, 0F, 0F);
+            mapOfScale.put("dorsalFin", dorsalFinScalings);
+//            List<Float> tailFinScalings = ModelHelper.createScalings(1F, finScaleMult, finScaleMult, 0F, 0F, 0F);
+            mapOfScale.put("tailFin", ModelHelper.createScalings(1F, betta.isFemale ? 0.875F : 1F, betta.isFemale ? 0.875F : 1F, 0F, 0F, 0F));
+            List<Float> ventralFinScalings = ModelHelper.createScalings(1F, finScaleMult, finScaleMult, 0F, 0F, 0F);
+            mapOfScale.put("ventralFinL", ventralFinScalings);
+            mapOfScale.put("ventralFinR", ventralFinScalings);
+            List<Float> bottomFinScalings = ModelHelper.createScalings(1F, finScaleMult, betta.isFemale ? 0.875F : 1F, 0F, 0F, 0F);
+            mapOfScale.put("bottomFinF", bottomFinScalings);
+            mapOfScale.put("bottomFinB", bottomFinScalings);
+            mapOfScale.put("bBodyF", ModelHelper.createScalings(1F, betta.isFemale ? 0.925F : 1F, 1F, 0F, 0F, 0F));
 
             poseStack.pushPose();
 

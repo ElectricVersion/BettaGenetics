@@ -3,10 +3,12 @@ package elecvrsn.GeneticBettas.model.modeldata;
 import mokiyoki.enhancedanimals.model.modeldata.Phenotype;
 
 public class BettaPhenotype implements Phenotype {
+    public boolean isFemale;
     public boolean dumbo = false;
     public boolean doubleTail = false;
     public float dorsalWidth = 1.0F;
-    public BettaPhenotype(int[] gene, char uuid) {
+    public BettaPhenotype(int[] gene, char uuid, boolean isFemale) {
+        this.isFemale = isFemale;
         if (gene[56] == 2 && gene[57] == 2) {
             dumbo = true;
         }
