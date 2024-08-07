@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
+import elecvrsn.GeneticBettas.init.AddonEntities;
+import mokiyoki.enhancedanimals.entity.EnhancedAxolotl;
 import mokiyoki.enhancedanimals.init.ModActivities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -27,7 +29,6 @@ public class BettaBrain  {
     private static final float SPEED_MULTIPLIER_WHEN_IDLING_IN_WATER = 0.5F;
     private static final float SPEED_MULTIPLIER_WHEN_CHASING_IN_WATER = 0.6F;
 
-
     public static Brain<?> makeBrain(Brain<EnhancedBetta> bettaBrain) {
         initCoreActivity(bettaBrain);
         initIdleActivity(bettaBrain);
@@ -43,8 +44,9 @@ public class BettaBrain  {
                 Activity.FIGHT,
                 0,
                 ImmutableList.of(
-                        new SetWalkTargetFromAttackTargetIfTargetOutOfReach(BettaBrain::getSpeedModifierChasing),
-                        new MeleeAttack(20),
+                        new StopAttackingIfTargetInvalid<>(EnhancedBetta::onStopAttacking),
+                        new RunIf<>(EnhancedBetta::isHighlyAggressive, new SetWalkTargetFromAttackTargetIfTargetOutOfReach(BettaBrain::getSpeedModifierChasing)),
+                        new RunIf<>(EnhancedBetta::isAggressive, new MeleeAttack(20)),
                         new EraseMemoryIf<EnhancedBetta>(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET)
                 ),
                 MemoryModuleType.ATTACK_TARGET
@@ -62,7 +64,7 @@ public class BettaBrain  {
     private static void initIdleActivity(Brain<EnhancedBetta> brain) {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
                 Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))),
-                //Pair.of(1, new AnimalMakeLove(EntityType.BETTA, 0.2F)),
+                Pair.of(1, new AnimalMakeLove(AddonEntities.ENHANCED_BETTA.get(), 0.2F)),
                 Pair.of(2, new RunOne<>(ImmutableList.of(
                         Pair.of(new FollowTemptation(BettaBrain::getSpeedModifier), 1),
                         Pair.of(new BabyFollowAdult<>(ADULT_FOLLOW_RANGE, BettaBrain::getSpeedModifierFollowingAdult), 1)))

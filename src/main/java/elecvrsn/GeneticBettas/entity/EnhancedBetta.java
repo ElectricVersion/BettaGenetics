@@ -35,6 +35,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -65,17 +66,20 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.awt.*;
+import java.util.List;
+import java.util.Optional;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 
 public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable {
 
-    protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, AddonSensorTypes.BETTA_FOOD_TEMPTATIONS.get());
+    protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, AddonSensorTypes.BETTA_ATTACKABLES.get(), AddonSensorTypes.BETTA_FOOD_TEMPTATIONS.get());
     protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN);
     private static final EntityDataAccessor<Boolean> PREGNANT = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private boolean isTempted = false;
 
+    private int aggression = 0;
     private TextureGrouping transRootGroup;
     private TextureGrouping iridescenceGroup;
 
@@ -1180,6 +1184,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return iridescenceGroup;
     }
 
+    public boolean isHighlyAggressive() {
+        return aggression >= 8;
+    }
+    public boolean isAggressive() {
+        return aggression >= 4;
+    }
+
+
     class BettaLookControl extends SmoothSwimmingLookControl {
         public BettaLookControl(EnhancedBetta pBetta, int p_149211_) {
             super(pBetta, p_149211_);
@@ -1320,6 +1332,20 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     @Override
     public SoundEvent getPickupSound() {
         return SoundEvents.BUCKET_FILL_FISH;
+    }
+
+    public static void onStopAttacking(EnhancedBetta p_149120_) {
+        Optional<LivingEntity> optional = p_149120_.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET);
+        if (optional.isPresent()) {
+            Level level = p_149120_.level;
+            LivingEntity livingentity = optional.get();
+            if (livingentity.isDeadOrDying()) {
+                DamageSource damagesource = livingentity.getLastDamageSource();
+                if (damagesource != null) {
+                    Entity entity = damagesource.getEntity();
+                }
+            }
+        }
     }
 
 }

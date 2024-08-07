@@ -179,6 +179,9 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         autosomalGenes[70] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[71] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
 
+        //Aggression [lower <> higher]
+        autosomalGenes[72] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(10) + 1) : 1;
+        autosomalGenes[73] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(10) + 1) : 1;
 
 
         return new Genes(sexlinkedGenes, autosomalGenes);
