@@ -79,7 +79,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private boolean isTempted = false;
 
-    private int aggression = 0;
+    private int aggression = -1;
     private TextureGrouping transRootGroup;
     private TextureGrouping iridescenceGroup;
 
@@ -1185,10 +1185,18 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     public boolean isHighlyAggressive() {
-        return aggression >= 8;
+        return getAggression() >= 8;
     }
     public boolean isAggressive() {
-        return aggression >= 4;
+        return getAggression() >= 4;
+    }
+
+    public int getAggression() {
+        if (this.aggression == -1 && this.getGenes() != null) {
+            int[] gene = this.getGenes().getAutosomalGenes();
+            this.aggression = (gene[72] + gene[73])/2;
+        }
+        return aggression;
     }
 
 
