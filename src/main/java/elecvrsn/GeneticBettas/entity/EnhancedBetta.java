@@ -1330,6 +1330,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         Bucketable.loadDefaultDataFromBucketTag(this, tag);
         this.setIsFemale(tag.getCompound("Genetics"));
         this.toggleReloadTexture();
+        calcMaxHealth(true);
     }
 
     @Override
