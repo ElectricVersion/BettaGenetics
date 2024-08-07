@@ -5,12 +5,15 @@ import com.mojang.serialization.Dynamic;
 import elecvrsn.GeneticBettas.ai.brain.betta.BettaBrain;
 import elecvrsn.GeneticBettas.entity.genetics.BettaGeneticsInitialiser;
 import elecvrsn.GeneticBettas.init.AddonItems;
+import elecvrsn.GeneticBettas.init.AddonSensorTypes;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import elecvrsn.GeneticBettas.model.modeldata.BettaModelData;
 import elecvrsn.GeneticBettas.util.AddonReference;
+import mokiyoki.enhancedanimals.ai.brain.axolotl.AxolotlBrain;
 import mokiyoki.enhancedanimals.ai.general.EnhancedBreedGoal;
 import mokiyoki.enhancedanimals.config.EanimodCommonConfig;
 import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
+import mokiyoki.enhancedanimals.entity.EnhancedAxolotl;
 import mokiyoki.enhancedanimals.entity.EntityState;
 import mokiyoki.enhancedanimals.entity.util.Colouration;
 import mokiyoki.enhancedanimals.init.FoodSerialiser;
@@ -51,7 +54,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.SwimNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
@@ -65,11 +70,11 @@ import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 
 public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable {
 
-    protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, ModSensorTypes.COW_FOOD_TEMPTATIONS.get());
+    protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, AddonSensorTypes.BETTA_FOOD_TEMPTATIONS.get());
     protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN);
-    //    private TextureGrouping iridescenceGroup;
     private static final EntityDataAccessor<Boolean> PREGNANT = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
+    private boolean isTempted = false;
 
     private TextureGrouping transRootGroup;
     private TextureGrouping iridescenceGroup;
@@ -295,8 +300,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
     public EnhancedBetta(EntityType<? extends EnhancedBetta> entityType, Level worldIn) {
         super(entityType, worldIn, AddonReference.BETTA_SEXLINKED_GENES_LENGTH, AddonReference.BETTA_AUTOSOMAL_GENES_LENGTH, true);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.moveControl = new EnhancedBetta.BettaMoveControl(this);
         this.lookControl = new EnhancedBetta.BettaLookControl(this, 20);
+        this.maxUpStep = 1.0F;
         this.initilizeAnimalSize();
     }
 
@@ -1120,6 +1127,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     public void aiStep() {
+        if (!this.isInWater() && this.onGround && this.verticalCollision) {
+            //The flop on land
+            this.setDeltaMovement(this.getDeltaMovement().add((double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F), (double)0.4F, (double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
+            this.onGround = false;
+            this.hasImpulse = true;
+//            this.playSound(this.getFlopSound(), this.getSoundVolume(), this.getVoicePitch());
+        }
         super.aiStep();
         bubble();
     }
