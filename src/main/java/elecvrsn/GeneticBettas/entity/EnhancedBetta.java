@@ -48,6 +48,7 @@ import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.animal.Bucketable;
+import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -74,7 +75,7 @@ import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable {
 
     protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, AddonSensorTypes.BETTA_ATTACKABLES.get(), AddonSensorTypes.BETTA_FOOD_TEMPTATIONS.get());
-    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN);
+    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(ModMemoryModuleTypes.SLEEPING.get(), ModMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN);
     private static final EntityDataAccessor<Boolean> PREGNANT = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private boolean isTempted = false;
@@ -423,6 +424,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
+        this.getBrain().eraseMemory(ModMemoryModuleTypes.PAUSE_BRAIN.get());
+
     }
     @Override
     @OnlyIn(Dist.CLIENT)
@@ -1123,8 +1126,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return (Brain<EnhancedBetta>)super.getBrain();
     }
     protected void customServerAiStep() {
-        this.getBrain().tick((ServerLevel)this.level, this);
-        BettaBrain.updateActivity(this);
+        this.getBrain().tick((ServerLevel) this.level, this);
+        if (!this.isNoAi()) {
+            BettaBrain.updateActivity(this);
+        }
     }
     public boolean canBreatheUnderwater() {
         return true;
@@ -1137,6 +1142,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             this.onGround = false;
             this.hasImpulse = true;
 //            this.playSound(this.getFlopSound(), this.getSoundVolume(), this.getVoicePitch());
+        }
+        else if (this.isAnimalSleeping() && !this.onGround) {
+            this.setDeltaMovement(this.getDeltaMovement().add(0.0, -0.01, 0.0));
         }
         super.aiStep();
         bubble();
@@ -1190,6 +1198,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public boolean isAggressive() {
         return getAggression() >= 4;
     }
+
+    public boolean isPassive() {
+        return !isAggressive();
+    }
+
 
     public int getAggression() {
         if (this.aggression == -1 && this.getGenes() != null) {
@@ -1355,6 +1368,23 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 }
             }
         }
+    }
+
+    @Override
+    public Boolean isAnimalSleeping() {
+        if (!this.isInWaterRainOrBubble()) {
+            return false;
+        } else if (!(this.getLeashHolder() instanceof LeashFenceKnotEntity) && this.getLeashHolder() != null) {
+            return false;
+        } else {
+            this.sleeping = this.entityData.get(SLEEPING);
+            return this.sleeping;
+        }
+    }
+
+    @Override
+    public boolean sleepingConditional() {
+        return (((this.level.getDayTime()%24000 >= 12600 && this.level.getDayTime()%24000 <= 22000) || this.level.isThundering()) && this.awokenTimer == 0 && !this.sleeping);
     }
 
 }

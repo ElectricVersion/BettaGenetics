@@ -5,9 +5,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
+import elecvrsn.GeneticBettas.init.AddonActivities;
 import elecvrsn.GeneticBettas.init.AddonEntities;
-import mokiyoki.enhancedanimals.entity.EnhancedAxolotl;
 import mokiyoki.enhancedanimals.init.ModActivities;
+import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
@@ -32,6 +33,7 @@ public class BettaBrain  {
     public static Brain<?> makeBrain(Brain<EnhancedBetta> bettaBrain) {
         initCoreActivity(bettaBrain);
         initIdleActivity(bettaBrain);
+        initPauseBrainActivity(bettaBrain);
         initFightActivity(bettaBrain);
         bettaBrain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         bettaBrain.setDefaultActivity(Activity.IDLE);
@@ -47,23 +49,39 @@ public class BettaBrain  {
                         new StopAttackingIfTargetInvalid<>(EnhancedBetta::onStopAttacking),
                         new SetWalkTargetFromAttackTargetIfTargetOutOfReach(BettaBrain::getSpeedModifierChasing),
                         new RunIf<>(EnhancedBetta::isAggressive, new MeleeAttack(20)),
-                        new EraseMemoryIf<EnhancedBetta>(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET)
+                        new EraseMemoryIf<>(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET)
                 ),
                 MemoryModuleType.ATTACK_TARGET
         );
     }
 
-    private static void initCoreActivity(Brain<EnhancedBetta> p_149307_) {
-        p_149307_.addActivity(Activity.CORE, 0, ImmutableList.of(
+    private static void initPauseBrainActivity(Brain<EnhancedBetta> brain) {
+        brain.addActivityAndRemoveMemoriesWhenStopped(
+                ModActivities.PAUSE_BRAIN.get(),
+                ImmutableList.of(
+                        Pair.of(0, new PauseBrain())
+                ),
+                ImmutableSet.of(
+                        Pair.of(ModMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_PRESENT)
+                ),
+                ImmutableSet.of(
+                        ModMemoryModuleTypes.PAUSE_BRAIN.get()
+                )
+        );
+    }
+
+    private static void initCoreActivity(Brain<EnhancedBetta> brain) {
+        brain.addActivity(Activity.CORE, 0, ImmutableList.of(
                 new LookAtTargetSink(45, 90),
                 new MoveToTargetSink(),
+                new ValidatePauseBrain(),
                 new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS))
         );
     }
 
     private static void initIdleActivity(Brain<EnhancedBetta> brain) {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
-                Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))),
+                Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 8.0F), UniformInt.of(20, 60))),
                 Pair.of(1, new AnimalMakeLove(AddonEntities.ENHANCED_BETTA.get(), 0.2F)),
                 Pair.of(2, new RunOne<>(ImmutableList.of(
                         Pair.of(new FollowTemptation(BettaBrain::getSpeedModifier), 1),
@@ -72,7 +90,8 @@ public class BettaBrain  {
                 Pair.of(3, new StartAttacking<>(BettaBrain::findNearestValidAttackTarget)),
                 Pair.of(3, new TryFindWater(6, 0.15F)),
                 Pair.of(4, new GateBehavior<>(
-                                ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT),
+                                ImmutableMap.of(
+                                        MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT),
                                 ImmutableSet.of(),
                                 GateBehavior.OrderPolicy.ORDERED,
                                 GateBehavior.RunningPolicy.TRY_ALL,
@@ -101,11 +120,22 @@ public class BettaBrain  {
 
     public static void updateActivity(EnhancedBetta betta) {
         Brain<EnhancedBetta> brain = betta.getBrain();
-        Activity activity = brain.getActiveNonCoreActivity().orElse((Activity) null);
-        if (activity != Activity.PLAY_DEAD && activity != ModActivities.PAUSE_BRAIN.get()) {
-            brain.setActiveActivityToFirstValid(ImmutableList.of(Activity.PLAY_DEAD, ModActivities.PAUSE_BRAIN.get(), Activity.FIGHT, Activity.IDLE));
-            if (activity == Activity.FIGHT && brain.getActiveNonCoreActivity().orElse((Activity) null) != Activity.FIGHT) {
-                brain.setMemoryWithExpiry(MemoryModuleType.HAS_HUNTING_COOLDOWN, true, 2400L);
+        Activity activity = brain.getActiveNonCoreActivity().orElse(null);
+        if (betta.isAnimalSleeping()) {
+            brain.setMemory(ModMemoryModuleTypes.SLEEPING.get(), true);
+            brain.setMemory(ModMemoryModuleTypes.PAUSE_BRAIN.get(), true);
+        } else if (brain.hasMemoryValue(ModMemoryModuleTypes.SLEEPING.get()) && !brain.hasMemoryValue(ModMemoryModuleTypes.PAUSE_BRAIN.get())) {
+            brain.eraseMemory(ModMemoryModuleTypes.SLEEPING.get());
+        }
+        if (activity != ModActivities.PAUSE_BRAIN.get()) {
+            if (betta.isAggressive()) {
+                brain.setActiveActivityToFirstValid(ImmutableList.of(ModActivities.PAUSE_BRAIN.get(), Activity.FIGHT, Activity.IDLE));
+                if (activity == Activity.FIGHT && brain.getActiveNonCoreActivity().orElse(null) != Activity.FIGHT) {
+                    brain.setMemoryWithExpiry(MemoryModuleType.HAS_HUNTING_COOLDOWN, true, 2400L);
+                }
+            }
+            else {
+                brain.setActiveActivityToFirstValid(ImmutableList.of(ModActivities.PAUSE_BRAIN.get(), Activity.IDLE));
             }
         }
 
