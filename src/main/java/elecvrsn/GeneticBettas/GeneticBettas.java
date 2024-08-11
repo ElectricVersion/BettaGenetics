@@ -21,7 +21,7 @@ public class GeneticBettas
         AddonItems.register(FMLJavaModLoadingContext.get().getModEventBus());
         AddonEntities.register(FMLJavaModLoadingContext.get().getModEventBus());
         AddonSensorTypes.register(FMLJavaModLoadingContext.get().getModEventBus());
-
+        AddonMemoryModuleTypes.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
 }

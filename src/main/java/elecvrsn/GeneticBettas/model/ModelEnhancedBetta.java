@@ -325,10 +325,12 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
                 setupBubbleAnimation(ageInTicks, headPitch);
             }
 
-            if (!isMoving) {
-                this.setupIdleAnimation(ageInTicks, headPitch);
-            } else {
-                this.setupSwimmingAnimation(ageInTicks, headPitch);
+            if (!entityIn.isAnimalSleeping()) {
+                if (!isMoving) {
+                    this.setupIdleAnimation(ageInTicks, headPitch);
+                } else {
+                    this.setupSwimmingAnimation(ageInTicks, headPitch);
+                }
             }
             this.saveAnimationValues(this.bettaModelData);
         }

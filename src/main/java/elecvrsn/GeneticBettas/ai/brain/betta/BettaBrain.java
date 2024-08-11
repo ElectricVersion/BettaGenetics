@@ -5,12 +5,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
-import elecvrsn.GeneticBettas.init.AddonActivities;
 import elecvrsn.GeneticBettas.init.AddonEntities;
 import mokiyoki.enhancedanimals.init.ModActivities;
 import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
@@ -19,9 +19,10 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.entity.Entity;
 
 import java.util.Optional;
+
+import static elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes.FOUND_SLEEP_SPOT;
 
 
 public class BettaBrain  {
@@ -72,7 +73,7 @@ public class BettaBrain  {
 
     private static void initCoreActivity(Brain<EnhancedBetta> brain) {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
-                new LookAtTargetSink(45, 90),
+                new RunIf<>(EnhancedBetta::isNotSleeping, new LookAtTargetSink(45, 90)),
                 new MoveToTargetSink(),
                 new ValidatePauseBrain(),
                 new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS))
@@ -96,9 +97,11 @@ public class BettaBrain  {
                                 GateBehavior.OrderPolicy.ORDERED,
                                 GateBehavior.RunningPolicy.TRY_ALL,
                                 ImmutableList.of(
-                                        Pair.of(new RandomSwim(0.5F), 2),
-                                        Pair.of(new RandomStroll(0.15F, false), 2),
-                                        Pair.of(new SetWalkTargetFromLookTarget(BettaBrain::canSetWalkTargetFromLookTarget, BettaBrain::getSpeedModifier, 3), 3),
+//                                        Pair.of(new RandomSwim(0.5F), 2),
+//                                        Pair.of(new RandomStroll(0.15F, false), 2),
+                                        Pair.of(new RunIf<>(EnhancedBetta::hasNoSleepSpot, new RandomSwim(0.5F)), 2),
+                                        Pair.of(new RunIf<>(EnhancedBetta::hasNoSleepSpot, new RandomStroll(0.15F, false)), 2),
+                                        Pair.of(new RunIf<>(EnhancedBetta::hasNoSleepSpot, new SetWalkTargetFromLookTarget(BettaBrain::canSetWalkTargetFromLookTarget, BettaBrain::getSpeedModifier, 3)), 3),
                                         Pair.of(new RunIf<>(Entity::isInWaterOrBubble, new DoNothing(30, 60)), 5),
                                         Pair.of(new RunIf<>(Entity::isOnGround, new DoNothing(200, 400)), 5)
                                 )
@@ -122,8 +125,12 @@ public class BettaBrain  {
         Brain<EnhancedBetta> brain = betta.getBrain();
         Activity activity = brain.getActiveNonCoreActivity().orElse(null);
         if (betta.isAnimalSleeping()) {
-            brain.setMemory(ModMemoryModuleTypes.SLEEPING.get(), true);
-            brain.setMemory(ModMemoryModuleTypes.PAUSE_BRAIN.get(), true);
+            if (betta.isOnGround()) {
+                brain.setMemory(ModMemoryModuleTypes.SLEEPING.get(), true);
+                brain.setMemory(ModMemoryModuleTypes.PAUSE_BRAIN.get(), true);
+            } else if (!brain.hasMemoryValue(FOUND_SLEEP_SPOT.get())) {
+                betta.findPlaceToSleep();
+            }
         } else if (brain.hasMemoryValue(ModMemoryModuleTypes.SLEEPING.get()) && !brain.hasMemoryValue(ModMemoryModuleTypes.PAUSE_BRAIN.get())) {
             brain.eraseMemory(ModMemoryModuleTypes.SLEEPING.get());
         }
@@ -138,7 +145,6 @@ public class BettaBrain  {
                 brain.setActiveActivityToFirstValid(ImmutableList.of(ModActivities.PAUSE_BRAIN.get(), Activity.IDLE));
             }
         }
-
     }
 
     private static float getSpeedModifierChasing(LivingEntity livingEntity) {

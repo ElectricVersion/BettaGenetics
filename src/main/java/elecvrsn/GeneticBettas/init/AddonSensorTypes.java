@@ -3,7 +3,6 @@ package elecvrsn.GeneticBettas.init;
 import elecvrsn.GeneticBettas.ai.brain.sensing.BettaAttackablesSensor;
 import mokiyoki.enhancedanimals.ai.brain.sensor.EnhancedTemptingSensor;
 import mokiyoki.enhancedanimals.init.FoodSerialiser;
-import net.minecraft.world.entity.ai.sensing.AxolotlAttackablesSensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.IEventBus;
