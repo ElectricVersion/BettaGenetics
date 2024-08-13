@@ -49,7 +49,7 @@ public class BettaBrain  {
                 ImmutableList.of(
                         new StopAttackingIfTargetInvalid<>(EnhancedBetta::onStopAttacking),
                         new SetWalkTargetFromAttackTargetIfTargetOutOfReach(BettaBrain::getSpeedModifierChasing),
-                        new RunIf<>(EnhancedBetta::isAggressive, new MeleeAttack(20)),
+                        new RunIf<>(EnhancedBetta::isAggressive, new BettaMeleeAttack(20)),
                         new EraseMemoryIf<>(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET)
                 ),
                 MemoryModuleType.ATTACK_TARGET

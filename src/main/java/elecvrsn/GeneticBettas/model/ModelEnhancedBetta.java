@@ -40,6 +40,8 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
     private WrappedModelPart theBottomFinBack;
     private WrappedModelPart theVentralFinLeft;
     private WrappedModelPart theVentralFinRight;
+    private WrappedModelPart theGillLeft;
+    private WrappedModelPart theGillRight;
     private WrappedModelPart theTailFin;
 
     /*** BLOCKS ***/
@@ -56,6 +58,8 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
     private WrappedModelPart bottomFinBack;
     private WrappedModelPart ventralFinLeft;
     private WrappedModelPart ventralFinRight;
+    private WrappedModelPart gillLeft;
+    private WrappedModelPart gillRight;
     private WrappedModelPart tailFin;
 
     public ModelEnhancedBetta(ModelPart modelPart) {
@@ -65,6 +69,8 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         ModelPart bBodyF = bBetta.getChild("bBodyF");
         ModelPart bBodyB = bBodyF.getChild("bBodyB");
         ModelPart bHead = bBodyF.getChild("bHead");
+        ModelPart bGillL = bHead.getChild("bGillL");
+        ModelPart bGillR = bHead.getChild("bGillR");
         ModelPart bFinL = bBodyF.getChild("bFinL");
         ModelPart bFinR = bBodyF.getChild("bFinR");
         ModelPart bDorsalFin = bBodyF.getChild("bDorsalFin");
@@ -93,6 +99,18 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         theHead.addChild(head);
         theHead.addChild(lips);
         theHead.addChild(eyes);
+
+        theGillLeft = new WrappedModelPart(bGillL, "bGillL");
+        theGillRight = new WrappedModelPart(bGillR, "bGillR");
+
+        gillLeft = new WrappedModelPart("gillL", bGillL);
+        gillRight = new WrappedModelPart("gillR", bGillR);
+
+        theGillLeft.addChild(gillLeft);
+        theGillRight.addChild(gillRight);
+
+        theHead.addChild(theGillLeft);
+        theHead.addChild(theGillRight);
         theBodyFront.addChild(theHead);
 
         theFinLeft = new WrappedModelPart(bFinL, "bFinL");
@@ -143,6 +161,9 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         PartDefinition bBodyFront = bBetta.addOrReplaceChild("bBodyF", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, -2F, 0F, 0F, 0F));
         PartDefinition bBodyBack = bBodyFront.addOrReplaceChild("bBodyB", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 0F, 2F, 0F, 0F, 0F));
         PartDefinition bHead = bBodyFront.addOrReplaceChild("bHead", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 4F, -1.5F, 0F, 0F, 0F));
+        PartDefinition bGillLeft = bHead.addOrReplaceChild("bGillL", CubeListBuilder.create(), PartPose.offsetAndRotation(1.25F, -2F, -0.25F, 0F, -Mth.HALF_PI, 0F));
+        PartDefinition bGillRight = bHead.addOrReplaceChild("bGillR", CubeListBuilder.create(), PartPose.offsetAndRotation(-1.25F, -2F, -0.25F, 0F, Mth.HALF_PI, 0F));
+
         PartDefinition bFinLeft = bBodyFront.addOrReplaceChild("bFinL", CubeListBuilder.create(), PartPose.offsetAndRotation(1F, 4.5F, -1F, 0F, Mth.HALF_PI*0.5F, 0F));
         PartDefinition bFinRight = bBodyFront.addOrReplaceChild("bFinR", CubeListBuilder.create(), PartPose.offsetAndRotation(-1F, 4.5F, -1F, 0F, -Mth.HALF_PI*0.5F, 0F));
         PartDefinition bDorsalFin = bBodyFront.addOrReplaceChild("bDorsalFin", CubeListBuilder.create(), PartPose.offsetAndRotation(0.025F, 2F, 0F, 0F, 0F, 0F));
@@ -180,6 +201,19 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
                         .addBox(-1.51F, -2F, -2F, 0, 4, 4, new CubeDeformation(0F,-1.25F, -1.25F)),
                 PartPose.offset(0F, 0F, -1.375F)
         );
+
+        bGillLeft.addOrReplaceChild("gillL", CubeListBuilder.create()
+                        .texOffs(52, 48)
+                        .addBox(-0.5F, 0F, 0F, 4, 4, 0, new CubeDeformation(-0.5F,-0.5F, 0F)),
+                PartPose.ZERO
+        );
+
+        bGillRight.addOrReplaceChild("gillR", CubeListBuilder.create()
+                        .texOffs(52, 56)
+                        .addBox(-3.5F, 0F, 0F, 4, 4, 0, new CubeDeformation(-0.5F,-0.5F, 0F)),
+                PartPose.ZERO
+        );
+
 
         bFinLeft.addOrReplaceChild("finL", CubeListBuilder.create()
                         .texOffs(2, 16)
@@ -246,7 +280,8 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
     }
 
     private void resetCubes() {
-
+//        gillLeft.hide();
+//        gillRight.hide();
     }
 
     @Override
@@ -293,11 +328,15 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             this.theFinLeft.setRotation(0.0F, Mth.HALF_PI*0.5F, 0.0F);
             this.theFinRight.setRotation(0.0F, -Mth.HALF_PI*0.5F, 0.0F);
             this.theTailFin.setRotation(0.0F, 0.0F, 0.0F);
+            this.theGillLeft.setRotation(0.0F, -Mth.HALF_PI, 0.0F);
+            this.theGillRight.setRotation(0.0F, Mth.HALF_PI, 0.0F);
         } else {
             this.setRotationFromVector(this.theHead, map.get("bHead"));
             this.setRotationFromVector(this.theBodyBack, map.get("bBodyB"));
             this.setRotationFromVector(this.theFinLeft, map.get("bFinL"));
             this.setRotationFromVector(this.theFinRight, map.get("bFinR"));
+            this.setRotationFromVector(this.theGillLeft, map.get("bGillL"));
+            this.setRotationFromVector(this.theGillRight, map.get("bGillR"));
             this.setRotationFromVector(this.theTailFin, map.get("bTailFin"));
         }
     }
@@ -308,6 +347,8 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         map.put("bBodyB", this.getRotationVector(this.theBodyBack));
         map.put("bFinL", this.getRotationVector(this.theFinLeft));
         map.put("bFinR", this.getRotationVector(this.theFinRight));
+        map.put("bGillL", this.getRotationVector(this.theGillLeft));
+        map.put("bGillR", this.getRotationVector(this.theGillRight));
         map.put("bTailFin", this.getRotationVector(this.theTailFin));
     }
     @Override
@@ -332,6 +373,8 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
                     this.setupSwimmingAnimation(ageInTicks, headPitch);
                 }
             }
+            this.setupFlareAnimation(entityIn.getIsAngry());
+
             this.saveAnimationValues(this.bettaModelData);
         }
     }
@@ -353,6 +396,20 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             this.bettaModelData.isBubbling = true;
         }
     }
+
+    private void setupFlareAnimation(boolean open) {
+        if (theGillLeft.getYRot() < (-Mth.HALF_PI)+0.025F) { //Only check left gill because they move together
+            gillLeft.show(false);
+            gillRight.show(false);
+        }
+        else {
+            gillLeft.show(true);
+            gillRight.show(true);
+        }
+        this.theGillLeft.setYRot(this.lerpTo(0.25F, this.theGillLeft.getYRot(), open ? 0F : -Mth.HALF_PI));
+        this.theGillRight.setYRot(this.lerpTo(0.25F, this.theGillRight.getYRot(), open ? 0F : Mth.HALF_PI));
+    }
+
     private void setupIdleAnimation(float ageInTicks, float headPitch) {
         float f = ageInTicks * 0.33F;
         float f2 = Mth.sin(f*1.75F);

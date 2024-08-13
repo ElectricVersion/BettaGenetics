@@ -83,8 +83,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(ModMemoryModuleTypes.SLEEPING.get(), ModMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN, AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get());
     private static final EntityDataAccessor<Boolean> PREGNANT = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
-    private boolean isTempted = false;
+    private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
 
+    private boolean isTempted = false;
     private int aggression = -1;
 
     private TextureGrouping transRootGroup;
@@ -321,6 +322,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(PREGNANT, false);
+        this.entityData.define(IS_ANGRY, false);
         this.entityData.define(FROM_BUCKET, false);
     }
 
@@ -937,12 +939,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             TextureGrouping rootGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                 TextureGrouping bodyAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 addTextureToAnimalTextureGrouping(bodyAlphaGroup, "mask/body.png", true);
+                addTextureToAnimalTextureGrouping(bodyAlphaGroup, "mask/gills.png", true);
             rootGroup.addGrouping(bodyAlphaGroup);
 
             TextureGrouping texturesGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             /** CELLOPHANE **/
             TextureGrouping cellophaneGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/solid.png", "cel", cellophaneRGB);
+            addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/gills.png", "cel-g", cellophaneRGB);
             texturesGroup.addGrouping(cellophaneGroup);
             /** RED **/
             TextureGrouping redGroup = new TextureGrouping(TexturingType.MASK_GROUP);
@@ -1144,9 +1148,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public void aiStep() {
         if (!this.isInWater() && this.onGround && this.verticalCollision) {
             //The flop on land
-            this.setDeltaMovement(this.getDeltaMovement().add((double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F), (double)0.4F, (double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
-            this.onGround = false;
-            this.hasImpulse = true;
+//            this.setDeltaMovement(this.getDeltaMovement().add((double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F), (double)0.4F, (double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
+//            this.onGround = false;
+//            this.hasImpulse = true;
 //            this.playSound(this.getFlopSound(), this.getSoundVolume(), this.getVoicePitch());
         }
         else if (this.isAnimalSleeping() && !this.onGround) {
@@ -1217,7 +1221,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         }
         return aggression;
     }
-
 
     class BettaLookControl extends SmoothSwimmingLookControl {
         public BettaLookControl(EnhancedBetta pBetta, int p_149211_) {
@@ -1362,10 +1365,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return SoundEvents.BUCKET_FILL_FISH;
     }
 
-    public static void onStopAttacking(EnhancedBetta p_149120_) {
-        Optional<LivingEntity> optional = p_149120_.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET);
+    public static void onStopAttacking(EnhancedBetta enhancedBetta) {
+        Optional<LivingEntity> optional = enhancedBetta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET);
         if (optional.isPresent()) {
-            Level level = p_149120_.level;
+            Level level = enhancedBetta.level;
             LivingEntity livingentity = optional.get();
             if (livingentity.isDeadOrDying()) {
                 DamageSource damagesource = livingentity.getLastDamageSource();
@@ -1374,6 +1377,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 }
             }
         }
+        enhancedBetta.setIsAngry(false);
     }
 
     @Override
@@ -1432,5 +1436,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return !isAnimalSleeping();
     }
 
+    public void setIsAngry(boolean angry) {
+        this.entityData.set(IS_ANGRY, angry);
+    }
+
+    public boolean getIsAngry() {
+        return this.entityData.get(IS_ANGRY);
+    }
 
 }
