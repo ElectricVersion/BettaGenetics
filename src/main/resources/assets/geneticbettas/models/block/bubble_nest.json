@@ -1,0 +1,26 @@
+{
+	"textures": {
+		"top": "geneticbettas:block/bubblenest_top",
+		"bottom": "geneticbettas:block/bubblenest_bottom"
+	},
+	"elements": [
+		{
+			"name": "topLayer",
+			"from": [0, 14.5, 0],
+			"to": [16, 14.5, 16],
+			"faces": {
+				"up": {"uv": [0, 0, 16, 16], "texture": "#top"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#top"}
+			}
+		},
+		{
+			"name": "bottomLayer",
+			"from": [0, 13.75, 0],
+			"to": [16, 13.75, 16],
+			"faces": {
+				"up": {"uv": [0, 0, 16, 16], "texture": "#bottom"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#bottom"}
+			}
+		}
+	]
+}
