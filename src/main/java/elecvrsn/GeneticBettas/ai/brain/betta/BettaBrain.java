@@ -140,6 +140,9 @@ public class BettaBrain  {
                 if (activity == Activity.FIGHT && brain.getActiveNonCoreActivity().orElse(null) != Activity.FIGHT) {
                     brain.setMemoryWithExpiry(MemoryModuleType.HAS_HUNTING_COOLDOWN, true, 2400L);
                 }
+                else if (brain.getActiveNonCoreActivity().orElse(null) == Activity.FIGHT) {
+                    betta.setIsAngry(true);
+                }
             }
             else {
                 brain.setActiveActivityToFirstValid(ImmutableList.of(ModActivities.PAUSE_BRAIN.get(), Activity.IDLE));
