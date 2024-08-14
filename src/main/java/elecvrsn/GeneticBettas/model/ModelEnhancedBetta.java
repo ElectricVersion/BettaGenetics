@@ -203,13 +203,13 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         );
 
         bGillLeft.addOrReplaceChild("gillL", CubeListBuilder.create()
-                        .texOffs(52, 48)
+                        .texOffs(53, 49)
                         .addBox(-0.5F, 0F, 0F, 4, 4, 0, new CubeDeformation(-0.5F,-0.5F, 0F)),
                 PartPose.ZERO
         );
 
         bGillRight.addOrReplaceChild("gillR", CubeListBuilder.create()
-                        .texOffs(52, 56)
+                        .texOffs(53, 57)
                         .addBox(-3.5F, 0F, 0F, 4, 4, 0, new CubeDeformation(-0.5F,-0.5F, 0F)),
                 PartPose.ZERO
         );

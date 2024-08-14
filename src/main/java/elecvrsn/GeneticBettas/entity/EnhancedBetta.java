@@ -99,10 +99,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             "mask/solid.png", "mask/lace_lg.png", "mask/cambodian_lg.png"
     };
 
-
-    private static final String[] TEXTURES_BLACK = new String[] {
-            "", "wildtype_black.png"
-    };
     private static final String[] TEXTURES_IRI_FINS = new String[] {
             "", "iri/fin/low_fin_iri.png", "iri/fin/med_fin_iri.png", "iri/fin/high_fin_iri.png",
     };
@@ -946,7 +942,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             /** CELLOPHANE **/
             TextureGrouping cellophaneGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/solid.png", "cel", cellophaneRGB);
-            addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/gills.png", "cel-g", cellophaneRGB);
             texturesGroup.addGrouping(cellophaneGroup);
             /** RED **/
             TextureGrouping redGroup = new TextureGrouping(TexturingType.MASK_GROUP);
