@@ -10,16 +10,13 @@ import elecvrsn.GeneticBettas.init.AddonSensorTypes;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import elecvrsn.GeneticBettas.model.modeldata.BettaModelData;
 import elecvrsn.GeneticBettas.util.AddonReference;
-import mokiyoki.enhancedanimals.ai.brain.axolotl.AxolotlBrain;
 import mokiyoki.enhancedanimals.ai.general.EnhancedBreedGoal;
 import mokiyoki.enhancedanimals.config.EanimodCommonConfig;
 import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
-import mokiyoki.enhancedanimals.entity.EnhancedAxolotl;
 import mokiyoki.enhancedanimals.entity.EntityState;
 import mokiyoki.enhancedanimals.entity.util.Colouration;
 import mokiyoki.enhancedanimals.init.FoodSerialiser;
 import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
-import mokiyoki.enhancedanimals.init.ModSensorTypes;
 import mokiyoki.enhancedanimals.model.modeldata.AnimalModelData;
 import mokiyoki.enhancedanimals.renderer.texture.TextureGrouping;
 import mokiyoki.enhancedanimals.renderer.texture.TexturingType;
@@ -33,6 +30,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -58,10 +56,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.BigDripleafBlock;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.SwimNodeEvaluator;
@@ -71,19 +67,18 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.List;
 import java.util.Optional;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
-import static mokiyoki.enhancedanimals.ai.brain.ValidatePath.isValidPath;
 
 public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable {
 
     protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, AddonSensorTypes.BETTA_ATTACKABLES.get(), AddonSensorTypes.BETTA_FOOD_TEMPTATIONS.get());
-    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(ModMemoryModuleTypes.SLEEPING.get(), ModMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN, AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get());
+    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(ModMemoryModuleTypes.SLEEPING.get(), ModMemoryModuleTypes.PAUSE_BRAIN.get(), ModMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN, AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), AddonMemoryModuleTypes.SEEKING_NEST.get());
     private static final EntityDataAccessor<Boolean> PREGNANT = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<BlockPos> NEST_POS = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BLOCK_POS);
 
     private boolean isTempted = false;
     private int aggression = -1;
@@ -320,6 +315,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         this.entityData.define(PREGNANT, false);
         this.entityData.define(IS_ANGRY, false);
         this.entityData.define(FROM_BUCKET, false);
+        this.entityData.define(NEST_POS, BlockPos.ZERO);
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {
@@ -429,6 +425,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.getBrain().eraseMemory(ModMemoryModuleTypes.PAUSE_BRAIN.get());
+        this.getBrain().eraseMemory(ModMemoryModuleTypes.FOCUS_BRAIN.get());
 
     }
     @Override
@@ -1134,6 +1131,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         this.getBrain().tick((ServerLevel) this.level, this);
         if (!this.isNoAi()) {
             BettaBrain.updateActivity(this);
+            if ( Mth.sin(this.level.getGameTime() * 0.25F) > 0.99F ) {
+                this.getBrain().setMemory(AddonMemoryModuleTypes.SEEKING_NEST.get(), true);
+            }
         }
     }
     public boolean canBreatheUnderwater() {
@@ -1439,4 +1439,33 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return this.entityData.get(IS_ANGRY);
     }
 
+    public boolean canMakeBubbleNest(BlockPos blockPos) {
+        if (this.level.isEmptyBlock(blockPos) && this.level.isWaterAt(blockPos) && !this.level.isWaterAt(blockPos.above())) {
+            return true;
+        }
+        return false;
+    }
+
+    public void setNestPos(BlockPos position) {
+        this.entityData.set(NEST_POS, position);
+    }
+
+    public BlockPos getNestPos() {
+        return this.entityData.get(NEST_POS);
+    }
+
+    public void findNestLocation() {
+        BlockPos baseBlockPos = new BlockPos(this.blockPosition());
+        BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
+
+        int maxSearchHeight = 8;
+
+        for (int y = 0; y < maxSearchHeight; y++) {
+            mutableBlockPos.set(baseBlockPos).move(0, y, 0);
+            if (this.level.isWaterAt(mutableBlockPos) && !this.level.isWaterAt(mutableBlockPos.above())) {
+                setNestPos(mutableBlockPos);
+                return;
+            }
+        }
+    }
 }

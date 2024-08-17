@@ -5,7 +5,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
+import elecvrsn.GeneticBettas.init.AddonActivities;
 import elecvrsn.GeneticBettas.init.AddonEntities;
+import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
 import mokiyoki.enhancedanimals.init.ModActivities;
 import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import net.minecraft.core.BlockPos;
@@ -36,6 +38,7 @@ public class BettaBrain  {
         initIdleActivity(bettaBrain);
         initPauseBrainActivity(bettaBrain);
         initFightActivity(bettaBrain);
+//        initBubbleNestingActivity(bettaBrain);
         bettaBrain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         bettaBrain.setDefaultActivity(Activity.IDLE);
         bettaBrain.useDefaultActivity();
@@ -75,6 +78,7 @@ public class BettaBrain  {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
                 new RunIf<>(EnhancedBetta::isNotSleeping, new LookAtTargetSink(45, 90)),
                 new MoveToTargetSink(),
+                new MakeBubbleNest(),
                 new ValidatePauseBrain(),
                 new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS))
         );
@@ -109,6 +113,16 @@ public class BettaBrain  {
                 )
         ));
     }
+
+//    private static void initBubbleNestingActivity(Brain<EnhancedBetta> brain) {
+//        brain.addActivityAndRemoveMemoriesWhenStopped(AddonActivities.MAKE_BUBBLE_NEST.get(), 0, ImmutableList.of(
+//                new FindGoodNestLocation(),
+//                new MoveToTargetSink(),
+//                new MakeBubbleNest(),
+////                new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS))
+//
+//        ));
+//    }
 
     private static boolean canSetWalkTargetFromLookTarget(LivingEntity livingEntity) {
         Level level = livingEntity.level;
@@ -147,6 +161,9 @@ public class BettaBrain  {
             else {
                 brain.setActiveActivityToFirstValid(ImmutableList.of(ModActivities.PAUSE_BRAIN.get(), Activity.IDLE));
             }
+//            if (brain.getActiveNonCoreActivity().get() == AddonActivities.MAKE_BUBBLE_NEST.get()) {
+//                brain.setMemory(AddonMemoryModuleTypes.SEEKING_NEST.get(), true);
+//            }
         }
     }
 
@@ -169,4 +186,6 @@ public class BettaBrain  {
     private static boolean isBreeding(EnhancedBetta betta) {
         return betta.getBrain().hasMemoryValue(MemoryModuleType.BREED_TARGET);
     }
+
+
 }

@@ -30,6 +30,7 @@ public class GeneticBettas
         AddonEntities.register(modEventBus);
         AddonSensorTypes.register(modEventBus);
         AddonMemoryModuleTypes.register(modEventBus);
+        AddonActivities.register(modEventBus);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
     }
     private void clientSetup(final FMLClientSetupEvent event) {
