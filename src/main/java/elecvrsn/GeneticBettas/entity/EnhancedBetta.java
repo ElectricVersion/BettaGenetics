@@ -1115,11 +1115,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return EntityDimensions.scalable(0.4F, 0.35F);
     }
 
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.goalSelector.addGoal(1, new EnhancedBreedGoal(this, 1.0D));
-    }
+//    @Override
+//    protected void registerGoals() {
+//        super.registerGoals();
+////        this.goalSelector.addGoal(1, new EnhancedBreedGoal(this, 1.0D));
+//    }
 
     protected Brain<?> makeBrain(Dynamic<?> p_149138_) {
         return BettaBrain.makeBrain(this.brainProvider().makeBrain(p_149138_));
