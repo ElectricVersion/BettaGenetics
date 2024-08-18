@@ -38,7 +38,7 @@ public class BettaBrain  {
         initIdleActivity(bettaBrain);
         initPauseBrainActivity(bettaBrain);
         initFightActivity(bettaBrain);
-//        initBubbleNestingActivity(bettaBrain);
+        initNestingActivity(bettaBrain);
         bettaBrain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         bettaBrain.setDefaultActivity(Activity.IDLE);
         bettaBrain.useDefaultActivity();
@@ -84,10 +84,21 @@ public class BettaBrain  {
         );
     }
 
+    private static void initNestingActivity(Brain<EnhancedBetta> brain) {
+        brain.addActivityAndRemoveMemoryWhenStopped(AddonActivities.MAKE_BUBBLE_NEST.get(),
+                0, ImmutableList.of(
+                new FindGoodNestLocation(),
+                new LookAtTargetSink(45, 90),
+                new MoveToTargetSink(),
+                new MakeBubbleNest()),
+                AddonMemoryModuleTypes.MAKING_NEST.get()
+        );
+    }
+
     private static void initIdleActivity(Brain<EnhancedBetta> brain) {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
                 Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 8.0F), UniformInt.of(20, 60))),
-                Pair.of(1, new AnimalMakeLove(AddonEntities.ENHANCED_BETTA.get(), 0.2F)),
+                Pair.of(1, new BettaMakeLove(AddonEntities.ENHANCED_BETTA.get(), 0.2F)),
                 Pair.of(2, new RunOne<>(ImmutableList.of(
                         Pair.of(new FollowTemptation(BettaBrain::getSpeedModifier), 1),
                         Pair.of(new BabyFollowAdult<>(ADULT_FOLLOW_RANGE, BettaBrain::getSpeedModifierFollowingAdult), 1)))
@@ -114,15 +125,6 @@ public class BettaBrain  {
         ));
     }
 
-//    private static void initBubbleNestingActivity(Brain<EnhancedBetta> brain) {
-//        brain.addActivityAndRemoveMemoriesWhenStopped(AddonActivities.MAKE_BUBBLE_NEST.get(), 0, ImmutableList.of(
-//                new FindGoodNestLocation(),
-//                new MoveToTargetSink(),
-//                new MakeBubbleNest(),
-////                new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS))
-//
-//        ));
-//    }
 
     private static boolean canSetWalkTargetFromLookTarget(LivingEntity livingEntity) {
         Level level = livingEntity.level;
@@ -150,7 +152,7 @@ public class BettaBrain  {
         }
         if (activity != ModActivities.PAUSE_BRAIN.get()) {
             if (betta.isAggressive()) {
-                brain.setActiveActivityToFirstValid(ImmutableList.of(ModActivities.PAUSE_BRAIN.get(), Activity.FIGHT, Activity.IDLE));
+                brain.setActiveActivityToFirstValid(ImmutableList.of(ModActivities.PAUSE_BRAIN.get(), AddonActivities.MAKE_BUBBLE_NEST.get(), Activity.FIGHT, Activity.IDLE));
                 if (activity == Activity.FIGHT && brain.getActiveNonCoreActivity().orElse(null) != Activity.FIGHT) {
                     brain.setMemoryWithExpiry(MemoryModuleType.HAS_HUNTING_COOLDOWN, true, 2400L);
                 }
@@ -159,7 +161,7 @@ public class BettaBrain  {
                 }
             }
             else {
-                brain.setActiveActivityToFirstValid(ImmutableList.of(ModActivities.PAUSE_BRAIN.get(), Activity.IDLE));
+                brain.setActiveActivityToFirstValid(ImmutableList.of(ModActivities.PAUSE_BRAIN.get(), AddonActivities.MAKE_BUBBLE_NEST.get(), Activity.IDLE));
             }
 //            if (brain.getActiveNonCoreActivity().get() == AddonActivities.MAKE_BUBBLE_NEST.get()) {
 //                brain.setMemory(AddonMemoryModuleTypes.SEEKING_NEST.get(), true);
