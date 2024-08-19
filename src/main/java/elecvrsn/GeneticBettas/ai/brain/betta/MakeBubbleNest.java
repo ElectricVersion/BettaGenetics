@@ -13,7 +13,6 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 
 public class MakeBubbleNest extends Behavior<EnhancedBetta> {
 
-    boolean nestMade = false;
     public MakeBubbleNest() {
         //Condition, Min Duration, Max Duration
         super(ImmutableMap.of(

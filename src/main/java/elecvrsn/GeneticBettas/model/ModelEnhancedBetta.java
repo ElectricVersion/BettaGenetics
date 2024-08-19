@@ -323,6 +323,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
     private void setupInitialAnimationValues(AnimalModelData data, float netHeadYaw, float headPitch, BettaPhenotype axolotl) {
         Map<String, Vector3f> map = data.offsets;
         if (map.isEmpty()) {
+            this.theBetta.setRotation(0.0F, 0.0F, 0.0F);
             this.theHead.setRotation(0.0F, 0.0F, 0.0F);
             this.theBodyBack.setRotation(0.0F, 0.0F, 0.0F);
             this.theFinLeft.setRotation(0.0F, Mth.HALF_PI*0.5F, 0.0F);
@@ -331,6 +332,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             this.theGillLeft.setRotation(0.0F, -Mth.HALF_PI, 0.0F);
             this.theGillRight.setRotation(0.0F, Mth.HALF_PI, 0.0F);
         } else {
+            this.setRotationFromVector(this.theBetta, map.get("bBetta"));
             this.setRotationFromVector(this.theHead, map.get("bHead"));
             this.setRotationFromVector(this.theBodyBack, map.get("bBodyB"));
             this.setRotationFromVector(this.theFinLeft, map.get("bFinL"));
@@ -343,6 +345,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
 
     protected void saveAnimationValues(AnimalModelData data) {
         Map<String, Vector3f> map = data.offsets;
+        map.put("bBetta", this.getRotationVector(this.theBetta));
         map.put("bHead", this.getRotationVector(this.theHead));
         map.put("bBodyB", this.getRotationVector(this.theBodyBack));
         map.put("bFinL", this.getRotationVector(this.theFinLeft));
@@ -358,6 +361,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             BettaPhenotype betta = this.bettaModelData.getPhenotype();
             this.setupInitialAnimationValues(this.bettaModelData, netHeadYaw, headPitch, betta);
             boolean isMoving = entityIn.getDeltaMovement().horizontalDistanceSqr() > 1.0E-7D || entityIn.xOld != entityIn.getX() || entityIn.zOld != entityIn.getZ();
+            float yDelta = -(float)entityIn.getDeltaMovement().y * (float)Mth.HALF_PI;
 
             if (this.bettaModelData.bubblingTimer <= ageInTicks) {
                 bettaModelData.bubblingTimer = (int)ageInTicks + entityIn.getRandom().nextInt(600) + 30;
@@ -370,7 +374,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
                 if (!isMoving) {
                     this.setupIdleAnimation(ageInTicks, headPitch);
                 } else {
-                    this.setupSwimmingAnimation(ageInTicks, headPitch);
+                    this.setupSwimmingAnimation(ageInTicks, headPitch, yDelta);
                 }
             }
             this.setupFlareAnimation(entityIn.getIsAngry());
@@ -379,11 +383,12 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         }
     }
 
-    private void setupSwimmingAnimation(float ageInTicks, float headPitch) {
+    private void setupSwimmingAnimation(float ageInTicks, float headPitch, float yDelta) {
         float f = ageInTicks * 0.33F;
         float f1 = Mth.sin(f);
         float f2 = Mth.sin(f*2F);
         float f3 = Mth.cos(f*2F);
+        this.theBetta.setXRot(this.lerpTo(0.25F, this.theBetta.getXRot(), yDelta * (yDelta > 0F ? 2.5F : 10F)));
         this.theHead.setYRot(f1 * (float)Mth.HALF_PI*0.10F);
         this.theBodyBack.setYRot(f1 * (float)Mth.HALF_PI*0.075F);
         this.theTailFin.setYRot(f1 * (float)Mth.HALF_PI*0.05F);
