@@ -139,10 +139,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     private static final String[][][] TEXTURES_MARBLE = new String[][][] {
             {
-                    //None
-                    {"mask/solid.png"}
-            },
-            {
                     //Poor Grizzle
                     {"mask/transparent.png"},
                     {"marble/poorgrizzle_small_1.png", "marble/poorgrizzle_small_2.png", "marble/poorgrizzle_small_3.png", "marble/poorgrizzle_small_4.png", "marble/poorgrizzle_small_5.png"},
@@ -451,14 +447,15 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             boolean pastelOpaque = false;
             boolean cambodian = false;
             int metallic = 0;
-            int marbleBlackQual = 1;
-            int marbleBlackSize = 0;
-            int marbleBlackRand = 0;
-            int marbleRedQual = 1;
-            int marbleRedSize = 0;
+            boolean marble = false;
+            int marbleRedQual = 0;
+            int marbleRedSize = 2;
             int marbleRedRand = 0;
-            int marbleIriQual = 1;
-            int marbleIriSize = 0;
+            int marbleBlackQual = 0;
+            int marbleBlackSize = 2;
+            int marbleBlackRand = 0;
+            int marbleIriQual = 0;
+            int marbleIriSize = 2;
             int marbleIriRand = 0;
             boolean dumbo = false;
 
@@ -814,31 +811,90 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 }
             }
 
-            if (marbleRedQual == 1) {
-                // Random Marble
-                marbleRedQual += uuidArry[3] % 5;
-                marbleRedSize += uuidArry[6] % 6;
-                if (marbleRedSize != 0 && marbleRedSize != 5) {
-                    marbleRedRand += uuidArry[9] % 5;
+            if (gene[80] == 2 || gene[81] == 2) {
+                marble = true;
+
+                //Red Marble
+                //Size
+                int marbleRedSizeMod = 0;
+                for (int i = 82; i < 86; i++) {
+                    if (gene[i] == 2) {
+                        marbleRedSizeMod--;
+                    }
                 }
-            }
-            if (marbleBlackQual == 1) {
-                // Random Marble
-                marbleBlackQual += uuidArry[4] % 5;
-                marbleBlackSize += uuidArry[7] % 6;
-                if (marbleBlackSize != 0 && marbleBlackSize != 5) {
-                    marbleBlackRand += uuidArry[10] % 5;
+                for (int i = 86; i < 92; i++) {
+                    if (gene[i] == 2) {
+                        marbleRedSizeMod++;
+                    }
+                }
+                marbleRedSize += marbleRedSizeMod/2;
+
+                //Quality
+                int marbleRedQualMod = 0;
+                for (int i = 92; i < 96; i++) {
+                    marbleRedQualMod+=gene[i]-1;
+                }
+                if (marbleRedQualMod < 4) {
+                    marbleRedQual = 0;
+                } else if (marbleRedQualMod < 8) {
+                    marbleRedQual = 1;
+                } else if (marbleRedQualMod < 12) {
+                    marbleRedQual = 2;
+                } else if (marbleRedQualMod < 16) {
+                    marbleRedQual = 3;
+                } else {
+                    marbleRedQual = 4;
                 }
 
-            }
-            if (marbleIriQual == 1) {
-                // Random Marble
-                marbleIriQual += uuidArry[5] % 5;
-                marbleIriSize += uuidArry[8] % 6;
-                if (marbleIriSize != 0 && marbleIriSize != 5) {
-                    marbleIriRand += uuidArry[11] % 5;
+                //Random
+                if (marbleRedSize != 0 && marbleRedSize != 5) {
+                    marbleRedRand += uuidArry[3] % 5;
                 }
+
+
+                // Black Marble
+                //Size
+                int marbleBlackSizeMod = 0;
+                for (int i = 96; i < 100; i++) {
+                    if (gene[i] == 2) {
+                        marbleBlackSizeMod--;
+                    }
+                }
+                for (int i = 100; i < 106; i++) {
+                    if (gene[i] == 2) {
+                        marbleBlackSizeMod++;
+                    }
+                }
+                marbleBlackSize += marbleBlackSizeMod/2;
+
+                //Quality
+                int marbleBlackQualMod = 0;
+                for (int i = 106; i < 110; i++) {
+                    marbleBlackQualMod+=gene[i]-1;
+                }
+                if (marbleBlackQualMod < 4) {
+                    marbleBlackQual = 0;
+                } else if (marbleBlackQualMod < 8) {
+                    marbleBlackQual = 1;
+                } else if (marbleBlackQualMod < 12) {
+                    marbleBlackQual = 2;
+                } else if (marbleBlackQualMod < 16) {
+                    marbleBlackQual = 3;
+                } else {
+                    marbleBlackQual = 4;
+                }
+
+                //Random
+                if (marbleBlackSize != 0 && marbleBlackSize != 5) {
+                    marbleBlackRand += uuidArry[4] % 5;
+                }
+//
+//                // Iri Marble
+//                if (marbleIriSize != 0 && marbleIriSize != 5) {
+//                    marbleIriRand += uuidArry[5] % 5;
+//                }
             }
+
 
 
             clampRGB(melanin);
@@ -877,7 +933,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             TextureGrouping iriAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
 
             TextureGrouping iriOpacityAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, marbleIriQual != 0);
+            addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, marble);
             addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_ALPHA, iriIntensity, true);
             iriAlphaGroup.addGrouping(iriOpacityAlphaGroup);
 
@@ -914,7 +970,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                         finAlphaGroup3.addGrouping(finCutoutGroup);
                         TextureGrouping finPigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                             TextureGrouping finRedPigmentGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-                            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, marbleRedQual != 0);
+                            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, marble);
                             addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_FIN, finRed, l -> l != 0);
                             addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
                             finPigmentGroup.addGrouping(finRedPigmentGroup);
@@ -940,7 +996,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             texturesGroup.addGrouping(cellophaneGroup);
             /** RED **/
             TextureGrouping redGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            addTextureToAnimalTextureGrouping(redGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, marbleRedQual != 0);
+            addTextureToAnimalTextureGrouping(redGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, marble);
             addTextureToAnimalTextureGrouping(redGroup, TexturingType.APPLY_RED, TEXTURES_ALPHA, 3, l -> true);
             texturesGroup.addGrouping(redGroup);
             /** BLACK **/
@@ -952,7 +1008,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             blackGroup.addGrouping(blackCutoutGroup);
             TextureGrouping blackColorGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             //The marble gene(s) cut holes in each layer
-            addTextureToAnimalTextureGrouping(blackColorGroup, TEXTURES_MARBLE, marbleBlackQual, marbleBlackSize, marbleBlackRand, marbleBlackQual != 0);
+            addTextureToAnimalTextureGrouping(blackColorGroup, TEXTURES_MARBLE, marbleBlackQual, marbleBlackSize, marbleBlackRand, marble);
             addTextureToAnimalTextureGrouping(blackColorGroup, TexturingType.APPLY_BLACK, TEXTURES_ALPHA, 3, l -> l != 0);
             blackGroup.addGrouping(blackColorGroup);
             texturesGroup.addGrouping(blackGroup);
