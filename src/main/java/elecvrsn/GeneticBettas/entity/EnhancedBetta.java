@@ -458,6 +458,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             int marbleIriSize = 2;
             int marbleIriRand = 0;
             boolean dumbo = false;
+            boolean isMale = !getOrSetIsFemale();
 
             /*** COLORATION ***/
             float[] melanin = {0.0427F, 0.527F, 0.251F};
@@ -765,16 +766,16 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 if (gene[60] == 2 || gene[61] == 2) {
                     if (gene[60] == gene[61]) {
                         //Halfmoon
-                        fins = 5;
+                        fins = isMale ? 5 : 2;
                     }
                     else {
                         //Delta
-                        fins = 4;
+                        fins = isMale ? 4 : 1;
                     }
                 }
                 else {
                     //Veil
-                    fins = 3;
+                    fins = isMale ? 3 : 0;
                 }
             }
             else {
@@ -782,11 +783,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 if (gene[60] == 2 || gene[61] == 2) {
                     if (gene[60] == gene[61]) {
                         //Halfmoon Plakat
-                        fins = 2;
+                        fins = isMale ? 2 : 0;
                     }
                     else {
                         //Delta Plakat
-                        fins = 1;
+                        fins = isMale ? 1 : 0;
                     }
                 }
                 else {

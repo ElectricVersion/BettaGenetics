@@ -240,8 +240,8 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         );
         bBottomFinBack.addOrReplaceChild("bottomFinB", CubeListBuilder.create()
                         .texOffs(50, 10)
-                        .addBox(0F, -1F, 4F, 0, 5, 5),
-                PartPose.offset(0F, 5F, -4F)
+                        .addBox(0F, 1F, 4F, 0, 5, 5),
+                PartPose.offset(0F, 3F, -4F)
         );
 
         bVentralFinLeft.addOrReplaceChild("ventralFinL", CubeListBuilder.create()
@@ -258,8 +258,8 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
 
         bTailFin.addOrReplaceChild("tailFin", CubeListBuilder.create()
                         .texOffs(2, 41)
-                        .addBox(0F, -6F, -1F, 0, 11, 8),
-                PartPose.offset(0F, 0F, 1F)
+                        .addBox(0F, -6F, 1F, 0, 11, 8),
+                PartPose.offset(0F, 0F, -1F)
         );
 
         return LayerDefinition.create(meshdefinition, 64, 64);
@@ -299,13 +299,13 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             List<Float> dorsalFinScalings = ModelHelper.createScalings(1F, betta.isFemale ? 0.625F : 1F, finScaleMult*betta.dorsalWidth, 0F, 0F, 0F);
             mapOfScale.put("dorsalFin", dorsalFinScalings);
 //            List<Float> tailFinScalings = ModelHelper.createScalings(1F, finScaleMult, finScaleMult, 0F, 0F, 0F);
-            mapOfScale.put("tailFin", ModelHelper.createScalings(1F, betta.isFemale ? 0.75F : 1F, betta.isFemale ? 0.75F : 1F, 0F, 0F, 0F));
-            List<Float> ventralFinScalings = ModelHelper.createScalings(1F, betta.isFemale ? 0.625F : 1F, finScaleMult, 0F, 0F, 0F);
+            mapOfScale.put("tailFin", ModelHelper.createScalings(1F, 1F, 1F, 0F, 0F, betta.isFemale ? -1F/16F : 0F));
+            List<Float> ventralFinScalings = ModelHelper.createScalings(1F, betta.isFemale ? 0.725F : 1F, finScaleMult, 0F, 0F, 0F);
             mapOfScale.put("ventralFinL", ventralFinScalings);
             mapOfScale.put("ventralFinR", ventralFinScalings);
-            List<Float> bottomFinScalings = ModelHelper.createScalings(1F, finScaleMult, betta.isFemale ? 0.875F : 1F, 0F, 0F, 0F);
-            mapOfScale.put("bottomFinF", bottomFinScalings);
-            mapOfScale.put("bottomFinB", bottomFinScalings);
+//            List<Float> bottomFinScalings = ModelHelper.createScalings(1F, finScaleMult, betta.isFemale ? 0.875F : 1F, 0F, 0F, 0F);
+            mapOfScale.put("bottomFinF", ModelHelper.createScalings(1F, finScaleMult, betta.isFemale ? 0.875F : 1F, 0F, 0F, 0F));
+            mapOfScale.put("bottomFinB", ModelHelper.createScalings(1F, betta.isFemale ? 0.8F : 1F, betta.isFemale ? 0.85F : 1F, 0F, 0F, 0F));
             mapOfScale.put("bBodyF", ModelHelper.createScalings(1F, betta.isFemale ? 1F : 0.925F, 1F, 0F, 0F, 0F));
 
             poseStack.pushPose();
@@ -371,7 +371,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             }
 
             if (!entityIn.isAnimalSleeping()) {
-                if (!isMoving) {
+                if (!isMoving && entityIn.isInWater()) {
                     this.setupIdleAnimation(ageInTicks, headPitch);
                 } else {
                     this.setupSwimmingAnimation(ageInTicks, headPitch, yDelta);
@@ -419,7 +419,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         float f = ageInTicks * 0.33F;
         float f2 = Mth.sin(f*1.75F);
         float f3 = Mth.cos(f*1.75F);
-        this.theBetta.setXRot(this.lerpTo(0.5F, this.theBetta.getXRot(), 0));
+        this.theBetta.setXRot(this.lerpTo(0.5F, this.theBetta.getXRot(), 0F));
         this.theFinLeft.setYRot(Mth.HALF_PI*0.5F + (f2 * (float)Mth.HALF_PI*0.15F));
         this.theFinRight.setYRot(-Mth.HALF_PI*0.5F + (f3 * (float)Mth.HALF_PI*0.15F));
     }
