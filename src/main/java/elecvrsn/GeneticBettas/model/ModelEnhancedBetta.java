@@ -419,6 +419,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         float f = ageInTicks * 0.33F;
         float f2 = Mth.sin(f*1.75F);
         float f3 = Mth.cos(f*1.75F);
+        this.theBetta.setXRot(this.lerpTo(0.5F, this.theBetta.getXRot(), 0));
         this.theFinLeft.setYRot(Mth.HALF_PI*0.5F + (f2 * (float)Mth.HALF_PI*0.15F));
         this.theFinRight.setYRot(-Mth.HALF_PI*0.5F + (f3 * (float)Mth.HALF_PI*0.15F));
     }
