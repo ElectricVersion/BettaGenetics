@@ -251,7 +251,92 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         autosomalGenes[108] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
         autosomalGenes[109] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
 
+        //BLOODRED MARBLE GENES
+        //Bloodred Marble Size-
+        autosomalGenes[110] = 0;
+        autosomalGenes[111] = 0;
 
+        //Bloodred Marble Size-
+        autosomalGenes[112] = 0;
+        autosomalGenes[113] = 0;
+
+        //Bloodred Marble Size+
+        autosomalGenes[114] = 0;
+        autosomalGenes[115] = 0;
+
+        //Bloodred Marble Size+
+        autosomalGenes[116] = 0;
+        autosomalGenes[117] = 0;
+
+        //Bloodred Marble Size+
+        autosomalGenes[118] = 0;
+        autosomalGenes[119] = 0;
+
+        //Bloodred Marble Quality
+        autosomalGenes[120] = 0;
+        autosomalGenes[121] = 0;
+
+        //Bloodred Marble Quality
+        autosomalGenes[122] = 0;
+        autosomalGenes[123] = 0;
+
+        //IRI MARBLE GENES
+        //Iri Marble Size-
+        autosomalGenes[124] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[125] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Iri Marble Size-
+        autosomalGenes[126] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[127] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Iri Marble Size+
+        autosomalGenes[128] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[129] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Iri Marble Size+
+        autosomalGenes[130] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[131] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Iri Marble Size+
+        autosomalGenes[132] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[133] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Iri Marble Quality 1
+        autosomalGenes[134] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
+        autosomalGenes[135] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
+
+        //Iri Marble Quality 2
+        autosomalGenes[136] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
+        autosomalGenes[137] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
+
+        //OPAQUE MARBLE GENES
+        //Opaque Marble Size-
+        autosomalGenes[138] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[139] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Opaque Marble Size-
+        autosomalGenes[140] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[141] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Opaque Marble Size+
+        autosomalGenes[142] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[143] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Opaque Marble Size+
+        autosomalGenes[144] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[145] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Opaque Marble Size+
+        autosomalGenes[146] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[147] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Opaque Marble Quality 1
+        autosomalGenes[148] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
+        autosomalGenes[149] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
+
+        //Opaque Marble Quality 2
+        autosomalGenes[150] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
+        autosomalGenes[151] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
 
         return new Genes(sexlinkedGenes, autosomalGenes);
     }

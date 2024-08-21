@@ -139,30 +139,33 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     private static final String[][][] TEXTURES_MARBLE = new String[][][] {
             {
+                    {"mask/solid.png"}
+            },
+            {
                     //Poor Grizzle
                     {"mask/transparent.png"},
                     {"marble/poorgrizzle_small_1.png", "marble/poorgrizzle_small_2.png", "marble/poorgrizzle_small_3.png", "marble/poorgrizzle_small_4.png", "marble/poorgrizzle_small_5.png"},
                     {"marble/poorgrizzle_medium_1.png", "marble/poorgrizzle_medium_2.png", "marble/poorgrizzle_medium_3.png", "marble/poorgrizzle_medium_4.png", "marble/poorgrizzle_medium_5.png"},
-                    {"marble/poorgrizzle_large_1.png", "marble/poorgrizzle_large_2.png", "marble/poorgrizzle_large_3.png", "marble/poorgrizzle_large_1.png", "marble/poorgrizzle_large_1.png"},
-                    {"marble/poorgrizzle_xl_1.png", "marble/poorgrizzle_xl_2.png", "marble/poorgrizzle_xl_3.png", "marble/poorgrizzle_xl_1.png", "marble/poorgrizzle_xl_1.png"},
+                    {"marble/poorgrizzle_large_1.png", "marble/poorgrizzle_large_2.png", "marble/poorgrizzle_large_3.png", "marble/poorgrizzle_large_4.png", "marble/poorgrizzle_large_5.png"},
+                    {"marble/poorgrizzle_xl_1.png", "marble/poorgrizzle_xl_2.png", "marble/poorgrizzle_xl_3.png", "marble/poorgrizzle_xl_4.png", "marble/poorgrizzle_xl_1.png"},
                     {"mask/solid.png"}
             },
             {
                     //Medium Grizzle
                     {"mask/transparent.png"},
-                    {"marble/mediumgrizzle_small_1.png", "marble/mediumgrizzle_small_1.png", "marble/mediumgrizzle_small_1.png", "marble/mediumgrizzle_small_1.png", "marble/mediumgrizzle_small_1.png"},
-                    {"marble/mediumgrizzle_medium_1.png", "marble/mediumgrizzle_medium_2.png", "marble/mediumgrizzle_medium_3.png", "marble/mediumgrizzle_medium_4.png", "marble/mediumgrizzle_medium_1.png"},
-                    {"marble/mediumgrizzle_large_1.png", "marble/mediumgrizzle_large_1.png", "marble/mediumgrizzle_large_1.png", "marble/mediumgrizzle_large_1.png", "marble/mediumgrizzle_large_1.png"},
+                    {"marble/mediumgrizzle_small_1.png", "marble/mediumgrizzle_small_2.png", "marble/mediumgrizzle_small_3.png", "marble/mediumgrizzle_small_1.png", "marble/mediumgrizzle_small_1.png"},
+                    {"marble/mediumgrizzle_medium_1.png", "marble/mediumgrizzle_medium_2.png", "marble/mediumgrizzle_medium_3.png", "marble/mediumgrizzle_medium_4.png", "marble/mediumgrizzle_medium_5.png"},
+                    {"marble/mediumgrizzle_large_1.png", "marble/mediumgrizzle_large_2.png", "marble/mediumgrizzle_large_1.png", "marble/mediumgrizzle_large_1.png", "marble/mediumgrizzle_large_1.png"},
                     {"marble/mediumgrizzle_xl_1.png", "marble/mediumgrizzle_xl_1.png", "marble/mediumgrizzle_xl_1.png", "marble/mediumgrizzle_xl_1.png", "marble/mediumgrizzle_xl_1.png"},
                     {"mask/solid.png"}
             },
             {
                     //High Grizzle
                     {"mask/transparent.png"},
-                    {"marble/highgrizzle_small_1.png", "marble/highgrizzle_small_1.png", "marble/highgrizzle_small_1.png", "marble/highgrizzle_small_1.png", "marble/highgrizzle_small_1.png"},
-                    {"marble/highgrizzle_medium_1.png", "marble/highgrizzle_medium_2.png", "marble/highgrizzle_medium_3.png", "marble/highgrizzle_medium_4.png", "marble/highgrizzle_medium_1.png"},
-                    {"marble/highgrizzle_large_1.png", "marble/highgrizzle_large_2.png", "marble/highgrizzle_large_3.png", "marble/highgrizzle_large_1.png", "marble/highgrizzle_large_1.png"},
-                    {"marble/highgrizzle_xl_1.png", "marble/highgrizzle_xl_2.png", "marble/highgrizzle_xl_1.png", "marble/highgrizzle_xl_1.png", "marble/highgrizzle_xl_1.png"},
+                    {"marble/highgrizzle_small_1.png", "marble/highgrizzle_small_2.png", "marble/highgrizzle_small_3.png", "marble/highgrizzle_small_4.png", "marble/highgrizzle_small_5.png"},
+                    {"marble/highgrizzle_medium_1.png", "marble/highgrizzle_medium_2.png", "marble/highgrizzle_medium_3.png", "marble/highgrizzle_medium_4.png", "marble/highgrizzle_medium_5.png"},
+                    {"marble/highgrizzle_large_1.png", "marble/highgrizzle_large_2.png", "marble/highgrizzle_large_3.png", "marble/highgrizzle_large_4.png", "marble/highgrizzle_large_5.png"},
+                    {"marble/highgrizzle_xl_1.png", "marble/highgrizzle_xl_2.png", "marble/highgrizzle_xl_3.png", "marble/highgrizzle_xl_4.png", "marble/highgrizzle_xl_5.png"},
                     {"mask/solid.png"}
 
             },
@@ -172,16 +175,16 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     {"marble/secondbestspots_small_1.png", "marble/secondbestspots_small_2.png", "marble/secondbestspots_small_3.png", "marble/secondbestspots_small_4.png", "marble/secondbestspots_small_5.png"},
                     {"marble/secondbestspots_medium_1.png", "marble/secondbestspots_medium_2.png", "marble/secondbestspots_medium_3.png", "marble/secondbestspots_medium_4.png", "marble/secondbestspots_medium_5.png"},
                     {"marble/secondbestspots_large_1.png", "marble/secondbestspots_large_2.png", "marble/secondbestspots_large_3.png", "marble/secondbestspots_large_4.png", "marble/secondbestspots_large_5.png"},
-                    {"marble/secondbestspots_xl_1.png", "marble/secondbestspots_xl_1.png", "marble/secondbestspots_xl_1.png", "marble/secondbestspots_xl_1.png", "marble/secondbestspots_xl_1.png"},
+                    {"marble/secondbestspots_xl_1.png", "marble/secondbestspots_xl_2.png", "marble/secondbestspots_xl_3.png", "marble/secondbestspots_xl_4.png", "marble/secondbestspots_xl_5.png"},
                     {"mask/solid.png"}
             },
             {
                     //Best Spots
                     {"mask/transparent.png"},
-                    {"marble/bestspots_small_1.png", "marble/bestspots_small_2.png", "marble/bestspots_small_3.png", "marble/bestspots_small_4.png", "marble/bestspots_small_1.png"},
-                    {"marble/bestspots_medium_1.png", "marble/bestspots_medium_2.png", "marble/bestspots_medium_3.png", "marble/bestspots_medium_4.png", "marble/bestspots_medium_1.png"},
-                    {"marble/bestspots_large_1.png", "marble/bestspots_large_2.png", "marble/bestspots_large_3.png", "marble/bestspots_large_1.png", "marble/bestspots_large_1.png"},
-                    {"marble/bestspots_xl_1.png", "marble/bestspots_xl_2.png", "marble/bestspots_xl_3.png", "marble/bestspots_xl_1.png", "marble/bestspots_xl_1.png"},
+                    {"marble/bestspots_small_1.png", "marble/bestspots_small_2.png", "marble/bestspots_small_3.png", "marble/bestspots_small_4.png", "marble/bestspots_small_5.png"},
+                    {"marble/bestspots_medium_1.png", "marble/bestspots_medium_2.png", "marble/bestspots_medium_3.png", "marble/bestspots_medium_4.png", "marble/bestspots_medium_5.png"},
+                    {"marble/bestspots_large_1.png", "marble/bestspots_large_2.png", "marble/bestspots_large_3.png", "marble/bestspots_large_4.png", "marble/bestspots_large_5.png"},
+                    {"marble/bestspots_xl_1.png", "marble/bestspots_xl_2.png", "marble/bestspots_xl_3.png", "marble/bestspots_xl_4.png", "marble/bestspots_xl_5.png"},
                     {"mask/solid.png"}
             },
     };
@@ -449,14 +452,17 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             int metallic = 0;
             boolean marble = false;
             int marbleRedQual = 0;
-            int marbleRedSize = 2;
+            int marbleRedSize = 0;
             int marbleRedRand = 0;
             int marbleBlackQual = 0;
-            int marbleBlackSize = 2;
+            int marbleBlackSize = 0;
             int marbleBlackRand = 0;
             int marbleIriQual = 0;
-            int marbleIriSize = 2;
+            int marbleIriSize = 0;
             int marbleIriRand = 0;
+            int marbleOpaqueQual = 0;
+            int marbleOpaqueSize = 0;
+            int marbleOpaqueRand = 0;
             boolean dumbo = false;
             boolean isMale = !getOrSetIsFemale();
 
@@ -828,7 +834,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                         marbleRedSizeMod++;
                     }
                 }
-                marbleRedSize += marbleRedSizeMod/2;
+                marbleRedSize = 2 + (marbleRedSizeMod/2);
 
                 //Quality
                 int marbleRedQualMod = 0;
@@ -836,15 +842,15 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     marbleRedQualMod+=gene[i]-1;
                 }
                 if (marbleRedQualMod < 4) {
-                    marbleRedQual = 0;
-                } else if (marbleRedQualMod < 8) {
                     marbleRedQual = 1;
-                } else if (marbleRedQualMod < 12) {
+                } else if (marbleRedQualMod < 8) {
                     marbleRedQual = 2;
-                } else if (marbleRedQualMod < 16) {
+                } else if (marbleRedQualMod < 12) {
                     marbleRedQual = 3;
-                } else {
+                } else if (marbleRedQualMod < 16) {
                     marbleRedQual = 4;
+                } else {
+                    marbleRedQual = 5;
                 }
 
                 //Random
@@ -866,7 +872,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                         marbleBlackSizeMod++;
                     }
                 }
-                marbleBlackSize += marbleBlackSizeMod/2;
+                marbleBlackSize = 2 + (marbleBlackSizeMod/2);
 
                 //Quality
                 int marbleBlackQualMod = 0;
@@ -874,26 +880,95 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     marbleBlackQualMod+=gene[i]-1;
                 }
                 if (marbleBlackQualMod < 4) {
-                    marbleBlackQual = 0;
-                } else if (marbleBlackQualMod < 8) {
                     marbleBlackQual = 1;
-                } else if (marbleBlackQualMod < 12) {
+                } else if (marbleBlackQualMod < 8) {
                     marbleBlackQual = 2;
-                } else if (marbleBlackQualMod < 16) {
+                } else if (marbleBlackQualMod < 12) {
                     marbleBlackQual = 3;
-                } else {
+                } else if (marbleBlackQualMod < 16) {
                     marbleBlackQual = 4;
+                } else {
+                    marbleBlackQual = 5;
                 }
 
                 //Random
                 if (marbleBlackSize != 0 && marbleBlackSize != 5) {
                     marbleBlackRand += uuidArry[4] % 5;
                 }
-//
-//                // Iri Marble
-//                if (marbleIriSize != 0 && marbleIriSize != 5) {
-//                    marbleIriRand += uuidArry[5] % 5;
-//                }
+
+                // Iri Marble
+                //Size
+                int marbleIriSizeMod = 0;
+                for (int i = 124; i < 128; i++) {
+                    if (gene[i] == 2) {
+                        marbleIriSizeMod--;
+                    }
+                }
+                for (int i = 128; i < 134; i++) {
+                    if (gene[i] == 2) {
+                        marbleIriSizeMod++;
+                    }
+                }
+                marbleIriSize = 2 + (marbleIriSizeMod/2);
+
+                //Quality
+                int marbleIriQualMod = 0;
+                for (int i = 134; i < 138; i++) {
+                    marbleIriQualMod+=gene[i]-1;
+                }
+                if (marbleIriQualMod < 4) {
+                    marbleIriQual = 1;
+                } else if (marbleIriQualMod < 8) {
+                    marbleIriQual = 2;
+                } else if (marbleIriQualMod < 12) {
+                    marbleIriQual = 3;
+                } else if (marbleIriQualMod < 16) {
+                    marbleIriQual = 4;
+                } else {
+                    marbleIriQual = 5;
+                }
+
+                //Random
+                if (marbleIriSize != 0 && marbleIriSize != 5) {
+                    marbleIriRand += uuidArry[5] % 5;
+                }
+
+                // Opaque Marble
+                //Size
+                int marbleOpaqueSizeMod = 0;
+                for (int i = 138; i < 142; i++) {
+                    if (gene[i] == 2) {
+                        marbleOpaqueSizeMod--;
+                    }
+                }
+                for (int i = 142; i < 148; i++) {
+                    if (gene[i] == 2) {
+                        marbleOpaqueSizeMod++;
+                    }
+                }
+                marbleOpaqueSize = 2 + (marbleOpaqueSizeMod/2);
+
+                //Quality
+                int marbleOpaqueQualMod = 0;
+                for (int i = 148; i < 152; i++) {
+                    marbleOpaqueQualMod+=gene[i]-1;
+                }
+                if (marbleOpaqueQualMod < 4) {
+                    marbleOpaqueQual = 1;
+                } else if (marbleOpaqueQualMod < 8) {
+                    marbleOpaqueQual = 2;
+                } else if (marbleOpaqueQualMod < 12) {
+                    marbleOpaqueQual = 3;
+                } else if (marbleOpaqueQualMod < 16) {
+                    marbleOpaqueQual = 4;
+                } else {
+                    marbleOpaqueQual = 5;
+                }
+
+                //Random
+                if (marbleOpaqueSize != 0 && marbleOpaqueSize != 5) {
+                    marbleOpaqueRand += uuidArry[6] % 5;
+                }
             }
 
 
@@ -934,13 +1009,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             TextureGrouping iriAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
 
             TextureGrouping iriOpacityAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, marble);
+            addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, true);
             addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_ALPHA, iriIntensity, true);
             iriAlphaGroup.addGrouping(iriOpacityAlphaGroup);
 
             if (bodyIri != 0) {
                 TextureGrouping iriMaskAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-                TextureGrouping iriBodyAndFinAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                TextureGrouping iriBodyAndFinAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                 addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, "iri/body/spread.png");
                 addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_MASK, maskIri, l -> l != 0);
                 iriMaskAlphaGroup.addGrouping(iriBodyAndFinAlphaGroup);
@@ -971,7 +1046,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                         finAlphaGroup3.addGrouping(finCutoutGroup);
                         TextureGrouping finPigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                             TextureGrouping finRedPigmentGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-                            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, marble);
+                            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, true);
                             addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_FIN, finRed, l -> l != 0);
                             addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
                             finPigmentGroup.addGrouping(finRedPigmentGroup);
@@ -997,7 +1072,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             texturesGroup.addGrouping(cellophaneGroup);
             /** RED **/
             TextureGrouping redGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            addTextureToAnimalTextureGrouping(redGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, marble);
+            addTextureToAnimalTextureGrouping(redGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, true);
             addTextureToAnimalTextureGrouping(redGroup, TexturingType.APPLY_RED, TEXTURES_ALPHA, 3, l -> true);
             texturesGroup.addGrouping(redGroup);
             /** BLACK **/
@@ -1009,7 +1084,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             blackGroup.addGrouping(blackCutoutGroup);
             TextureGrouping blackColorGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             //The marble gene(s) cut holes in each layer
-            addTextureToAnimalTextureGrouping(blackColorGroup, TEXTURES_MARBLE, marbleBlackQual, marbleBlackSize, marbleBlackRand, marble);
+            addTextureToAnimalTextureGrouping(blackColorGroup, TEXTURES_MARBLE, marbleBlackQual, marbleBlackSize, marbleBlackRand, true);
             addTextureToAnimalTextureGrouping(blackColorGroup, TexturingType.APPLY_BLACK, TEXTURES_ALPHA, 3, l -> l != 0);
             blackGroup.addGrouping(blackColorGroup);
             texturesGroup.addGrouping(blackGroup);
@@ -1028,12 +1103,17 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_light.png", "iri-l", iriLightRGB);
             iridescenceGroup.addGrouping(iriColorGroup);
             if (pastelOpaque) {
+                TextureGrouping opaqueGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+                TextureGrouping opaqueAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                addTextureToAnimalTextureGrouping(opaqueAlphaGroup, TEXTURES_MARBLE, marbleOpaqueQual, marbleOpaqueSize, marbleOpaqueRand, true);
+                opaqueGroup.addGrouping(opaqueAlphaGroup);
                 TextureGrouping opaqueColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri_base.png", "op", opaqueRGB);
                 addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri_dark.png", "op-d", opaqueDarkRGB);
                 addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri_light.png", "op-l", opaqueLightRGB);
                 addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "body_shading_iri.png", "op-s", opaqueDarkRGB);
-                iridescenceGroup.addGrouping(opaqueColorGroup);
+                opaqueGroup.addGrouping(opaqueColorGroup);
+                iridescenceGroup.addGrouping(opaqueGroup);
             }
             if (metallic != 0) {
                 TextureGrouping metallicGroup = new TextureGrouping(TexturingType.MERGE_GROUP);

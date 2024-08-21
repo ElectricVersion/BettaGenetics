@@ -361,7 +361,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             BettaPhenotype betta = this.bettaModelData.getPhenotype();
             this.setupInitialAnimationValues(this.bettaModelData, netHeadYaw, headPitch, betta);
             boolean isMoving = entityIn.getDeltaMovement().horizontalDistanceSqr() > 1.0E-7D || entityIn.xOld != entityIn.getX() || entityIn.zOld != entityIn.getZ();
-            float yDelta = -(float)entityIn.getDeltaMovement().y * (float)Mth.HALF_PI;
+            float yDelta = isMoving ? -(float)entityIn.getDeltaMovement().y * (float)Mth.HALF_PI : 0F;
 
             if (this.bettaModelData.bubblingTimer <= ageInTicks) {
                 bettaModelData.bubblingTimer = (int)ageInTicks + entityIn.getRandom().nextInt(600) + 30;
