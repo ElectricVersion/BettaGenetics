@@ -463,12 +463,17 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             int marbleOpaqueQual = 0;
             int marbleOpaqueSize = 0;
             int marbleOpaqueRand = 0;
+            int marbleBloodredQual = 0;
+            int marbleBloodredSize = 0;
+            int marbleBloodredRand = 0;
             boolean dumbo = false;
             boolean isMale = !getOrSetIsFemale();
+            boolean bloodred = false;
 
             /*** COLORATION ***/
             float[] melanin = {0.0427F, 0.527F, 0.251F};
             float[] pheomelanin = { 0.991F, 0.978F, 0.655F };
+            float[] bloodredColor = { 0.996F, 0.978F, 0.315F };
             float[] cellophane = getHSBFromHex("ebe8e4");
             float[] iridescenceLight = { 0.44F, 0.978F, 0.878F };
             float[] iridescence = { 0.530F, 0.715F, 0.634F };
@@ -762,7 +767,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 }
             }
 
+            if (gene[152] == 2 || gene[153] == 2) {
+                bloodred = true;
+            }
 
+
+            //FINS
             if (gene[56] == 2 && gene[57] == 2) {
                 dumbo = true;
             }
@@ -988,6 +998,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             int pheomelaninRGB = Colouration.HSBtoABGR(pheomelanin[0], pheomelanin[1], pheomelanin[2]);
             int melaninRGB = Colouration.HSBtoABGR(melanin[0], melanin[1], melanin[2]);
+            int bloodredRGB = Colouration.HSBtoARGB(bloodredColor[0], bloodredColor[1], bloodredColor[2]);
             int iriRGB = Colouration.HSBtoARGB(iridescence[0], iridescence[1], iridescence[2]);
             int iriLightRGB = Colouration.HSBtoARGB(iridescenceLight[0], iridescenceLight[1], iridescenceLight[2]);
             int iriDarkRGB = Colouration.HSBtoARGB(iridescenceDark[0], iridescenceDark[1], iridescenceDark[2]);
@@ -1088,6 +1099,19 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             addTextureToAnimalTextureGrouping(blackColorGroup, TexturingType.APPLY_BLACK, TEXTURES_ALPHA, 3, l -> l != 0);
             blackGroup.addGrouping(blackColorGroup);
             texturesGroup.addGrouping(blackGroup);
+            /*** BLOODRED ***/
+            if (bloodred) {
+                TextureGrouping bloodredGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+                TextureGrouping bloodredMaskGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                addTextureToAnimalTextureGrouping(bloodredMaskGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
+                addTextureToAnimalTextureGrouping(bloodredMaskGroup, TEXTURES_RED_FIN, finRed, l -> l != 0);
+                bloodredGroup.addGrouping(bloodredMaskGroup);
+                TextureGrouping bloodredColorGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+                addTextureToAnimalTextureGrouping(bloodredColorGroup, TEXTURES_MARBLE, marbleBloodredQual, marbleBloodredSize, marbleBloodredRand, true);
+                addTextureToAnimalTextureGrouping(bloodredColorGroup, TexturingType.APPLY_RGB, TEXTURES_ALPHA[3], "br", bloodredRGB);
+                bloodredGroup.addGrouping(bloodredColorGroup);
+                texturesGroup.addGrouping(bloodredGroup);
+            }
             /** DETAILS **/
             TextureGrouping shadingGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(shadingGroup, "body_shading.png", true);

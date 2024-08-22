@@ -253,32 +253,32 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
 
         //BLOODRED MARBLE GENES
         //Bloodred Marble Size-
-        autosomalGenes[110] = 0;
-        autosomalGenes[111] = 0;
+        autosomalGenes[110] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;;
+        autosomalGenes[111] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;;
 
         //Bloodred Marble Size-
-        autosomalGenes[112] = 0;
-        autosomalGenes[113] = 0;
+        autosomalGenes[112] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;;
+        autosomalGenes[113] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;;
 
         //Bloodred Marble Size+
-        autosomalGenes[114] = 0;
-        autosomalGenes[115] = 0;
+        autosomalGenes[114] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;;
+        autosomalGenes[115] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;;
 
         //Bloodred Marble Size+
-        autosomalGenes[116] = 0;
-        autosomalGenes[117] = 0;
+        autosomalGenes[116] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;;
+        autosomalGenes[117] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;;
 
         //Bloodred Marble Size+
-        autosomalGenes[118] = 0;
-        autosomalGenes[119] = 0;
+        autosomalGenes[118] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;;
+        autosomalGenes[119] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;;
 
         //Bloodred Marble Quality
-        autosomalGenes[120] = 0;
-        autosomalGenes[121] = 0;
+        autosomalGenes[120] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
+        autosomalGenes[121] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
 
         //Bloodred Marble Quality
-        autosomalGenes[122] = 0;
-        autosomalGenes[123] = 0;
+        autosomalGenes[122] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
+        autosomalGenes[123] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
 
         //IRI MARBLE GENES
         //Iri Marble Size-
@@ -337,6 +337,10 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         //Opaque Marble Quality 2
         autosomalGenes[150] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
         autosomalGenes[151] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 1;
+
+        //Bloodred (Inheritance unknown - dominant?) [wildtype < Bloodred]
+        autosomalGenes[152] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[153] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
 
         return new Genes(sexlinkedGenes, autosomalGenes);
     }
