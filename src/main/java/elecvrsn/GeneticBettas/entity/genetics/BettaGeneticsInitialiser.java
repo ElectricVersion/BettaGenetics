@@ -129,6 +129,7 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         //Body Red Area [Wildtype <> higher]
         autosomalGenes[44] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[45] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
         //Body Red Area [Wildtype <> lower]
         autosomalGenes[46] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[47] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
@@ -341,6 +342,30 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         //Bloodred (Inheritance unknown - dominant?) [wildtype < Bloodred]
         autosomalGenes[152] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[153] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Extended Bloodred [wildtype < Extended]
+        autosomalGenes[154] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[155] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Bloodred Mask [Wildtype <> Mask]
+        autosomalGenes[156] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[157] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Fin Bloodred Level 1 [wildtype <> lower]
+        autosomalGenes[158] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[159] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Fin Bloodred Level 2 [wildtype <> lower]
+        autosomalGenes[160] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[161] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Body Bloodred Area [Wildtype <> higher]
+        autosomalGenes[162] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[163] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
+        //Body Bloodred Area [Wildtype <> lower]
+        autosomalGenes[164] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[165] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
 
         return new Genes(sexlinkedGenes, autosomalGenes);
     }

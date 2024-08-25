@@ -293,7 +293,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             BettaPhenotype betta = this.bettaModelData.getPhenotype();
 
             float finScaleMult = betta.isFemale ? 0.75F : 1F;
-            List<Float> pectoralFinScalings = ModelHelper.createScalings(1F, betta.dumbo ? 1.125F : 0.75F, 0.75F, 0F, 0F, 0F);
+            List<Float> pectoralFinScalings = ModelHelper.createScalings(1F, betta.dumbo ? 0.8F : 0.75F, 0.75F, 0F, 0F, 0F);
             mapOfScale.put("finL", pectoralFinScalings);
             mapOfScale.put("finR", pectoralFinScalings);
             List<Float> dorsalFinScalings = ModelHelper.createScalings(1F, betta.isFemale ? 0.625F : 1F, finScaleMult*betta.dorsalWidth, 0F, 0F, 0F);

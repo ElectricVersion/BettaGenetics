@@ -29,6 +29,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -46,6 +47,7 @@ import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.animal.Bucketable;
+import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -56,6 +58,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.BigDripleafBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.SwimNodeEvaluator;
@@ -66,6 +69,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.Optional;
+import java.util.Random;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 
@@ -217,6 +221,17 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             },
     };
 
+    private static final String[] TEXTURES_DUMBO = new String[] {
+            "fin/dumbo.png", "fin/dumbo_hetcrown.png", "fin/dumbo_homocrown.png"
+    };
+
+    private static final String[] TEXTURES_DUMBO_BUTTERFLY = new String[] {
+            "", "butterfly/dumbo_low.png",  "butterfly/dumbo_med.png", "butterfly/dumbo_high.png", "butterfly/dumbo_max.png",
+    };
+
+    private static final String[] TEXTURES_DUMBO_ALPHA = new String[] {
+            "mask/nondumbo.png", "mask/solid.png"
+};
     private static final String[][][] TEXTURES_BUTTERFLY = new String[][][] {
             {
                     {"", "butterfly/plakat_low.png", "butterfly/plakat_med.png", "butterfly/plakat_high.png", "butterfly/plakat_max.png"},
@@ -469,6 +484,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             boolean dumbo = false;
             boolean isMale = !getOrSetIsFemale();
             boolean bloodred = false;
+            int finBloodred = 4;
+            int bodyBloodred = 2;
 
             /*** COLORATION ***/
             float[] melanin = {0.0427F, 0.527F, 0.251F};
@@ -514,6 +531,32 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 //Lower Iridescence Intensity
                 iriIntensity--;
             }
+            if (gene[2] == 2 || gene[3] == 2) {
+                //Spread
+                iriIntensity = 3;
+                bodyIri = 4;
+            }
+
+            if (gene[4] == 2 || gene[5] == 2) {
+                //Masked
+
+                //Mask Iridescence Level
+                int maskIriLevel = 0;
+                for (int i = 50; i < 56; i++) {
+                    if (gene[i] == 2) {
+                        maskIriLevel++;
+                    }
+                }
+                maskIriLevel = maskIriLevel/2;
+                switch (maskIriLevel) {
+                    case 0 -> maskIri = 1;
+                    case 1 -> maskIri = 3;
+                    case 2 -> maskIri = 5;
+                    case 3 -> maskIri = 7;
+                }
+            }
+
+            /*** RED ***/
             for (int i = 36; i < 40; i++) {
                 // Lower Fin Red
                 if (gene[i] == 2) {
@@ -539,30 +582,59 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 bodyRed--;
             }
 
-            if (gene[2] == 2 || gene[3] == 2) {
-                //Spread
-                iriIntensity = 3;
-                bodyIri = 4;
-            }
-
-            if (gene[4] == 2 || gene[5] == 2) {
-                //Masked
-
-                //Mask Iridescence Level
-                int maskIriLevel = 0;
-                for (int i = 50; i < 56; i++) {
-                    if (gene[i] == 2) {
-                        maskIriLevel++;
-                    }
+            if (gene[12] == 2 || gene[13] == 2) {
+                //Extended Red
+                bodyRed = 5;
+                if (gene[16] == 2 && gene[17] == 2) {
+                    //Homozygous Masked
+                    bodyRed = 7;
                 }
-                maskIriLevel = maskIriLevel/2;
-                switch (maskIriLevel) {
-                    case 0 -> maskIri = 1;
-                    case 1 -> maskIri = 3;
-                    case 2 -> maskIri = 5;
-                    case 3 -> maskIri = 7;
+                else if (gene[16] == 2 || gene[17] == 2) {
+                    //Heterozygous Masked
+                    bodyRed = 6;
                 }
             }
+
+            /*** BLOODRED ***/
+            for (int i = 158; i < 162; i++) {
+                // Lower Fin Red
+                if (gene[i] == 2) {
+                    finBloodred--;
+                }
+            }
+
+            //Body Red
+            if (gene[162] == 2) {
+                //Higher Body Bloodred
+                bodyBloodred++;
+            }
+            if (gene[163] == 2) {
+                //Higher Body Bloodred
+                bodyBloodred++;
+            }
+            if (gene[164] == 2) {
+                //Lower Body Bloodred
+                bodyBloodred--;
+            }
+            if (gene[165] == 2) {
+                //Lower Body Bloodred
+                bodyBloodred--;
+            }
+
+            if (gene[154] == 2 || gene[155] == 2) {
+                //Extended Bloodred
+                bodyBloodred = 5;
+                if (gene[156] == 2 && gene[157] == 2) {
+                    //Homozygous Masked
+                    bodyBloodred = 7;
+                }
+                else if (gene[156] == 2 || gene[157] == 2) {
+                    //Heterozygous Masked
+                    bodyBloodred = 6;
+                }
+            }
+
+
 
             if (gene[48] == 2 || gene[49] == 2) {
                 metallic = gene[48] == gene[49] ? 2 : 1;
@@ -708,19 +780,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 //                shading = 1;
 //                bodyRed = 1;
                 melanin = getHSBFromHex("D1C5B7");
-            }
-
-            if (gene[12] == 2 || gene[13] == 2) {
-                //Extended Red
-                bodyRed = 5;
-                if (gene[16] == 2 && gene[17] == 2) {
-                    //Homozygous Masked
-                    bodyRed = 7;
-                }
-                else if (gene[16] == 2 || gene[17] == 2) {
-                    //Heterozygous Masked
-                    bodyRed = 6;
-                }
             }
 
             if (gene[14] == 2 && gene[15] == 2) {
@@ -1043,11 +1102,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             TextureGrouping transAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 TextureGrouping finAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                     TextureGrouping finAlphaGroup1 = new TextureGrouping(TexturingType.MASK_GROUP);
-                    addTextureToAnimalTextureGrouping(finAlphaGroup1, dumbo ? "mask/solid.png" : "mask/nondumbo.png", true);
+                    addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_DUMBO_ALPHA, dumbo ? 1 : 0, true);
                     addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_FINS, fins, doubletail, crowntail, true);
+                    addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_DUMBO, crowntail, dumbo);
             finAlphaGroup.addGrouping(finAlphaGroup1);
                     TextureGrouping finAlphaGroup2 = new TextureGrouping(TexturingType.MERGE_GROUP);
                         addTextureToAnimalTextureGrouping(finAlphaGroup2, TEXTURES_FIN_ALPHA, finAlpha, l -> true);
+                        addTextureToAnimalTextureGrouping(finAlphaGroup2, TEXTURES_DUMBO, crowntail, dumbo);
                     finAlphaGroup.addGrouping(finAlphaGroup2);
                     TextureGrouping finAlphaGroup3 = new TextureGrouping(TexturingType.CUTOUT_GROUP);
                         TextureGrouping finCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
@@ -1103,8 +1164,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             if (bloodred) {
                 TextureGrouping bloodredGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                 TextureGrouping bloodredMaskGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                addTextureToAnimalTextureGrouping(bloodredMaskGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
-                addTextureToAnimalTextureGrouping(bloodredMaskGroup, TEXTURES_RED_FIN, finRed, l -> l != 0);
+                addTextureToAnimalTextureGrouping(bloodredMaskGroup, TEXTURES_RED_BODY, bodyBloodred, l -> l != 0);
+                addTextureToAnimalTextureGrouping(bloodredMaskGroup, TEXTURES_RED_FIN, finBloodred, l -> l != 0);
                 bloodredGroup.addGrouping(bloodredMaskGroup);
                 TextureGrouping bloodredColorGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                 addTextureToAnimalTextureGrouping(bloodredColorGroup, TEXTURES_MARBLE, marbleBloodredQual, marbleBloodredSize, marbleBloodredRand, true);
@@ -1168,9 +1229,16 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             /** BUTTERFLY **/
             if (butterfly !=0) {
                 TextureGrouping butterflyGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-                TextureGrouping butterflyMaskGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                TextureGrouping butterflyMaskMergeGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                TextureGrouping butterflyMaskGroup = new TextureGrouping(TexturingType.CUTOUT_GROUP);
+                addTextureToAnimalTextureGrouping(butterflyMaskGroup, dumbo ? "mask/dumbo.png" : "mask/transparent.png", true);
                 addTextureToAnimalTextureGrouping(butterflyMaskGroup, TEXTURES_BUTTERFLY, fins, doubletail, butterfly, butterfly != 0);
-                butterflyGroup.addGrouping(butterflyMaskGroup);
+                butterflyMaskMergeGroup.addGrouping(butterflyMaskGroup);
+                TextureGrouping butterflyDumboGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                addTextureToAnimalTextureGrouping(butterflyDumboGroup, TEXTURES_DUMBO_BUTTERFLY, butterfly, dumbo);
+                butterflyMaskMergeGroup.addGrouping(butterflyDumboGroup);
+                addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_DUMBO, crowntail, dumbo);
+                butterflyGroup.addGrouping(butterflyMaskMergeGroup);
                 TextureGrouping butterflyTexGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 if (finAlpha == 1) {
                     addTextureToAnimalTextureGrouping(butterflyTexGroup, TexturingType.APPLY_BLACK, TEXTURES_ALPHA, 3, l -> true);
@@ -1626,5 +1694,19 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 return;
             }
         }
+    }
+
+    protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHitIn) {
+        super.dropCustomDeathLoot(source, looting, recentlyHitIn);
+        ItemStack bettaStack = new ItemStack(AddonItems.BETTA.get(), 1);
+        this.spawnAtLocation(bettaStack);
+    }
+
+    public static boolean checkBettaSpawnRules(EntityType<EnhancedBetta> enhancedBetta, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, Random random) {
+        int i = levelAccessor.getSeaLevel();
+        int j = i - 13;
+//        return blockPos.getY() >= j;
+        return blockPos.getY() >= j && blockPos.getY() <= i && levelAccessor.getBlockState(blockPos.above()).is(Blocks.WATER);
+//        return true;
     }
 }
