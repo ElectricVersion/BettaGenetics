@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import elecvrsn.GeneticBettas.ai.brain.betta.BettaBrain;
 import elecvrsn.GeneticBettas.entity.genetics.BettaGeneticsInitialiser;
+import elecvrsn.GeneticBettas.init.AddonActivities;
 import elecvrsn.GeneticBettas.init.AddonItems;
 import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
 import elecvrsn.GeneticBettas.init.AddonSensorTypes;
@@ -15,6 +16,7 @@ import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
 import mokiyoki.enhancedanimals.entity.EntityState;
 import mokiyoki.enhancedanimals.entity.util.Colouration;
 import mokiyoki.enhancedanimals.init.FoodSerialiser;
+import mokiyoki.enhancedanimals.init.ModActivities;
 import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import mokiyoki.enhancedanimals.model.modeldata.AnimalModelData;
 import mokiyoki.enhancedanimals.renderer.texture.TextureGrouping;
@@ -50,6 +52,7 @@ import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -68,6 +71,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
 
@@ -82,6 +86,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<BlockPos> NEST_POS = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BLOCK_POS);
 
+    private ArrayList<Activity> activities = null;
     private boolean isTempted = false;
     private int aggression = -1;
 
@@ -1427,6 +1432,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public boolean isHighlyAggressive() {
         return getAggression() >= 8;
     }
+    public boolean isNotHighlyAggressive() {
+        return getAggression() < 8;
+    }
     public boolean isAggressive() {
         return getAggression() >= 4;
     }
@@ -1705,8 +1713,22 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public static boolean checkBettaSpawnRules(EntityType<EnhancedBetta> enhancedBetta, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, Random random) {
         int i = levelAccessor.getSeaLevel();
         int j = i - 13;
-//        return blockPos.getY() >= j;
-        return blockPos.getY() >= j && blockPos.getY() <= i && levelAccessor.getBlockState(blockPos.above()).is(Blocks.WATER);
-//        return true;
+        return blockPos.getY() >= j && blockPos.getY() <= i && levelAccessor.getBlockState(blockPos).is(Blocks.WATER) && levelAccessor.getBlockState(blockPos.above()).is(Blocks.WATER);
+    }
+
+    public ImmutableList<Activity> getActivities() {
+        if (activities == null && getGenes() != null) {
+            activities = new ArrayList<>();
+            activities.add(ModActivities.PAUSE_BRAIN.get());
+            if (!isHighlyAggressive()) {
+                activities.add(Activity.AVOID);
+            }
+            activities.add(AddonActivities.MAKE_BUBBLE_NEST.get());
+            if (isAggressive()) {
+                activities.add(Activity.FIGHT);
+            }
+            activities.add(Activity.IDLE);
+        }
+        return ImmutableList.copyOf(activities);
     }
 }

@@ -22,6 +22,7 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes.FOUND_SLEEP_SPOT;
@@ -31,13 +32,14 @@ public class BettaBrain  {
     private static final UniformInt ADULT_FOLLOW_RANGE = UniformInt.of(5, 16);
     private static final float SPEED_MULTIPLIER_WHEN_MAKING_LOVE = 0.2F;
     private static final float SPEED_MULTIPLIER_WHEN_IDLING_IN_WATER = 0.5F;
-    private static final float SPEED_MULTIPLIER_WHEN_CHASING_IN_WATER = 0.6F;
+    private static final float SPEED_MULTIPLIER_WHEN_CHASING_IN_WATER = 0.55F;
 
     public static Brain<?> makeBrain(Brain<EnhancedBetta> bettaBrain) {
         initCoreActivity(bettaBrain);
         initIdleActivity(bettaBrain);
         initPauseBrainActivity(bettaBrain);
         initFightActivity(bettaBrain);
+        initFleeActivity(bettaBrain);
         initNestingActivity(bettaBrain);
         bettaBrain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         bettaBrain.setDefaultActivity(Activity.IDLE);
@@ -51,11 +53,25 @@ public class BettaBrain  {
                 0,
                 ImmutableList.of(
                         new StopAttackingIfTargetInvalid<>(EnhancedBetta::onStopAttacking),
+                        new RunIf<>(BettaBrain::isAttackTargetFarEnough, new StopBeingMad()),
                         new SetWalkTargetFromAttackTargetIfTargetOutOfReach(BettaBrain::getSpeedModifierChasing),
                         new RunIf<>(EnhancedBetta::isAggressive, new BettaMeleeAttack(20)),
+                        new RunIf<>(EnhancedBetta::isPassive, SetWalkTargetAwayFrom.entity(MemoryModuleType.ATTACK_TARGET, 1.0F, 12, true)),
                         new EraseMemoryIf<>(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET)
                 ),
                 MemoryModuleType.ATTACK_TARGET
+        );
+    }
+
+    private static void initFleeActivity(Brain<EnhancedBetta> brain) {
+        brain.addActivityAndRemoveMemoryWhenStopped(
+                Activity.AVOID,
+                0,
+                ImmutableList.of(
+                        new EraseMemoryIf<>(BettaBrain::isHurtByTimerExpired, MemoryModuleType.HURT_BY_ENTITY),
+                        SetWalkTargetAwayFrom.entity(MemoryModuleType.HURT_BY_ENTITY, 1.0F, 6, true)
+                ),
+                MemoryModuleType.HURT_BY_ENTITY
         );
     }
 
@@ -151,17 +167,14 @@ public class BettaBrain  {
             brain.eraseMemory(ModMemoryModuleTypes.SLEEPING.get());
         }
         if (activity != ModActivities.PAUSE_BRAIN.get()) {
+            brain.setActiveActivityToFirstValid(betta.getActivities());
             if (betta.isAggressive()) {
-                brain.setActiveActivityToFirstValid(ImmutableList.of(ModActivities.PAUSE_BRAIN.get(), AddonActivities.MAKE_BUBBLE_NEST.get(), Activity.FIGHT, Activity.IDLE));
                 if (activity == Activity.FIGHT && brain.getActiveNonCoreActivity().orElse(null) != Activity.FIGHT) {
                     brain.setMemoryWithExpiry(MemoryModuleType.HAS_HUNTING_COOLDOWN, true, 2400L);
                 }
                 else if (brain.getActiveNonCoreActivity().orElse(null) == Activity.FIGHT) {
                     betta.setIsAngry(true);
                 }
-            }
-            else {
-                brain.setActiveActivityToFirstValid(ImmutableList.of(ModActivities.PAUSE_BRAIN.get(), AddonActivities.MAKE_BUBBLE_NEST.get(), Activity.IDLE));
             }
 //            if (brain.getActiveNonCoreActivity().get() == AddonActivities.MAKE_BUBBLE_NEST.get()) {
 //                brain.setMemory(AddonMemoryModuleTypes.SEEKING_NEST.get(), true);
@@ -189,5 +202,16 @@ public class BettaBrain  {
         return betta.getBrain().hasMemoryValue(MemoryModuleType.BREED_TARGET);
     }
 
+    private static boolean isHurtByTimerExpired(EnhancedBetta betta) {
+        return betta.getLastHurtByMobTimestamp()+200 < betta.tickCount;
+    }
+
+
+    private static boolean isAttackTargetFarEnough(EnhancedBetta betta) {
+        if (betta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
+            return betta.distanceToSqr(betta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get()) > (betta.isHighlyAggressive() ? 9 : 4);
+        }
+        return true;
+    }
 
 }

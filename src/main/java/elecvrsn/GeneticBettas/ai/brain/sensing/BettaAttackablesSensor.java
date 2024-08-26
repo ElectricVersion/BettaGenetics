@@ -28,7 +28,7 @@ public class BettaAttackablesSensor extends NearestVisibleLivingEntitySensor {
     }
 
     private boolean isClose(EnhancedBetta betta, LivingEntity p_148276_) {
-        return betta.distanceToSqr(p_148276_) <= (betta.isHighlyAggressive() ? 36 : 16);
+        return betta.distanceToSqr(p_148276_) <= (betta.isHighlyAggressive() ? 9 : 4);
     }
 
     protected MemoryModuleType<LivingEntity> getMemory() {
