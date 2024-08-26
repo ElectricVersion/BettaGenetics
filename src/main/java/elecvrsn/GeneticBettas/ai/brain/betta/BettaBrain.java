@@ -55,7 +55,7 @@ public class BettaBrain  {
                         new StopAttackingIfTargetInvalid<>(EnhancedBetta::onStopAttacking),
                         new RunIf<>(BettaBrain::isAttackTargetFarEnough, new StopBeingMad()),
                         new SetWalkTargetFromAttackTargetIfTargetOutOfReach(BettaBrain::getSpeedModifierChasing),
-                        new RunIf<>(EnhancedBetta::isAggressive, new BettaMeleeAttack(20)),
+                        new RunIf<>(EnhancedBetta::isAggressive, new BettaMeleeAttack(40)),
                         new RunIf<>(EnhancedBetta::isPassive, SetWalkTargetAwayFrom.entity(MemoryModuleType.ATTACK_TARGET, 1.0F, 12, true)),
                         new EraseMemoryIf<>(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET)
                 ),
@@ -69,7 +69,7 @@ public class BettaBrain  {
                 0,
                 ImmutableList.of(
                         new EraseMemoryIf<>(BettaBrain::isHurtByTimerExpired, MemoryModuleType.HURT_BY_ENTITY),
-                        SetWalkTargetAwayFrom.entity(MemoryModuleType.HURT_BY_ENTITY, 1.0F, 6, true)
+                        SetWalkTargetAwayFrom.entity(MemoryModuleType.HURT_BY_ENTITY, 0.5F, 6, true)
                 ),
                 MemoryModuleType.HURT_BY_ENTITY
         );
@@ -203,7 +203,7 @@ public class BettaBrain  {
     }
 
     private static boolean isHurtByTimerExpired(EnhancedBetta betta) {
-        return betta.getLastHurtByMobTimestamp()+200 < betta.tickCount;
+        return betta.getLastHurtByMobTimestamp()+100 < betta.tickCount;
     }
 
 

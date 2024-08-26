@@ -20,6 +20,9 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
     int WTC = EanimodCommonConfig.COMMON.wildTypeChance.get();
     public BettaGeneticsInitialiser() {
         this.breeds.add(BettaBreeds.GENERIC);
+        this.breeds.add(BettaBreeds.PASSIVE);
+        this.breeds.add(BettaBreeds.NEUTRAL);
+        this.breeds.add(BettaBreeds.AGGRESSIVE);
     }
 
     List<Breed> breeds = new ArrayList<>();
