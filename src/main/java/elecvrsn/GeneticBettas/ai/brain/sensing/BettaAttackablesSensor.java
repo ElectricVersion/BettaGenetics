@@ -12,7 +12,7 @@ public class BettaAttackablesSensor extends NearestVisibleLivingEntitySensor {
     public static final float TARGET_DETECTION_DISTANCE = 8.0F;
 
     protected boolean isMatchingEntity(LivingEntity betta, LivingEntity target) {
-        return this.isClose((EnhancedBetta)(betta), target) && target.isInWaterOrBubble() && (this.isHostileTarget(target) || (this.isBettaTarget(target) && areBothMale((EnhancedBetta)betta, (EnhancedBetta)target))) && Sensor.isEntityAttackable(betta, target);
+        return this.isClose((EnhancedBetta)(betta), target) && target.isInWaterOrBubble() && (this.isHostileTarget(target) || (this.isBettaTarget(target) && (areBothMale((EnhancedBetta)betta, (EnhancedBetta)target) || ((EnhancedBetta) betta).isHighlyAggressive() ))) && Sensor.isEntityAttackable(betta, target);
     }
 
     private boolean isBettaTarget(LivingEntity p_148273_) {

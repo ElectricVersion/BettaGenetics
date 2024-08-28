@@ -56,7 +56,7 @@ public class BettaBrain  {
                         new RunIf<>(BettaBrain::isAttackTargetFarEnough, new StopBeingMad()),
                         new SetWalkTargetFromAttackTargetIfTargetOutOfReach(BettaBrain::getSpeedModifierChasing),
                         new RunIf<>(EnhancedBetta::isAggressive, new BettaMeleeAttack(40)),
-                        new RunIf<>(EnhancedBetta::isPassive, SetWalkTargetAwayFrom.entity(MemoryModuleType.ATTACK_TARGET, 1.0F, 12, true)),
+                        new RunIf<>(EnhancedBetta::isNotHighlyAggressive, SetWalkTargetAwayFrom.entity(MemoryModuleType.ATTACK_TARGET, 0.4F, 3, true)),
                         new EraseMemoryIf<>(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET)
                 ),
                 MemoryModuleType.ATTACK_TARGET

@@ -36,7 +36,7 @@ public class BettaMeleeAttack extends Behavior<EnhancedBetta> {
         enhancedBetta.swing(InteractionHand.MAIN_HAND);
         enhancedBetta.doHurtTarget(livingentity);
         enhancedBetta.getBrain().setMemoryWithExpiry(MemoryModuleType.ATTACK_COOLING_DOWN, true, (long)this.cooldownBetweenAttacks);
-        enhancedBetta.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);
+//        enhancedBetta.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);
     }
 
     private LivingEntity getAttackTarget(EnhancedBetta enhancedBetta) {
