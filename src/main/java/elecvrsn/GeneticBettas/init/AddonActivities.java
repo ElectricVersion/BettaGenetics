@@ -11,6 +11,7 @@ public class AddonActivities {
 
     public static final DeferredRegister<Activity> ACTIVITIES_DEFERRED_REGISTRY = DeferredRegister.create(ForgeRegistries.ACTIVITIES, AddonReference.MODID);
     public static final RegistryObject<Activity> MAKE_BUBBLE_NEST = ACTIVITIES_DEFERRED_REGISTRY.register("make_bubble_nest", () -> new Activity("make_bubble_nest"));
+//    public static final RegistryObject<Activity> LAY_EGG = ACTIVITIES_DEFERRED_REGISTRY.register("make_bubble_nest", () -> new Activity("make_bubble_nest"));
     public static void register(IEventBus modEventBus) {
         ACTIVITIES_DEFERRED_REGISTRY.register(modEventBus);
     }

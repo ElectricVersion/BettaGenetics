@@ -47,6 +47,7 @@ public class BettaBrain  {
         return bettaBrain;
     }
 
+
     private static void initFightActivity(Brain<EnhancedBetta> brain) {
         brain.addActivityAndRemoveMemoryWhenStopped(
                 Activity.FIGHT,
@@ -95,6 +96,7 @@ public class BettaBrain  {
                 new RunIf<>(EnhancedBetta::isNotSleeping, new LookAtTargetSink(45, 90)),
                 new MoveToTargetSink(),
                 new MakeBubbleNest(),
+                new LayEgg(),
                 new ValidatePauseBrain(),
                 new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS))
         );
