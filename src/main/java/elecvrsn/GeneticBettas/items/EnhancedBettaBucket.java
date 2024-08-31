@@ -106,7 +106,7 @@ public class EnhancedBettaBucket extends MobBucketItem {
             if (genes.isValid() && genes.getSexlinkedGenes().length > 0 && genes.getAutosomalGenes().length > 0) {
                 betta.setMateGender(this.getMateIsFemale(stack));
                 betta.setMateGenes(this.getMateGenes(stack));
-                betta.setPregnant(true);
+                betta.setHasEgg(true);
             }
         }
         if (data.contains("collar")) {

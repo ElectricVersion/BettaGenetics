@@ -164,7 +164,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    implementation fg.deobf("com.mokiyoki.enhancedanimals:GeneticAnimals:0_8_32")
+    implementation fg.deobf("com.mokiyoki.enhancedanimals:GeneticAnimals:0_8_33")
     minecraft 'net.minecraftforge:forge:1.18.2-40.2.0'
 
     for (extraModJar in fileTree(dir: extraModsDir, include: '*.jar')) {

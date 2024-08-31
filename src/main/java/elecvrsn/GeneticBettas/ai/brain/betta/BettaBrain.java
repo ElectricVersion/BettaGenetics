@@ -96,6 +96,7 @@ public class BettaBrain  {
                 new RunIf<>(EnhancedBetta::isNotSleeping, new LookAtTargetSink(45, 90)),
                 new MoveToTargetSink(),
                 new MakeBubbleNest(),
+                new BettaFindExistingBubbleNest(),
                 new LayEgg(),
                 new ValidatePauseBrain(),
                 new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS))
@@ -116,7 +117,8 @@ public class BettaBrain  {
     private static void initIdleActivity(Brain<EnhancedBetta> brain) {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
                 Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 8.0F), UniformInt.of(20, 60))),
-                Pair.of(1, new BettaMakeLove(AddonEntities.ENHANCED_BETTA.get(), 0.2F)),
+                Pair.of(1, new BettaMakeLove(AddonEntities.ENHANCED_BETTA.get(), 1F)),
+//                Pair.of(1, new BettaFindExistingBubbleNest()),
                 Pair.of(2, new RunOne<>(ImmutableList.of(
                         Pair.of(new FollowTemptation(BettaBrain::getSpeedModifier), 1),
                         Pair.of(new BabyFollowAdult<>(ADULT_FOLLOW_RANGE, BettaBrain::getSpeedModifierFollowingAdult), 1)))
@@ -125,7 +127,8 @@ public class BettaBrain  {
                 Pair.of(3, new TryFindWater(6, 0.15F)),
                 Pair.of(4, new GateBehavior<>(
                                 ImmutableMap.of(
-                                        MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT),
+                                        MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT,
+                                        ModMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryStatus.VALUE_ABSENT),
                                 ImmutableSet.of(),
                                 GateBehavior.OrderPolicy.ORDERED,
                                 GateBehavior.RunningPolicy.TRY_ALL,

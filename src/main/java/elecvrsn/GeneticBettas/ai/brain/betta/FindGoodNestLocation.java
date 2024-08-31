@@ -22,7 +22,7 @@ public class FindGoodNestLocation extends Behavior<EnhancedBetta> {
     }
 
     public void start(ServerLevel serverLevel, EnhancedBetta enhancedBetta, long gameTime) {
-        enhancedBetta.findNestLocation();
+        enhancedBetta.findLocationForNest();
         BlockPos nestPos = enhancedBetta.getNestPos();
         if (nestPos != BlockPos.ZERO) {
             WalkTarget walkTarget = new WalkTarget(nestPos, 0.5F, 0);

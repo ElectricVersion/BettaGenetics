@@ -2,6 +2,7 @@ package elecvrsn.GeneticBettas.ai.brain.betta;
 
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
+import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.behavior.AnimalMakeLove;
@@ -25,10 +26,14 @@ public class BettaMakeLove extends AnimalMakeLove {
         mate = (EnhancedBetta) (((EnhancedBetta) animal).getBrain().getMemory(MemoryModuleType.BREED_TARGET).isPresent() ? ((EnhancedBetta) animal).getBrain().getMemory(MemoryModuleType.BREED_TARGET).get() : mate);
         super.stop(serverLevel, animal, gameTime);
         EnhancedBetta betta = ((EnhancedBetta) animal);
-        if (betta.getOrSetIsFemale() && mate != null && !mate.getOrSetIsFemale()) {
-            mate.getBrain().setMemory(AddonMemoryModuleTypes.MAKING_NEST.get(), true);
-        } else if (!betta.getOrSetIsFemale()) {
-            betta.getBrain().setMemory(AddonMemoryModuleTypes.MAKING_NEST.get(), true);
+        if (mate != null) {
+            if (betta.getOrSetIsFemale() && !mate.getOrSetIsFemale()) {
+                mate.getBrain().setMemory(AddonMemoryModuleTypes.MAKING_NEST.get(), true);
+                betta.getBrain().setMemory(ModMemoryModuleTypes.HAS_EGG.get(), true);
+            } else if (!betta.getOrSetIsFemale() && mate.getOrSetIsFemale()) {
+                betta.getBrain().setMemory(AddonMemoryModuleTypes.MAKING_NEST.get(), true);
+                mate.getBrain().setMemory(ModMemoryModuleTypes.HAS_EGG.get(), true);
+            }
         }
     }
 

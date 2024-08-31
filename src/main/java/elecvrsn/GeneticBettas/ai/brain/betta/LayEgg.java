@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.entity.EnhancedBettaEgg;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
-import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
 import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import mokiyoki.enhancedanimals.util.Genes;
 import net.minecraft.core.BlockPos;
@@ -31,7 +30,6 @@ public class LayEgg extends Behavior<EnhancedBetta> {
         //Condition, Min Duration, Max Duration
         super(ImmutableMap.of(
                 ModMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
-                ModMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
                 ModMemoryModuleTypes.HAS_EGG.get(), MemoryStatus.VALUE_PRESENT
         ), 5, 100);
     }
@@ -66,7 +64,7 @@ public class LayEgg extends Behavior<EnhancedBetta> {
                 }
 
                 if (eggLayingTimer > 320) {
-                    betta.setPregnant(false);
+                    betta.setHasEgg(false);
                     eggLayingTimer = -1;
                     betta.setMateName("???"); //Reset mate name
                     betta.getBrain().eraseMemory(ModMemoryModuleTypes.HAS_EGG.get());

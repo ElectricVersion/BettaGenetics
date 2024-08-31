@@ -4,13 +4,11 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import elecvrsn.GeneticBettas.ai.brain.betta.BettaBrain;
 import elecvrsn.GeneticBettas.entity.genetics.BettaGeneticsInitialiser;
-import elecvrsn.GeneticBettas.init.AddonActivities;
-import elecvrsn.GeneticBettas.init.AddonItems;
-import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
-import elecvrsn.GeneticBettas.init.AddonSensorTypes;
+import elecvrsn.GeneticBettas.init.*;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import elecvrsn.GeneticBettas.model.modeldata.BettaModelData;
 import elecvrsn.GeneticBettas.util.AddonReference;
+import mokiyoki.enhancedanimals.ai.brain.ValidatePath;
 import mokiyoki.enhancedanimals.config.EanimodCommonConfig;
 import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
 import mokiyoki.enhancedanimals.entity.EntityState;
@@ -31,7 +29,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -49,7 +46,6 @@ import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.animal.Bucketable;
-import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
@@ -81,7 +77,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, AddonSensorTypes.BETTA_ATTACKABLES.get(), AddonSensorTypes.BETTA_FOOD_TEMPTATIONS.get());
     protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(ModMemoryModuleTypes.SLEEPING.get(), ModMemoryModuleTypes.PAUSE_BRAIN.get(), ModMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN, AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), AddonMemoryModuleTypes.MAKING_NEST.get(), ModMemoryModuleTypes.HAS_EGG.get());
-    private static final EntityDataAccessor<Boolean> PREGNANT = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<BlockPos> NEST_POS = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BLOCK_POS);
@@ -330,7 +326,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(PREGNANT, false);
+        this.entityData.define(HAS_EGG, false);
         this.entityData.define(IS_ANGRY, false);
         this.entityData.define(FROM_BUCKET, false);
         this.entityData.define(NEST_POS, BlockPos.ZERO);
@@ -1307,7 +1303,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
     @Override
     protected boolean canBePregnant() {
-        return true;
+        return false;
     }
 
     @Override
@@ -1351,7 +1347,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 //    @Override
 //    protected void registerGoals() {
 //        super.registerGoals();
-////        this.goalSelector.addGoal(1, new EnhancedBreedGoal(this, 1.0D));
+//        this.goalSelector.addGoal(1, new EnhancedBreedGoal(this, 1.0D));
 //    }
 
     protected Brain<?> makeBrain(Dynamic<?> p_149138_) {
@@ -1562,7 +1558,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             EnhancedBettaBucket.setGenes(stack, this.genetics!=null? this.genetics : getGenes());
             EnhancedBettaBucket.setParentNames(stack, this.sireName, this.damName);
             EnhancedBettaBucket.setEquipment(stack, this.animalInventory.getItem(1));
-            if (this.isPregnant() && this.mateGenetics != null) {
+            if (this.hasEgg() && this.mateGenetics != null) {
                 EnhancedBettaBucket.setMateGenes(stack, this.mateGenetics, this.mateGender);
             }
             EnhancedBettaBucket.setBettaUUID(stack, this.getUUID().toString());
@@ -1570,12 +1566,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         }
     }
 
-    public boolean isPregnant() {
-        return this.entityData.get(PREGNANT) || this.pregnant;
+    public boolean hasEgg() {
+        return this.entityData.get(HAS_EGG);
     }
 
-    public void setPregnant(boolean hasEgg) {
-        this.entityData.set(PREGNANT, hasEgg);
+    public void setHasEgg(boolean hasEgg) {
+        this.entityData.set(HAS_EGG, hasEgg);
     }
 
     @Override
@@ -1690,7 +1686,30 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return this.entityData.get(NEST_POS);
     }
 
-    public void findNestLocation() {
+
+    public BlockPos findExistingNest() {
+        BlockPos baseBlockPos = new BlockPos(this.blockPosition());
+        BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
+
+        int maxSearchHeight = 6;
+        int maxSearchWidth = 3;
+
+        for (int y = 0; y < maxSearchHeight; y++) {
+            for (int x = -maxSearchWidth; x < maxSearchWidth; x++) {
+                for (int z = -maxSearchWidth; z < maxSearchWidth; z++) {
+                    mutableBlockPos.set(baseBlockPos).move(x, y, z);
+                    if (this.level.getBlockState(mutableBlockPos).is(AddonBlocks.BUBBLE_NEST.get())) {
+                        if (ValidatePath.isValidPath(this, mutableBlockPos, 16)) {
+                            return mutableBlockPos;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public void findLocationForNest() {
         BlockPos baseBlockPos = new BlockPos(this.blockPosition());
         BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
 
@@ -1737,8 +1756,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return this.mateName;
     }
 
-    public void setMateName(String pMateName) {
-        this.mateName = pMateName;
+    public void setMateName(String mateName) {
+        if (mateName!=null && !mateName.equals("")) {
+            this.mateName = mateName;
+        } else {
+            this.mateName = "???";
+        }
     }
 
     public Genes getMateGenetics() {
@@ -1747,5 +1770,41 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     public Random getRandom() {
         return random;
+    }
+
+    @Override
+    protected void handlePartnerBreeding(AgeableMob ageable) {
+        if (EanimodCommonConfig.COMMON.omnigenders.get()) {
+            this.mateGenetics = ((EnhancedBetta)ageable).getGenes();
+            this.setHasEgg(true);
+            this.setMateGender(((EnhancedBetta)ageable).getOrSetIsFemale());
+            if (((EnhancedBetta)ageable).hasCustomName()) {
+                this.setMateName(((EnhancedBetta)ageable).getCustomName().getString());
+            }
+            ((EnhancedBetta)ageable).setMateGenes(this.genetics);
+            ((EnhancedBetta)ageable).setHasEgg(true);
+            ((EnhancedBetta)ageable).setMateGender(this.getOrSetIsFemale());
+            if (this.hasCustomName()) {
+                ((EnhancedBetta)ageable).setMateName(this.getCustomName().getString());
+            }
+        } else if (this.getOrSetIsFemale()) {
+            this.mateGenetics = ((EnhancedBetta)ageable).getGenes();
+            this.setHasEgg(true);
+            this.setMateGender(false);
+            if (((EnhancedBetta)ageable).hasCustomName()) {
+                this.setMateName(((EnhancedBetta)ageable).getCustomName().getString());
+            } else {
+                this.setMateName("???"); //Reset mate name
+            }
+        } else {
+            ((EnhancedBetta)ageable).setMateGenes(this.genetics);
+            ((EnhancedBetta)ageable).setHasEgg(true);
+            ((EnhancedBetta)ageable).setMateGender(false);
+            if (this.hasCustomName()) {
+                ((EnhancedBetta)ageable).setMateName(this.getCustomName().getString());
+            } else {
+                ((EnhancedBetta)ageable).setMateName("???"); //Reset mate name
+            }
+        }
     }
 }
