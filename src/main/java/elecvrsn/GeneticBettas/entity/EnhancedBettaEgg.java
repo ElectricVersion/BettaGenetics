@@ -195,7 +195,7 @@ public class EnhancedBettaEgg extends Entity {
         if (!voxelShape.isEmpty()) {
 //            return isEggAttachableBlock(blockState);
             if (isEggAttachableBlock(blockState)) {
-                return this.getBoundingBox().getCenter().y<=(blockPos.getY()+voxelShape.bounds().maxY) && this.getBoundingBox().getCenter().y>=(blockPos.getY()+voxelShape.bounds().minY);
+                return this.getBoundingBox().maxY<=(blockPos.getY()+voxelShape.bounds().maxY) && this.getBoundingBox().maxY>=(blockPos.getY()+voxelShape.bounds().minY);
             }
         }
         return false;

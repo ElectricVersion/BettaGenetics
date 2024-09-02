@@ -1807,4 +1807,21 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             }
         }
     }
+
+    // Pilfered from GA's Nesting code - because BlockTargets are imprecise, so teleport!
+    public static Vec3 moveCloser(Vec3 vec1, Vec3 vec2, double step) {
+        // Calculate the direction vector from vec1 to vec2
+        Vec3 direction = vec2.subtract(vec1);
+
+        // Normalize the direction vector to get the unit vector
+        Vec3 unitDirection = direction.normalize();
+
+        // Scale the unit vector by the step size
+        Vec3 stepVector = unitDirection.scale(step);
+
+        // Add the step vector to vec1 to get the new vector
+        Vec3 newVec = vec1.add(stepVector);
+
+        return newVec;
+    }
 }
