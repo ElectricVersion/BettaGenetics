@@ -74,7 +74,6 @@ import java.util.Random;
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 
 public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable {
-
     protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, AddonSensorTypes.BETTA_ATTACKABLES.get(), AddonSensorTypes.BETTA_FOOD_TEMPTATIONS.get());
     protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(ModMemoryModuleTypes.SLEEPING.get(), ModMemoryModuleTypes.PAUSE_BRAIN.get(), ModMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN, AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), AddonMemoryModuleTypes.MAKING_NEST.get(), ModMemoryModuleTypes.HAS_EGG.get());
     private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
@@ -94,56 +93,56 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 //            "mask/wildtype.png", "mask/halfmoon.png"
 //    };
 
-    private static final String[] TEXTURES_FIN_ALPHA = new String[] {
+    private static final String[] TEXTURES_FIN_ALPHA = new String[]{
             "mask/solid.png", "mask/lace_lg.png", "mask/cambodian_lg.png"
     };
 
-    private static final String[] TEXTURES_IRI_FINS = new String[] {
+    private static final String[] TEXTURES_IRI_FINS = new String[]{
             "", "iri/fin/low_fin_iri.png", "iri/fin/med_fin_iri.png", "iri/fin/high_fin_iri.png",
     };
 
-    private static final String[] TEXTURES_IRI_BODY = new String[] {
+    private static final String[] TEXTURES_IRI_BODY = new String[]{
             "", "iri/body/low_body_iri.png", "iri/body/med_body_iri.png", "iri/body/high_body_iri.png",
             "iri/body/spread.png",
     };
-    private static final String[] TEXTURES_IRI_MASK = new String[] {
+    private static final String[] TEXTURES_IRI_MASK = new String[]{
             "", "iri/body/mask_low1.png", "iri/body/mask_low2.png",
             "iri/body/mask_med1.png", "iri/body/mask_med2.png",
             "iri/body/mask_high1.png", "iri/body/mask_high2.png",
             "iri/body/mask_max.png",
     };
-    private static final String[] TEXTURES_RED_FIN = new String[] {
+    private static final String[] TEXTURES_RED_FIN = new String[]{
             "", "red/fin/lower_3.png", "red/fin/lower_2.png", "red/fin/lower_1.png", "red/fin/wildtype.png"
     };
 
-//    private static final String[] TEXTURES_BUTTERFLY = new String[] {
+    //    private static final String[] TEXTURES_BUTTERFLY = new String[] {
 //            "", "butterfly/long_butterfly_min.png", "butterfly/long_butterfly_medium.png", "butterfly/long_butterfly_high.png", "butterfly/long_butterfly_max.png",
 //    };
-    private static final String[] TEXTURES_RED_BODY = new String[] {
+    private static final String[] TEXTURES_RED_BODY = new String[]{
             "", "red/body/min.png", "red/body/low.png", "red/body/med.png", "red/body/high.png", "red/extended.png", "red/extended_het_mask.png", "red/extended_homo_mask.png"
     };
 
-    private static final String[] TEXTURES_ALPHA = new String[] {
+    private static final String[] TEXTURES_ALPHA = new String[]{
             "mask/percent25.png", "mask/percent50.png", "mask/percent75.png", "mask/solid.png"
     };
 
-    private static final String[] TEXTURES_EYES = new String[] {
+    private static final String[] TEXTURES_EYES = new String[]{
             "eyes_wildtype.png"
     };
 
-    private static final String[] TEXTURES_SHADING = new String[] {
+    private static final String[] TEXTURES_SHADING = new String[]{
             "body_shading.png", "body_shading_light.png"
     };
 
-    private static final String[] TEXTURES_PASTEL_OPAQUE = new String[] {
+    private static final String[] TEXTURES_PASTEL_OPAQUE = new String[]{
             "", "iri/pastel.png", "iri/opaque.png"
     };
 
-    private static final String[] TEXTURES_MARBLE_BLACK = new String[] {
+    private static final String[] TEXTURES_MARBLE_BLACK = new String[]{
             "", "black/marble/marble_1.png", "black/marble/marble_2.png", "black/marble/marble_3.png", "black/marble/marble_4.png", "black/marble/marble_5.png", "black/marble/marble_6.png", "black/marble/marble_7.png", "black/marble/marble_8.png", "black/marble/marble_9.png", "black/marble/marble_10.png", "black/marble/marble_11.png",
     };
 
-    private static final String[][][] TEXTURES_MARBLE = new String[][][] {
+    private static final String[][][] TEXTURES_MARBLE = new String[][][]{
             {
                     {"mask/solid.png"}
             },
@@ -196,7 +195,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     };
 
 
-    private static final String[][][] TEXTURES_FINS = new String[][][] {
+    private static final String[][][] TEXTURES_FINS = new String[][][]{
             {
                     {"fin/plakat.png", "fin/plakat_hetcrown.png", "fin/plakat_homocrown.png"},
                     {"fin/plakat_double.png", "fin/plakat_double_hetcrown.png", "fin/plakat_double_homocrown.png"},
@@ -223,18 +222,18 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             },
     };
 
-    private static final String[] TEXTURES_DUMBO = new String[] {
+    private static final String[] TEXTURES_DUMBO = new String[]{
             "fin/dumbo.png", "fin/dumbo_hetcrown.png", "fin/dumbo_homocrown.png"
     };
 
-    private static final String[] TEXTURES_DUMBO_BUTTERFLY = new String[] {
-            "", "butterfly/dumbo_low.png",  "butterfly/dumbo_med.png", "butterfly/dumbo_high.png", "butterfly/dumbo_max.png",
+    private static final String[] TEXTURES_DUMBO_BUTTERFLY = new String[]{
+            "", "butterfly/dumbo_low.png", "butterfly/dumbo_med.png", "butterfly/dumbo_high.png", "butterfly/dumbo_max.png",
     };
 
-    private static final String[] TEXTURES_DUMBO_ALPHA = new String[] {
+    private static final String[] TEXTURES_DUMBO_ALPHA = new String[]{
             "mask/nondumbo.png", "mask/solid.png"
-};
-    private static final String[][][] TEXTURES_BUTTERFLY = new String[][][] {
+    };
+    private static final String[][][] TEXTURES_BUTTERFLY = new String[][][]{
             {
                     {"", "butterfly/plakat_low.png", "butterfly/plakat_med.png", "butterfly/plakat_high.png", "butterfly/plakat_max.png"},
                     {"", "butterfly/plakat_double_low.png", "butterfly/plakat_double_med.png", "butterfly/plakat_double_high.png", "butterfly/plakat_double_max.png"},
@@ -261,7 +260,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             },
     };
 
-    private static final String[][][] TEXTURES_IRI_RIM = new String[][][] {
+    private static final String[][][] TEXTURES_IRI_RIM = new String[][][]{
             {
                     {"", "iri/rim/plakat_low.png", "iri/rim/plakat_med.png", "iri/rim/plakat_high.png", "iri/rim/plakat_max.png"},
                     {"", "iri/rim/plakat_double_low.png", "iri/rim/plakat_double_med.png", "iri/rim/plakat_double_high.png", "iri/rim/plakat_double_max.png"},
@@ -294,7 +293,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @OnlyIn(Dist.CLIENT)
     private Genes getClientSidedGenes() {
-        if(this.genesSplitForClient==null) {
+        if (this.genesSplitForClient == null) {
             String sharedGenes = this.entityData.get(SHARED_GENES);
             if (sharedGenes.isEmpty()) {
                 return null;
@@ -308,13 +307,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return this.genesSplitForClient;
     }
 
-    public Genes getGenes(){
+    public Genes getGenes() {
         if (this.level instanceof ServerLevel) {
             return this.genetics;
         } else {
             return this.getClientSidedGenes();
         }
     }
+
     public EnhancedBetta(EntityType<? extends EnhancedBetta> entityType, Level worldIn) {
         super(entityType, worldIn, AddonReference.BETTA_SEXLINKED_GENES_LENGTH, AddonReference.BETTA_AUTOSOMAL_GENES_LENGTH, true);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
@@ -352,9 +352,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         if (genes[62] == 2 && genes[63] == 2) {
             health -= 2F;
         }
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue((double)health);
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue((double) health);
         return health;
     }
+
     private float calcMaxHealth(boolean setHealth) {
         float health = calcMaxHealth();
         if (setHealth) {
@@ -369,7 +370,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     @Override
-    protected int getAdultAge() { return EanimodCommonConfig.COMMON.adultAgePig.get();}
+    protected int getAdultAge() {
+        return EanimodCommonConfig.COMMON.adultAgePig.get();
+    }
 
     @Override
     protected int gestationConfig() {
@@ -385,42 +388,44 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     public static float[] getHSBFromHex(String colourHex) {
         if (colourHex.length() == 7) {
-            colourHex=colourHex.substring(1,7);
+            colourHex = colourHex.substring(1, 7);
         }
         int[] color =
-        {
-            Integer.valueOf( colourHex.substring( 0, 2 ), 16 ),
-            Integer.valueOf( colourHex.substring( 2, 4 ), 16 ),
-            Integer.valueOf( colourHex.substring( 4, 6 ), 16 )
-        };
-        return Color.RGBtoHSB(color[0], color[1], color[2], (float[])null);
+                {
+                        Integer.valueOf(colourHex.substring(0, 2), 16),
+                        Integer.valueOf(colourHex.substring(2, 4), 16),
+                        Integer.valueOf(colourHex.substring(4, 6), 16)
+                };
+        return Color.RGBtoHSB(color[0], color[1], color[2], (float[]) null);
     }
 
     public static int getARGBFromHex(String colourHex) {
         if (colourHex.length() == 7) {
-            colourHex=colourHex.substring(1,7);
+            colourHex = colourHex.substring(1, 7);
         }
         int[] color =
                 {
-                        Integer.valueOf( colourHex.substring( 0, 2 ), 16 ),
-                        Integer.valueOf( colourHex.substring( 2, 4 ), 16 ),
-                        Integer.valueOf( colourHex.substring( 4, 6 ), 16 )
+                        Integer.valueOf(colourHex.substring(0, 2), 16),
+                        Integer.valueOf(colourHex.substring(2, 4), 16),
+                        Integer.valueOf(colourHex.substring(4, 6), 16)
                 };
         return Integer.MIN_VALUE | Math.min(color[0], 255) << 16 | Math.min(color[1], 255) << 8 | Math.min(color[2], 255);
     }
 
 
-    protected  void incrementHunger() {
-        if(this.sleeping) {
-            hunger = hunger + (1.0F*getHungerModifier());
+    protected void incrementHunger() {
+        if (this.sleeping) {
+            hunger = hunger + (1.0F * getHungerModifier());
         } else {
-            hunger = hunger + (2.0F*getHungerModifier());
+            hunger = hunger + (2.0F * getHungerModifier());
         }
     }
+
     @Override
     protected void runExtraIdleTimeTick() {
     }
-    public void lethalGenes(){
+
+    public void lethalGenes() {
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -442,6 +447,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         this.getBrain().eraseMemory(ModMemoryModuleTypes.FOCUS_BRAIN.get());
 
     }
+
     @Override
     @OnlyIn(Dist.CLIENT)
     protected void setTexturePaths() {
@@ -491,18 +497,18 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             /*** COLORATION ***/
             float[] melanin = {0.0427F, 0.527F, 0.251F};
-            float[] pheomelanin = { 0.991F, 0.978F, 0.655F };
-            float[] bloodredColor = { 0.996F, 0.978F, 0.315F };
+            float[] pheomelanin = {0.991F, 0.978F, 0.655F};
+            float[] bloodredColor = {0.996F, 0.978F, 0.315F};
             float[] cellophane = getHSBFromHex("ebe8e4");
-            float[] iridescenceLight = { 0.44F, 0.978F, 0.878F };
-            float[] iridescence = { 0.530F, 0.715F, 0.634F };
-            float[] iridescenceDark = { 0.582F, 0.808F, 0.604F };
+            float[] iridescenceLight = {0.44F, 0.978F, 0.878F};
+            float[] iridescence = {0.530F, 0.715F, 0.634F};
+            float[] iridescenceDark = {0.582F, 0.808F, 0.604F};
             /* Opaque/Pastel normally appears as a modifier of iridescence,
                 but it needs separate colors + its own layer since it marbles separately
              */
-            float[] opaqueLight = { 0.44F, 0.095F, 0.953F };
-            float[] opaque = { 0.530F, 0.093F, 0.95F };
-            float[] opaqueDark = { 0.582F, 0.166F, 0.922F };
+            float[] opaqueLight = {0.44F, 0.095F, 0.953F};
+            float[] opaque = {0.530F, 0.093F, 0.95F};
+            float[] opaqueDark = {0.582F, 0.166F, 0.922F};
             float[] metallic1 = getHSBFromHex("00ab74");
             float[] metallic2 = getHSBFromHex("00ab74");
             float[] metallic3 = getHSBFromHex("e7d094");
@@ -514,7 +520,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     bodyIriLevel++;
                 }
             }
-            bodyIri += bodyIriLevel/2;
+            bodyIri += bodyIriLevel / 2;
 
             //Fin Iridescence Level
             int finIriLevel = 0;
@@ -523,7 +529,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     finIriLevel++;
                 }
             }
-            finIri += finIriLevel/2;
+            finIri += finIriLevel / 2;
 
             if (gene[32] == 2 || gene[33] == 2) {
                 //Higher Iridescence Intensity
@@ -549,7 +555,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                         maskIriLevel++;
                     }
                 }
-                maskIriLevel = maskIriLevel/2;
+                maskIriLevel = maskIriLevel / 2;
                 switch (maskIriLevel) {
                     case 0 -> maskIri = 1;
                     case 1 -> maskIri = 3;
@@ -590,8 +596,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 if (gene[16] == 2 && gene[17] == 2) {
                     //Homozygous Masked
                     bodyRed = 7;
-                }
-                else if (gene[16] == 2 || gene[17] == 2) {
+                } else if (gene[16] == 2 || gene[17] == 2) {
                     //Heterozygous Masked
                     bodyRed = 6;
                 }
@@ -629,13 +634,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 if (gene[156] == 2 && gene[157] == 2) {
                     //Homozygous Masked
                     bodyBloodred = 7;
-                }
-                else if (gene[156] == 2 || gene[157] == 2) {
+                } else if (gene[156] == 2 || gene[157] == 2) {
                     //Heterozygous Masked
                     bodyBloodred = 6;
                 }
             }
-
 
 
             if (gene[48] == 2 || gene[49] == 2) {
@@ -652,14 +655,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     iridescenceLight = getHSBFromHex("989b86");
                     iridescence = getHSBFromHex("6f765e");
                     iridescenceDark = getHSBFromHex("515543");
-                }
-                else if (metallic == 1) {
+                } else if (metallic == 1) {
                     iridescenceLight = getHSBFromHex("89a5a6");
                     iridescence = getHSBFromHex("597d86");
                     iridescenceDark = getHSBFromHex("3e5c62");
                     metallic2 = getHSBFromHex("A7C7A5");
-                }
-                else {
+                } else {
                     iridescenceLight[0] = 0.533F;
                     iridescenceLight[1] = 0.248F;
                     iridescenceLight[2] = 0.792F;
@@ -669,8 +670,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     iridescenceDark[0] = 0.551F;
                     iridescenceDark[1] = 0.480F;
                     iridescenceDark[2] = 0.482F;
-                }            }
-            else if (gene[0] == 2 || gene[1] == 2) {
+                }
+            } else if (gene[0] == 2 || gene[1] == 2) {
                 //Royal Blue (het steel blue)
                 metallic1 = getHSBFromHex("418bb1");
                 metallic2 = getHSBFromHex("00AC73");
@@ -679,14 +680,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     iridescenceLight = getHSBFromHex("55d9ea");
                     iridescence = getHSBFromHex("2a8fab");
                     iridescenceDark = getHSBFromHex("296d88");
-                }
-                else if (metallic == 1) {
+                } else if (metallic == 1) {
                     iridescenceLight = getHSBFromHex("5cb6dd");
                     iridescence = getHSBFromHex("2c72a5");
                     iridescenceDark = getHSBFromHex("2c5882");
                     metallic2 = getHSBFromHex("A7C7A5");
-                }
-                else {
+                } else {
                     iridescenceLight[0] = 0.609F;
                     iridescenceLight[1] = 0.543F;
                     iridescenceLight[2] = 0.788F;
@@ -697,14 +696,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     iridescenceDark[1] = 0.713F;
                     iridescenceDark[2] = 0.475F;
                 }
-            }
-            else if (metallic == 2) {
+            } else if (metallic == 2) {
                 //Turquoise Metallic
                 iridescenceLight = getHSBFromHex("6fa970");
                 iridescence = getHSBFromHex("318c64");
                 iridescenceDark = getHSBFromHex("218074");
-            }
-            else if (metallic == 1) {
+            } else if (metallic == 1) {
                 //Turquoise Het Metallic
                 iridescenceLight = getHSBFromHex("38c380");
                 iridescence = getHSBFromHex("349c95");
@@ -715,8 +712,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             if (gene[42] == 2 && gene[43] == 2) {
                 //Orange
                 pheomelanin = getHSBFromHex("D44E07");
-            }
-            else if (gene[42] == 3 && gene[43] == 3) {
+            } else if (gene[42] == 3 && gene[43] == 3) {
                 //Yellow
                 pheomelanin = getHSBFromHex("FFBF43");
             }
@@ -768,8 +764,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     melanin[1] = 0.091F;
                     melanin[2] = 0.151F;
                 }
-            }
-            else if (gene[6] == 2 && gene[7] == 2) {
+            } else if (gene[6] == 2 && gene[7] == 2) {
                 //Melano Black
                 melanin[1] = 0.125F;
                 melanin[2] = 0.115F;
@@ -826,6 +821,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 if (gene[70] == 2 || gene[71] == 2) {
                     iriRim += 1;
                 }
+
+                if (iriRim == butterfly+1 && iriRim+1 <= 4) {
+                    //if the grade of iri rims is one higher than the butterfly grade, increase the iri rims grade by 1 to prevent weirdy buggy/overlap
+                    iriRim +=1;
+                }
             }
 
             if (gene[152] == 2 || gene[153] == 2) {
@@ -844,30 +844,25 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     if (gene[60] == gene[61]) {
                         //Halfmoon
                         fins = isMale ? 5 : 2;
-                    }
-                    else {
+                    } else {
                         //Delta
                         fins = isMale ? 4 : 1;
                     }
-                }
-                else {
+                } else {
                     //Veil
                     fins = isMale ? 3 : 0;
                 }
-            }
-            else {
+            } else {
                 //Short Fins
                 if (gene[60] == 2 || gene[61] == 2) {
                     if (gene[60] == gene[61]) {
                         //Halfmoon Plakat
                         fins = isMale ? 2 : 0;
-                    }
-                    else {
+                    } else {
                         //Delta Plakat
                         fins = isMale ? 1 : 0;
                     }
-                }
-                else {
+                } else {
                     //Plakat
                     fins = 0;
                 }
@@ -882,8 +877,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 if (gene[64] == gene[65]) {
                     //Homo Crowntail
                     crowntail = 2;
-                }
-                else {
+                } else {
                     //Het Crowntail
                     crowntail = 1;
                 }
@@ -905,12 +899,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                         marbleRedSizeMod++;
                     }
                 }
-                marbleRedSize = 2 + (marbleRedSizeMod/2);
+                marbleRedSize = 2 + (marbleRedSizeMod / 2);
 
                 //Quality
                 int marbleRedQualMod = 0;
                 for (int i = 92; i < 96; i++) {
-                    marbleRedQualMod+=gene[i]-1;
+                    marbleRedQualMod += gene[i] - 1;
                 }
                 if (marbleRedQualMod < 4) {
                     marbleRedQual = 1;
@@ -943,12 +937,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                         marbleBlackSizeMod++;
                     }
                 }
-                marbleBlackSize = 2 + (marbleBlackSizeMod/2);
+                marbleBlackSize = 2 + (marbleBlackSizeMod / 2);
 
                 //Quality
                 int marbleBlackQualMod = 0;
                 for (int i = 106; i < 110; i++) {
-                    marbleBlackQualMod+=gene[i]-1;
+                    marbleBlackQualMod += gene[i] - 1;
                 }
                 if (marbleBlackQualMod < 4) {
                     marbleBlackQual = 1;
@@ -980,12 +974,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                         marbleIriSizeMod++;
                     }
                 }
-                marbleIriSize = 2 + (marbleIriSizeMod/2);
+                marbleIriSize = 2 + (marbleIriSizeMod / 2);
 
                 //Quality
                 int marbleIriQualMod = 0;
                 for (int i = 134; i < 138; i++) {
-                    marbleIriQualMod+=gene[i]-1;
+                    marbleIriQualMod += gene[i] - 1;
                 }
                 if (marbleIriQualMod < 4) {
                     marbleIriQual = 1;
@@ -1017,12 +1011,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                         marbleOpaqueSizeMod++;
                     }
                 }
-                marbleOpaqueSize = 2 + (marbleOpaqueSizeMod/2);
+                marbleOpaqueSize = 2 + (marbleOpaqueSizeMod / 2);
 
                 //Quality
                 int marbleOpaqueQualMod = 0;
                 for (int i = 148; i < 152; i++) {
-                    marbleOpaqueQualMod+=gene[i]-1;
+                    marbleOpaqueQualMod += gene[i] - 1;
                 }
                 if (marbleOpaqueQualMod < 4) {
                     marbleOpaqueQual = 1;
@@ -1041,7 +1035,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     marbleOpaqueRand += uuidArry[6] % 5;
                 }
             }
-
 
 
             clampRGB(melanin);
@@ -1102,41 +1095,41 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             transRootGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             TextureGrouping transAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                TextureGrouping finAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-                    TextureGrouping finAlphaGroup1 = new TextureGrouping(TexturingType.MASK_GROUP);
-                    addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_DUMBO_ALPHA, dumbo ? 1 : 0, true);
-                    addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_FINS, fins, doubletail, crowntail, true);
-                    addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_DUMBO, crowntail, dumbo);
+            TextureGrouping finAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+            TextureGrouping finAlphaGroup1 = new TextureGrouping(TexturingType.MASK_GROUP);
+            addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_DUMBO_ALPHA, dumbo ? 1 : 0, true);
+            addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_FINS, fins, doubletail, crowntail, true);
+            addTextureToAnimalTextureGrouping(finAlphaGroup1, TEXTURES_DUMBO, crowntail, dumbo);
             finAlphaGroup.addGrouping(finAlphaGroup1);
-                    TextureGrouping finAlphaGroup2 = new TextureGrouping(TexturingType.MERGE_GROUP);
-                        addTextureToAnimalTextureGrouping(finAlphaGroup2, TEXTURES_FIN_ALPHA, finAlpha, l -> true);
-                        addTextureToAnimalTextureGrouping(finAlphaGroup2, TEXTURES_DUMBO, crowntail, dumbo);
-                    finAlphaGroup.addGrouping(finAlphaGroup2);
-                    TextureGrouping finAlphaGroup3 = new TextureGrouping(TexturingType.CUTOUT_GROUP);
-                        TextureGrouping finCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                            if (finAlpha == 1) {
-                                addTextureToAnimalTextureGrouping(finCutoutGroup, TEXTURES_BUTTERFLY, fins, doubletail, butterfly, butterfly != 0);
-                            }
-                        finAlphaGroup3.addGrouping(finCutoutGroup);
-                        TextureGrouping finPigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                            TextureGrouping finRedPigmentGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-                            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, true);
-                            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_FIN, finRed, l -> l != 0);
-                            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
-                            finPigmentGroup.addGrouping(finRedPigmentGroup);
-                            finPigmentGroup.addGrouping(iriAlphaGroup);
-                         finAlphaGroup3.addGrouping(finPigmentGroup);
-                    finAlphaGroup.addGrouping(finAlphaGroup3);
-                transAlphaGroup.addGrouping(finAlphaGroup);
-                TextureGrouping eyeAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                  addTextureToAnimalTextureGrouping(eyeAlphaGroup, "mask/eyes.png", true);
-                transAlphaGroup.addGrouping(eyeAlphaGroup);
+            TextureGrouping finAlphaGroup2 = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(finAlphaGroup2, TEXTURES_FIN_ALPHA, finAlpha, l -> true);
+            addTextureToAnimalTextureGrouping(finAlphaGroup2, TEXTURES_DUMBO, crowntail, dumbo);
+            finAlphaGroup.addGrouping(finAlphaGroup2);
+            TextureGrouping finAlphaGroup3 = new TextureGrouping(TexturingType.CUTOUT_GROUP);
+            TextureGrouping finCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            if (finAlpha == 1) {
+                addTextureToAnimalTextureGrouping(finCutoutGroup, TEXTURES_BUTTERFLY, fins, doubletail, butterfly, butterfly != 0);
+            }
+            finAlphaGroup3.addGrouping(finCutoutGroup);
+            TextureGrouping finPigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            TextureGrouping finRedPigmentGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, true);
+            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_FIN, finRed, l -> l != 0);
+            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
+            finPigmentGroup.addGrouping(finRedPigmentGroup);
+            finPigmentGroup.addGrouping(iriAlphaGroup);
+            finAlphaGroup3.addGrouping(finPigmentGroup);
+            finAlphaGroup.addGrouping(finAlphaGroup3);
+            transAlphaGroup.addGrouping(finAlphaGroup);
+            TextureGrouping eyeAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(eyeAlphaGroup, "mask/eyes.png", true);
+            transAlphaGroup.addGrouping(eyeAlphaGroup);
             transRootGroup.addGrouping(transAlphaGroup);
 
             TextureGrouping rootGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-                TextureGrouping bodyAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                addTextureToAnimalTextureGrouping(bodyAlphaGroup, "mask/body.png", true);
-                addTextureToAnimalTextureGrouping(bodyAlphaGroup, "mask/gills.png", true);
+            TextureGrouping bodyAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(bodyAlphaGroup, "mask/body.png", true);
+            addTextureToAnimalTextureGrouping(bodyAlphaGroup, "mask/gills.png", true);
             rootGroup.addGrouping(bodyAlphaGroup);
 
             TextureGrouping texturesGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
@@ -1209,18 +1202,16 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer1.png", "sb-mt1", metallic1RGB);
                     addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer2.png", "sb-mt2", metallic2RGB);
                     addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer3.png", "sb-mt3", metallic3RGB);
-                }
-                else if (gene[0] == 2 || gene[1] == 2) {
+                } else if (gene[0] == 2 || gene[1] == 2) {
                     //Royal Blue
                     addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer1.png", "rb-mt1", metallic1RGB);
                     addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer2.png", "rb-mt2", metallic2RGB);
                     addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer3.png", "rb-mt3", metallic3RGB);
-                }
-                else {
+                } else {
                     if (metallic == 2) {
                         addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/turq_metalliclayer2.png", "t-mt2", metallic2RGB);
                     }
-                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB,"iri/turq_metalliclayer3.png", "t-mt3", metallic3RGB);
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/turq_metalliclayer3.png", "t-mt3", metallic3RGB);
                 }
                 iridescenceGroup.addGrouping(metallicGroup);
                 // Metallic seems to look better with normal shading
@@ -1229,7 +1220,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             texturesGroup.addGrouping(iridescenceGroup);
             /** BUTTERFLY **/
-            if (butterfly !=0) {
+            if (butterfly != 0) {
                 TextureGrouping butterflyGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                 TextureGrouping butterflyMaskMergeGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 TextureGrouping butterflyMaskGroup = new TextureGrouping(TexturingType.CUTOUT_GROUP);
@@ -1266,6 +1257,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             this.setTextureGrouping(rootGroup);
         }
     }
+
     @Override
     @OnlyIn(Dist.CLIENT)
     protected void setAlphaTexturePaths() {
@@ -1281,8 +1273,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         Genes babyGenes = new Genes(this.getGenes()).makeChild(this.getOrSetIsFemale(), otherParent.getOrSetIsFemale(), otherParent.getGenes());
         enhancedBetta.setGenes(babyGenes);
         enhancedBetta.setSharedGenes(babyGenes);
-        enhancedBetta.setSireName(otherParent.getCustomName()==null ? "???" : otherParent.getCustomName().getString());
-        enhancedBetta.setDamName(this.getCustomName()==null ? "???" : this.getCustomName().getString());
+        enhancedBetta.setSireName(otherParent.getCustomName() == null ? "???" : otherParent.getCustomName().getString());
+        enhancedBetta.setDamName(this.getCustomName() == null ? "???" : this.getCustomName().getString());
         enhancedBetta.setParent(this.getUUID().toString());
         enhancedBetta.setGrowingAge();
         enhancedBetta.setBirthTime();
@@ -1290,6 +1282,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         enhancedBetta.setEntityStatus(EntityState.CHILD_STAGE_ONE.toString());
         enhancedBetta.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
         enhancedBetta.calcMaxHealth(true);
+        enhancedBetta.calcSpeed();
         return enhancedBetta;
     }
 
@@ -1298,9 +1291,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         Genes babyGenes = new Genes(this.genetics).makeChild(this.getOrSetIsFemale(), this.mateGender, this.mateGenetics);
         defaultCreateAndSpawn(enhancedBetta, inWorld, babyGenes, -this.getAdultAge());
         enhancedBetta.calcMaxHealth(true);
-
+        enhancedBetta.calcSpeed();
         this.level.addFreshEntity(enhancedBetta);
     }
+
     @Override
     protected boolean canBePregnant() {
         return false;
@@ -1315,9 +1309,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     protected FoodSerialiser.AnimalFoodMap getAnimalFoodType() {
         return FoodSerialiser.getAnimalFoodMap("betta");
     }
+
     public boolean isBreedingItem(ItemStack stack) {
         return this.getAnimalFoodType().isBreedingItem(stack.getItem());
     }
+
     @Override
     protected Genes createInitialGenes(LevelAccessor world, BlockPos pos, boolean isDomestic) {
         return new BettaGeneticsInitialiser().generateNewGenetics(world, pos, isDomestic);
@@ -1353,9 +1349,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     protected Brain<?> makeBrain(Dynamic<?> p_149138_) {
         return BettaBrain.makeBrain(this.brainProvider().makeBrain(p_149138_));
     }
+
     public Brain<EnhancedBetta> getBrain() {
-        return (Brain<EnhancedBetta>)super.getBrain();
+        return (Brain<EnhancedBetta>) super.getBrain();
     }
+
     protected void customServerAiStep() {
         this.getBrain().tick((ServerLevel) this.level, this);
         if (!this.isNoAi()) {
@@ -1365,6 +1363,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 //            }
         }
     }
+
     public boolean canBreatheUnderwater() {
         return true;
     }
@@ -1376,8 +1375,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 //            this.onGround = false;
 //            this.hasImpulse = true;
 //            this.playSound(this.getFlopSound(), this.getSoundVolume(), this.getVoicePitch());
-        }
-        else if (this.isAnimalSleeping() && !this.onGround) {
+        } else if (this.isAnimalSleeping() && !this.onGround) {
             this.setDeltaMovement(this.getDeltaMovement().add(0.0, this.brain.hasMemoryValue(AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get()) ? -0.001 : -0.01, 0.0));
         }
         super.aiStep();
@@ -1429,9 +1427,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public boolean isHighlyAggressive() {
         return getAggression() >= 8;
     }
+
     public boolean isNotHighlyAggressive() {
         return getAggression() < 8;
     }
+
     public boolean isAggressive() {
         return getAggression() >= 4;
     }
@@ -1444,7 +1444,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public int getAggression() {
         if (this.aggression == -1 && this.getGenes() != null) {
             int[] gene = this.getGenes().getAutosomalGenes();
-            this.aggression = (gene[72] + gene[73])/2;
+            this.aggression = (gene[72] + gene[73]) / 2;
         }
         return aggression;
     }
@@ -1494,14 +1494,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     protected PathNavigation createNavigation(Level p_149128_) {
         return new EnhancedBetta.BettaPathNavigation(this, p_149128_);
     }
+
     @Override
     protected void readNBTGenes(CompoundTag compoundNBT, String key, Genes genetics) {
         if (compoundNBT.contains(key)) {
             CompoundTag nbtGenetics = compoundNBT.getCompound(key);
             genetics.setGenes(nbtGenetics.getIntArray("SGenes"), nbtGenetics.getIntArray("AGenes"));
-        } else {
-            readLegacyGenes(compoundNBT.getList(key.equals("Genetics") ? "Genes" : "FatherGenes", 10), genetics);
         }
+        calcSpeed();
     }
 
     public void bubble() {
@@ -1528,6 +1528,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public void setFromBucket(boolean p_149196_) {
         this.entityData.set(FROM_BUCKET, p_149196_);
     }
+
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
@@ -1555,7 +1556,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public void saveToBucketTag(ItemStack stack) {
         Bucketable.saveDefaultDataToBucketTag(this, stack);
         if (stack.getItem() instanceof EnhancedBettaBucket) {
-            EnhancedBettaBucket.setGenes(stack, this.genetics!=null? this.genetics : getGenes());
+            EnhancedBettaBucket.setGenes(stack, this.genetics != null ? this.genetics : getGenes());
             EnhancedBettaBucket.setParentNames(stack, this.sireName, this.damName);
             EnhancedBettaBucket.setEquipment(stack, this.animalInventory.getItem(1));
             if (this.hasEgg() && this.mateGenetics != null) {
@@ -1580,6 +1581,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         this.setIsFemale(tag.getCompound("Genetics"));
         this.toggleReloadTexture();
         calcMaxHealth(true);
+        calcSpeed();
     }
 
     @Override
@@ -1621,7 +1623,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     public boolean sleepingConditional() {
-        return (((this.level.getDayTime()%24000 >= 12600 && this.level.getDayTime()%24000 <= 22000) || this.level.isThundering()) && this.awokenTimer == 0 && !this.sleeping);
+        return (((this.level.getDayTime() % 24000 >= 12600 && this.level.getDayTime() % 24000 <= 22000) || this.level.isThundering()) && this.awokenTimer == 0 && !this.sleeping);
     }
 
 
@@ -1637,15 +1639,15 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         BlockPos baseBlockPos = new BlockPos(this.blockPosition());
         BlockPos.MutableBlockPos mutableblockpos = new BlockPos.MutableBlockPos();
 
-        for(int k = 0; k <= verticalRange; k = k > 0 ? -k : 1 - k) {
-            for(int l = 0; l < horizontalRange; ++l) {
-                for(int i1 = 0; i1 <= l; i1 = i1 > 0 ? -i1 : 1 - i1) {
-                    for(int j1 = i1 < l && i1 > -l ? l : 0; j1 <= l; j1 = j1 > 0 ? -j1 : 1 - j1) {
-                        mutableblockpos.set(baseBlockPos).move(i1, k-1, j1);
+        for (int k = 0; k <= verticalRange; k = k > 0 ? -k : 1 - k) {
+            for (int l = 0; l < horizontalRange; ++l) {
+                for (int i1 = 0; i1 <= l; i1 = i1 > 0 ? -i1 : 1 - i1) {
+                    for (int j1 = i1 < l && i1 > -l ? l : 0; j1 <= l; j1 = j1 > 0 ? -j1 : 1 - j1) {
+                        mutableblockpos.set(baseBlockPos).move(i1, k - 1, j1);
                         // Is Dripleaf?
                         if (this.level.getBlockState(mutableblockpos).getBlock() instanceof BigDripleafBlock) {
-                            this.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(mutableblockpos,0.4F, 0));
-                            this.getBrain().setMemoryWithExpiry(AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), level.getGameTime(),500);
+                            this.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(mutableblockpos, 0.4F, 0));
+                            this.getBrain().setMemoryWithExpiry(AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), level.getGameTime(), 500);
                             return;
                         }
                     }
@@ -1731,9 +1733,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     public static boolean checkBettaSpawnRules(EntityType<EnhancedBetta> enhancedBetta, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, Random random) {
-        int i = levelAccessor.getSeaLevel();
-        int j = i - 13;
-        return blockPos.getY() >= j && blockPos.getY() <= i && levelAccessor.getBlockState(blockPos).is(Blocks.WATER) && levelAccessor.getBlockState(blockPos.above()).is(Blocks.WATER);
+        return true;
+////        int i = levelAccessor.getSeaLevel();
+////        int j = i - 13;
+////        if (blockPos.getY() >= j && levelAccessor.getBlockState(blockPos).is(Blocks.WATER)) {
+////            return true;
+////        }
+//        return blockPos.getY() >= j && levelAccessor.getBlockState(blockPos).is(Blocks.WATER);
     }
 
     public ImmutableList<Activity> getActivities() {
@@ -1757,7 +1763,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     public void setMateName(String mateName) {
-        if (mateName!=null && !mateName.equals("")) {
+        if (mateName != null && !mateName.equals("")) {
             this.mateName = mateName;
         } else {
             this.mateName = "???";
@@ -1775,35 +1781,35 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     @Override
     protected void handlePartnerBreeding(AgeableMob ageable) {
         if (EanimodCommonConfig.COMMON.omnigenders.get()) {
-            this.mateGenetics = ((EnhancedBetta)ageable).getGenes();
+            this.mateGenetics = ((EnhancedBetta) ageable).getGenes();
             this.setHasEgg(true);
-            this.setMateGender(((EnhancedBetta)ageable).getOrSetIsFemale());
-            if (((EnhancedBetta)ageable).hasCustomName()) {
-                this.setMateName(((EnhancedBetta)ageable).getCustomName().getString());
+            this.setMateGender(((EnhancedBetta) ageable).getOrSetIsFemale());
+            if (((EnhancedBetta) ageable).hasCustomName()) {
+                this.setMateName(((EnhancedBetta) ageable).getCustomName().getString());
             }
-            ((EnhancedBetta)ageable).setMateGenes(this.genetics);
-            ((EnhancedBetta)ageable).setHasEgg(true);
-            ((EnhancedBetta)ageable).setMateGender(this.getOrSetIsFemale());
+            ((EnhancedBetta) ageable).setMateGenes(this.genetics);
+            ((EnhancedBetta) ageable).setHasEgg(true);
+            ((EnhancedBetta) ageable).setMateGender(this.getOrSetIsFemale());
             if (this.hasCustomName()) {
-                ((EnhancedBetta)ageable).setMateName(this.getCustomName().getString());
+                ((EnhancedBetta) ageable).setMateName(this.getCustomName().getString());
             }
         } else if (this.getOrSetIsFemale()) {
-            this.mateGenetics = ((EnhancedBetta)ageable).getGenes();
+            this.mateGenetics = ((EnhancedBetta) ageable).getGenes();
             this.setHasEgg(true);
             this.setMateGender(false);
-            if (((EnhancedBetta)ageable).hasCustomName()) {
-                this.setMateName(((EnhancedBetta)ageable).getCustomName().getString());
+            if (((EnhancedBetta) ageable).hasCustomName()) {
+                this.setMateName(((EnhancedBetta) ageable).getCustomName().getString());
             } else {
                 this.setMateName("???"); //Reset mate name
             }
         } else {
-            ((EnhancedBetta)ageable).setMateGenes(this.genetics);
-            ((EnhancedBetta)ageable).setHasEgg(true);
-            ((EnhancedBetta)ageable).setMateGender(false);
+            ((EnhancedBetta) ageable).setMateGenes(this.genetics);
+            ((EnhancedBetta) ageable).setHasEgg(true);
+            ((EnhancedBetta) ageable).setMateGender(false);
             if (this.hasCustomName()) {
-                ((EnhancedBetta)ageable).setMateName(this.getCustomName().getString());
+                ((EnhancedBetta) ageable).setMateName(this.getCustomName().getString());
             } else {
-                ((EnhancedBetta)ageable).setMateName("???"); //Reset mate name
+                ((EnhancedBetta) ageable).setMateName("???"); //Reset mate name
             }
         }
     }
@@ -1823,5 +1829,30 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         Vec3 newVec = vec1.add(stepVector);
 
         return newVec;
+    }
+
+    protected void calcSpeed() {
+        float speed = 1.0F;
+        float speedMod = 0.0F;
+        int[] genes = this.getGenes().getAutosomalGenes();
+        if (genes[60] == 2 || genes[61] == 2) {
+            //Halfmoon/Delta                  Halfmoon : Delta
+            speedMod -= (genes[60] == genes[61]) ? 0.2F : 0.1F;
+        }
+        if (genes[58] == 2 || genes[59] == 2) {
+            //LongTail
+            speedMod -= 0.5F;
+        }
+
+        if (getOrSetIsFemale()) {
+            speedMod *= 0.25F;
+        }
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5*(speed + speedMod));
+    }
+
+    @Override
+    public void setInitialDefaults() {
+        super.setInitialDefaults();
+        calcSpeed();
     }
 }

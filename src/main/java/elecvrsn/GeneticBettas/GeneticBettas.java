@@ -45,23 +45,10 @@ public class GeneticBettas
         AddonSensorTypes.register(modEventBus);
         AddonMemoryModuleTypes.register(modEventBus);
         AddonActivities.register(modEventBus);
-//        modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
     }
     private void clientSetup(final FMLClientSetupEvent event) {
         ItemBlockRenderTypes.setRenderLayer(AddonBlocks.BUBBLE_NEST.get(), RenderType.translucent());
     }
 
-    @SubscribeEvent
-    public static void onEntitiesRegistry(RegistryEvent.Register<EntityType<?>> event) {
-        SpawnPlacements.register(AddonEntities.ENHANCED_BETTA.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EnhancedBetta::checkBettaSpawnRules);
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void registerBiomes(BiomeLoadingEvent event) {
-        Biome.ClimateSettings climate = event.getClimate();
-        if (event.getCategory() == Biome.BiomeCategory.SWAMP || (event.getCategory() != Biome.BiomeCategory.OCEAN || (climate.precipitation.equals(Biome.Precipitation.RAIN) && climate.temperature >= 0.8F && climate.downfall >= 0.85F))) {
-            event.getSpawns().getSpawner(MobCategory.WATER_CREATURE).add(new MobSpawnSettings.SpawnerData(AddonEntities.ENHANCED_BETTA.get(), 80, 1, 1));
-        }
-    }
 }

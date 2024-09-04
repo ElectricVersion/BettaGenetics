@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "geneticbettas:block/tank_glass",
+		"1": "geneticbettas:block/glass_pane_top",
+		"particle": "geneticbettas:block/tank_glass"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 2],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"east": {"uv": [7, 0, 9, 16], "texture": "#1"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"west": {"uv": [7, 0, 9, 16], "texture": "#1"},
+				"up": {"uv": [7, 0, 9, 16], "rotation": 270, "texture": "#1"},
+				"down": {"uv": [7, 0, 9, 16], "rotation": 270, "texture": "#1"}
+			}
+		}
+	]
+}
