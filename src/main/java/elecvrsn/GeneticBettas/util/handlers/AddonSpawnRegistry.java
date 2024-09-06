@@ -14,6 +14,6 @@ import net.minecraftforge.fml.common.Mod;
 public class AddonSpawnRegistry {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void addBiomeSpawns(BiomeLoadingEvent event) {
-        event.getSpawns().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AddonEntities.ENHANCED_BETTA.get(), 50, 1, 3));
+        event.getSpawns().getSpawner(MobCategory.WATER_AMBIENT).add(new MobSpawnSettings.SpawnerData(AddonEntities.ENHANCED_BETTA.get(), 1, 1, 3));
     }
 }

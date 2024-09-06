@@ -167,22 +167,24 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         PartDefinition bFinLeft = bBodyFront.addOrReplaceChild("bFinL", CubeListBuilder.create(), PartPose.offsetAndRotation(1F, 4.5F, -1F, 0F, Mth.HALF_PI*0.5F, 0F));
         PartDefinition bFinRight = bBodyFront.addOrReplaceChild("bFinR", CubeListBuilder.create(), PartPose.offsetAndRotation(-1F, 4.5F, -1F, 0F, -Mth.HALF_PI*0.5F, 0F));
         PartDefinition bDorsalFin = bBodyFront.addOrReplaceChild("bDorsalFin", CubeListBuilder.create(), PartPose.offsetAndRotation(0.025F, 2F, 0F, 0F, 0F, 0F));
-        PartDefinition bBottomFinFront = bBodyFront.addOrReplaceChild("bBottomFinF", CubeListBuilder.create(), PartPose.offsetAndRotation(0.025F, 2F, -1F, 0F, 0F, 0F));
-        PartDefinition bBottomFinBack = bBodyBack.addOrReplaceChild("bBottomFinB", CubeListBuilder.create(), PartPose.offsetAndRotation(-0.025F, 1F, 1F, 0F, 0F, 0F));
+        PartDefinition bBottomFinFront = bBodyFront.addOrReplaceChild("bBottomFinF", CubeListBuilder.create(), PartPose.offsetAndRotation(-0.025F, 2F, -1F, 0F, 0F, 0F));
+        PartDefinition bBottomFinBack = bBodyBack.addOrReplaceChild("bBottomFinB", CubeListBuilder.create(), PartPose.offsetAndRotation(0.025F, 1F, 1F, 0F, 0F, 0F));
         PartDefinition bVentralFinLeft = bBodyFront.addOrReplaceChild("bVentralFinL", CubeListBuilder.create(), PartPose.offsetAndRotation(0.5F, 2F, -1F, 0F, Mth.HALF_PI*0.15F, 0F));
         PartDefinition bVentralFinRight = bBodyFront.addOrReplaceChild("bVentralFinR", CubeListBuilder.create(), PartPose.offsetAndRotation(-0.5F, 2F, -1F, 0F, -Mth.HALF_PI*0.15F, 0F));
-        PartDefinition bTailFin = bBodyBack.addOrReplaceChild("bTailFin", CubeListBuilder.create(), PartPose.offsetAndRotation(0F, 4F, 1F, 0F, 0F, 0F));
+        PartDefinition bTailFin = bBodyBack.addOrReplaceChild("bTailFin", CubeListBuilder.create(), PartPose.offsetAndRotation(-0.025F, 4F, 1F, 0F, 0F, 0F));
 
         bBodyFront.addOrReplaceChild("bodyF", CubeListBuilder.create()
                         .texOffs(1, 1)
                         .addBox(-1F, 2F, -2F, 2, 4, 4),
                 PartPose.ZERO
         );
+
         bBodyBack.addOrReplaceChild("bodyB", CubeListBuilder.create()
                         .texOffs(3, 12)
                         .addBox(-1F, 2F, 0F, 2, 4, 2),
                 PartPose.ZERO
         );
+
         bHead.addOrReplaceChild("head", CubeListBuilder.create()
                         .texOffs(16, 10)
                         .addBox(-2F, -2F, -3F, 4, 4, 4, new CubeDeformation(-0.5F)),
@@ -194,6 +196,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
                         .addBox(-1F, -1F, -1F, 2, 2, 2, new CubeDeformation(-0.375F)),
                 PartPose.offsetAndRotation(0F,0.125F,-2.5F,-Mth.HALF_PI*0.05F,0F,0F)
         );
+
         bHead.addOrReplaceChild("eyes", CubeListBuilder.create()
                         .texOffs(46, 21)
                         .addBox(1.51F, -2F, -2F, 0, 4, 4, new CubeDeformation(0F,-1.25F, -1.25F))
@@ -213,7 +216,6 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
                         .addBox(-3.5F, 0F, 0F, 4, 4, 0, new CubeDeformation(-0.5F,-0.5F, 0F)),
                 PartPose.ZERO
         );
-
 
         bFinLeft.addOrReplaceChild("finL", CubeListBuilder.create()
                         .texOffs(2, 16)
@@ -238,6 +240,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
                         .addBox(0F, 0F, 0F, 0, 4, 5),
                 PartPose.offset(0F, 4F, 0F)
         );
+
         bBottomFinBack.addOrReplaceChild("bottomFinB", CubeListBuilder.create()
                         .texOffs(50, 10)
                         .addBox(0F, 1F, 4F, 0, 5, 5),

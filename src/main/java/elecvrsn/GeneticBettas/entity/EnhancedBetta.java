@@ -103,10 +103,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     private static final String[] TEXTURES_IRI_BODY = new String[]{
             "", "iri/body/low_body_iri.png", "iri/body/med_body_iri.png", "iri/body/high_body_iri.png",
-            "iri/body/spread.png",
+            "mask/solid.png",
     };
     private static final String[] TEXTURES_IRI_MASK = new String[]{
-            "", "iri/body/mask_low1.png", "iri/body/mask_low2.png",
+            "iri/body/nonmask.png", "iri/body/mask_low1.png", "iri/body/mask_low2.png",
             "iri/body/mask_med1.png", "iri/body/mask_med2.png",
             "iri/body/mask_high1.png", "iri/body/mask_high2.png",
             "iri/body/mask_max.png",
@@ -381,9 +381,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor inWorld, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag itemNbt) {
-        //registerAnimalAttributes();
-        return commonInitialSpawnSetup(inWorld, livingdata, 60000, 30000, 80000, spawnReason);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor inWorld, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag itemNbt) {
+        return commonInitialSpawnSetup(inWorld, livingData, 60000, 30000, 80000, spawnReason);
     }
 
     public static float[] getHSBFromHex(String colourHex) {
@@ -392,9 +391,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         }
         int[] color =
                 {
-                        Integer.valueOf(colourHex.substring(0, 2), 16),
-                        Integer.valueOf(colourHex.substring(2, 4), 16),
-                        Integer.valueOf(colourHex.substring(4, 6), 16)
+                    Integer.valueOf(colourHex.substring(0, 2), 16),
+                    Integer.valueOf(colourHex.substring(2, 4), 16),
+                    Integer.valueOf(colourHex.substring(4, 6), 16)
                 };
         return Color.RGBtoHSB(color[0], color[1], color[2], (float[]) null);
     }
@@ -821,11 +820,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 if (gene[70] == 2 || gene[71] == 2) {
                     iriRim += 1;
                 }
-
-                if (iriRim == butterfly+1 && iriRim+1 <= 4) {
-                    //if the grade of iri rims is one higher than the butterfly grade, increase the iri rims grade by 1 to prevent weirdy buggy/overlap
-                    iriRim +=1;
-                }
             }
 
             if (gene[152] == 2 || gene[153] == 2) {
@@ -880,6 +874,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 } else {
                     //Het Crowntail
                     crowntail = 1;
+                }
+                if (butterfly == 1) {
+                    //Make thin butterfly a little thicker on crowntails to compensate for decreased fin area
+                    butterfly = 2;
                 }
             }
 
@@ -1081,11 +1079,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             if (bodyIri != 0) {
                 TextureGrouping iriMaskAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                 TextureGrouping iriBodyAndFinAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-                addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, "iri/body/spread.png");
-                addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_MASK, maskIri, l -> l != 0);
+                addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_BODY, bodyIri, l -> l != 0);
+                addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_MASK, maskIri, true);
                 iriMaskAlphaGroup.addGrouping(iriBodyAndFinAlphaGroup);
                 TextureGrouping iriBodyAndFinGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_BODY, bodyIri, l -> l != 0);
                 addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_BODY, bodyIri, l -> l != 0);
                 addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_FINS, finIri, l -> l != 0);
                 addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_RIM, fins, doubletail, iriRim, iriRim != 0);
@@ -1116,6 +1113,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, true);
             addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_FIN, finRed, l -> l != 0);
             addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
+//            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_FIN, finBloodred, l -> l != 0);
+//            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_BODY, bodyBloodred, l -> l != 0);
             finPigmentGroup.addGrouping(finRedPigmentGroup);
             finPigmentGroup.addGrouping(iriAlphaGroup);
             finAlphaGroup3.addGrouping(finPigmentGroup);
