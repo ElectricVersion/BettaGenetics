@@ -3,6 +3,7 @@ package elecvrsn.GeneticBettas.util.handlers;
 import elecvrsn.GeneticBettas.init.AddonEntities;
 import elecvrsn.GeneticBettas.util.AddonReference;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -22,7 +23,7 @@ public class AddonEventRegistry {
 
     @SubscribeEvent
     public static void onEntitiesRegistry(RegistryEvent.Register<EntityType<?>> event) {
-        SpawnPlacements.register(AddonEntities.ENHANCED_BETTA.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EnhancedBetta::checkBettaSpawnRules);
+        SpawnPlacements.register(AddonEntities.ENHANCED_BETTA.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EnhancedBetta::checkBettaSpawnRules);
     }
 
 }

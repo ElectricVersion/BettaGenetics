@@ -29,6 +29,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -45,6 +46,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.entity.player.Player;
@@ -55,6 +57,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.BigDripleafBlock;
 import net.minecraft.world.level.block.Blocks;
@@ -382,6 +385,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor inWorld, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag itemNbt) {
+        System.out.println("BETTA SPAWNED YIPEEE");
         return commonInitialSpawnSetup(inWorld, livingData, 60000, 30000, 80000, spawnReason);
     }
 
@@ -1731,14 +1735,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         this.spawnAtLocation(bettaStack);
     }
 
-    public static boolean checkBettaSpawnRules(EntityType<EnhancedBetta> enhancedBetta, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, Random random) {
-        return true;
-////        int i = levelAccessor.getSeaLevel();
-////        int j = i - 13;
-////        if (blockPos.getY() >= j && levelAccessor.getBlockState(blockPos).is(Blocks.WATER)) {
-////            return true;
-////        }
-//        return blockPos.getY() >= j && levelAccessor.getBlockState(blockPos).is(Blocks.WATER);
+    public boolean checkSpawnObstruction(LevelReader levelReader) {
+        return levelReader.isUnobstructed(this);
+    }
+
+    public static boolean checkBettaSpawnRules(EntityType<EnhancedBetta> p_27578_, LevelAccessor p_27579_, MobSpawnType p_27580_, BlockPos p_27581_, Random p_27582_) {
+        int i = p_27579_.getSeaLevel();
+        int j = i - 13;
+        return p_27581_.getY() >= j && p_27579_.getBlockState(p_27581_.below()).is(Blocks.WATER);
     }
 
     public ImmutableList<Activity> getActivities() {
