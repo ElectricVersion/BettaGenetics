@@ -14,7 +14,9 @@ import net.minecraftforge.fml.common.Mod;
 public class AddonSpawnRegistry {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void addBiomeSpawns(BiomeLoadingEvent event) {
-        event.getSpawns().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(AddonEntities.ENHANCED_BETTA.get(), 25, 1, 1));
-//        event.getSpawns().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AddonEntities.ENHANCED_BETTA.get(), 8, 1, 3));
+        Biome.ClimateSettings climate = event.getClimate();
+        if (event.getCategory() == Biome.BiomeCategory.SWAMP || (event.getCategory() != Biome.BiomeCategory.OCEAN && (climate.precipitation.equals(Biome.Precipitation.RAIN) && climate.temperature >= 0.8F && climate.downfall >= 0.85F))) {
+            event.getSpawns().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(AddonEntities.ENHANCED_BETTA.get(), 25, 1, 1));
+        }
     }
 }

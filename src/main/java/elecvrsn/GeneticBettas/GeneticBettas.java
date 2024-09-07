@@ -30,7 +30,7 @@ public class GeneticBettas
         modEventBus.addListener(this::clientSetup);
     }
     private void clientSetup(final FMLClientSetupEvent event) {
-        ItemBlockRenderTypes.setRenderLayer(AddonBlocks.BUBBLE_NEST.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(AddonBlocks.BUBBLE_NEST.get(), RenderType.cutout());
     }
 
 }

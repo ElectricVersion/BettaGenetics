@@ -385,7 +385,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor inWorld, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag itemNbt) {
-        System.out.println("BETTA SPAWNED YIPEEE");
         return commonInitialSpawnSetup(inWorld, livingData, 60000, 30000, 80000, spawnReason);
     }
 
@@ -814,7 +813,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             if (gene[66] == 2 || gene[67] == 2) {
                 //Iridescent Rims
                 iriRim = 1;
-                //Butterfly Extensions
+                //Iri Rim Extensions
                 if (gene[68] == 2) {
                     iriRim += 1;
                 }
@@ -823,6 +822,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 }
                 if (gene[70] == 2 || gene[71] == 2) {
                     iriRim += 1;
+                }
+                if (iriRim == butterfly+1 && iriRim+1 <= 4) {
+                    //if the grade of iri rims is one higher than the butterfly grade, increase the iri rims grade by 1 to prevent weirdy buggy/overlap
+                    iriRim +=1;
                 }
             }
 
@@ -878,10 +881,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 } else {
                     //Het Crowntail
                     crowntail = 1;
-                }
-                if (butterfly == 1) {
-                    //Make thin butterfly a little thicker on crowntails to compensate for decreased fin area
-                    butterfly = 2;
                 }
             }
 
