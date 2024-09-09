@@ -2,9 +2,6 @@ package elecvrsn.GeneticBettas.entity;
 
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import mokiyoki.enhancedanimals.config.EanimodCommonConfig;
-import mokiyoki.enhancedanimals.entity.EnhancedAxolotlEgg;
-import mokiyoki.enhancedanimals.init.ModItems;
-import mokiyoki.enhancedanimals.items.EnhancedAxolotlEggBucket;
 import mokiyoki.enhancedanimals.util.Genes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -13,26 +10,17 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.block.state.properties.Tilt;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -41,8 +29,7 @@ import net.minecraftforge.network.NetworkHooks;
 import java.util.List;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
-import static mokiyoki.enhancedanimals.blocks.GrowableDoubleHigh.HALF;
-import static net.minecraft.world.level.block.state.properties.BlockStateProperties.TILT;
+import static net.minecraft.world.level.material.Fluids.WATER;
 
 public class EnhancedBettaEgg extends Entity {
     private static final EntityDataAccessor<String> GENES = SynchedEntityData.<String>defineId(EnhancedBettaEgg.class, EntityDataSerializers.STRING);
@@ -50,8 +37,6 @@ public class EnhancedBettaEgg extends Entity {
     private static final EntityDataAccessor<String> DAM = SynchedEntityData.<String>defineId(EnhancedBettaEgg.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> HATCH_TIME = SynchedEntityData.<Integer>defineId(EnhancedBettaEgg.class, EntityDataSerializers.INT);
     private boolean hasParents = false;
-    public int time;
-    private boolean clockwise = this.random.nextBoolean();
     private int animationTicks = this.level.isClientSide ? this.random.nextInt(500) : 0;
     public EnhancedBettaEgg(EntityType<? extends EnhancedBettaEgg> entityType, Level level) {
         super(entityType, level);
@@ -160,8 +145,8 @@ public class EnhancedBettaEgg extends Entity {
     public void tick() {
         super.tick();
 
-        if (!onEggAttachableBlock(this.blockPosition(), this.position(), this.level)) {
-            fall();
+        if (!onEggAttachableBlock(this.blockPosition(), this.level)) {
+            fall(this.blockPosition(), this.level);
         }
 
         pushEntities();
@@ -179,21 +164,16 @@ public class EnhancedBettaEgg extends Entity {
         }
     }
 
-//    public static boolean isEggLayableBlock(Boolean inWater, BlockState blockState) {
-//        return !blockState.getBlock().equals(Blocks.BIG_DRIPLEAF_STEM) && isEggAttachableBlock(inWater, blockState) && (!blockState.hasProperty(HALF) || blockState.getValue(HALF) == DoubleBlockHalf.UPPER);
-//    }
-
     public static boolean isEggAttachableBlock(BlockState blockState) {
         Block block = blockState.getBlock();
         return AddonBlocks.BUBBLE_NEST.get().equals(block);
     }
 
-    public boolean onEggAttachableBlock(BlockPos blockPos, Vec3 position, LevelReader level) {
+    public boolean onEggAttachableBlock(BlockPos blockPos, LevelReader level) {
         BlockGetter blockGetter = level.getChunkForCollisions(this.chunkPosition().x, this.chunkPosition().z);
         BlockState blockState = level.getBlockState(blockPos);
         VoxelShape voxelShape = blockState.getShape(blockGetter, this.blockPosition());
         if (!voxelShape.isEmpty()) {
-//            return isEggAttachableBlock(blockState);
             if (isEggAttachableBlock(blockState)) {
                 return this.getBoundingBox().maxY<=(blockPos.getY()+voxelShape.bounds().maxY) && this.getBoundingBox().maxY>=(blockPos.getY()+voxelShape.bounds().minY);
             }
@@ -201,23 +181,17 @@ public class EnhancedBettaEgg extends Entity {
         return false;
     }
 
-    private void fall() {
-        ++this.time;
+    private void fall(BlockPos blockPos, LevelReader level) {
         if (!this.isNoGravity()) {
-            this.setDeltaMovement(this.getDeltaMovement().add(0.0D,this.isInWater() ? 0.04D : -0.04D, 0.0D));
+            if ((level.getBlockState(blockPos.above()).isAir() && level.getFluidState(blockPos).isSourceOfType(WATER) && this.getBoundingBox().getCenter().y >= blockPos.above().getY()-0.125 && this.getBoundingBox().getCenter().y <= blockPos.above().getY()+0.125)) {
+                this.setDeltaMovement(this.getDeltaMovement().scale(0D));
+                this.setPos(this.position().x, blockPos.above().getY()-0.1875D, this.position().z);
+            }
+            else {
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, this.isInWater() ? 0.01D : -0.04D, 0.0D));
+            }
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.8D));
         }
-
-        if (this.isInWater()) {
-            this.setDeltaMovement(this.getDeltaMovement().scale(0.2D));
-            //            if (!this.isOnGround()) {
-//                Double spiralX = Math.sin(this.time*0.2F)*0.015F;
-//                Double spiralZ = Math.cos(this.time*0.2F)*0.015F;
-//                this.setDeltaMovement(this.getDeltaMovement().add(this.clockwise ? spiralX : -spiralX, 0.0F, spiralZ));
-//            }
-        } else {
-            this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
-        }
-
         this.move(MoverType.SELF, this.getDeltaMovement());
     }
 
