@@ -114,13 +114,33 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             "iri/body/mask_high1.png", "iri/body/mask_high2.png",
             "iri/body/mask_max.png",
     };
-    private static final String[] TEXTURES_RED_FIN = new String[]{
-            "", "red/fin/lower_3.png", "red/fin/lower_2.png", "red/fin/lower_1.png", "red/fin/wildtype.png"
+    private static final String[][][] TEXTURES_RED_FIN = new String[][][]{
+            {
+                    {"", "red/fin/plakat_red_low.png", "red/fin/plakat_red_med.png", "red/fin/plakat_red_high.png", "red/fin/wildtype.png"},
+                    {"", "red/fin/plakat_double_red_low.png", "red/fin/plakat_double_red_med.png", "red/fin/plakat_double_red_high.png", "red/fin/wildtype.png"},
+            },
+            {
+                    {"", "red/fin/dpk_red_low.png", "red/fin/dpk_red_med.png", "red/fin/dpk_red_high.png", "red/fin/wildtype.png"},
+                    {"", "red/fin/dpk_double_red_low.png", "red/fin/dpk_double_red_med.png", "red/fin/dpk_double_red_high.png", "red/fin/wildtype.png"},
+            },
+            {
+                    {"", "red/fin/hmpk_red_low.png", "red/fin/hmpk_red_med.png", "red/fin/hmpk_red_high.png", "red/fin/wildtype.png"},
+                    {"", "red/fin/hmpk_double_red_low.png", "red/fin/hmpk_double_red_med.png", "red/fin/hmpk_double_red_high.png", "red/fin/wildtype.png"},
+            },
+            {
+                    {"", "red/fin/veil_red_low.png", "red/fin/veil_red_med.png", "red/fin/veil_red_high.png", "red/fin/wildtype.png"},
+                    {"", "red/fin/veil_double_red_low.png", "red/fin/veil_double_red_med.png", "red/fin/veil_double_red_high.png", "red/fin/wildtype.png"},
+            },
+            {
+                    {"", "red/fin/delta_red_low.png", "red/fin/delta_red_med.png", "red/fin/delta_red_high.png", "red/fin/wildtype.png"},
+                    {"", "red/fin/delta_double_red_low.png", "red/fin/delta_double_red_med.png", "red/fin/delta_double_red_high.png", "red/fin/wildtype.png"},
+            },
+            {
+                    {"", "red/fin/halfmoon_red_low.png", "red/fin/halfmoon_red_med.png", "red/fin/halfmoon_red_high.png", "red/fin/wildtype.png"},
+                    {"", "red/fin/halfmoon_double_red_low.png", "red/fin/halfmoon_double_red_med.png", "red/fin/halfmoon_double_red_high.png", "red/fin/wildtype.png"},
+            },
     };
 
-    //    private static final String[] TEXTURES_BUTTERFLY = new String[] {
-//            "", "butterfly/long_butterfly_min.png", "butterfly/long_butterfly_medium.png", "butterfly/long_butterfly_high.png", "butterfly/long_butterfly_max.png",
-//    };
     private static final String[] TEXTURES_RED_BODY = new String[]{
             "", "red/body/min.png", "red/body/low.png", "red/body/med.png", "red/body/high.png", "red/extended.png", "red/extended_het_mask.png", "red/extended_homo_mask.png"
     };
@@ -1114,7 +1134,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             TextureGrouping finPigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             TextureGrouping finRedPigmentGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, true);
-            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_FIN, finRed, l -> l != 0);
+            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_FIN, fins, doubletail, finRed, finRed != 0);
             addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
 //            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_FIN, finBloodred, l -> l != 0);
 //            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_BODY, bodyBloodred, l -> l != 0);
@@ -1149,7 +1169,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             TextureGrouping blackCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             //Cut the red layer out of the black
             addTextureToAnimalTextureGrouping(blackCutoutGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
-            addTextureToAnimalTextureGrouping(blackCutoutGroup, TEXTURES_RED_FIN, finRed, l -> l != 0);
+            addTextureToAnimalTextureGrouping(blackCutoutGroup, TEXTURES_RED_FIN, fins, doubletail, finRed, finRed != 0);
             blackGroup.addGrouping(blackCutoutGroup);
             TextureGrouping blackColorGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             //The marble gene(s) cut holes in each layer
@@ -1162,7 +1182,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 TextureGrouping bloodredGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                 TextureGrouping bloodredMaskGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 addTextureToAnimalTextureGrouping(bloodredMaskGroup, TEXTURES_RED_BODY, bodyBloodred, l -> l != 0);
-                addTextureToAnimalTextureGrouping(bloodredMaskGroup, TEXTURES_RED_FIN, finBloodred, l -> l != 0);
+                addTextureToAnimalTextureGrouping(bloodredMaskGroup, TEXTURES_RED_FIN, fins, doubletail, finBloodred, finBloodred != 0);
                 bloodredGroup.addGrouping(bloodredMaskGroup);
                 TextureGrouping bloodredColorGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                 addTextureToAnimalTextureGrouping(bloodredColorGroup, TEXTURES_MARBLE, marbleBloodredQual, marbleBloodredSize, marbleBloodredRand, true);
