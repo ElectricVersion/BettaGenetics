@@ -1100,13 +1100,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             iriAlphaGroup.addGrouping(iriOpacityAlphaGroup);
 
             if (bodyIri != 0) {
-                TextureGrouping iriMaskAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+                TextureGrouping iriMaskAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 TextureGrouping iriBodyAndFinAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                 addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_BODY, bodyIri, l -> l != 0);
                 addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_MASK, maskIri, true);
                 iriMaskAlphaGroup.addGrouping(iriBodyAndFinAlphaGroup);
                 TextureGrouping iriBodyAndFinGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_BODY, bodyIri, l -> l != 0);
+//                addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_BODY, bodyIri, l -> l != 0);
                 addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_FINS, finIri, l -> l != 0);
                 addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_RIM, fins, doubletail, iriRim, iriRim != 0);
                 iriMaskAlphaGroup.addGrouping(iriBodyAndFinGroup);
