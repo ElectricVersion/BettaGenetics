@@ -985,6 +985,43 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     marbleBlackRand += uuidArry[4] % 5;
                 }
 
+                // Bloodred Marble
+                //Size
+                int marbleBloodredSizeMod = 0;
+                for (int i = 110; i < 114; i++) {
+                    if (gene[i] == 2) {
+                        marbleBloodredSizeMod--;
+                    }
+                }
+                for (int i = 114; i < 120; i++) {
+                    if (gene[i] == 2) {
+                        marbleBloodredSizeMod++;
+                    }
+                }
+                marbleBloodredSize = 2 + (marbleBloodredSizeMod / 2);
+
+                //Quality
+                int marbleBloodredQualMod = 0;
+                for (int i = 120; i < 124; i++) {
+                    marbleBloodredQualMod += gene[i] - 1;
+                }
+                if (marbleBloodredQualMod < 4) {
+                    marbleBloodredQual = 1;
+                } else if (marbleBloodredQualMod < 8) {
+                    marbleBloodredQual = 2;
+                } else if (marbleBloodredQualMod < 12) {
+                    marbleBloodredQual = 3;
+                } else if (marbleBloodredQualMod < 16) {
+                    marbleBloodredQual = 4;
+                } else {
+                    marbleBloodredQual = 5;
+                }
+
+                //Random
+                if (marbleBloodredSize != 0 && marbleBloodredSize != 5) {
+                    marbleBloodredRand += uuidArry[5] % 5;
+                }
+
                 // Iri Marble
                 //Size
                 int marbleIriSizeMod = 0;
@@ -1019,7 +1056,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
                 //Random
                 if (marbleIriSize != 0 && marbleIriSize != 5) {
-                    marbleIriRand += uuidArry[5] % 5;
+                    marbleIriRand += uuidArry[6] % 5;
                 }
 
                 // Opaque Marble
@@ -1056,7 +1093,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
                 //Random
                 if (marbleOpaqueSize != 0 && marbleOpaqueSize != 5) {
-                    marbleOpaqueRand += uuidArry[6] % 5;
+                    marbleOpaqueRand += uuidArry[7] % 5;
                 }
             }
 
