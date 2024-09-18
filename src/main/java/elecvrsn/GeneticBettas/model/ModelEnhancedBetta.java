@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static net.minecraft.util.Mth.abs;
+import static net.minecraft.util.Mth.clamp;
+
 @OnlyIn(Dist.CLIENT)
 public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalModel<T> {
     private BettaModelData bettaModelData;
@@ -364,23 +367,30 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         if (this.bettaModelData != null && this.bettaModelData.getPhenotype() != null) {
             BettaPhenotype betta = this.bettaModelData.getPhenotype();
             this.setupInitialAnimationValues(this.bettaModelData, netHeadYaw, headPitch, betta);
-            boolean isMoving = entityIn.getDeltaMovement().horizontalDistanceSqr() > 1.0E-7D || entityIn.xOld != entityIn.getX() || entityIn.zOld != entityIn.getZ();
-            float yDelta = isMoving ? -(float)entityIn.getDeltaMovement().y * (float)Mth.HALF_PI : 0F;
 
-            if (this.bettaModelData.bubblingTimer <= ageInTicks) {
-                bettaModelData.bubblingTimer = (int)ageInTicks + entityIn.getRandom().nextInt(600) + 30;
-            }
-            else if (this.bettaModelData.bubblingTimer <= ageInTicks + 10) {
-                setupBubbleAnimation(ageInTicks, headPitch);
-            }
+            boolean isMoving = false;
+            float yDelta = 0F;
 
-            if (!entityIn.isAnimalSleeping()) {
-                if (!isMoving && entityIn.isInWater()) {
-                    this.setupIdleAnimation(ageInTicks, headPitch);
-                } else {
+            if (!entityIn.isAnimalSleeping() && entityIn.isInWater()) {
+                isMoving = entityIn.yOld != entityIn.getY() && (entityIn.xOld != entityIn.getX() || entityIn.zOld != entityIn.getZ());
+                yDelta = isMoving ? (float)clamp(-entityIn.getDeltaMovement().y, -0.5, 0.5) * (float)Mth.HALF_PI : 0F;
+                if (this.bettaModelData.bubblingTimer <= ageInTicks) {
+                    bettaModelData.bubblingTimer = (int)ageInTicks + entityIn.getRandom().nextInt(600) + 30;
+                }
+                else if (this.bettaModelData.bubblingTimer <= ageInTicks + 10) {
+                    setupBubbleAnimation(ageInTicks, headPitch);
+                }
+
+                if (isMoving) {
                     this.setupSwimmingAnimation(ageInTicks, headPitch, yDelta);
+                } else {
+                    this.setupIdleAnimation(ageInTicks, headPitch);
                 }
             }
+            float newxRot = yDelta * (yDelta > 0F ? 2.5F : 10F);
+            float rotDiff = Mth.abs(this.theBetta.getXRot()-newxRot);
+            this.theBetta.setXRot(this.lerpTo(rotDiff > 0.15 ? 0.03F : 0.02F, this.theBetta.getXRot(), newxRot));
+
             this.setupFlareAnimation(entityIn.getIsAngry());
 
             this.saveAnimationValues(this.bettaModelData);
@@ -392,7 +402,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         float f1 = Mth.sin(f);
         float f2 = Mth.sin(f*2F);
         float f3 = Mth.cos(f*2F);
-        this.theBetta.setXRot(this.lerpTo(0.25F, this.theBetta.getXRot(), yDelta * (yDelta > 0F ? 2.5F : 10F)));
+//        this.theBetta.setXRot(this.lerpTo(0.25F, this.theBetta.getXRot(), yDelta * (yDelta > 0F ? 2.5F : 10F)));
         this.theHead.setYRot(f1 * (float)Mth.HALF_PI*0.10F);
         this.theBodyBack.setYRot(f1 * (float)Mth.HALF_PI*0.075F);
         this.theTailFin.setYRot(f1 * (float)Mth.HALF_PI*0.05F);
@@ -423,7 +433,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         float f = ageInTicks * 0.33F;
         float f2 = Mth.sin(f*1.75F);
         float f3 = Mth.cos(f*1.75F);
-        this.theBetta.setXRot(this.lerpTo(0.5F, this.theBetta.getXRot(), 0F));
+//        this.theBetta.setXRot(this.lerpTo(0.5F, this.theBetta.getXRot(), 0F));
         this.theFinLeft.setYRot(Mth.HALF_PI*0.5F + (f2 * (float)Mth.HALF_PI*0.15F));
         this.theFinRight.setYRot(-Mth.HALF_PI*0.5F + (f3 * (float)Mth.HALF_PI*0.15F));
     }
