@@ -29,7 +29,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -46,7 +45,6 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.entity.player.Player;
@@ -145,8 +143,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             "", "red/body/min.png", "red/body/low.png", "red/body/med.png", "red/body/high.png", "red/extended.png", "red/extended_het_mask.png", "red/extended_homo_mask.png"
     };
 
-    private static final String[] TEXTURES_ALPHA = new String[]{
-            "mask/percent25.png", "mask/percent50.png", "mask/percent75.png", "mask/solid.png"
+    private static final String[] TEXTURES_IRI_ALPHA = new String[]{
+            "mask/transparent.png", "mask/percent25.png", "mask/percent50.png", "mask/percent75.png", "mask/solid.png"
     };
 
     private static final String[] TEXTURES_EYES = new String[]{
@@ -491,7 +489,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             int black = 1;
             int butterfly = 0;
             int iriRim = 0;
-            int iriIntensity = 2;
+            int iriIntensity = 3;
             boolean pastelOpaque = false;
             boolean cambodian = false;
             int metallic = 0;
@@ -553,17 +551,23 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             }
             finIri += finIriLevel / 2;
 
-            if (gene[32] == 2 || gene[33] == 2) {
+            if ((gene[32] == 2 || gene[33] == 2) && gene[32] != 3 && gene[33] != 3) {
                 //Higher Iridescence Intensity
                 iriIntensity++;
             }
-            if (gene[34] == 2 || gene[35] == 2) {
-                //Lower Iridescence Intensity
+            else if (gene[32] == 3 && gene[33] == 3) {
+                //Recessive Lower Iri Allele so iridescence can be bred out
                 iriIntensity--;
             }
+
+            if (gene[34] == 2 || gene[35] == 2) {
+                //Lower Iridescence Intensity
+                iriIntensity -= gene[34] == gene[35] ? 2 : 1;
+            }
+
             if (gene[2] == 2 || gene[3] == 2) {
                 //Spread
-                iriIntensity = 3;
+                iriIntensity = 4;
                 bodyIri = 4;
             }
 
@@ -1140,7 +1144,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             addTextureToAnimalTextureGrouping(iriOpacityMarbleAndButterflyGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, true);
             iriOpacityAlphaGroup.addGrouping(iriOpacityMarbleAndButterflyGroup);
             TextureGrouping iriIntensityAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(iriIntensityAlphaGroup, TEXTURES_ALPHA, iriIntensity, true);
+            addTextureToAnimalTextureGrouping(iriIntensityAlphaGroup, TEXTURES_IRI_ALPHA, iriIntensity, true);
             iriOpacityAlphaGroup.addGrouping(iriIntensityAlphaGroup);
             iriAlphaGroup.addGrouping(iriOpacityAlphaGroup);
 
