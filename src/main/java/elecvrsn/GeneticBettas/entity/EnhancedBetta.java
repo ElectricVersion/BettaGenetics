@@ -776,13 +776,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             // Black
             if (gene[8] == 2 && gene[9] == 2) {
                 //Laced Black
-                finAlpha = 1;
                 if (gene[6] == 2 && gene[7] == 2) {
                     //Double Black/Super Black
                     melanin[1] = 0.171F;
                     melanin[2] = 0.081F;
                 } else {
                     //Just Laced Black
+                    finAlpha = 1;
                     melanin[1] = 0.091F;
                     melanin[2] = 0.151F;
                 }
