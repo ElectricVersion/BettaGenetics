@@ -9,6 +9,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
+import net.minecraft.world.entity.player.Player;
+
+import static net.minecraft.sounds.SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT;
 
 
 public class MakeBubbleNest extends Behavior<EnhancedBetta> {
@@ -25,6 +28,7 @@ public class MakeBubbleNest extends Behavior<EnhancedBetta> {
     public void tick(ServerLevel serverLevel, EnhancedBetta enhancedBetta, long gameTime) {
         BlockPos nestPos = enhancedBetta.getNestPos();
         if (nestPos.closerToCenterThan(enhancedBetta.position(), 1F) && serverLevel.isWaterAt(nestPos)) {
+            enhancedBetta.getLevel().playSound((Player)null, nestPos, BUBBLE_COLUMN_UPWARDS_AMBIENT, enhancedBetta.getSoundSource(), 1.0F, 1.0F);
             serverLevel.setBlock(nestPos, AddonBlocks.BUBBLE_NEST.get().defaultBlockState(), 2);
             enhancedBetta.setNestPos(BlockPos.ZERO);
             enhancedBetta.getBrain().eraseMemory(AddonMemoryModuleTypes.MAKING_NEST.get());

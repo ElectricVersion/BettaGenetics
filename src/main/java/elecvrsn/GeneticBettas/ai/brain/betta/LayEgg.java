@@ -47,11 +47,14 @@ public class LayEgg extends Behavior<EnhancedBetta> {
 
     public void tick(ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {
         if (existingNest == null) {
-            existingNest = betta.findExistingNest();
-            if (existingNest != null) {
+            if ((existingNest = betta.findExistingNest()) != null) {
                 WalkTarget walkTarget = new WalkTarget(existingNest, 0.45F, 0);
                 betta.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new BlockPosTracker(existingNest));
                 betta.getBrain().setMemory(MemoryModuleType.WALK_TARGET, walkTarget);
+            }
+            else {
+                //If there's no existing nest nearby then just end the pregnancy I guess until I think of a better solution
+                betta.getBrain().eraseMemory(ModMemoryModuleTypes.HAS_EGG.get());
             }
         }
         if (existingNest != null) {
@@ -108,13 +111,11 @@ public class LayEgg extends Behavior<EnhancedBetta> {
 
     @Override
     protected void stop(ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {
-//        betta.getBrain().eraseMemory(ModMemoryModuleTypes.FOCUS_BRAIN.get());
         existingNest = null;
     }
 
     @Override
     protected void start(ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {
-//        betta.getBrain().setMemory(ModMemoryModuleTypes.FOCUS_BRAIN.get(), true);
         existingNest = null;
     }
     protected boolean canStillUse(ServerLevel p_23586_, EnhancedBetta betta, long p_23588_) {

@@ -2,5 +2,8 @@
   "entity.geneticbettas.enhanced_betta": "Betta",
   "item.geneticbettas.fish_food": "Fish Food",
   "item.geneticbettas.betta": "Betta",
-  "item.geneticbettas.enhanced_betta_spawn_egg": "Genetic Betta Spawn Egg"
+  "item.geneticbettas.enhanced_betta_spawn_egg": "Genetic Betta Spawn Egg",
+  "block.geneticbettas.bubble_nest": "Bubble Nest",
+  "item.geneticbettas.bubble_nest": "Bubble Nest",
+  "item.geneticbettas.enhanced_betta_bucket": "Bucket of Betta"
 }

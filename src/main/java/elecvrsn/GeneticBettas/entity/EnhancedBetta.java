@@ -1765,7 +1765,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
 
         int maxSearchHeight = 6;
-        int maxSearchWidth = 3;
+        int maxSearchWidth = 5;
 
         for (int y = 0; y < maxSearchHeight; y++) {
             for (int x = -maxSearchWidth; x < maxSearchWidth; x++) {
