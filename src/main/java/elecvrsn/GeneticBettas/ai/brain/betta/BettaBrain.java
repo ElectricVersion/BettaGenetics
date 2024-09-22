@@ -37,6 +37,7 @@ public class BettaBrain  {
     public static Brain<?> makeBrain(Brain<EnhancedBetta> bettaBrain) {
         initCoreActivity(bettaBrain);
         initIdleActivity(bettaBrain);
+        initSleepingActivity(bettaBrain);
         initPauseBrainActivity(bettaBrain);
         initFightActivity(bettaBrain);
         initFleeActivity(bettaBrain);
@@ -93,7 +94,7 @@ public class BettaBrain  {
 
     private static void initCoreActivity(Brain<EnhancedBetta> brain) {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
-                new RunIf<>(EnhancedBetta::isNotSleeping, new LookAtTargetSink(45, 90)),
+                new LookAtTargetSink(45, 90),
                 new MoveToTargetSink(),
                 new MakeBubbleNest(),
                 new LayEgg(),
@@ -113,16 +114,26 @@ public class BettaBrain  {
         );
     }
 
+    private static void initSleepingActivity(Brain<EnhancedBetta> brain) {
+        brain.addActivityAndRemoveMemoryWhenStopped(
+                Activity.REST,
+                0, ImmutableList.of(
+                        new FindPlaceToSleep(),
+                        new LookAtTargetSink(45, 90),
+                        new MoveToTargetSink()),
+                ModMemoryModuleTypes.SLEEPING.get()
+        );
+    }
+
     private static void initIdleActivity(Brain<EnhancedBetta> brain) {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
                 Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 8.0F), UniformInt.of(20, 60))),
                 Pair.of(1, new BettaMakeLove(AddonEntities.ENHANCED_BETTA.get(), 1F)),
-//                Pair.of(1, new LayEgg()),
+                Pair.of(1, new RunIf<>(EnhancedBetta::isAnimalSleeping, new FindPlaceToSleep())),
                 Pair.of(2, new RunOne<>(ImmutableList.of(
                         Pair.of(new FollowTemptation(BettaBrain::getSpeedModifier), 1),
                         Pair.of(new BabyFollowAdult<>(ADULT_FOLLOW_RANGE, BettaBrain::getSpeedModifierFollowingAdult), 1)))
                 ),
-//                Pair.of(2, new BettaFindExistingBubbleNest()),
                 Pair.of(3, new StartAttacking<>(BettaBrain::findNearestValidAttackTarget)),
                 Pair.of(3, new TryFindWater(6, 0.15F)),
                 Pair.of(4, new GateBehavior<>(
@@ -134,11 +145,9 @@ public class BettaBrain  {
                                 GateBehavior.OrderPolicy.ORDERED,
                                 GateBehavior.RunningPolicy.TRY_ALL,
                                 ImmutableList.of(
-//                                        Pair.of(new RandomSwim(0.5F), 2),
-//                                        Pair.of(new RandomStroll(0.15F, false), 2),
-                                        Pair.of(new RunIf<>(EnhancedBetta::hasNoSleepSpot, new RandomSwim(0.5F)), 2),
-                                        Pair.of(new RunIf<>(EnhancedBetta::hasNoSleepSpot, new RandomStroll(0.15F, false)), 2),
-                                        Pair.of(new RunIf<>(EnhancedBetta::hasNoSleepSpot, new SetWalkTargetFromLookTarget(BettaBrain::canSetWalkTargetFromLookTarget, BettaBrain::getSpeedModifier, 3)), 3),
+                                        Pair.of(new RandomSwim(0.5F), 2),
+                                        Pair.of(new RandomStroll(0.15F, false), 2),
+                                        Pair.of(new SetWalkTargetFromLookTarget(BettaBrain::canSetWalkTargetFromLookTarget, BettaBrain::getSpeedModifier, 3), 3),
                                         Pair.of(new RunIf<>(Entity::isInWaterOrBubble, new DoNothing(30, 60)), 5),
                                         Pair.of(new RunIf<>(Entity::isOnGround, new DoNothing(200, 400)), 5)
                                 )
@@ -163,13 +172,12 @@ public class BettaBrain  {
         Brain<EnhancedBetta> brain = betta.getBrain();
         Activity activity = brain.getActiveNonCoreActivity().orElse(null);
         if (betta.isAnimalSleeping()) {
+            brain.setMemory(ModMemoryModuleTypes.SLEEPING.get(), true);
             if (betta.isOnGround()) {
-                brain.setMemory(ModMemoryModuleTypes.SLEEPING.get(), true);
                 brain.setMemory(ModMemoryModuleTypes.PAUSE_BRAIN.get(), true);
-            } else if (!brain.hasMemoryValue(FOUND_SLEEP_SPOT.get())) {
-                betta.findPlaceToSleep();
             }
-        } else if (brain.hasMemoryValue(ModMemoryModuleTypes.SLEEPING.get()) && !brain.hasMemoryValue(ModMemoryModuleTypes.PAUSE_BRAIN.get())) {
+        }
+        else if (brain.hasMemoryValue(ModMemoryModuleTypes.SLEEPING.get())) {
             brain.eraseMemory(ModMemoryModuleTypes.SLEEPING.get());
         }
         if (activity != ModActivities.PAUSE_BRAIN.get()) {
@@ -182,9 +190,6 @@ public class BettaBrain  {
                     betta.setIsAngry(true);
                 }
             }
-//            if (brain.getActiveNonCoreActivity().get() == AddonActivities.MAKE_BUBBLE_NEST.get()) {
-//                brain.setMemory(AddonMemoryModuleTypes.SEEKING_NEST.get(), true);
-//            }
         }
     }
 

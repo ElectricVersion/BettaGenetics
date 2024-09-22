@@ -14,7 +14,7 @@ import java.util.Optional;
 public class AddonMemoryModuleTypes {
 
     public static final DeferredRegister<MemoryModuleType<?>> MEMORY_MODULE_TYPE_DEFERRED_REGISTRY = DeferredRegister.create(ForgeRegistries.MEMORY_MODULE_TYPES, MODID);
-    public static final RegistryObject<MemoryModuleType<Long>> FOUND_SLEEP_SPOT = MEMORY_MODULE_TYPE_DEFERRED_REGISTRY.register("found_sleep_spot", () -> new MemoryModuleType<Long>(Optional.of(Codec.LONG)));
+    public static final RegistryObject<MemoryModuleType<Boolean>> FOUND_SLEEP_SPOT = MEMORY_MODULE_TYPE_DEFERRED_REGISTRY.register("found_sleep_spot", () -> new MemoryModuleType<Boolean>(Optional.of(Codec.BOOL)));
     public static final RegistryObject<MemoryModuleType<Boolean>> MAKING_NEST = MEMORY_MODULE_TYPE_DEFERRED_REGISTRY.register("making_nest", () -> new MemoryModuleType<Boolean>(Optional.of(Codec.BOOL)));
     public static void register(IEventBus modEventBus) {
         MEMORY_MODULE_TYPE_DEFERRED_REGISTRY.register(modEventBus);

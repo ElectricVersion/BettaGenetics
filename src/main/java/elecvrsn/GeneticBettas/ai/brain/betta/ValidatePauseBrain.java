@@ -22,11 +22,9 @@ public class ValidatePauseBrain extends Behavior<EnhancedBetta> {
         Brain<EnhancedBetta> brain = eanimal.getBrain();
 
         if (!eanimal.isAnimalSleeping()) {
-            brain.eraseMemory(ModMemoryModuleTypes.SLEEPING.get());
             brain.eraseMemory(ModMemoryModuleTypes.PAUSE_BRAIN.get());
             brain.eraseMemory(AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get());
             brain.useDefaultActivity();
         }
-
     }
 }

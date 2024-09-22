@@ -1697,58 +1697,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return (((this.level.getDayTime() % 24000 >= 12600 && this.level.getDayTime() % 24000 <= 22000) || this.level.isThundering()) && this.awokenTimer == 0 && !this.sleeping);
     }
 
-
-    public void findPlaceToSleep() {
-        int horizontalRange = 5;
-        int verticalRange = 5;
-
-        if (this.getLeashHolder() != null) {
-            horizontalRange = 2;
-            verticalRange = 2;
-        }
-
-        BlockPos baseBlockPos = new BlockPos(this.blockPosition());
-        BlockPos.MutableBlockPos mutableblockpos = new BlockPos.MutableBlockPos();
-
-        for (int k = 0; k <= verticalRange; k = k > 0 ? -k : 1 - k) {
-            for (int l = 0; l < horizontalRange; ++l) {
-                for (int i1 = 0; i1 <= l; i1 = i1 > 0 ? -i1 : 1 - i1) {
-                    for (int j1 = i1 < l && i1 > -l ? l : 0; j1 <= l; j1 = j1 > 0 ? -j1 : 1 - j1) {
-                        mutableblockpos.set(baseBlockPos).move(i1, k - 1, j1);
-                        // Is Dripleaf?
-                        if (this.level.getBlockState(mutableblockpos).getBlock() instanceof BigDripleafBlock) {
-                            this.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(mutableblockpos, 0.4F, 0));
-                            this.getBrain().setMemoryWithExpiry(AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), level.getGameTime(), 500);
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-        return;
-    }
-
-    public boolean hasNoSleepSpot() {
-        return !this.getBrain().hasMemoryValue(AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get());
-    }
-
-    public boolean isNotSleeping() {
-        return !isAnimalSleeping();
-    }
-
     public void setIsAngry(boolean angry) {
         this.entityData.set(IS_ANGRY, angry);
     }
 
     public boolean getIsAngry() {
         return this.entityData.get(IS_ANGRY);
-    }
-
-    public boolean canMakeBubbleNest(BlockPos blockPos) {
-        if (this.level.isEmptyBlock(blockPos) && this.level.isWaterAt(blockPos) && !this.level.isWaterAt(blockPos.above())) {
-            return true;
-        }
-        return false;
     }
 
     public void setNestPos(BlockPos position) {
@@ -1817,6 +1771,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         if (activities == null && getGenes() != null) {
             activities = new ArrayList<>();
             activities.add(ModActivities.PAUSE_BRAIN.get());
+            activities.add(Activity.REST);
             if (!isHighlyAggressive()) {
                 activities.add(Activity.AVOID);
             }
