@@ -20,6 +20,7 @@ import mokiyoki.enhancedanimals.model.modeldata.AnimalModelData;
 import mokiyoki.enhancedanimals.renderer.texture.TextureGrouping;
 import mokiyoki.enhancedanimals.renderer.texture.TexturingType;
 import mokiyoki.enhancedanimals.util.Genes;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -76,7 +77,7 @@ import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 
 public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable {
     protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, AddonSensorTypes.BETTA_ATTACKABLES.get(), AddonSensorTypes.BETTA_FOOD_TEMPTATIONS.get());
-    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(ModMemoryModuleTypes.SLEEPING.get(), ModMemoryModuleTypes.PAUSE_BRAIN.get(), ModMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN, AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), AddonMemoryModuleTypes.MAKING_NEST.get(), ModMemoryModuleTypes.HAS_EGG.get());
+    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(ModMemoryModuleTypes.SLEEPING.get(), ModMemoryModuleTypes.PAUSE_BRAIN.get(), ModMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN, AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), AddonMemoryModuleTypes.MAKING_NEST.get());
     private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
@@ -387,7 +388,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     protected String getSpecies() {
-        return "entity.bettagenetics.enhanced_betta";
+        return I18n.get("entity.geneticbettas.enhanced_betta");
     }
 
     @Override
@@ -397,7 +398,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     protected int gestationConfig() {
-        return 100;
+        return 24000;
     }
 
     @Nullable
@@ -1640,6 +1641,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     public boolean hasEgg() {
         return this.entityData.get(HAS_EGG);
+    }
+
+    @Override
+    protected int getPregnancyProgression() {
+        return this.hasEgg() ? 10 : 0;
     }
 
     public void setHasEgg(boolean hasEgg) {
