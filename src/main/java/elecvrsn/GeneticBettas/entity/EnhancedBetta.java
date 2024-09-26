@@ -1140,13 +1140,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             TextureGrouping iriAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
 
             TextureGrouping iriOpacityAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            TextureGrouping iriOpacityMarbleAndButterflyGroup = new TextureGrouping(TexturingType.CUTOUT_GROUP);
-            addTextureToAnimalTextureGrouping(iriOpacityMarbleAndButterflyGroup, TEXTURES_BUTTERFLY, fins, doubletail, butterfly, butterfly != 0);
-            addTextureToAnimalTextureGrouping(iriOpacityMarbleAndButterflyGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, true);
-            iriOpacityAlphaGroup.addGrouping(iriOpacityMarbleAndButterflyGroup);
-            TextureGrouping iriIntensityAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(iriIntensityAlphaGroup, TEXTURES_IRI_ALPHA, iriIntensity, true);
-            iriOpacityAlphaGroup.addGrouping(iriIntensityAlphaGroup);
+            addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, true);
+            addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_IRI_ALPHA, iriIntensity, true);
             iriAlphaGroup.addGrouping(iriOpacityAlphaGroup);
 
             if (bodyIri != 0) {
@@ -1178,10 +1173,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             if (finAlpha == 1) {
                 // Cut butterfly out of black lace
                 //Laced Black and Butterfly
-                addTextureToAnimalTextureGrouping(finCutoutGroup, TEXTURES_BUTTERFLY, fins, doubletail, butterfly, butterfly != 0);
+                addTextureToAnimalTextureGrouping(finCutoutGroup, TexturingType.APPLY_SHIFT, TEXTURES_BUTTERFLY[fins][doubletail][butterfly], "bf-hopq", (int) (112) << 8 );
             }
             addTextureToAnimalTextureGrouping(finCutoutGroup, TEXTURES_FIN_ALPHA, finAlpha, l -> true);
             finTransparencyGroup.addGrouping(finCutoutGroup);
+
             TextureGrouping finPigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             // Things in this group cancel out the effect of finCutoutGroup
             TextureGrouping finRedPigmentGroup = new TextureGrouping(TexturingType.MASK_GROUP);
@@ -1198,7 +1194,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 addTextureToAnimalTextureGrouping(finBloodredPigmentGroup, TEXTURES_RED_BODY, bodyBloodred, l -> l != 0);
                 finPigmentGroup.addGrouping(finBloodredPigmentGroup);
             }
-            finPigmentGroup.addGrouping(iriAlphaGroup);
+
+            //Iridescence adds opacity but isnt cut through by butterfly
+            finTransparencyGroup.addGrouping(iriAlphaGroup);
+
             TextureGrouping finDumboGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(finDumboGroup, TEXTURES_DUMBO, crowntail, dumbo);
             finPigmentGroup.addGrouping(finDumboGroup);
@@ -1228,9 +1227,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             /** BUTTERFLY **/
             if (butterfly != 0) {
                 TextureGrouping butterflyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                addTextureToAnimalTextureGrouping(butterflyGroup, dumbo ? "mask/dumbo.png" : "mask/transparent.png", true);
+                addTextureToAnimalTextureGrouping(butterflyGroup, "mask/dumbo.png", dumbo);
                 addTextureToAnimalTextureGrouping(butterflyGroup, TEXTURES_BUTTERFLY, fins, doubletail, butterfly, true);
-                nonCellophaneGroup.addGrouping(butterflyGroup);
             }
             TextureGrouping pigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             /** RED **/
@@ -1311,8 +1309,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 iridescenceGroup.addGrouping(shadingGroup);
             }
 
-            pigmentGroup.addGrouping(iridescenceGroup);
             nonCellophaneGroup.addGrouping(pigmentGroup);
+            nonCellophaneGroup.addGrouping(iridescenceGroup);
             texturesGroup.addGrouping(nonCellophaneGroup);
             /** FIN DETAIL **/
             TextureGrouping detailGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
