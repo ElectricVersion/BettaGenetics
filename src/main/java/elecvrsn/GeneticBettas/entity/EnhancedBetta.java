@@ -1140,8 +1140,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             TextureGrouping iriAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
 
             TextureGrouping iriOpacityAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+//            TextureGrouping iriOpacityMarbleAndButterflyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, true);
+//            iriOpacityAlphaGroup.addGrouping(iriOpacityMarbleAndButterflyGroup);
+//            TextureGrouping iriIntensityAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_IRI_ALPHA, iriIntensity, true);
+//            iriOpacityAlphaGroup.addGrouping(iriIntensityAlphaGroup);
             iriAlphaGroup.addGrouping(iriOpacityAlphaGroup);
 
             if (bodyIri != 0) {
@@ -1223,12 +1227,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/gills.png", "ce-g", cellophaneRGB);
             texturesGroup.addGrouping(cellophaneGroup);
             /** Everything that isn't cellophane **/
-            TextureGrouping nonCellophaneGroup = new TextureGrouping(TexturingType.CUTOUT_GROUP);
+            TextureGrouping nonCellophaneGroup = new TextureGrouping(butterfly != 0 ? TexturingType.CUTOUT_GROUP : TexturingType.MERGE_GROUP);
             /** BUTTERFLY **/
             if (butterfly != 0) {
                 TextureGrouping butterflyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 addTextureToAnimalTextureGrouping(butterflyGroup, "mask/dumbo.png", dumbo);
                 addTextureToAnimalTextureGrouping(butterflyGroup, TEXTURES_BUTTERFLY, fins, doubletail, butterfly, true);
+                nonCellophaneGroup.addGrouping(butterflyGroup);
             }
             TextureGrouping pigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             /** RED **/
@@ -1266,8 +1271,15 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             /** IRIDESCENCE **/
             iridescenceGroup = new TextureGrouping(TexturingType.MASK_GROUP);
 
-            iridescenceGroup.addGrouping(iriAlphaGroup);
-
+//            if (butterfly != 0) {
+//                TextureGrouping iridescenceCutoutGroup = new TextureGrouping(TexturingType.CUTOUT_GROUP);
+//                iridescenceCutoutGroup.addGrouping(butterflyGroup);
+//                iridescenceCutoutGroup.addGrouping(iriAlphaGroup);
+//                iridescenceGroup.addGrouping(iridescenceCutoutGroup);
+//            }
+//            else {
+                iridescenceGroup.addGrouping(iriAlphaGroup);
+//            }
             TextureGrouping iriColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_base.png", "iri", iriRGB);
             addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_dark.png", "iri-d", iriDarkRGB);
