@@ -1512,6 +1512,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return !isAggressive();
     }
 
+    public boolean hasReachedTarget() {
+        Optional<WalkTarget> walkTarget;
+        if (!brain.hasMemoryValue(MemoryModuleType.WALK_TARGET) || !(walkTarget = brain.getMemory(MemoryModuleType.WALK_TARGET)).isPresent()) {
+            return false;
+        }
+        boolean isCloseEnough = this.position().closerThan(walkTarget.get().getTarget().currentPosition(), 1.5F);
+        return isCloseEnough;
+    }
 
     public int getAggression() {
         if (this.aggression == -1 && this.getGenes() != null) {

@@ -42,6 +42,10 @@ public class EnhancedBettaBucket extends MobBucketItem {
         }
     }
 
+    public static boolean getIsFemale(ItemStack stack) {
+         return stack.getOrCreateTagElement("display").getString("UUID").toCharArray()[0] - 48 < 8;
+    }
+
     public Genes getGenes(ItemStack stack) {
         CompoundTag genetics = stack.getOrCreateTagElement("Genetics");
         return new Genes(genetics.getIntArray("SGenes"), genetics.getIntArray("AGenes"));
