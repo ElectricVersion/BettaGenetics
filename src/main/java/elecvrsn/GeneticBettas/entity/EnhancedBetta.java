@@ -815,6 +815,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 melanin[2] += 0.2F;
                 pheomelanin[1] -= 0.3F;
                 pheomelanin[2] += 0.2F;
+                bloodredColor[1] -= 0.3F;
+                bloodredColor[2] += 0.2F;
                 iridescence[1] -= 0.3F;
                 iridescence[2] += 0.2F;
                 iridescenceLight[1] -= 0.3F;
