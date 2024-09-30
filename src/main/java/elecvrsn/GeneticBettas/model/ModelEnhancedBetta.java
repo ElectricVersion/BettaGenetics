@@ -305,7 +305,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             List<Float> dorsalFinScalings = ModelHelper.createScalings(1F, betta.isFemale ? 0.625F : 1F, finScaleMult*betta.dorsalWidth, 0F, 0F, 0F);
             mapOfScale.put("dorsalFin", dorsalFinScalings);
 //            List<Float> tailFinScalings = ModelHelper.createScalings(1F, finScaleMult, finScaleMult, 0F, 0F, 0F);
-            mapOfScale.put("tailFin", ModelHelper.createScalings(1F, 1F, 1F, 0F, 0F, betta.isFemale ? -1F/16F : 0F));
+            mapOfScale.put("tailFin", ModelHelper.createScalings(1F, 1F, 1F, 0F, 0F, (betta.isFemale && !betta.doubleTail) ? -1F/16F : 0F));
             List<Float> ventralFinScalings = ModelHelper.createScalings(1F, betta.isFemale ? 0.725F : 1F, finScaleMult, 0F, 0F, 0F);
             mapOfScale.put("ventralFinL", ventralFinScalings);
             mapOfScale.put("ventralFinR", ventralFinScalings);

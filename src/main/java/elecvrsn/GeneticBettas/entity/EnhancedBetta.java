@@ -83,7 +83,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<BlockPos> NEST_POS = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BLOCK_POS);
 
-    private ArrayList<Activity> activities = null;
+    private ImmutableList<Activity> babyActivities = null;
+    private ImmutableList<Activity> adultActivities = null;
     private boolean isTempted = false;
     private int aggression = -1;
 
@@ -791,9 +792,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     melanin[1] = 0.091F;
                     melanin[2] = 0.151F;
                 }
-                cellophane[0] = melanin[0];
-                cellophane[1] = melanin[1];
-                cellophane[2] = melanin[2];
             } else if (gene[6] == 2 && gene[7] == 2) {
                 //Melano Black
                 melanin[1] = 0.125F;
@@ -823,6 +821,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 iridescenceLight[2] += 0.2F;
                 iridescenceDark[1] -= 0.3F;
                 iridescenceDark[2] += 0.2F;
+            }
+
+            if (gene[8] == 2 && gene[9] == 2) {
+                //Laced Black should make cellophane match melanin
+                cellophane[0] = melanin[0];
+                cellophane[1] = melanin[1];
+                cellophane[2] = melanin[2];
             }
 
             if (gene[18] == 2 || gene[19] == 2) {
@@ -1176,10 +1181,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             TextureGrouping finTransparencyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             TextureGrouping finCutoutGroup = new TextureGrouping(butterfly != 0 ? TexturingType.CUTOUT_GROUP : TexturingType.MERGE_GROUP);
-            if (finAlpha == 1) {
+            if (finAlpha == 1 && butterfly != 0) {
                 // Cut butterfly out of black lace
                 //Laced Black and Butterfly
-                addTextureToAnimalTextureGrouping(finCutoutGroup, TexturingType.APPLY_SHIFT, TEXTURES_BUTTERFLY[fins][doubletail][butterfly], "bf-hopq", (int) (112) << 8 );
+                addTextureToAnimalTextureGrouping(finCutoutGroup, TexturingType.APPLY_RGBA, TEXTURES_BUTTERFLY[fins][doubletail][butterfly], "bf-lb", (int) (32) << 24 );
             }
             addTextureToAnimalTextureGrouping(finCutoutGroup, TEXTURES_FIN_ALPHA, finAlpha, l -> true);
             finTransparencyGroup.addGrouping(finCutoutGroup);
@@ -1227,6 +1232,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, TEXTURES_FIN_ALPHA[finAlpha], "ce-f", cellophaneRGB);
             addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/body.png", "ce-b", cellophaneRGB);
             addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/gills.png", "ce-g", cellophaneRGB);
+            if (dumbo) {
+                addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, TEXTURES_DUMBO[crowntail], "ce-dumbo", cellophaneRGB);
+            }
             texturesGroup.addGrouping(cellophaneGroup);
             /** Everything that isn't cellophane **/
             TextureGrouping nonCellophaneGroup = new TextureGrouping(butterfly != 0 ? TexturingType.CUTOUT_GROUP : TexturingType.MERGE_GROUP);
@@ -1793,22 +1801,35 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return p_27581_.getY() >= j && p_27579_.getBlockState(p_27581_.below()).is(Blocks.WATER);
     }
 
-    public ImmutableList<Activity> getActivities() {
-        if (activities == null && getGenes() != null) {
-            activities = new ArrayList<>();
-            activities.add(ModActivities.PAUSE_BRAIN.get());
-            activities.add(Activity.REST);
+    public ImmutableList<Activity> getAdultActivities() {
+        if (adultActivities == null && getGenes() != null) {
+            ArrayList<Activity> mutableAdultActivities = new ArrayList<>();
+            mutableAdultActivities.add(ModActivities.PAUSE_BRAIN.get());
+            mutableAdultActivities.add(Activity.REST);
             if (!isHighlyAggressive()) {
-                activities.add(Activity.AVOID);
+                mutableAdultActivities.add(Activity.AVOID);
             }
-            activities.add(AddonActivities.MAKE_BUBBLE_NEST.get());
+            mutableAdultActivities.add(AddonActivities.MAKE_BUBBLE_NEST.get());
             if (isAggressive()) {
-                activities.add(Activity.FIGHT);
+                mutableAdultActivities.add(Activity.FIGHT);
             }
-            activities.add(Activity.IDLE);
+            mutableAdultActivities.add(Activity.IDLE);
+            adultActivities = ImmutableList.copyOf(mutableAdultActivities);
         }
-        return ImmutableList.copyOf(activities);
+        return adultActivities;
     }
+
+    public ImmutableList<Activity> getBabyActivities() {
+        if (babyActivities == null) {
+            ArrayList<Activity> mutableBabyActivities = new ArrayList<>();
+            mutableBabyActivities.add(ModActivities.PAUSE_BRAIN.get());
+            mutableBabyActivities.add(Activity.REST);
+            mutableBabyActivities.add(Activity.IDLE);
+            babyActivities = ImmutableList.copyOf(mutableBabyActivities);
+        }
+        return babyActivities;
+    }
+
 
     public String getMateName() {
         return this.mateName;
