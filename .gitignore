@@ -5,7 +5,6 @@ bin
 .metadata
 .classpath
 .project
-
 # idea
 out
 *.ipr
@@ -24,3 +23,4 @@ run
 # Files from Forge MDK
 forge*changelog.txt
 /libs
+/extra-mods
