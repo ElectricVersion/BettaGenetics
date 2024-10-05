@@ -69,15 +69,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
+import java.util.List;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 
 public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable {
-    protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, AddonSensorTypes.BETTA_ATTACKABLES.get(), AddonSensorTypes.BETTA_FOOD_TEMPTATIONS.get());
-    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(ModMemoryModuleTypes.SLEEPING.get(), ModMemoryModuleTypes.PAUSE_BRAIN.get(), ModMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN, AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), AddonMemoryModuleTypes.MAKING_NEST.get());
+    protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, AddonSensorTypes.BETTA_ATTACKABLES.get(), AddonSensorTypes.BETTA_TRUSTABLES.get(), AddonSensorTypes.BETTA_FOOD_TEMPTATIONS.get());
+    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(ModMemoryModuleTypes.SLEEPING.get(), ModMemoryModuleTypes.PAUSE_BRAIN.get(), ModMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryModuleType.BREED_TARGET, ModMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, AddonMemoryModuleTypes.NEAREST_TRUSTABLE.get(), AddonMemoryModuleTypes.TRUSTED_BETTAS.get(), MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN, AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), AddonMemoryModuleTypes.MAKING_NEST.get());
     private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
@@ -1770,7 +1769,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return null;
     }
 
-    public void findLocationForNest() {
+    public boolean findLocationForNest() {
         BlockPos baseBlockPos = new BlockPos(this.blockPosition());
         BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
 
@@ -1780,9 +1779,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             mutableBlockPos.set(baseBlockPos).move(0, y, 0);
             if (this.level.isWaterAt(mutableBlockPos) && !this.level.isWaterAt(mutableBlockPos.above())) {
                 setNestPos(mutableBlockPos);
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     protected void dropCustomDeathLoot(DamageSource source, int looting, boolean recentlyHitIn) {
@@ -1805,13 +1805,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         if (adultActivities == null && getGenes() != null) {
             ArrayList<Activity> mutableAdultActivities = new ArrayList<>();
             mutableAdultActivities.add(ModActivities.PAUSE_BRAIN.get());
-            mutableAdultActivities.add(Activity.REST);
+//            mutableAdultActivities.add(Activity.REST);
             if (!isHighlyAggressive()) {
-                mutableAdultActivities.add(Activity.AVOID);
+//                mutableAdultActivities.add(Activity.AVOID);
             }
+            mutableAdultActivities.add(AddonActivities.LAY_EGG.get());
             mutableAdultActivities.add(AddonActivities.MAKE_BUBBLE_NEST.get());
             if (isAggressive()) {
-                mutableAdultActivities.add(Activity.FIGHT);
+//                mutableAdultActivities.add(Activity.FIGHT);
             }
             mutableAdultActivities.add(Activity.IDLE);
             adultActivities = ImmutableList.copyOf(mutableAdultActivities);
@@ -1910,11 +1911,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         int[] genes = this.getGenes().getAutosomalGenes();
         if (genes[60] == 2 || genes[61] == 2) {
             //Halfmoon/Delta                  Halfmoon : Delta
-            speedMod -= (genes[60] == genes[61]) ? 0.2F : 0.1F;
+            speedMod -= (genes[60] == genes[61]) ? 0.1F : 0.05F;
         }
         if (genes[58] == 2 || genes[59] == 2) {
             //LongTail
-            speedMod -= 0.5F;
+            speedMod -= 0.15F;
         }
 
         if (getOrSetIsFemale()) {
@@ -1928,4 +1929,5 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         super.setInitialDefaults();
         calcSpeed();
     }
+
 }

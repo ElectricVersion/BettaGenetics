@@ -1,6 +1,7 @@
 package elecvrsn.GeneticBettas.init;
 
 import elecvrsn.GeneticBettas.ai.brain.sensing.BettaAttackablesSensor;
+import elecvrsn.GeneticBettas.ai.brain.sensing.BettaTrustablesSensor;
 import mokiyoki.enhancedanimals.ai.brain.sensor.EnhancedTemptingSensor;
 import mokiyoki.enhancedanimals.init.FoodSerialiser;
 import net.minecraft.world.entity.ai.sensing.SensorType;
@@ -23,6 +24,7 @@ public class AddonSensorTypes {
             () -> new SensorType<>(() -> new EnhancedTemptingSensor(BETTA_FOOD)));
 
     public static final RegistryObject<SensorType<BettaAttackablesSensor>> BETTA_ATTACKABLES = ADDON_SENSOR_TYPES_DEFERRED_REGISTRY.register("betta_attackables", () -> new SensorType<>(BettaAttackablesSensor::new));
+    public static final RegistryObject<SensorType<BettaTrustablesSensor>> BETTA_TRUSTABLES = ADDON_SENSOR_TYPES_DEFERRED_REGISTRY.register("betta_trustables", () -> new SensorType<>(BettaTrustablesSensor::new));
 
     public static void register(IEventBus modEventBus) {
         ADDON_SENSOR_TYPES_DEFERRED_REGISTRY.register(modEventBus);

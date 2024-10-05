@@ -37,6 +37,7 @@ public class BettaBrain  {
     public static Brain<?> makeBrain(Brain<EnhancedBetta> bettaBrain) {
         initCoreActivity(bettaBrain);
         initIdleActivity(bettaBrain);
+        initLayEggActivity(bettaBrain);
         initSleepingActivity(bettaBrain);
         initPauseBrainActivity(bettaBrain);
         initFightActivity(bettaBrain);
@@ -77,6 +78,18 @@ public class BettaBrain  {
         );
     }
 
+    private static void initLayEggActivity(Brain<EnhancedBetta> brain) {
+        brain.addActivityWithConditions(
+                AddonActivities.LAY_EGG.get(),
+                ImmutableList.of(
+                    Pair.of(0, new LayEgg()),
+                    Pair.of(1, new LookAtTargetSink(45, 90)),
+                    Pair.of(2, new MoveToTargetSink())
+                ),
+                ImmutableSet.of(Pair.of(ModMemoryModuleTypes.HAS_EGG.get(), MemoryStatus.VALUE_PRESENT))
+                );
+    }
+
     private static void initPauseBrainActivity(Brain<EnhancedBetta> brain) {
         brain.addActivityAndRemoveMemoriesWhenStopped(
                 ModActivities.PAUSE_BRAIN.get(),
@@ -96,9 +109,8 @@ public class BettaBrain  {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
                 new LookAtTargetSink(45, 90),
                 new MoveToTargetSink(),
-                new MakeBubbleNest(),
-                new LayEgg(),
                 new ValidatePauseBrain(),
+                new TrustBetta(),
                 new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS))
         );
     }
@@ -134,7 +146,7 @@ public class BettaBrain  {
                         Pair.of(new FollowTemptation(BettaBrain::getSpeedModifier), 1),
                         Pair.of(new BabyFollowAdult<>(ADULT_FOLLOW_RANGE, BettaBrain::getSpeedModifierFollowingAdult), 1)))
                 ),
-                Pair.of(2, new RunSometimes<>(new StopAndLookIfNearWalkTarget(), UniformInt.of(10, 40))),
+//                Pair.of(2, new RunSometimes<>(new StopAndLookIfNearWalkTarget(), UniformInt.of(10, 40))),
                 Pair.of(3, new StartAttacking<>(BettaBrain::findNearestValidAttackTarget)),
                 Pair.of(3, new TryFindWater(6, 0.15F)),
                 Pair.of(4, new GateBehavior<>(
