@@ -21,8 +21,7 @@ public class BettaAttackablesSensor extends NearestVisibleLivingEntitySensor {
     }
 
     private boolean isTrusted(EnhancedBetta betta, LivingEntity livingEntity) {
-//        return betta.getBrain().hasMemoryValue(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()) && betta.getBrain().getMemory(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()).get().contains(livingEntity.getUUID());
-        return false;
+        return betta.getBrain().hasMemoryValue(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()) && betta.getBrain().getMemory(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()).get().contains(livingEntity.getUUID());
     }
 
     private boolean areBothMale(EnhancedBetta subject, EnhancedBetta target) {

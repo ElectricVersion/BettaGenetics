@@ -146,7 +146,7 @@ public class BettaBrain  {
                         Pair.of(new FollowTemptation(BettaBrain::getSpeedModifier), 1),
                         Pair.of(new BabyFollowAdult<>(ADULT_FOLLOW_RANGE, BettaBrain::getSpeedModifierFollowingAdult), 1)))
                 ),
-//                Pair.of(2, new RunSometimes<>(new StopAndLookIfNearWalkTarget(), UniformInt.of(10, 40))),
+                Pair.of(2, new RunSometimes<>(new StopAndLookIfNearWalkTarget(), UniformInt.of(10, 40))),
                 Pair.of(3, new StartAttacking<>(BettaBrain::findNearestValidAttackTarget)),
                 Pair.of(3, new TryFindWater(6, 0.15F)),
                 Pair.of(4, new GateBehavior<>(

@@ -3,16 +3,12 @@ package elecvrsn.GeneticBettas.ai.brain.betta;
 import com.google.common.collect.ImmutableMap;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
-import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
 
 public class TrustBetta extends Behavior<EnhancedBetta> {
 
@@ -33,7 +29,9 @@ public class TrustBetta extends Behavior<EnhancedBetta> {
                 brain.setMemory(AddonMemoryModuleTypes.TRUSTED_BETTAS.get(), new ArrayList<>(Collections.singleton((brain.getMemory(AddonMemoryModuleTypes.NEAREST_TRUSTABLE.get()).get().getUUID()))));
             }
             else if (!(brain.getMemory(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()).get().contains(brain.getMemory(AddonMemoryModuleTypes.NEAREST_TRUSTABLE.get()).get().getUUID()))) {
-                brain.getMemory(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()).get().add(brain.getMemory(AddonMemoryModuleTypes.NEAREST_TRUSTABLE.get()).get().getUUID());
+                ArrayList<UUID> currentList = new ArrayList<>(brain.getMemory(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()).get());
+                currentList.add(brain.getMemory(AddonMemoryModuleTypes.NEAREST_TRUSTABLE.get()).get().getUUID());
+                brain.setMemory(AddonMemoryModuleTypes.TRUSTED_BETTAS.get(), currentList);
             }
         }
     }

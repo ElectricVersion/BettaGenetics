@@ -1805,14 +1805,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         if (adultActivities == null && getGenes() != null) {
             ArrayList<Activity> mutableAdultActivities = new ArrayList<>();
             mutableAdultActivities.add(ModActivities.PAUSE_BRAIN.get());
-//            mutableAdultActivities.add(Activity.REST);
+            mutableAdultActivities.add(Activity.REST);
             if (!isHighlyAggressive()) {
-//                mutableAdultActivities.add(Activity.AVOID);
+                mutableAdultActivities.add(Activity.AVOID);
             }
             mutableAdultActivities.add(AddonActivities.LAY_EGG.get());
             mutableAdultActivities.add(AddonActivities.MAKE_BUBBLE_NEST.get());
             if (isAggressive()) {
-//                mutableAdultActivities.add(Activity.FIGHT);
+                mutableAdultActivities.add(Activity.FIGHT);
             }
             mutableAdultActivities.add(Activity.IDLE);
             adultActivities = ImmutableList.copyOf(mutableAdultActivities);
