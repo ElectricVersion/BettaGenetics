@@ -91,10 +91,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     private TextureGrouping transRootGroup;
     private TextureGrouping iridescenceGroup;
 
-//    private static final String[] TEXTURES_FINS = new String[] {
-//            "mask/wildtype.png", "mask/halfmoon.png"
-//    };
-
     private static final String[] TEXTURES_FIN_ALPHA = new String[]{
             "mask/solid.png", "mask/lace_lg.png", "mask/cambodian_lg.png"
     };
