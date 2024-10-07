@@ -1,8 +1,8 @@
 package elecvrsn.GeneticBettas.entity.genetics;
 
+import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.init.breeds.BettaBreeds;
 import elecvrsn.GeneticBettas.util.AddonReference;
-import mokiyoki.enhancedanimals.config.EanimodCommonConfig;
 import mokiyoki.enhancedanimals.entity.genetics.AbstractGeneticsInitialiser;
 import mokiyoki.enhancedanimals.util.Breed;
 import mokiyoki.enhancedanimals.util.Genes;
@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
     //Have to redeclare WTC for some reason, probably because addon?
-    int WTC = EanimodCommonConfig.COMMON.wildTypeChance.get();
+    int WTC = BettasCommonConfig.COMMON.bettaWildTypeChance.get();
     public BettaGeneticsInitialiser() {
         this.breeds.add(BettaBreeds.GENERIC);
         this.breeds.add(BettaBreeds.PASSIVE);
@@ -39,10 +39,10 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         int[] sexlinkedGenes = new int[AddonReference.BETTA_SEXLINKED_GENES_LENGTH];
         int[] autosomalGenes = new int[AddonReference.BETTA_AUTOSOMAL_GENES_LENGTH];
         Biome biome = biomeHolder.value();
-        //Temporary Filler WTs
-        for (int i = 0; i < AddonReference.BETTA_AUTOSOMAL_GENES_LENGTH; i++) {
-            autosomalGenes[i] = 1;
-        }
+//        //Temporary Filler WTs
+//        for (int i = 0; i < AddonReference.BETTA_AUTOSOMAL_GENES_LENGTH; i++) {
+//            autosomalGenes[i] = 1;
+//        }
         //Iridescence [Turquoise <> Steel Blue]
         autosomalGenes[0] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[1] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;

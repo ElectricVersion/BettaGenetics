@@ -1,5 +1,6 @@
 package elecvrsn.GeneticBettas.entity;
 
+import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import mokiyoki.enhancedanimals.config.EanimodCommonConfig;
 import mokiyoki.enhancedanimals.util.Genes;
@@ -40,7 +41,7 @@ public class EnhancedBettaEgg extends Entity {
     private int animationTicks = this.level.isClientSide ? this.random.nextInt(500) : 0;
     public EnhancedBettaEgg(EntityType<? extends EnhancedBettaEgg> entityType, Level level) {
         super(entityType, level);
-        setHatchTime(EanimodCommonConfig.COMMON.axolotlHatchTime.get());
+        setHatchTime(BettasCommonConfig.COMMON.bettaHatchTime.get());
     }
 
     public void setGenes(Genes eggGenes) {

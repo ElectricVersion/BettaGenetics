@@ -3,6 +3,7 @@ package elecvrsn.GeneticBettas.entity;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import elecvrsn.GeneticBettas.ai.brain.betta.BettaBrain;
+import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.entity.genetics.BettaGeneticsInitialiser;
 import elecvrsn.GeneticBettas.init.*;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
@@ -389,12 +390,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     protected int getAdultAge() {
-        return EanimodCommonConfig.COMMON.adultAgePig.get();
+        return BettasCommonConfig.COMMON.bettaAdultAge.get();
     }
 
     @Override
     protected int gestationConfig() {
-        return 24000;
+        return 0;
     }
 
     @Nullable
