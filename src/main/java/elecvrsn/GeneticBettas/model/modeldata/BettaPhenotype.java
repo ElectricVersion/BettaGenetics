@@ -8,6 +8,7 @@ public class BettaPhenotype implements Phenotype {
     public float bodyScaleY = 1.0F;
     public boolean doubleTail = false;
     public float dorsalWidth = 1.0F;
+    public float size = 1.0F;
     public BettaPhenotype(int[] gene, char uuid, boolean isFemale) {
         this.isFemale = isFemale;
 
@@ -23,6 +24,15 @@ public class BettaPhenotype implements Phenotype {
                 bodyScaleY *= 0.975F;
             }
         }
+        if (gene[166] == 2 || gene[167] == 2) {
+            size += gene[166] == gene[167] ? 0.375F : 0.25F;
+        }
+
+        size += (gene[168] - 1)*0.05F;
+        size += (gene[169] - 1)*0.05F;
+
+        size -= (gene[170] - 1)*0.05F;
+        size -= (gene[171] - 1)*0.05F;
     }
 }
 

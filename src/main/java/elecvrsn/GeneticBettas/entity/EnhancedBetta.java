@@ -59,7 +59,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.BigDripleafBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
@@ -71,7 +70,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 
@@ -141,7 +139,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             "", "red/body/min.png", "red/body/low.png", "red/body/med.png", "red/body/high.png", "red/extended.png", "red/extended_het_mask.png", "red/extended_homo_mask.png"
     };
 
-    private static final String[] TEXTURES_IRI_ALPHA = new String[]{
+    private static final String[] TEXTURES_ALPHA = new String[]{
             "mask/transparent.png", "mask/percent25.png", "mask/percent50.png", "mask/percent75.png", "mask/solid.png"
     };
 
@@ -245,6 +243,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             "fin/dumbo.png", "fin/dumbo_hetcrown.png", "fin/dumbo_homocrown.png"
     };
 
+    private static final String[] TEXTURES_BABY = new String[]{
+            "", "baby_stripes.png"
+    };
     private static final String[] TEXTURES_DUMBO_BUTTERFLY = new String[]{
             "", "butterfly/dumbo_low.png", "butterfly/dumbo_med.png", "butterfly/dumbo_high.png", "butterfly/dumbo_max.png",
     };
@@ -510,6 +511,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             boolean dumbo = false;
             boolean isMale = !getOrSetIsFemale();
             boolean bloodred = false;
+            boolean extendedRed = false;
             int finBloodred = 4;
             int bodyBloodred = 2;
 
@@ -616,6 +618,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             if (gene[12] == 2 || gene[13] == 2) {
                 //Extended Red
+                extendedRed = true;
                 bodyRed = 5;
                 if (gene[16] == 2 && gene[17] == 2) {
                     //Homozygous Masked
@@ -1119,9 +1122,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             int metallic2RGB = Colouration.HSBtoARGB(metallic2[0], metallic2[1], metallic2[2]);
             int metallic3RGB = Colouration.HSBtoARGB(metallic3[0], metallic3[1], metallic3[2]);
 
-            int pheomelaninRGB = Colouration.HSBtoABGR(pheomelanin[0], pheomelanin[1], pheomelanin[2]);
-            int melaninRGB = Colouration.HSBtoABGR(melanin[0], melanin[1], melanin[2]);
-            int bloodredRGB = Colouration.HSBtoARGB(bloodredColor[0], bloodredColor[1], bloodredColor[2]);
+            float saturationMult = isBaby() ? 0.75F : 1F;
+
+            int pheomelaninRGB = Colouration.HSBtoABGR(pheomelanin[0], pheomelanin[1]*saturationMult, pheomelanin[2]);
+            int melaninRGB = Colouration.HSBtoABGR(melanin[0], melanin[1]*saturationMult, melanin[2]);
+            int bloodredRGB = Colouration.HSBtoARGB(bloodredColor[0], bloodredColor[1]*saturationMult, bloodredColor[2]);
             int iriRGB = Colouration.HSBtoARGB(iridescence[0], iridescence[1], iridescence[2]);
             int iriLightRGB = Colouration.HSBtoARGB(iridescenceLight[0], iridescenceLight[1], iridescenceLight[2]);
             int iriDarkRGB = Colouration.HSBtoARGB(iridescenceDark[0], iridescenceDark[1], iridescenceDark[2]);
@@ -1147,7 +1152,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, true);
 //            iriOpacityAlphaGroup.addGrouping(iriOpacityMarbleAndButterflyGroup);
 //            TextureGrouping iriIntensityAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_IRI_ALPHA, iriIntensity, true);
+            addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_ALPHA, iriIntensity, true);
 //            iriOpacityAlphaGroup.addGrouping(iriIntensityAlphaGroup);
             iriAlphaGroup.addGrouping(iriOpacityAlphaGroup);
 
@@ -1334,6 +1339,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             TextureGrouping detailGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(detailGroup, "halfmoon_fins_64.png", true);
             texturesGroup.addGrouping(detailGroup);
+            /** BABY STRIPES IF APPLICABLE **/
+            if (this.isBaby()) {
+                TextureGrouping babyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                addTextureToAnimalTextureGrouping(babyGroup, extendedRed ? TexturingType.APPLY_RED : TexturingType.APPLY_BLACK, TEXTURES_BABY, cambodian ? 0 : 1, l->l!=0);
+                addTextureToAnimalTextureGrouping(babyGroup, TexturingType.APPLY_BLACK, "mask/percent50.png"); // low opacity overlay helps dull the colors
+                texturesGroup.addGrouping(babyGroup);
+            }
             /** EYES **/
             TextureGrouping eyeGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(eyeGroup, TEXTURES_EYES, 0, l -> true);

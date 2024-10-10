@@ -316,7 +316,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
 
             poseStack.pushPose();
 
-            float bettaScale = 0.25F + (0.75F*bettaModelData.growthAmount);
+            float bettaScale = 0.25F + (0.375F*bettaModelData.growthAmount*betta.size);
             poseStack.scale(bettaScale, bettaScale, bettaScale);
             poseStack.translate(0F, -1.5F + (1.5F / bettaScale), 0F);
 
