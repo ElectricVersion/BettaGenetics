@@ -34,6 +34,7 @@ public class GeneticBettas
     }
     private void clientSetup(final FMLClientSetupEvent event) {
         ItemBlockRenderTypes.setRenderLayer(AddonBlocks.BUBBLE_NEST.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AddonBlocks.DISPLAY_TANK.get(), RenderType.cutout());
     }
 
 }

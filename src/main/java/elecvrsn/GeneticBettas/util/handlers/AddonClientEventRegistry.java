@@ -4,10 +4,10 @@ package elecvrsn.GeneticBettas.util.handlers;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import elecvrsn.GeneticBettas.model.ModelEnhancedBetta;
 import elecvrsn.GeneticBettas.model.ModelEnhancedBettaEgg;
+import elecvrsn.GeneticBettas.renderer.RenderDisplayTank;
 import elecvrsn.GeneticBettas.renderer.RenderEnhancedBetta;
 import elecvrsn.GeneticBettas.renderer.RenderEnhancedBettaEgg;
 import elecvrsn.GeneticBettas.util.AddonReference;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -27,6 +27,8 @@ public class AddonClientEventRegistry {
     public static void onEntityRenderersRegistry(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ENHANCED_BETTA.get(), RenderEnhancedBetta::new);
         event.registerEntityRenderer(ENHANCED_BETTA_EGG.get(), RenderEnhancedBettaEgg::new);
+        event.registerBlockEntityRenderer(AddonBlocks.DISPLAY_TANK_BLOCK_ENTITY.get(), RenderDisplayTank::new);
+
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -44,6 +46,8 @@ public class AddonClientEventRegistry {
     }
 
     private static int lightenColor(int colorIn) {
+        //TODO: remove this and figure out a better way to tint them while keeping the white "shine" pixels
+        //Because the water tint is too dark to look good with the bubble nest texture.
         int r = (3*((colorIn >> 16) & 255) + 255)/4;
         int g = (3*((colorIn >> 8) & 255) + 255)/4;
         int b = (3*((colorIn) & 255) + 255)/4;
