@@ -5,7 +5,9 @@ import elecvrsn.GeneticBettas.init.*;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -37,4 +39,8 @@ public class GeneticBettas
         ItemBlockRenderTypes.setRenderLayer(AddonBlocks.DISPLAY_TANK.get(), RenderType.cutout());
     }
 
+//    @SubscribeEvent
+//    public void registerCaps(RegisterCapabilitiesEvent event) {
+//        event.register(IExampleCapability.class);
+//    }
 }

@@ -1,17 +1,14 @@
 package elecvrsn.GeneticBettas.block.entity;
 
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
-import elecvrsn.GeneticBettas.entity.genetics.BettaGeneticsInitialiser;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import elecvrsn.GeneticBettas.init.AddonEntities;
-import net.minecraft.client.Minecraft;
+import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.animal.Pig;
-import net.minecraft.world.entity.animal.Salmon;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,23 +17,37 @@ import javax.annotation.Nullable;
 import java.util.function.Function;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
-import static net.minecraft.world.entity.EntityType.PIG;
-import static net.minecraft.world.entity.EntityType.SALMON;
 
 public class DisplayTankBlockEntity extends BlockEntity {
-    private EnhancedBetta enhancedBetta;
+    public EnhancedBetta displayEntity;
+    private CompoundTag entityTag;
     public DisplayTankBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(AddonBlocks.DISPLAY_TANK_BLOCK_ENTITY.get(), blockPos, blockState);
     }
 
-    @Nullable
-    public EnhancedBetta getOrCreateDisplayEntity(Level level, BlockPos blockPos) {
-        if (enhancedBetta == null && level != null) {
-            enhancedBetta = AddonEntities.ENHANCED_BETTA.get().create(level);
-            if (enhancedBetta != null && blockPos != null) {
-                enhancedBetta.setPos(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-            }
+    public Entity getOrCreateDisplayEntity(Level level) {
+        if (displayEntity == null && entityTag != null) {
+            displayEntity = EnhancedBettaBucket.spawnBettaFromTag(level, entityTag, getBlockPos());
         }
-        return enhancedBetta;
+        return displayEntity;
     }
+
+    public void setDisplayEntityTag(CompoundTag nbtData) {
+        entityTag = nbtData;
+    }
+//
+    @Override
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
+
+        if (entityTag != null) {
+            compound.put("EntityData", entityTag);
+        }
+    }
+    @Override
+    public void load(CompoundTag compound) {
+        super.load(compound);
+        entityTag = compound.getCompound("EntityData");
+    }
+
 }

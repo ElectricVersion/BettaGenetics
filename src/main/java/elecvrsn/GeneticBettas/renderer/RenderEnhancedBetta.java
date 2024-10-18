@@ -29,7 +29,7 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
 
     private static final LayeredTextureCacher textureCache = new LayeredTextureCacher();
     private static final String ENHANCED_BETTA_TEXTURE_LOCATION = "geneticbettas:textures/entities/betta/";
-    private static final ResourceLocation ERROR_TEXTURE_LOCATION = new ResourceLocation("bettagenetics:textures/entities/betta/bettabase.png");
+    private static final ResourceLocation ERROR_TEXTURE_LOCATION = new ResourceLocation("geneticbettas:textures/entities/betta/bettabase.png");
 
     public static final ModelLayerLocation BETTA_LAYER = new ModelLayerLocation(new ResourceLocation(AddonReference.MODID, "betta"), "betta_layer");
     public RenderEnhancedBetta(EntityRendererProvider.Context renderManager)

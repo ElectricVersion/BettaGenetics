@@ -470,8 +470,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     @Override
     @OnlyIn(Dist.CLIENT)
     protected void setTexturePaths() {
-        if (this.getGenes() != null) {
-            int[] gene = getGenes().getAutosomalGenes();
+        if (this.getGenes() != null || this.genetics != null) {
+            int[] gene = this.getGenes() != null ? getGenes().getAutosomalGenes() : genetics.getAutosomalGenes();
 
             char[] uuidArry = getStringUUID().toCharArray();
 
@@ -1694,7 +1694,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         this.setIsFemale(tag.getCompound("Genetics"));
         this.toggleReloadTexture();
         calcMaxHealth(true);
-        calcSpeed();
+//        calcSpeed();
     }
 
     @Override
@@ -1915,22 +1915,22 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     protected void calcSpeed() {
-        float speed = 1.0F;
-        float speedMod = 0.0F;
-        int[] genes = this.getGenes().getAutosomalGenes();
-        if (genes[60] == 2 || genes[61] == 2) {
-            //Halfmoon/Delta                  Halfmoon : Delta
-            speedMod -= (genes[60] == genes[61]) ? 0.1F : 0.05F;
-        }
-        if (genes[58] == 2 || genes[59] == 2) {
-            //LongTail
-            speedMod -= 0.15F;
-        }
-
-        if (getOrSetIsFemale()) {
-            speedMod *= 0.25F;
-        }
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5*(speed + speedMod));
+//        float speed = 1.0F;
+//        float speedMod = 0.0F;
+//        int[] genes = this.getGenes().getAutosomalGenes();
+//        if (genes[60] == 2 || genes[61] == 2) {
+//            //Halfmoon/Delta                  Halfmoon : Delta
+//            speedMod -= (genes[60] == genes[61]) ? 0.1F : 0.05F;
+//        }
+//        if (genes[58] == 2 || genes[59] == 2) {
+//            //LongTail
+//            speedMod -= 0.15F;
+//        }
+//
+//        if (getOrSetIsFemale()) {
+//            speedMod *= 0.25F;
+//        }
+//        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5*(speed + speedMod));
     }
 
     @Override
