@@ -6,6 +6,7 @@ import elecvrsn.GeneticBettas.init.AddonEntities;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -50,4 +51,13 @@ public class DisplayTankBlockEntity extends BlockEntity {
         entityTag = compound.getCompound("EntityData");
     }
 
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        return this.saveWithoutMetadata();
+    }
 }
