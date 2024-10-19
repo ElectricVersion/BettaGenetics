@@ -1,0 +1,19 @@
+{
+	"textures": {
+		"water": "block/water_still"
+	},
+	"elements": [
+		{
+			"name": "water",
+			"from": [1, 1, 1],
+			"to": [15, 13, 15],
+			"faces": {
+                "north": {"uv": [1, 3, 15, 15], "texture": "#water", "tintindex": 0 },
+                "east": {"uv": [1, 3, 15, 15], "texture": "#water", "tintindex": 0 },
+                "south": {"uv": [1, 3, 15, 15], "texture": "#water", "tintindex": 0 },
+                "west": {"uv": [1, 3, 15, 15], "texture": "#water", "tintindex": 0 },
+                "up": {"uv": [1, 1, 15, 15], "texture": "#water", "tintindex": 0 }
+			}
+		}
+	]
+}

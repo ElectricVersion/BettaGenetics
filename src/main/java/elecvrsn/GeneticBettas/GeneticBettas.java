@@ -14,6 +14,8 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import java.util.function.Predicate;
+
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("geneticbettas")
 public class GeneticBettas
@@ -36,7 +38,7 @@ public class GeneticBettas
     }
     private void clientSetup(final FMLClientSetupEvent event) {
         ItemBlockRenderTypes.setRenderLayer(AddonBlocks.BUBBLE_NEST.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AddonBlocks.DISPLAY_TANK.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AddonBlocks.DISPLAY_TANK.get(), Predicate.<RenderType>isEqual(RenderType.cutout()).or(Predicate.isEqual(RenderType.translucent())));
     }
 
 //    @SubscribeEvent

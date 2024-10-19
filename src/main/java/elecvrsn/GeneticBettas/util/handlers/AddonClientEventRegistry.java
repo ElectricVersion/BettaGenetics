@@ -43,6 +43,9 @@ public class AddonClientEventRegistry {
         event.getBlockColors().register((p_92621_, p_92622_, p_92623_, p_92624_) -> {
             return p_92622_ != null && p_92623_ != null ? lightenColor(BiomeColors.getAverageWaterColor(p_92622_, p_92623_)) : -1;
         }, AddonBlocks.BUBBLE_NEST.get());
+        event.getBlockColors().register((p_92621_, p_92622_, p_92623_, p_92624_) -> {
+            return p_92622_ != null && p_92623_ != null ? BiomeColors.getAverageWaterColor(p_92622_, p_92623_) : -1;
+        }, AddonBlocks.DISPLAY_TANK.get());
     }
 
     private static int lightenColor(int colorIn) {

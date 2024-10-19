@@ -1,91 +1,24 @@
 {
+    "loader": "forge:multi-layer",
 	"textures": {
-		"side": "geneticbettas:block/display_tank_side",
-		"top": "geneticbettas:block/display_tank_top",
-		"bottom": "geneticbettas:block/display_tank_bottom",
 		"particle": "geneticbettas:block/display_tank_side"
 	},
-	"elements": [
-		{
-			"name": "bottom",
-			"from": [0, 0, 0],
-			"to": [16, 1, 16],
-			"faces": {
-				"north": {"uv": [0, 15, 16, 16], "texture": "#side"},
-				"east": {"uv": [0, 15, 16, 16], "texture": "#side"},
-				"south": {"uv": [0, 15, 16, 16], "texture": "#side"},
-				"west": {"uv": [0, 15, 16, 16], "texture": "#side"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#bottom"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#bottom"}
-			}
-		},
-		{
-			"name": "top",
-			"from": [0, 15, 0],
-			"to": [16, 16, 16],
-			"faces": {
-				"north": {"uv": [0, 0, 16, 1], "texture": "#side"},
-				"east": {"uv": [0, 0, 16, 1], "texture": "#side"},
-				"south": {"uv": [0, 0, 16, 1], "texture": "#side"},
-				"west": {"uv": [0, 0, 16, 1], "texture": "#side"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#top"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#top"}
-			}
-		},
-		{
-			"name": "sidebeam_1",
-			"from": [15, 1, 0],
-			"to": [16, 15, 1],
-			"faces": {
-				"north": {"uv": [0, 1, 1, 15], "texture": "#side"},
-				"east": {"uv": [16, 1, 15, 15], "texture": "#side"},
-				"south": {"uv": [0, 1, 1, 15], "texture": "#side"},
-				"west": {"uv": [15, 1, 16, 15], "texture": "#side"}
-			}
-		},
-		{
-			"name": "sidebeam_2",
-			"from": [0, 1, 15],
-			"to": [1, 15, 16],
-			"faces": {
-				"north": {"uv": [0, 1, 1, 15], "texture": "#side"},
-				"east": {"uv": [16, 1, 15, 15], "texture": "#side"},
-				"south": {"uv": [0, 1, 1, 15], "texture": "#side"},
-				"west": {"uv": [15, 1, 16, 15], "texture": "#side"}
-			}
-		},
-		{
-			"name": "sidebeam_3",
-			"from": [0, 1, 0],
-			"to": [1, 15, 1],
-			"faces": {
-				"north": {"uv": [15, 1, 16, 15], "texture": "#side"},
-				"east": {"uv": [1, 1, 0, 15], "texture": "#side"},
-				"south": {"uv": [15, 1, 16, 15], "texture": "#side"},
-				"west": {"uv": [0, 1, 1, 15], "texture": "#side"}
-			}
-		},
-		{
-			"name": "sidebeam_4",
-			"from": [15, 1, 15],
-			"to": [16, 15, 16],
-			"faces": {
-				"north": {"uv": [15, 1, 16, 15], "texture": "#side"},
-				"east": {"uv": [1, 1, 0, 15], "texture": "#side"},
-				"south": {"uv": [15, 1, 16, 15], "texture": "#side"},
-				"west": {"uv": [0, 1, 1, 15], "texture": "#side"}
-			}
-		},
-		{
-			"name": "walls",
-			"from": [1, 1, 1],
-			"to": [15, 15, 15],
-			"faces": {
-				"north": {"uv": [1, 1, 15, 15], "texture": "#side"},
-				"east": {"uv": [1, 1, 15, 15], "texture": "#side"},
-				"south": {"uv": [1, 1, 15, 15], "texture": "#side"},
-				"west": {"uv": [1, 1, 15, 15], "texture": "#side"}
-			}
-		}
-	]
+    "layers": {
+        "cutout": {
+            "textures": {
+                "side": "geneticbettas:block/display_tank_side",
+                "top": "geneticbettas:block/display_tank_top",
+                "bottom": "geneticbettas:block/display_tank_bottom"
+            },
+            "parent": "geneticbettas:block/display_tank_empty",
+            "elements": []
+        },
+        "translucent": {
+            "textures": {
+                "water": "block/water_still"
+            },
+            "parent": "geneticbettas:block/display_tank_water",
+            "elements": []
+        }
+    }
 }
