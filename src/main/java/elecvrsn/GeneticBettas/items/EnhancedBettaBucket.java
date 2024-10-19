@@ -136,9 +136,8 @@ public class EnhancedBettaBucket extends MobBucketItem {
         EnhancedBetta betta = ENHANCED_BETTA.get().create(level);
         betta.setFromBucket(true);
         CompoundTag data = tag.getCompound("display");
-//        if (level.getEntity(UUID.fromString(data.getString("UUID"))) == null) {
-            betta.setUUID(UUID.fromString(data.getString("UUID")));
-//        }
+//        if (level.isClientSide() || (level instanceof ServerLevel && ((ServerLevel)level).getEntity(UUID.fromString(data.getString("UUID"))) == null) ) {
+        betta.setUUID(UUID.fromString(data.getString("UUID")));
         betta.setSireName(data.getString("SireName"));
         betta.setDamName(data.getString("DamName"));
         CompoundTag genetics = tag.getCompound("Genetics");

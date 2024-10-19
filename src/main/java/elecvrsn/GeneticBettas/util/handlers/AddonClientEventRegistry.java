@@ -2,6 +2,7 @@ package elecvrsn.GeneticBettas.util.handlers;
 
 
 import elecvrsn.GeneticBettas.init.AddonBlocks;
+import elecvrsn.GeneticBettas.init.AddonItems;
 import elecvrsn.GeneticBettas.model.ModelEnhancedBetta;
 import elecvrsn.GeneticBettas.model.ModelEnhancedBettaEgg;
 import elecvrsn.GeneticBettas.renderer.RenderDisplayTank;
@@ -39,13 +40,22 @@ public class AddonClientEventRegistry {
     }
 
     @SubscribeEvent
-    public static void colorSetup(ColorHandlerEvent.Block event) {
+    public static void blockColorSetup(ColorHandlerEvent.Block event) {
         event.getBlockColors().register((p_92621_, p_92622_, p_92623_, p_92624_) -> {
             return p_92622_ != null && p_92623_ != null ? lightenColor(BiomeColors.getAverageWaterColor(p_92622_, p_92623_)) : -1;
         }, AddonBlocks.BUBBLE_NEST.get());
         event.getBlockColors().register((p_92621_, p_92622_, p_92623_, p_92624_) -> {
             return p_92622_ != null && p_92623_ != null ? BiomeColors.getAverageWaterColor(p_92622_, p_92623_) : -1;
         }, AddonBlocks.DISPLAY_TANK.get());
+    }
+    @SubscribeEvent
+    public static void itemColorSetup(ColorHandlerEvent.Item event) {
+        event.getItemColors().register((p_92621_, p_92622_) -> {
+            return 4159204;
+        }, AddonItems.BUBBLE_NEST_ITEM.get());
+        event.getItemColors().register((p_92621_, p_92622_) -> {
+            return 4159204;
+        }, AddonItems.DISPLAY_TANK_ITEM.get());
     }
 
     private static int lightenColor(int colorIn) {
