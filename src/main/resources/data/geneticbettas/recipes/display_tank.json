@@ -1,0 +1,11 @@
+{
+  "type": "crafting_shaped",
+  "pattern": ["MMM", "MAM", "MMM"],
+  "key": {
+    "M": {"item": "minecraft:iron_nugget"},
+    "A": {"item": "minecraft:glass"}
+  },
+  "result": {
+    "item": "geneticbettas:display_tank"
+  }
+}
