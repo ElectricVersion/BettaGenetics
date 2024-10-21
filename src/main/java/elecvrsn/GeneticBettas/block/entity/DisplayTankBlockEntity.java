@@ -26,7 +26,7 @@ public class DisplayTankBlockEntity extends BlockEntity {
         super(AddonBlocks.DISPLAY_TANK_BLOCK_ENTITY.get(), blockPos, blockState);
     }
 
-    public Entity getOrCreateDisplayEntity(Level level) {
+    public EnhancedBetta getOrCreateDisplayEntity(Level level) {
         if (displayEntity == null && entityTag != null && !entityTag.isEmpty()) {
             displayEntity = EnhancedBettaBucket.spawnBettaFromTag(level, entityTag, getBlockPos());
         }
@@ -35,6 +35,7 @@ public class DisplayTankBlockEntity extends BlockEntity {
 
     public void setDisplayEntityTag(CompoundTag nbtData) {
         entityTag = nbtData;
+        if (entityTag == null) displayEntity = null;
     }
 //
     @Override

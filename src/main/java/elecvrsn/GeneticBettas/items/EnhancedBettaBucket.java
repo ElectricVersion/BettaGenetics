@@ -182,12 +182,14 @@ public class EnhancedBettaBucket extends MobBucketItem {
         BlockState blockState = level.getBlockState(blockPos);
         if (blockState.is(AddonBlocks.DISPLAY_TANK.get())) {
             DisplayTankBlock.fillWithEntityTag(level, blockPos, blockState, context.getItemInHand());
-//            if (level instanceof ServerLevel) {
-//                EnhancedBetta betta = spawnBetta((ServerLevel)level, context.getItemInHand(), blockPos, false);
-//                DisplayTankBlock.setEntity(level, blockPos, betta);
-//            }
+            if (player != null) {
+                //Empty the bucket in the player's hand unless they're in creative
+                player.setItemInHand(context.getHand(), MobBucketItem.getEmptySuccessItem(context.getItemInHand(), player));
+                this.playEmptySound(player, level, blockPos);
+            }
+            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.SUCCESS;
+        return InteractionResult.PASS;
     }
 
 }
