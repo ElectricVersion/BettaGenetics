@@ -1,20 +1,24 @@
 package elecvrsn.GeneticBettas.items;
 
 import elecvrsn.GeneticBettas.block.DisplayTankBlock;
+import elecvrsn.GeneticBettas.block.FilledDisplayTankBlock;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import mokiyoki.enhancedanimals.util.Genes;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.MobBucketItem;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,6 +27,7 @@ import net.minecraft.world.level.material.Fluid;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -179,17 +184,41 @@ public class EnhancedBettaBucket extends MobBucketItem {
         Player player = context.getPlayer();
         Level level = context.getLevel();
         BlockPos blockPos = context.getClickedPos();
-        BlockState blockState = level.getBlockState(blockPos);
-        if (blockState.is(AddonBlocks.DISPLAY_TANK.get())) {
-            DisplayTankBlock.fillWithEntityTag(level, blockPos, blockState, context.getItemInHand());
+        //If we're starting with an empty tank, consume the water for filling it. Otherwise you get to keep the water
+        Item successItemStack = level.getBlockState(blockPos).is(AddonBlocks.DISPLAY_TANK.get()) ? Items.BUCKET : Items.WATER_BUCKET;
+        BlockState blockState = DisplayTankBlock.fill(level.getBlockState(blockPos), level, blockPos);
+        if (blockState.is(AddonBlocks.FILLED_DISPLAY_TANK.get())) {
+            FilledDisplayTankBlock.fillWithEntityTag(level, blockPos, blockState, context.getItemInHand());
             if (player != null) {
-                //Empty the bucket in the player's hand unless they're in creative
-                player.setItemInHand(context.getHand(), MobBucketItem.getEmptySuccessItem(context.getItemInHand(), player));
+                //Since we're filling a tank with water already in it, we want to keep the water in the bucket
+                player.setItemInHand(context.getHand(), !player.getAbilities().instabuild ? new ItemStack(successItemStack) : context.getItemInHand());
                 this.playEmptySound(player, level, blockPos);
             }
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
+    }
+
+    public static <T extends LivingEntity & Bucketable> Optional<InteractionResult> bucketMobPickupAllowEmpty(Player player, InteractionHand hand, T entity) {
+        //Functionally almost identical to the normal bucket pickup method but it allows for the use of empty buckets.
+        //Needed so that you can retrieve bettas from display tanks without water in bucket
+        ItemStack itemstack = player.getItemInHand(hand);
+        if ((itemstack.getItem() == Items.WATER_BUCKET || itemstack.getItem() == Items.BUCKET) && entity.isAlive()) {
+            entity.playSound(entity.getPickupSound(), 1.0F, 1.0F);
+            ItemStack itemstack1 = entity.getBucketItemStack();
+            entity.saveToBucketTag(itemstack1);
+            ItemStack itemstack2 = ItemUtils.createFilledResult(itemstack, player, itemstack1, false);
+            player.setItemInHand(hand, itemstack2);
+            Level level = entity.level;
+            if (!level.isClientSide) {
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) player, itemstack1);
+            }
+
+            entity.discard();
+            return Optional.of(InteractionResult.sidedSuccess(level.isClientSide));
+        } else {
+            return Optional.empty();
+        }
     }
 
 }

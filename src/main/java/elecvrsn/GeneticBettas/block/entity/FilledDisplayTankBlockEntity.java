@@ -2,28 +2,19 @@ package elecvrsn.GeneticBettas.block.entity;
 
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
-import elecvrsn.GeneticBettas.init.AddonEntities;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import javax.annotation.Nullable;
-import java.util.function.Function;
-
-import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
-
-public class DisplayTankBlockEntity extends BlockEntity {
+public class FilledDisplayTankBlockEntity extends BlockEntity {
     public EnhancedBetta displayEntity;
     private CompoundTag entityTag;
-    public DisplayTankBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(AddonBlocks.DISPLAY_TANK_BLOCK_ENTITY.get(), blockPos, blockState);
+    public FilledDisplayTankBlockEntity(BlockPos blockPos, BlockState blockState) {
+        super(AddonBlocks.FILLED_DISPLAY_TANK_BLOCK_ENTITY.get(), blockPos, blockState);
     }
 
     public EnhancedBetta getOrCreateDisplayEntity(Level level) {
@@ -36,6 +27,10 @@ public class DisplayTankBlockEntity extends BlockEntity {
     public void setDisplayEntityTag(CompoundTag nbtData) {
         entityTag = nbtData;
         if (entityTag == null) displayEntity = null;
+    }
+
+    public CompoundTag getDisplayEntityTag() {
+        return entityTag;
     }
 //
     @Override

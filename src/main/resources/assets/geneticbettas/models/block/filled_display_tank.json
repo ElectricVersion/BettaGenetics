@@ -1,0 +1,24 @@
+{
+    "loader": "forge:multi-layer",
+	"textures": {
+		"particle": "geneticbettas:block/display_tank_side"
+	},
+    "layers": {
+        "cutout": {
+            "textures": {
+                "side": "geneticbettas:block/display_tank_side",
+                "top": "geneticbettas:block/display_tank_top",
+                "bottom": "geneticbettas:block/display_tank_bottom"
+            },
+            "parent": "geneticbettas:block/display_tank",
+            "elements": []
+        },
+        "translucent": {
+            "textures": {
+                "water": "block/water_still"
+            },
+            "parent": "geneticbettas:block/display_tank_water",
+            "elements": []
+        }
+    }
+}

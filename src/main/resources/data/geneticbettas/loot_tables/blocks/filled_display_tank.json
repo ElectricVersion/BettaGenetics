@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "EntityData",
+                  "target": "BlockEntityTag.EntityData",
+                  "op": "replace"
+                }
+              ]
+            }
+          ],
+          "name": "geneticbettas:filled_display_tank"
+        }
+      ]
+    }
+  ]
+}
