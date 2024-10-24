@@ -6,5 +6,9 @@
   "item.geneticbettas.enhanced_betta_spawn_egg": "Genetic Betta Spawn Egg",
   "block.geneticbettas.bubble_nest": "Bubble Nest",
   "item.geneticbettas.bubble_nest": "Bubble Nest",
-  "item.geneticbettas.enhanced_betta_bucket": "Bucket of Betta"
+  "item.geneticbettas.enhanced_betta_bucket": "Bucket of Betta",
+  "block.geneticbettas.display_tank": "Display Tank",
+  "item.geneticbettas.display_tank": "Display Tank",
+  "block.geneticbettas.filled_display_tank": "Filled Display Tank",
+  "item.geneticbettas.filled_display_tank": "Filled Display Tank"
 }

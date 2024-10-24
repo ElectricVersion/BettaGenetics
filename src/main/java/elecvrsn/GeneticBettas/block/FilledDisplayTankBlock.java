@@ -77,12 +77,12 @@ public class FilledDisplayTankBlock extends BaseEntityBlock {
                     ((FilledDisplayTankBlockEntity) blockEntity).setDisplayEntityTag(null);
                     if (isEmptyBucket) {
                         //If the bucket was empty we need to take the water as well as the fish
-                        level.setBlock(pos, AddonBlocks.DISPLAY_TANK.get().defaultBlockState(), 2);
+                        level.setBlock(pos, AddonBlocks.DISPLAY_TANK.get().withPropertiesOf(state), 2);
                     }
                 }
                 else if (stack.getItem() == Items.BUCKET) {
                     //Even if there is no entity in the tank, we can at least take the water with an empty bucket
-                    level.setBlock(pos, AddonBlocks.DISPLAY_TANK.get().defaultBlockState(), 2);
+                    level.setBlock(pos, AddonBlocks.DISPLAY_TANK.get().withPropertiesOf(state), 2);
                     player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.WATER_BUCKET)));
                 }
                 return InteractionResult.SUCCESS;
