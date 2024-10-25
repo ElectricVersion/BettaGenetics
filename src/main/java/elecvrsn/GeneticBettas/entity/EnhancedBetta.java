@@ -135,6 +135,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     {"", "red/fin/halfmoon_red_low.png", "red/fin/halfmoon_red_med.png", "red/fin/halfmoon_red_high.png", "red/fin/wildtype.png"},
                     {"", "red/fin/halfmoon_double_red_low.png", "red/fin/halfmoon_double_red_med.png", "red/fin/halfmoon_double_red_high.png", "red/fin/wildtype.png"},
             },
+            {
+                    {"", "red/fin/plakat_red_low.png", "red/fin/plakat_red_med.png", "red/fin/plakat_red_high.png", "red/fin/wildtype.png"},
+                    {"", "red/fin/plakat_double_red_low.png", "red/fin/plakat_double_red_med.png", "red/fin/plakat_double_red_high.png", "red/fin/wildtype.png"},
+            },
     };
 
     private static final String[] TEXTURES_RED_BODY = new String[]{
@@ -239,6 +243,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     {"fin/halfmoon.png", "fin/halfmoon_hetcrown.png", "fin/halfmoon_homocrown.png"},
                     {"fin/halfmoon_double.png", "fin/halfmoon_double_hetcrown.png", "fin/halfmoon_double_homocrown.png"},
             },
+            {
+                    {"fin/babyfish.png", "fin/babyfish.png", "fin/babyfish.png"},
+                    {"fin/babyfish.png", "fin/babyfish.png", "fin/babyfish.png"},
+            },
     };
 
     private static final String[] TEXTURES_DUMBO = new String[]{
@@ -280,6 +288,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     {"", "butterfly/halfmoon_low.png", "butterfly/halfmoon_med.png", "butterfly/halfmoon_high.png", "butterfly/halfmoon_max.png"},
                     {"", "butterfly/halfmoon_double_low.png", "butterfly/halfmoon_double_med.png", "butterfly/halfmoon_double_high.png", "butterfly/halfmoon_double_max.png"},
             },
+            {
+                    {"", "butterfly/plakat_low.png", "butterfly/plakat_med.png", "butterfly/plakat_high.png", "butterfly/plakat_max.png"},
+                    {"", "butterfly/plakat_double_low.png", "butterfly/plakat_double_med.png", "butterfly/plakat_double_high.png", "butterfly/plakat_double_max.png"},
+            },
     };
 
     private static final String[][][] TEXTURES_IRI_RIM = new String[][][]{
@@ -306,6 +318,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             {
                     {"", "iri/rim/halfmoon_low.png", "iri/rim/halfmoon_med.png", "iri/rim/halfmoon_high.png", "iri/rim/halfmoon_max.png"},
                     {"", "iri/rim/halfmoon_double_low.png", "iri/rim/halfmoon_double_med.png", "iri/rim/halfmoon_double_high.png", "iri/rim/halfmoon_double_max.png"},
+            },
+            {
+                    {"", "iri/rim/plakat_low.png", "iri/rim/plakat_med.png", "iri/rim/plakat_high.png", "iri/rim/plakat_max.png"},
+                    {"", "iri/rim/plakat_double_low.png", "iri/rim/plakat_double_med.png", "iri/rim/plakat_double_high.png", "iri/rim/plakat_double_max.png"},
             },
     };
     private boolean resetTexture = true;
@@ -874,8 +890,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             if (gene[56] == 2 && gene[57] == 2) {
                 dumbo = true;
             }
-
-            if (gene[58] == 2 || gene[59] == 2) {
+            if (isBaby()) {
+                fins = 6;
+            }
+            else if (gene[58] == 2 || gene[59] == 2) {
                 //Long Fins
                 if (gene[60] == 2 || gene[61] == 2) {
                     if (gene[60] == gene[61]) {
