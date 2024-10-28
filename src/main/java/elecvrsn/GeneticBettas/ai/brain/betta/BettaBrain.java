@@ -30,7 +30,8 @@ import static elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes.FOUND_SLEEP_SPO
 
 public class BettaBrain  {
     private static final UniformInt ADULT_FOLLOW_RANGE = UniformInt.of(5, 16);
-    private static final float SPEED_MULTIPLIER_WHEN_MAKING_LOVE = 0.2F;
+    private static final float SPEED_MULTIPLIER_WHEN_MAKING_LOVE = 0.5F;
+    private static final float SPEED_MULTIPLIER_WHEN_ON_LAND = 0.25F;
     private static final float SPEED_MULTIPLIER_WHEN_IDLING_IN_WATER = 0.5F;
     private static final float SPEED_MULTIPLIER_WHEN_CHASING_IN_WATER = 0.55F;
 
@@ -140,7 +141,7 @@ public class BettaBrain  {
     private static void initIdleActivity(Brain<EnhancedBetta> brain) {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
                 Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 9.0F), UniformInt.of(20, 60))),
-                Pair.of(1, new BettaMakeLove(AddonEntities.ENHANCED_BETTA.get(), 1F)),
+                Pair.of(1, new BettaMakeLove(AddonEntities.ENHANCED_BETTA.get(), SPEED_MULTIPLIER_WHEN_MAKING_LOVE)),
                 Pair.of(1, new RunIf<>(EnhancedBetta::isAnimalSleeping, new FindPlaceToSleep())),
                 Pair.of(2, new RunOne<>(ImmutableList.of(
                         Pair.of(new FollowTemptation(BettaBrain::getSpeedModifier), 1),
@@ -148,7 +149,7 @@ public class BettaBrain  {
                 ),
                 Pair.of(2, new RunSometimes<>(new StopAndLookIfNearWalkTarget(), UniformInt.of(10, 40))),
                 Pair.of(3, new StartAttacking<>(BettaBrain::findNearestValidAttackTarget)),
-                Pair.of(3, new TryFindWater(6, 0.15F)),
+                Pair.of(3, new TryFindWater(6, SPEED_MULTIPLIER_WHEN_ON_LAND)),
                 Pair.of(4, new GateBehavior<>(
                                 ImmutableMap.of(
                                         MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT,

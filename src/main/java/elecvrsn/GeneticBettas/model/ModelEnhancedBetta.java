@@ -24,8 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static net.minecraft.util.Mth.abs;
-import static net.minecraft.util.Mth.clamp;
+import static net.minecraft.util.Mth.*;
 
 @OnlyIn(Dist.CLIENT)
 public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalModel<T> {
@@ -371,21 +370,26 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             boolean isMoving = false;
             float yDelta = 0F;
 
-            if (!entityIn.isAnimalSleeping() && entityIn.isInWater()) {
-                isMoving = entityIn.yOld != entityIn.getY() && (entityIn.xOld != entityIn.getX() || entityIn.zOld != entityIn.getZ());
-                yDelta = isMoving ? (float)clamp(-entityIn.getDeltaMovement().y, -0.5, 0.5) * (float)Mth.HALF_PI : 0F;
-                if (this.bettaModelData.bubblingTimer <= ageInTicks) {
-                    bettaModelData.bubblingTimer = (int)ageInTicks + entityIn.getRandom().nextInt(600) + 30;
-                }
-                else if (this.bettaModelData.bubblingTimer <= ageInTicks + 10) {
-                    setupBubbleAnimation(ageInTicks, headPitch);
-                }
+            if (entityIn.isInWater()) {
+                this.theBetta.setZRot(0F);
+                if (!entityIn.isAnimalSleeping()) {
+                    isMoving = entityIn.yOld != entityIn.getY() && (entityIn.xOld != entityIn.getX() || entityIn.zOld != entityIn.getZ());
+                    yDelta = isMoving ? (float) clamp(-entityIn.getDeltaMovement().y, -0.5, 0.5) * (float) Mth.HALF_PI : 0F;
+                    if (this.bettaModelData.bubblingTimer <= ageInTicks) {
+                        bettaModelData.bubblingTimer = (int) ageInTicks + entityIn.getRandom().nextInt(600) + 30;
+                    } else if (this.bettaModelData.bubblingTimer <= ageInTicks + 10) {
+                        setupBubbleAnimation(ageInTicks, headPitch);
+                    }
 
-                if (isMoving) {
-                    this.setupSwimmingAnimation(ageInTicks, headPitch, yDelta);
-                } else {
-                    this.setupIdleAnimation(ageInTicks, headPitch);
+                    if (isMoving) {
+                        this.setupSwimmingAnimation(ageInTicks, headPitch, yDelta);
+                    } else {
+                        this.setupIdleAnimation(ageInTicks, headPitch);
+                    }
                 }
+            }
+            else {
+                setupFlopAnimation(ageInTicks);
             }
             float newxRot = yDelta * (yDelta > 0F ? 2.5F : 10F);
             float rotDiff = Mth.abs(this.theBetta.getXRot()-newxRot);
@@ -436,5 +440,13 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
 //        this.theBetta.setXRot(this.lerpTo(0.5F, this.theBetta.getXRot(), 0F));
         this.theFinLeft.setYRot(Mth.HALF_PI*0.5F + (f2 * (float)Mth.HALF_PI*0.15F));
         this.theFinRight.setYRot(-Mth.HALF_PI*0.5F + (f3 * (float)Mth.HALF_PI*0.15F));
+    }
+
+    private void setupFlopAnimation(float ageInTicks) {
+        float f = ageInTicks * 0.33F;
+        float f1 = Mth.sin(f*2);
+        this.theBetta.setZRot(this.lerpTo(0.25F, this.theBetta.getZRot(), Mth.HALF_PI));
+        this.theBodyBack.setYRot(f1 * (float)Mth.HALF_PI*0.1F);
+        this.theTailFin.setYRot(f1 * (float)Mth.HALF_PI*0.075F);
     }
 }

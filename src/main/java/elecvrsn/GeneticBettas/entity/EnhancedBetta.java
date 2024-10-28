@@ -61,6 +61,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.SwimNodeEvaluator;
@@ -355,13 +356,17 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     public EnhancedBetta(EntityType<? extends EnhancedBetta> entityType, Level worldIn) {
         super(entityType, worldIn, AddonReference.BETTA_SEXLINKED_GENES_LENGTH, AddonReference.BETTA_AUTOSOMAL_GENES_LENGTH, true);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0F);
         this.moveControl = new EnhancedBetta.BettaMoveControl(this);
         this.lookControl = new EnhancedBetta.BettaLookControl(this, 20);
-        this.maxUpStep = 1.0F;
+//        this.maxUpStep = 1.0F;
         this.initilizeAnimalSize();
     }
 
+    @Override
+    public float getStepHeight() {
+        return 0.75F;
+    }
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(HAS_EGG, false);
@@ -1491,15 +1496,19 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public void aiStep() {
         if (!this.isInWater() && this.onGround && this.verticalCollision) {
             //The flop on land
-//            this.setDeltaMovement(this.getDeltaMovement().add((double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F), (double)0.4F, (double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
-//            this.onGround = false;
-//            this.hasImpulse = true;
-//            this.playSound(this.getFlopSound(), this.getSoundVolume(), this.getVoicePitch());
+            this.setDeltaMovement(this.getDeltaMovement().add((double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F), (double)0.4F, (double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
+            this.onGround = false;
+            this.hasImpulse = true;
+            this.playSound(this.getFlopSound(), this.getSoundVolume(), this.getVoicePitch());
         } else if (this.isAnimalSleeping() && !this.onGround) {
             this.setDeltaMovement(this.getDeltaMovement().add(0.0, this.brain.hasMemoryValue(AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get()) ? -0.001 : -0.01, 0.0));
         }
         super.aiStep();
         bubble();
+    }
+
+    private SoundEvent getFlopSound() {
+        return SoundEvents.TROPICAL_FISH_FLOP;
     }
 
     protected Brain.Provider<EnhancedBetta> brainProvider() {
@@ -1610,7 +1619,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         }
 
         protected PathFinder createPathFinder(int p_149222_) {
-            this.nodeEvaluator = new SwimNodeEvaluator(false);
+            this.nodeEvaluator = new AmphibiousNodeEvaluator(false);
             return new PathFinder(this.nodeEvaluator, p_149222_);
         }
 
