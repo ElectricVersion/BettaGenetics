@@ -89,6 +89,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     private boolean isTempted = false;
     private int aggression = -1;
 
+    private static final int BETTA_TOTAL_AIR_SUPPLY = 2000;
+
 
     private TextureGrouping transRootGroup;
     private TextureGrouping iridescenceGroup;
@@ -1971,6 +1973,33 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     @Override
     protected net.minecraft.network.chat.Component getTypeName() {
         return new TranslatableComponent((speciesTranslationKey + (getOrSetIsFemale() ? ".female":".male")));
+    }
+
+    @Override
+    public int getMaxAirSupply() {
+        return BETTA_TOTAL_AIR_SUPPLY;
+    }
+
+    protected void handleAirSupply(int p_149194_) {
+        if (this.isAlive() && !this.isInWaterRainOrBubble()) {
+            this.setAirSupply(p_149194_ - 1);
+            if (this.getAirSupply() < 0) {
+                this.setAirSupply(0);
+                this.hurt(DamageSource.DRY_OUT, 2.0F);
+            }
+        } else {
+            this.setAirSupply(this.getMaxAirSupply());
+        }
+
+    }
+
+    @Override
+    public void baseTick() {
+        int i = this.getAirSupply();
+        super.baseTick();
+        if (!this.isNoAi()) {
+            this.handleAirSupply(i);
+        }
     }
 
 }
