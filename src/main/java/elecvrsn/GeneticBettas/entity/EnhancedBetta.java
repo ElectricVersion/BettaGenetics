@@ -64,7 +64,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
-import net.minecraft.world.level.pathfinder.SwimNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -107,12 +106,25 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             "", "iri/body/low_body_iri.png", "iri/body/med_body_iri.png", "iri/body/high_body_iri.png",
             "mask/solid.png",
     };
+
     private static final String[] TEXTURES_IRI_MASK = new String[]{
             "iri/body/nonmask.png", "iri/body/mask_low1.png", "iri/body/mask_low2.png",
             "iri/body/mask_med1.png", "iri/body/mask_med2.png",
             "iri/body/mask_high1.png", "iri/body/mask_high2.png",
             "iri/body/mask_max.png",
     };
+
+    private static final String[] TEXTURES_DRAGONSCALE = new String[]{
+            "",
+            "iri/dragonscale/dragon_het_min_1.png", "iri/dragonscale/dragon_het_min_2.png",  "iri/dragonscale/dragon_het_min_3.png",
+            "iri/dragonscale/dragon_het_normal_1.png",
+            "iri/dragonscale/dragon_homo_low_1.png", "iri/dragonscale/dragon_homo_low_2.png", "iri/dragonscale/dragon_homo_low_3.png", "iri/dragonscale/dragon_homo_low_4.png", "iri/dragonscale/dragon_homo_low_5.png",
+            "iri/dragonscale/dragon_homo_normal_1.png", "iri/dragonscale/dragon_homo_normal_2.png"
+    };
+    private static final String[] TEXTURES_DRAGONSCALE_MASK = new String[]{
+            "", "iri/dragonscale/dragon_het_mask.png", "iri/dragonscale/dragon_homo_mask.png"
+    };
+
     private static final String[][][] TEXTURES_RED_FIN = new String[][][]{
             {
                     {"", "red/fin/plakat_red_low.png", "red/fin/plakat_red_med.png", "red/fin/plakat_red_high.png", "red/fin/wildtype.png"},
@@ -494,7 +506,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    protected void setTexturePaths() {
+    protected void
+    setTexturePaths() {
         if (this.getGenes() != null || this.genetics != null) {
             int[] gene = this.getGenes() != null ? getGenes().getAutosomalGenes() : genetics.getAutosomalGenes();
 
@@ -539,6 +552,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             boolean extendedRed = false;
             int finBloodred = 4;
             int bodyBloodred = 2;
+            int dragonscale = 0;
 
             /*** COLORATION ***/
             float[] melanin = {0.0427F, 0.527F, 0.251F};
@@ -558,6 +572,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             float[] metallic2 = getHSBFromHex("00ab74");
             float[] metallic3 = getHSBFromHex("e7d094");
 
+            /*** IRIDESCENCE ***/
             //Body Iridescence Level
             int bodyIriLevel = 0;
             for (int i = 24; i < 28; i++) {
@@ -614,6 +629,19 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     case 3 -> maskIri = 7;
                 }
             }
+
+            /*** DRAGONSCALE ***/
+            if (gene[172] == 2 || gene[173] == 2) {
+                if (gene[172] == gene[173]) {
+                    //Homo
+                    dragonscale = bodyIri > 1 ? 10 : 5;
+                }
+                else {
+                    //Het
+                    dragonscale = bodyIri > 1 ? 4 : 1;
+                }
+            }
+
 
             /*** RED ***/
             for (int i = 36; i < 40; i++) {
@@ -1175,20 +1203,24 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             TextureGrouping iriAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
 
             TextureGrouping iriOpacityAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-//            TextureGrouping iriOpacityMarbleAndButterflyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, true);
-//            iriOpacityAlphaGroup.addGrouping(iriOpacityMarbleAndButterflyGroup);
-//            TextureGrouping iriIntensityAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_ALPHA, iriIntensity, true);
-//            iriOpacityAlphaGroup.addGrouping(iriIntensityAlphaGroup);
             iriAlphaGroup.addGrouping(iriOpacityAlphaGroup);
 
             if (bodyIri != 0) {
                 TextureGrouping iriMaskAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                TextureGrouping iriBodyAndFinAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-                addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_BODY, bodyIri, l -> l != 0);
-                addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_MASK, maskIri, true);
-                iriMaskAlphaGroup.addGrouping(iriBodyAndFinAlphaGroup);
+                if (dragonscale > 0) {
+                    TextureGrouping iriBodyAndFinAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                    addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_DRAGONSCALE, dragonscale, l -> l != 0);
+                    addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_DRAGONSCALE_MASK, maskIri >= 4 ? 2 : 1, maskIri > 0);
+                    iriMaskAlphaGroup.addGrouping(iriBodyAndFinAlphaGroup);
+                }
+                else {
+                    TextureGrouping iriBodyAndFinAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+                    addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_BODY, bodyIri, l -> l != 0);
+                    addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_MASK, maskIri, true);
+                    iriMaskAlphaGroup.addGrouping(iriBodyAndFinAlphaGroup);
+                }
                 TextureGrouping iriBodyAndFinGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_FINS, finIri, l -> l != 0);
                 addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_RIM, fins, doubletail, iriRim, iriRim != 0);
