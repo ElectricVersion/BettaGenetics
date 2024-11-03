@@ -9,11 +9,15 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.NearestVisibleLivingEntitySensor;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 
+import java.util.Optional;
+
 public class BettaAttackablesSensor extends NearestVisibleLivingEntitySensor {
     public static final float TARGET_DETECTION_DISTANCE = 8.0F;
-
-    protected boolean isMatchingEntity(LivingEntity betta, LivingEntity target) {
-        return this.isClose((EnhancedBetta)(betta), target) && target.isInWaterOrBubble() && (this.isHostileTarget(target) || ((this.isBettaTarget(target) && !isTrusted((EnhancedBetta)betta, target)) && (areBothMale((EnhancedBetta)betta, (EnhancedBetta)target) || ((EnhancedBetta) betta).isHighlyAggressive() ))) && Sensor.isEntityAttackable(betta, target);
+    protected boolean isMatchingEntity(LivingEntity bettaEntity, LivingEntity target) {
+        EnhancedBetta betta = (EnhancedBetta)bettaEntity;
+        return this.isClose(betta, target) && target.isInWaterOrBubble()
+                && (this.isHostileTarget(target) || (this.isBettaTarget(target)
+                && !isTrusted(betta, target))) && Sensor.isEntityAttackable(betta, target);
     }
 
     private boolean isBettaTarget(LivingEntity livingEntity) {
@@ -21,19 +25,19 @@ public class BettaAttackablesSensor extends NearestVisibleLivingEntitySensor {
     }
 
     private boolean isTrusted(EnhancedBetta betta, LivingEntity livingEntity) {
+        // If both male (e.g. it should be a full on attack rather than a nip) just remove the memory value rather than set it to false
+        //So we can check it easily with VALUE_PRESENT
+        betta.getBrain().setMemory(AddonMemoryModuleTypes.IS_ATTACK_NIP.get(), (!betta.getOrSetIsFemale() && !((EnhancedBetta)livingEntity).getOrSetIsFemale()) ? Optional.empty() : Optional.of(true));
         return betta.getBrain().hasMemoryValue(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()) && betta.getBrain().getMemory(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()).get().contains(livingEntity.getUUID());
     }
 
-    private boolean areBothMale(EnhancedBetta subject, EnhancedBetta target) {
-        return !subject.getOrSetIsFemale() && !target.getOrSetIsFemale();
-    }
 
     private boolean isHostileTarget(LivingEntity livingEntity) {
         return livingEntity.getType().is(EntityTypeTags.AXOLOTL_ALWAYS_HOSTILES);
     }
 
     private boolean isClose(EnhancedBetta betta, LivingEntity p_148276_) {
-        return betta.distanceToSqr(p_148276_) <= (betta.isHighlyAggressive() ? 9 : 4);
+        return betta.distanceToSqr(p_148276_) <= (betta.isHighlyAggressive() ? 6 : 3);
     }
 
     protected MemoryModuleType<LivingEntity> getMemory() {

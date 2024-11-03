@@ -2,22 +2,19 @@ package elecvrsn.GeneticBettas.ai.brain.betta;
 
 import com.google.common.collect.ImmutableMap;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
-import elecvrsn.GeneticBettas.model.modeldata.BettaModelData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
-import net.minecraft.world.entity.ai.behavior.MeleeAttack;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ProjectileWeaponItem;
 
-public class BettaMeleeAttack extends Behavior<EnhancedBetta> {
+public class BettaNip extends Behavior<EnhancedBetta> {
 
-    public BettaMeleeAttack() {
+    public BettaNip() {
         super(ImmutableMap.of(MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED, MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryStatus.VALUE_ABSENT));
     }
 
@@ -31,9 +28,10 @@ public class BettaMeleeAttack extends Behavior<EnhancedBetta> {
         enhancedBetta.setIsAngry(true);
         LivingEntity livingEntity = this.getAttackTarget(enhancedBetta);
         BehaviorUtils.lookAtEntity(enhancedBetta, livingEntity);
-        enhancedBetta.swing(InteractionHand.MAIN_HAND);
-        enhancedBetta.doHurtTarget(livingEntity);
-        enhancedBetta.getBrain().setMemoryWithExpiry(MemoryModuleType.ATTACK_COOLING_DOWN, true, 60-(2L * enhancedBetta.getAggression()) );
+        livingEntity.hurt(DamageSource.mobAttack(enhancedBetta), 0F);
+        livingEntity.knockback((enhancedBetta.getAttributeValue(Attributes.ATTACK_KNOCKBACK) * 0.5F), Mth.sin(enhancedBetta.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(enhancedBetta.getYRot() * ((float)Math.PI / 180F)));
+        //Nipping and attacking should probably share a cooldown
+        enhancedBetta.getBrain().setMemoryWithExpiry(MemoryModuleType.ATTACK_COOLING_DOWN, true, 70-(2L * enhancedBetta.getAggression()) );
     }
 
     private LivingEntity getAttackTarget(EnhancedBetta enhancedBetta) {

@@ -22,10 +22,7 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 
-import java.util.ArrayList;
 import java.util.Optional;
-
-import static elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes.FOUND_SLEEP_SPOT;
 
 
 public class BettaBrain  {
@@ -42,6 +39,7 @@ public class BettaBrain  {
         initSleepingActivity(bettaBrain);
         initPauseBrainActivity(bettaBrain);
         initFightActivity(bettaBrain);
+        initNipActivity(bettaBrain);
         initFleeActivity(bettaBrain);
         initNestingActivity(bettaBrain);
         bettaBrain.setCoreActivities(ImmutableSet.of(Activity.CORE));
@@ -59,11 +57,32 @@ public class BettaBrain  {
                         new StopAttackingIfTargetInvalid<>(EnhancedBetta::onStopAttacking),
                         new RunIf<>(BettaBrain::isAttackTargetFarEnough, new StopBeingMad()),
                         new SetWalkTargetFromAttackTargetIfTargetOutOfReach(BettaBrain::getSpeedModifierChasing),
-                        new RunIf<>(EnhancedBetta::isAggressive, new BettaMeleeAttack(40)),
+                        new BettaMeleeAttack(),
                         new RunIf<>(EnhancedBetta::isNotHighlyAggressive, SetWalkTargetAwayFrom.entity(MemoryModuleType.ATTACK_TARGET, 0.4F, 3, true)),
                         new EraseMemoryIf<>(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET)
                 ),
                 MemoryModuleType.ATTACK_TARGET
+        );
+    }
+
+    private static void initNipActivity(Brain<EnhancedBetta> brain) {
+        brain.addActivityAndRemoveMemoriesWhenStopped(
+                AddonActivities.NIP.get(),
+                ImmutableList.of(
+                        Pair.of(0, new StopAttackingIfTargetInvalid<>(EnhancedBetta::onStopAttacking)),
+                        Pair.of(1, new RunIf<>(BettaBrain::isAttackTargetFarEnough, new StopBeingMad())),
+                        Pair.of(2, new SetWalkTargetFromAttackTargetIfTargetOutOfReach(BettaBrain::getSpeedModifierChasing)),
+                        Pair.of(3, new BettaNip()),
+                        Pair.of(4, new RunIf<>(ImmutableMap.of(MemoryModuleType.ATTACK_COOLING_DOWN, MemoryStatus.VALUE_PRESENT), SetWalkTargetAwayFromWithExpiry.entity(MemoryModuleType.ATTACK_TARGET, 0.5F, 3, true, 70))),
+                        Pair.of(5, new EraseMemoryIf<>(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET))
+                ),
+                ImmutableSet.of(
+                        Pair.of(AddonMemoryModuleTypes.IS_ATTACK_NIP.get(), MemoryStatus.VALUE_PRESENT),
+                        Pair.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT)
+                ),
+                ImmutableSet.of(
+                        MemoryModuleType.ATTACK_TARGET
+                )
         );
     }
 
