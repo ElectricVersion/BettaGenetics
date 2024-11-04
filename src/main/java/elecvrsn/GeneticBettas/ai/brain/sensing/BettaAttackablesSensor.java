@@ -17,6 +17,7 @@ public class BettaAttackablesSensor extends NearestVisibleLivingEntitySensor {
         EnhancedBetta betta = (EnhancedBetta)bettaEntity;
         return this.isClose(betta, target) && target.isInWaterOrBubble()
                 && (this.isHostileTarget(target) || (this.isBettaTarget(target)
+                && isAggressiveEnough(betta, target)
                 && !isTrusted(betta, target))) && Sensor.isEntityAttackable(betta, target);
     }
 
@@ -31,7 +32,9 @@ public class BettaAttackablesSensor extends NearestVisibleLivingEntitySensor {
         return betta.getBrain().hasMemoryValue(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()) && betta.getBrain().getMemory(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()).get().contains(livingEntity.getUUID());
     }
 
-
+    private boolean isAggressiveEnough(EnhancedBetta betta, LivingEntity livingEntity) {
+        return betta.isHighlyAggressive() || (!betta.getOrSetIsFemale() && !((EnhancedBetta)livingEntity).getOrSetIsFemale());
+    }
     private boolean isHostileTarget(LivingEntity livingEntity) {
         return livingEntity.getType().is(EntityTypeTags.AXOLOTL_ALWAYS_HOSTILES);
     }
