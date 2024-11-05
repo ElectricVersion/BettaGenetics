@@ -1203,8 +1203,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             TextureGrouping iriAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
 
             TextureGrouping iriOpacityAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, true);
-            addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_ALPHA, iriIntensity, true);
+            if (dragonscale > 0) {
+                addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_ALPHA, 4, true);
+            }
+            else {
+                addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, true);
+                addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_ALPHA, iriIntensity, true);
+            }
             iriAlphaGroup.addGrouping(iriOpacityAlphaGroup);
 
             if (bodyIri != 0) {
@@ -1617,9 +1622,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         //Should return a value from 1 to 10
         if (this.aggression == -1 && this.getGenes() != null) {
             int[] gene = this.getGenes().getAutosomalGenes();
-            this.aggression = (gene[72] + gene[73]) / 2;
+            for (int i = 72; i < 80; i++) {
+                this.aggression += gene[i];
+            }
+            this.aggression /= 4;
         }
-        return aggression;
+        return this.aggression;
     }
 
     class BettaLookControl extends SmoothSwimmingLookControl {

@@ -184,14 +184,18 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         autosomalGenes[70] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[71] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
 
-        //Aggression [lower <> higher]
-        autosomalGenes[72] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(10) + 1) : 4;
-        autosomalGenes[73] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(10) + 1) : 4;
+        //Aggression Polygenes [lower <> higher]
+        autosomalGenes[72] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 2;
+        autosomalGenes[73] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 2;
 
-        //Placeholder Aggression Genes 74-79
-        for (int i = 74; i<80; i++) {
-            autosomalGenes[i] = 0;
-        }
+        autosomalGenes[74] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 2;
+        autosomalGenes[75] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 2;
+
+        autosomalGenes[76] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 2;
+        autosomalGenes[77] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 2;
+
+        autosomalGenes[78] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 2;
+        autosomalGenes[79] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 2;
 
         //Marble [wildtype <> Marble] (Homoezygous decreases the size of marble)
         autosomalGenes[80] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
@@ -387,8 +391,15 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         //Dragonscale [Wildtype <> Dragon]
         autosomalGenes[172] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[173] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
-
-
+//
+//        //Rufousing genes
+//        for (int i = 120; i < 148; i++) {
+//            if (ThreadLocalRandom.current().nextInt(100) > WTC*0.6F) {
+//                autosomalGenes[i] = ThreadLocalRandom.current().nextInt(2)+1;
+//            } else {
+//                autosomalGenes[i] = 1;
+//            }
+//        }
         return new Genes(sexlinkedGenes, autosomalGenes);
     }
 }
