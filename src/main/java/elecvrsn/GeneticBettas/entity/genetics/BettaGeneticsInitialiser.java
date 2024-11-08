@@ -23,6 +23,9 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         this.breeds.add(BettaBreeds.PASSIVE);
         this.breeds.add(BettaBreeds.NEUTRAL);
         this.breeds.add(BettaBreeds.AGGRESSIVE);
+        this.breeds.add(BettaBreeds.KOI);
+        this.breeds.add(BettaBreeds.MAXRUFOUS);
+        this.breeds.add(BettaBreeds.MINRUFOUS);
     }
 
     List<Breed> breeds = new ArrayList<>();
@@ -391,15 +394,34 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         //Dragonscale [Wildtype <> Dragon]
         autosomalGenes[172] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
         autosomalGenes[173] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
-//
-//        //Rufousing genes
-//        for (int i = 120; i < 148; i++) {
-//            if (ThreadLocalRandom.current().nextInt(100) > WTC*0.6F) {
-//                autosomalGenes[i] = ThreadLocalRandom.current().nextInt(2)+1;
-//            } else {
-//                autosomalGenes[i] = 1;
-//            }
-//        }
+
+        //Rufousing genes [174-183: lighter; 184-193: darker]
+        for (int i = 174; i < 194; i++) {
+            if (ThreadLocalRandom.current().nextInt(100) > WTC*0.6F) {
+                autosomalGenes[i] = ThreadLocalRandom.current().nextInt(2)+1;
+            } else {
+                autosomalGenes[i] = 1;
+            }
+        }
+
+        //Bloodred Rufousing genes [194-203: lighter; 204-213: darker]
+        for (int i = 194; i < 214; i++) {
+            if (ThreadLocalRandom.current().nextInt(100) > WTC*0.6F) {
+                autosomalGenes[i] = ThreadLocalRandom.current().nextInt(2)+1;
+            } else {
+                autosomalGenes[i] = 1;
+            }
+        }
+
+        //Iridescence Hue genes [214-223: greener; 224-233: bluer]
+        for (int i = 214; i < 234; i++) {
+            if (ThreadLocalRandom.current().nextInt(100) > WTC*0.6F) {
+                autosomalGenes[i] = ThreadLocalRandom.current().nextInt(2)+1;
+            } else {
+                autosomalGenes[i] = 1;
+            }
+        }
+
         return new Genes(sexlinkedGenes, autosomalGenes);
     }
 }

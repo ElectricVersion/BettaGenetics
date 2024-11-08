@@ -557,7 +557,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             /*** COLORATION ***/
             float[] melanin = {0.0427F, 0.527F, 0.251F};
             float[] pheomelanin = {0.991F, 0.978F, 0.655F};
-            float[] bloodredColor = {0.996F, 0.978F, 0.315F};
+            float[] bloodredColor = {0.996F, 0.978F, 0.405F};
             float[] cellophane = getHSBFromHex("ebe8e4");
             float[] iridescenceLight = {0.44F, 0.978F, 0.878F};
             float[] iridescence = {0.530F, 0.715F, 0.634F};
@@ -791,7 +791,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             //Main Red Color
             if (gene[42] == 2 && gene[43] == 2) {
                 //Orange
-                pheomelanin = getHSBFromHex("D44E07");
+                pheomelanin = getHSBFromHex("D44407");
             } else if (gene[42] == 3 && gene[43] == 3) {
                 //Yellow
                 pheomelanin = getHSBFromHex("FFBF43");
@@ -1163,12 +1163,55 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 }
             }
 
+            // Fine Red Rufousing Genes
+            int r = 0;
+            for (int i = 174; i < 194; i++) {
+                if (gene[i] == 2) {
+                    r += i < 184 ? -1 : +1;
+                }
+            }
+
+            pheomelanin[1] += r * (r > 0 ? 0.02F : 0.03F);
+            pheomelanin[2] -= r * (r > 0 ? 0.03F : 0.002F);
+
+            // Fine BloodRed Rufousing Genes
+            r = 0;
+            for (int i = 194; i < 214; i++) {
+                if (gene[i] == 2) {
+                    r += i < 204 ? -1 : +1;
+                }
+            }
+
+            bloodredColor[1] += r * 0.01F;
+            bloodredColor[2] -= r * (r > 0 ? 0.015F : 0.02F);
+
+            // Fine Iridescence Hue Genes
+            r = 0;
+            for (int i = 214; i < 234; i++) {
+                if (gene[i] == 2) {
+                    r += i < 224 ? -1 : +1;
+                }
+            }
+
+            iridescence[0] += r * 0.005F;
+            iridescenceLight[0] += r * 0.005F;
+            iridescenceDark[0] += r * 0.005F;
+            opaque[0] = iridescence[0];
+            opaqueLight[0] = iridescenceLight[0];
+            opaqueDark[0] = iridescenceDark[0];
+            metallic1[0] += r * 0.005F;
+            metallic2[0] += r * 0.005F;
+            metallic3[0] += r * 0.005F;
 
             clampRGB(melanin);
             clampRGB(pheomelanin);
-            clampRGB(iridescenceDark);
-            clampRGB(iridescenceLight);
+            clampRGB(bloodredColor);
             clampRGB(iridescence);
+            clampRGB(iridescenceLight);
+            clampRGB(iridescenceDark);
+            clampRGB(opaque);
+            clampRGB(opaqueLight);
+            clampRGB(opaqueDark);
             clampRGB(metallic1);
             clampRGB(metallic2);
             clampRGB(metallic3);
@@ -1191,12 +1234,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             int cellophaneRGB = Colouration.HSBtoARGB(cellophane[0], cellophane[1], cellophane[2]);
             this.colouration.setMelaninColour(melaninRGB);
             this.colouration.setPheomelaninColour(pheomelaninRGB);
-
-//            char[] uuidArry = getStringUUID().toCharArray();
-//            // Texture Randomizaton
-//            if (bodyIri == 5) {
-//                bodyIri += uuidArry[1] % 6;
-//            }
 
             /*** TEXTURES ***/
 
