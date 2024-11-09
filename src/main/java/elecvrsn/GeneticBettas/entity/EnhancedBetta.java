@@ -259,8 +259,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     {"fin/halfmoon_double.png", "fin/halfmoon_double_hetcrown.png", "fin/halfmoon_double_homocrown.png"},
             },
             {
-                    {"fin/babyfish.png", "fin/babyfish.png", "fin/babyfish.png"},
-                    {"fin/babyfish.png", "fin/babyfish.png", "fin/babyfish.png"},
+                    {"fin/babyfish.png", "fin/babyfish_hetcrown.png", "fin/babyfish_homocrown.png"},
+                    {"fin/babyfish.png", "fin/babyfish_hetcrown.png", "fin/babyfish_homocrown.png"},
             },
     };
 
@@ -1171,8 +1171,23 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 }
             }
 
-            pheomelanin[1] += r * (r > 0 ? 0.02F : 0.03F);
-            pheomelanin[2] -= r * (r > 0 ? 0.03F : 0.002F);
+            if (gene[42] == 2 && gene[43] == 2) {
+                //Orange
+                if (r < 0) pheomelanin[0] += r * 0.0005F; // Light orange looks sort of pink-ish
+                pheomelanin[1] += r * 0.02F;
+                pheomelanin[2] -= r * (r > 0 ? 0.03F : 0.001F);
+            }
+            else if (gene[42] == 3 && gene[43] == 3) {
+                //Yellow
+                if (r > 0) pheomelanin[0] -= r * 0.0005F;
+                pheomelanin[1] += r * (r > 0 ? 0.02F : 0.01F);
+                pheomelanin[2] -= r * (r > 0 ? 0.01F : 0.001F);
+            }
+            else {
+                //Red
+                pheomelanin[1] += r * 0.02F;
+                pheomelanin[2] -= r * (r > 0 ? 0.03F : 0.002F);
+            }
 
             // Fine BloodRed Rufousing Genes
             r = 0;
@@ -1199,9 +1214,19 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             opaque[0] = iridescence[0];
             opaqueLight[0] = iridescenceLight[0];
             opaqueDark[0] = iridescenceDark[0];
-            metallic1[0] += r * 0.005F;
-            metallic2[0] += r * 0.005F;
-            metallic3[0] += r * 0.005F;
+            if (gene[0] == 2 && gene[1] == 2) {
+                metallic1[1] -= r * 0.02F;
+                metallic2[1] -= r * 0.02F;
+                metallic3[1] -= r * 0.02F;
+                iridescence[1] -= r * 0.01F;
+                iridescenceLight[1] -= r * 0.01F;
+                iridescenceDark[1] -= r * 0.01F;
+            }
+            else {
+                metallic1[0] += r * 0.005F;
+                metallic2[0] += r * 0.005F;
+                metallic3[0] += r * 0.005F;
+            }
 
             clampRGB(melanin);
             clampRGB(pheomelanin);

@@ -311,9 +311,11 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
 //            List<Float> bottomFinScalings = ModelHelper.createScalings(1F, finScaleMult, betta.isFemale ? 0.875F : 1F, 0F, 0F, 0F);
             mapOfScale.put("bottomFinF", ModelHelper.createScalings(1F, finScaleMult, betta.isFemale ? 0.875F : 1F, 0F, 0F, 0F));
             mapOfScale.put("bottomFinB", ModelHelper.createScalings(1F, betta.isFemale ? 0.8F : 1F, betta.isFemale ? 0.85F : 1F, 0F, 0F, 0F));
-            mapOfScale.put("bBodyF", ModelHelper.createScalings(1F, betta.isFemale ? 1F : 0.925F, 1F, 0F, 0F, 0F));
-
+            mapOfScale.put("bBodyF", ModelHelper.createScalings(1F, (betta.isFemale ? 1F : 0.925F), 1F, 0F, 0F, 0F));
+            float headScale = (1.25F-(bettaModelData.growthAmount*0.25F));
+            mapOfScale.put("bHead", ModelHelper.createScalings(headScale, headScale, headScale, 0F, 0F, 0F));
             poseStack.pushPose();
+
 
             float bettaScale = 0.25F + (0.375F*bettaModelData.growthAmount*betta.size);
             poseStack.scale(bettaScale, bettaScale, bettaScale);
