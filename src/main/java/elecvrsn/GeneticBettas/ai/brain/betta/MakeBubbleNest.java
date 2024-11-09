@@ -1,6 +1,7 @@
 package elecvrsn.GeneticBettas.ai.brain.betta;
 
 import com.google.common.collect.ImmutableMap;
+import elecvrsn.GeneticBettas.block.entity.BubbleNestBlockEntity;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
@@ -27,10 +28,13 @@ public class MakeBubbleNest extends Behavior<EnhancedBetta> {
 
     public void tick(ServerLevel serverLevel, EnhancedBetta enhancedBetta, long gameTime) {
         BlockPos nestPos = enhancedBetta.getNestPos();
-        if (nestPos.closerToCenterThan(enhancedBetta.position(), 1F) && serverLevel.isWaterAt(nestPos)) {
+        if (nestPos != null && nestPos.closerToCenterThan(enhancedBetta.position(), 1F) && serverLevel.isWaterAt(nestPos)) {
             enhancedBetta.getLevel().playSound((Player)null, nestPos, BUBBLE_COLUMN_UPWARDS_AMBIENT, enhancedBetta.getSoundSource(), 1.0F, 1.0F);
             serverLevel.setBlock(nestPos, AddonBlocks.BUBBLE_NEST.get().defaultBlockState(), 2);
-            enhancedBetta.setNestPos(BlockPos.ZERO);
+            if (serverLevel.getBlockEntity(nestPos) instanceof BubbleNestBlockEntity) {
+                ((BubbleNestBlockEntity) serverLevel.getBlockEntity(nestPos)).setPlacementTime(gameTime);
+            }
+            enhancedBetta.setNestPos(null);
             enhancedBetta.getBrain().eraseMemory(AddonMemoryModuleTypes.MAKING_NEST.get());
         }
     }

@@ -4,6 +4,7 @@ import elecvrsn.GeneticBettas.block.BubbleNestBlock;
 import elecvrsn.GeneticBettas.block.DisplayTankBlock;
 import elecvrsn.GeneticBettas.block.FilledDisplayTankBlock;
 import elecvrsn.GeneticBettas.block.entity.FilledDisplayTankBlockEntity;
+import elecvrsn.GeneticBettas.block.entity.BubbleNestBlockEntity;
 import elecvrsn.GeneticBettas.util.AddonReference;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -23,6 +24,7 @@ public class AddonBlocks {
     public static final RegistryObject<Block> FILLED_DISPLAY_TANK = BLOCKS_DEFERRED_REGISTRY.register("filled_display_tank", () -> new FilledDisplayTankBlock(Block.Properties.of(Material.GLASS, MaterialColor.WOOL).sound(SoundType.GLASS).strength(0.3F).noOcclusion()));
     public static final RegistryObject<Block> DISPLAY_TANK = BLOCKS_DEFERRED_REGISTRY.register("display_tank", () -> new DisplayTankBlock(Block.Properties.of(Material.GLASS, MaterialColor.WOOL).sound(SoundType.GLASS).strength(0.3F).noOcclusion()));
     public static final RegistryObject<BlockEntityType<FilledDisplayTankBlockEntity>> FILLED_DISPLAY_TANK_BLOCK_ENTITY = BLOCK_ENTITIES_DEFERRED_REGISTRY.register("filled_display_tank", () -> BlockEntityType.Builder.of(FilledDisplayTankBlockEntity::new, AddonBlocks.FILLED_DISPLAY_TANK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BubbleNestBlockEntity>> BUBBLE_NEST_BLOCK_ENTITY = BLOCK_ENTITIES_DEFERRED_REGISTRY.register("bubble_nest", () -> BlockEntityType.Builder.of(BubbleNestBlockEntity::new, AddonBlocks.BUBBLE_NEST.get()).build(null));
     public static void register(IEventBus modEventBus) {
         BLOCKS_DEFERRED_REGISTRY.register(modEventBus);
         BLOCK_ENTITIES_DEFERRED_REGISTRY.register(modEventBus);

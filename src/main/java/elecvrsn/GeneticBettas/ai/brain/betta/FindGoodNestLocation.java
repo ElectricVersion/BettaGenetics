@@ -27,9 +27,9 @@ public class FindGoodNestLocation extends Behavior<EnhancedBetta> {
             return;
         }
         BlockPos nestPos = enhancedBetta.getNestPos();
-        if (nestPos != BlockPos.ZERO) {
+        if (nestPos != null) {
             WalkTarget walkTarget = new WalkTarget(nestPos, 0.5F, 0);
-            enhancedBetta.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new BlockPosTracker(enhancedBetta.getNestPos()));
+            enhancedBetta.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new BlockPosTracker(nestPos));
             enhancedBetta.getBrain().setMemory(MemoryModuleType.WALK_TARGET, walkTarget);
         }
     }

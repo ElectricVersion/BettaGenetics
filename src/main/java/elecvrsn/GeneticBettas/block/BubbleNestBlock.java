@@ -1,5 +1,8 @@
 package elecvrsn.GeneticBettas.block;
 
+import elecvrsn.GeneticBettas.block.entity.BubbleNestBlockEntity;
+import elecvrsn.GeneticBettas.block.entity.FilledDisplayTankBlockEntity;
+import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -9,6 +12,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -21,7 +25,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BubbleNestBlock extends Block implements LiquidBlockContainer {
+public class BubbleNestBlock extends BaseEntityBlock implements LiquidBlockContainer {
     protected static final VoxelShape SHAPE = Block.box(0.0D, 14.D, 0.0D, 16.0D, 15.0D, 16.0D);
 
     public BubbleNestBlock(BlockBehaviour.Properties p_154496_) {
@@ -30,6 +34,11 @@ public class BubbleNestBlock extends Block implements LiquidBlockContainer {
     public VoxelShape getShape(BlockState p_154525_, BlockGetter p_154526_, BlockPos p_154527_, CollisionContext p_154528_) {
         return SHAPE;
     }
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new BubbleNestBlockEntity(blockPos, blockState);
+    }
 
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext p_154503_) {
@@ -37,25 +46,42 @@ public class BubbleNestBlock extends Block implements LiquidBlockContainer {
         return fluidstate.is(FluidTags.WATER) && fluidstate.getAmount() == 8 ? super.getStateForPlacement(p_154503_) : null;
     }
 
-    public BlockState updateShape(BlockState p_154530_, Direction p_154531_, BlockState p_154532_, LevelAccessor p_154533_, BlockPos p_154534_, BlockPos p_154535_) {
-        BlockState blockstate = super.updateShape(p_154530_, p_154531_, p_154532_, p_154533_, p_154534_, p_154535_);
+    public BlockState updateShape(BlockState blockState, Direction direction, BlockState blockState1, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos1) {
+        BlockState blockstate = super.updateShape(blockState, direction, blockState1, levelAccessor, blockPos, blockPos1);
         if (!blockstate.isAir()) {
-            p_154533_.scheduleTick(p_154534_, Fluids.WATER, Fluids.WATER.getTickDelay(p_154533_));
+            levelAccessor.scheduleTick(blockPos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
         }
 
         return blockstate;
     }
 
-    public FluidState getFluidState(BlockState p_154537_) {
+    public FluidState getFluidState(BlockState blockState) {
         return Fluids.WATER.getSource(false);
     }
 
 
-    public boolean canPlaceLiquid(BlockGetter p_154505_, BlockPos p_154506_, BlockState p_154507_, Fluid p_154508_) {
+    public boolean canPlaceLiquid(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState, Fluid fluid) {
         return false;
     }
 
-    public boolean placeLiquid(LevelAccessor p_154520_, BlockPos p_154521_, BlockState p_154522_, FluidState p_154523_) {
+    public boolean placeLiquid(LevelAccessor levelAccessor, BlockPos blockPos, BlockState blockState, FluidState fluidState) {
         return false;
     }
+
+    public boolean isRandomlyTicking(BlockState blockState) {
+        return true;
+    }
+
+    public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, Random random) {
+        if (serverLevel.getBlockEntity(blockPos) instanceof BubbleNestBlockEntity &&
+                ((BubbleNestBlockEntity) serverLevel.getBlockEntity(blockPos)).getPlacementTime() != -1 &&
+                serverLevel.getGameTime() > ((BubbleNestBlockEntity) serverLevel.getBlockEntity(blockPos)).getPlacementTime() + BettasCommonConfig.COMMON.bettaHatchTime.get()) {
+            serverLevel.removeBlock(blockPos, false);
+        }
+
+    }
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
+    }
+
 }

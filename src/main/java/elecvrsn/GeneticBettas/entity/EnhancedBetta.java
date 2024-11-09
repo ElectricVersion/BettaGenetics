@@ -260,7 +260,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             },
             {
                     {"fin/babyfish.png", "fin/babyfish_hetcrown.png", "fin/babyfish_homocrown.png"},
-                    {"fin/babyfish.png", "fin/babyfish_hetcrown.png", "fin/babyfish_homocrown.png"},
+                    {"fin/babyfish_double.png", "fin/babyfish_double_hetcrown.png", "fin/babyfish_double_homocrown.png"},
             },
     };
 
