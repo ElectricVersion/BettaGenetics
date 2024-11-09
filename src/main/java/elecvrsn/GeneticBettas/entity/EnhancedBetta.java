@@ -168,18 +168,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             "eyes_wildtype.png"
     };
 
-    private static final String[] TEXTURES_SHADING = new String[]{
-            "body_shading.png", "body_shading_light.png"
-    };
-
-    private static final String[] TEXTURES_PASTEL_OPAQUE = new String[]{
-            "", "iri/pastel.png", "iri/opaque.png"
-    };
-
-    private static final String[] TEXTURES_MARBLE_BLACK = new String[]{
-            "", "black/marble/marble_1.png", "black/marble/marble_2.png", "black/marble/marble_3.png", "black/marble/marble_4.png", "black/marble/marble_5.png", "black/marble/marble_6.png", "black/marble/marble_7.png", "black/marble/marble_8.png", "black/marble/marble_9.png", "black/marble/marble_10.png", "black/marble/marble_11.png",
-    };
-
     private static final String[][][] TEXTURES_MARBLE = new String[][][]{
             {
                     {"mask/solid.png"}
@@ -488,7 +476,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public String getTexture() {
         if (this.enhancedAnimalTextureGrouping == null) {
             this.setTexturePaths();
-        } else if (this.resetTexture && !this.isBaby()) {
+        } else if (this.resetTexture && !this.isVeryBaby()) {
             this.resetTexture = false;
             this.reloadTextures();
         }
@@ -513,6 +501,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             char[] uuidArry = getStringUUID().toCharArray();
 
+            boolean babyColors = this.isVeryBaby();
+
             /*** PHENOTYPE ***/
             int bodyIri = 1;
             int finIri = 1;
@@ -523,14 +513,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             int finAlpha = 0;
             int finRed = 4;
             int bodyRed = 2;
-            int black = 1;
             int butterfly = 0;
             int iriRim = 0;
             int iriIntensity = 3;
             boolean pastelOpaque = false;
             boolean cambodian = false;
             int metallic = 0;
-            boolean marble = false;
             int marbleRedQual = 0;
             int marbleRedSize = 0;
             int marbleRedRand = 0;
@@ -925,7 +913,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             if (gene[56] == 2 && gene[57] == 2) {
                 dumbo = true;
             }
-            if (isBaby()) {
+            if (babyColors) {
                 fins = 6;
             }
             else if (gene[58] == 2 || gene[59] == 2) {
@@ -974,192 +962,200 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             }
 
             if (gene[80] == 2 || gene[81] == 2) {
-                marble = true;
-
-                //Red Marble
-                //Size
-                int marbleRedSizeMod = 0;
-                for (int i = 82; i < 86; i++) {
-                    if (gene[i] == 2) {
-                        marbleRedSizeMod--;
+                if (babyColors) {
+                    //Set all babies to quality 1 without setting size, so they defualt to transparent for babies
+                    marbleRedQual=1;
+                    marbleBlackQual=1;
+                    marbleBloodredQual=1;
+                    marbleIriQual=1;
+                    marbleOpaqueQual=1;
+                }
+                else {
+                    //Red Marble
+                    //Size
+                    int marbleRedSizeMod = 0;
+                    for (int i = 82; i < 86; i++) {
+                        if (gene[i] == 2) {
+                            marbleRedSizeMod--;
+                        }
                     }
-                }
-                for (int i = 86; i < 92; i++) {
-                    if (gene[i] == 2) {
-                        marbleRedSizeMod++;
+                    for (int i = 86; i < 92; i++) {
+                        if (gene[i] == 2) {
+                            marbleRedSizeMod++;
+                        }
                     }
-                }
-                marbleRedSize = 2 + (marbleRedSizeMod / 2);
+                    marbleRedSize = 2 + (marbleRedSizeMod / 2);
 
-                //Quality
-                int marbleRedQualMod = 0;
-                for (int i = 92; i < 96; i++) {
-                    marbleRedQualMod += gene[i] - 1;
-                }
-                if (marbleRedQualMod < 4) {
-                    marbleRedQual = 1;
-                } else if (marbleRedQualMod < 8) {
-                    marbleRedQual = 2;
-                } else if (marbleRedQualMod < 12) {
-                    marbleRedQual = 3;
-                } else if (marbleRedQualMod < 16) {
-                    marbleRedQual = 4;
-                } else {
-                    marbleRedQual = 5;
-                }
-
-                //Random
-                if (marbleRedSize != 0 && marbleRedSize != 5) {
-                    marbleRedRand += uuidArry[3] % 5;
-                }
-
-
-                // Black Marble
-                //Size
-                int marbleBlackSizeMod = 0;
-                for (int i = 96; i < 100; i++) {
-                    if (gene[i] == 2) {
-                        marbleBlackSizeMod--;
+                    //Quality
+                    int marbleRedQualMod = 0;
+                    for (int i = 92; i < 96; i++) {
+                        marbleRedQualMod += gene[i] - 1;
                     }
-                }
-                for (int i = 100; i < 106; i++) {
-                    if (gene[i] == 2) {
-                        marbleBlackSizeMod++;
+                    if (marbleRedQualMod < 4) {
+                        marbleRedQual = 1;
+                    } else if (marbleRedQualMod < 8) {
+                        marbleRedQual = 2;
+                    } else if (marbleRedQualMod < 12) {
+                        marbleRedQual = 3;
+                    } else if (marbleRedQualMod < 16) {
+                        marbleRedQual = 4;
+                    } else {
+                        marbleRedQual = 5;
                     }
-                }
-                marbleBlackSize = 2 + (marbleBlackSizeMod / 2);
 
-                //Quality
-                int marbleBlackQualMod = 0;
-                for (int i = 106; i < 110; i++) {
-                    marbleBlackQualMod += gene[i] - 1;
-                }
-                if (marbleBlackQualMod < 4) {
-                    marbleBlackQual = 1;
-                } else if (marbleBlackQualMod < 8) {
-                    marbleBlackQual = 2;
-                } else if (marbleBlackQualMod < 12) {
-                    marbleBlackQual = 3;
-                } else if (marbleBlackQualMod < 16) {
-                    marbleBlackQual = 4;
-                } else {
-                    marbleBlackQual = 5;
-                }
-
-                //Random
-                if (marbleBlackSize != 0 && marbleBlackSize != 5) {
-                    marbleBlackRand += uuidArry[4] % 5;
-                }
-
-                // Bloodred Marble
-                //Size
-                int marbleBloodredSizeMod = 0;
-                for (int i = 110; i < 114; i++) {
-                    if (gene[i] == 2) {
-                        marbleBloodredSizeMod--;
+                    //Random
+                    if (marbleRedSize != 0 && marbleRedSize != 5) {
+                        marbleRedRand += uuidArry[3] % 5;
                     }
-                }
-                for (int i = 114; i < 120; i++) {
-                    if (gene[i] == 2) {
-                        marbleBloodredSizeMod++;
+
+
+                    // Black Marble
+                    //Size
+                    int marbleBlackSizeMod = 0;
+                    for (int i = 96; i < 100; i++) {
+                        if (gene[i] == 2) {
+                            marbleBlackSizeMod--;
+                        }
                     }
-                }
-                marbleBloodredSize = 2 + (marbleBloodredSizeMod / 2);
-
-                //Quality
-                int marbleBloodredQualMod = 0;
-                for (int i = 120; i < 124; i++) {
-                    marbleBloodredQualMod += gene[i] - 1;
-                }
-                if (marbleBloodredQualMod < 4) {
-                    marbleBloodredQual = 1;
-                } else if (marbleBloodredQualMod < 8) {
-                    marbleBloodredQual = 2;
-                } else if (marbleBloodredQualMod < 12) {
-                    marbleBloodredQual = 3;
-                } else if (marbleBloodredQualMod < 16) {
-                    marbleBloodredQual = 4;
-                } else {
-                    marbleBloodredQual = 5;
-                }
-
-                //Random
-                if (marbleBloodredSize != 0 && marbleBloodredSize != 5) {
-                    marbleBloodredRand += uuidArry[5] % 5;
-                }
-
-                // Iri Marble
-                //Size
-                int marbleIriSizeMod = 0;
-                for (int i = 124; i < 128; i++) {
-                    if (gene[i] == 2) {
-                        marbleIriSizeMod--;
+                    for (int i = 100; i < 106; i++) {
+                        if (gene[i] == 2) {
+                            marbleBlackSizeMod++;
+                        }
                     }
-                }
-                for (int i = 128; i < 134; i++) {
-                    if (gene[i] == 2) {
-                        marbleIriSizeMod++;
+                    marbleBlackSize = 2 + (marbleBlackSizeMod / 2);
+
+                    //Quality
+                    int marbleBlackQualMod = 0;
+                    for (int i = 106; i < 110; i++) {
+                        marbleBlackQualMod += gene[i] - 1;
                     }
-                }
-                marbleIriSize = 2 + (marbleIriSizeMod / 2);
-
-                //Quality
-                int marbleIriQualMod = 0;
-                for (int i = 134; i < 138; i++) {
-                    marbleIriQualMod += gene[i] - 1;
-                }
-                if (marbleIriQualMod < 4) {
-                    marbleIriQual = 1;
-                } else if (marbleIriQualMod < 8) {
-                    marbleIriQual = 2;
-                } else if (marbleIriQualMod < 12) {
-                    marbleIriQual = 3;
-                } else if (marbleIriQualMod < 16) {
-                    marbleIriQual = 4;
-                } else {
-                    marbleIriQual = 5;
-                }
-
-                //Random
-                if (marbleIriSize != 0 && marbleIriSize != 5) {
-                    marbleIriRand += uuidArry[6] % 5;
-                }
-
-                // Opaque Marble
-                //Size
-                int marbleOpaqueSizeMod = 0;
-                for (int i = 138; i < 142; i++) {
-                    if (gene[i] == 2) {
-                        marbleOpaqueSizeMod--;
+                    if (marbleBlackQualMod < 4) {
+                        marbleBlackQual = 1;
+                    } else if (marbleBlackQualMod < 8) {
+                        marbleBlackQual = 2;
+                    } else if (marbleBlackQualMod < 12) {
+                        marbleBlackQual = 3;
+                    } else if (marbleBlackQualMod < 16) {
+                        marbleBlackQual = 4;
+                    } else {
+                        marbleBlackQual = 5;
                     }
-                }
-                for (int i = 142; i < 148; i++) {
-                    if (gene[i] == 2) {
-                        marbleOpaqueSizeMod++;
+
+                    //Random
+                    if (marbleBlackSize != 0 && marbleBlackSize != 5) {
+                        marbleBlackRand += uuidArry[4] % 5;
                     }
-                }
-                marbleOpaqueSize = 2 + (marbleOpaqueSizeMod / 2);
 
-                //Quality
-                int marbleOpaqueQualMod = 0;
-                for (int i = 148; i < 152; i++) {
-                    marbleOpaqueQualMod += gene[i] - 1;
-                }
-                if (marbleOpaqueQualMod < 4) {
-                    marbleOpaqueQual = 1;
-                } else if (marbleOpaqueQualMod < 8) {
-                    marbleOpaqueQual = 2;
-                } else if (marbleOpaqueQualMod < 12) {
-                    marbleOpaqueQual = 3;
-                } else if (marbleOpaqueQualMod < 16) {
-                    marbleOpaqueQual = 4;
-                } else {
-                    marbleOpaqueQual = 5;
-                }
+                    // Bloodred Marble
+                    //Size
+                    int marbleBloodredSizeMod = 0;
+                    for (int i = 110; i < 114; i++) {
+                        if (gene[i] == 2) {
+                            marbleBloodredSizeMod--;
+                        }
+                    }
+                    for (int i = 114; i < 120; i++) {
+                        if (gene[i] == 2) {
+                            marbleBloodredSizeMod++;
+                        }
+                    }
+                    marbleBloodredSize = 2 + (marbleBloodredSizeMod / 2);
 
-                //Random
-                if (marbleOpaqueSize != 0 && marbleOpaqueSize != 5) {
-                    marbleOpaqueRand += uuidArry[7] % 5;
+                    //Quality
+                    int marbleBloodredQualMod = 0;
+                    for (int i = 120; i < 124; i++) {
+                        marbleBloodredQualMod += gene[i] - 1;
+                    }
+                    if (marbleBloodredQualMod < 4) {
+                        marbleBloodredQual = 1;
+                    } else if (marbleBloodredQualMod < 8) {
+                        marbleBloodredQual = 2;
+                    } else if (marbleBloodredQualMod < 12) {
+                        marbleBloodredQual = 3;
+                    } else if (marbleBloodredQualMod < 16) {
+                        marbleBloodredQual = 4;
+                    } else {
+                        marbleBloodredQual = 5;
+                    }
+
+                    //Random
+                    if (marbleBloodredSize != 0 && marbleBloodredSize != 5) {
+                        marbleBloodredRand += uuidArry[5] % 5;
+                    }
+
+                    // Iri Marble
+                    //Size
+                    int marbleIriSizeMod = 0;
+                    for (int i = 124; i < 128; i++) {
+                        if (gene[i] == 2) {
+                            marbleIriSizeMod--;
+                        }
+                    }
+                    for (int i = 128; i < 134; i++) {
+                        if (gene[i] == 2) {
+                            marbleIriSizeMod++;
+                        }
+                    }
+                    marbleIriSize = 2 + (marbleIriSizeMod / 2);
+
+                    //Quality
+                    int marbleIriQualMod = 0;
+                    for (int i = 134; i < 138; i++) {
+                        marbleIriQualMod += gene[i] - 1;
+                    }
+                    if (marbleIriQualMod < 4) {
+                        marbleIriQual = 1;
+                    } else if (marbleIriQualMod < 8) {
+                        marbleIriQual = 2;
+                    } else if (marbleIriQualMod < 12) {
+                        marbleIriQual = 3;
+                    } else if (marbleIriQualMod < 16) {
+                        marbleIriQual = 4;
+                    } else {
+                        marbleIriQual = 5;
+                    }
+
+                    //Random
+                    if (marbleIriSize != 0 && marbleIriSize != 5) {
+                        marbleIriRand += uuidArry[6] % 5;
+                    }
+
+                    // Opaque Marble
+                    //Size
+                    int marbleOpaqueSizeMod = 0;
+                    for (int i = 138; i < 142; i++) {
+                        if (gene[i] == 2) {
+                            marbleOpaqueSizeMod--;
+                        }
+                    }
+                    for (int i = 142; i < 148; i++) {
+                        if (gene[i] == 2) {
+                            marbleOpaqueSizeMod++;
+                        }
+                    }
+                    marbleOpaqueSize = 2 + (marbleOpaqueSizeMod / 2);
+
+                    //Quality
+                    int marbleOpaqueQualMod = 0;
+                    for (int i = 148; i < 152; i++) {
+                        marbleOpaqueQualMod += gene[i] - 1;
+                    }
+                    if (marbleOpaqueQualMod < 4) {
+                        marbleOpaqueQual = 1;
+                    } else if (marbleOpaqueQualMod < 8) {
+                        marbleOpaqueQual = 2;
+                    } else if (marbleOpaqueQualMod < 12) {
+                        marbleOpaqueQual = 3;
+                    } else if (marbleOpaqueQualMod < 16) {
+                        marbleOpaqueQual = 4;
+                    } else {
+                        marbleOpaqueQual = 5;
+                    }
+
+                    //Random
+                    if (marbleOpaqueSize != 0 && marbleOpaqueSize != 5) {
+                        marbleOpaqueRand += uuidArry[7] % 5;
+                    }
                 }
             }
 
@@ -1245,7 +1241,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             int metallic2RGB = Colouration.HSBtoARGB(metallic2[0], metallic2[1], metallic2[2]);
             int metallic3RGB = Colouration.HSBtoARGB(metallic3[0], metallic3[1], metallic3[2]);
 
-            float saturationMult = isBaby() ? 0.75F : 1F;
+            float saturationMult = babyColors ? 0.75F : 1F;
 
             int pheomelaninRGB = Colouration.HSBtoABGR(pheomelanin[0], pheomelanin[1]*saturationMult, pheomelanin[2]);
             int melaninRGB = Colouration.HSBtoABGR(melanin[0], melanin[1]*saturationMult, melanin[2]);
@@ -1467,7 +1463,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             addTextureToAnimalTextureGrouping(detailGroup, "halfmoon_fins_64.png", true);
             texturesGroup.addGrouping(detailGroup);
             /** BABY STRIPES IF APPLICABLE **/
-            if (this.isBaby()) {
+            if (babyColors) {
                 TextureGrouping babyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 addTextureToAnimalTextureGrouping(babyGroup, extendedRed ? TexturingType.APPLY_RED : TexturingType.APPLY_BLACK, TEXTURES_BABY, cambodian ? 0 : 1, l->l!=0);
                 addTextureToAnimalTextureGrouping(babyGroup, TexturingType.APPLY_BLACK, "mask/percent50.png"); // low opacity overlay helps dull the colors
@@ -1566,12 +1562,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public EntityDimensions getDimensions(Pose poseIn) {
         return EntityDimensions.scalable(0.4F, 0.35F);
     }
-
-//    @Override
-//    protected void registerGoals() {
-//        super.registerGoals();
-//        this.goalSelector.addGoal(1, new EnhancedBreedGoal(this, 1.0D));
-//    }
 
     protected Brain<?> makeBrain(Dynamic<?> p_149138_) {
         return BettaBrain.makeBrain(this.brainProvider().makeBrain(p_149138_));
@@ -2107,6 +2097,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         if (!this.isNoAi()) {
             this.handleAirSupply(i);
         }
+    }
+
+    public boolean isVeryBaby() {
+        // GA's definition of "baby" is anything under adulthood.
+        // We don't really need bettas to keep their baby appearance that long
+        int age = this.getEnhancedAnimalAge();
+        int adultAge = this.getAdultAge();
+        return age < adultAge/2F;
     }
 
 }
