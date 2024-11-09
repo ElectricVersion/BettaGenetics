@@ -178,44 +178,56 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     {"marble/poorgrizzle_small_1.png", "marble/poorgrizzle_small_2.png", "marble/poorgrizzle_small_3.png", "marble/poorgrizzle_small_4.png", "marble/poorgrizzle_small_5.png"},
                     {"marble/poorgrizzle_medium_1.png", "marble/poorgrizzle_medium_2.png", "marble/poorgrizzle_medium_3.png", "marble/poorgrizzle_medium_4.png", "marble/poorgrizzle_medium_5.png"},
                     {"marble/poorgrizzle_large_1.png", "marble/poorgrizzle_large_2.png", "marble/poorgrizzle_large_3.png", "marble/poorgrizzle_large_4.png", "marble/poorgrizzle_large_5.png"},
-                    {"marble/poorgrizzle_xl_1.png", "marble/poorgrizzle_xl_2.png", "marble/poorgrizzle_xl_3.png", "marble/poorgrizzle_xl_4.png", "marble/poorgrizzle_xl_1.png"},
+                    {"marble/poorgrizzle_xl_1.png", "marble/poorgrizzle_xl_2.png", "marble/poorgrizzle_xl_3.png", "marble/poorgrizzle_xl_4.png", "marble/poorgrizzle_xl_5.png"},
                     {"mask/solid.png"}
             },
             {
                     //Medium Grizzle
                     {"mask/transparent.png"},
-                    {"marble/mediumgrizzle_small_1.png", "marble/mediumgrizzle_small_2.png", "marble/mediumgrizzle_small_3.png", "marble/mediumgrizzle_small_1.png", "marble/mediumgrizzle_small_1.png"},
+                    {"marble/mediumgrizzle_small_1.png", "marble/mediumgrizzle_small_2.png", "marble/mediumgrizzle_small_3.png", "marble/mediumgrizzle_small_4.png", "marble/mediumgrizzle_small_1.png"},
                     {"marble/mediumgrizzle_medium_1.png", "marble/mediumgrizzle_medium_2.png", "marble/mediumgrizzle_medium_3.png", "marble/mediumgrizzle_medium_4.png", "marble/mediumgrizzle_medium_5.png"},
-                    {"marble/mediumgrizzle_large_1.png", "marble/mediumgrizzle_large_2.png", "marble/mediumgrizzle_large_1.png", "marble/mediumgrizzle_large_1.png", "marble/mediumgrizzle_large_1.png"},
+                    {"marble/mediumgrizzle_large_1.png", "marble/mediumgrizzle_large_2.png", "marble/mediumgrizzle_large_3.png", "marble/mediumgrizzle_large_1.png", "marble/mediumgrizzle_large_1.png"},
                     {"marble/mediumgrizzle_xl_1.png", "marble/mediumgrizzle_xl_1.png", "marble/mediumgrizzle_xl_1.png", "marble/mediumgrizzle_xl_1.png", "marble/mediumgrizzle_xl_1.png"},
                     {"mask/solid.png"}
             },
             {
                     //High Grizzle
                     {"mask/transparent.png"},
-                    {"marble/highgrizzle_small_1.png", "marble/highgrizzle_small_2.png", "marble/highgrizzle_small_3.png", "marble/highgrizzle_small_4.png", "marble/highgrizzle_small_5.png"},
-                    {"marble/highgrizzle_medium_1.png", "marble/highgrizzle_medium_2.png", "marble/highgrizzle_medium_3.png", "marble/highgrizzle_medium_4.png", "marble/highgrizzle_medium_5.png"},
-                    {"marble/highgrizzle_large_1.png", "marble/highgrizzle_large_2.png", "marble/highgrizzle_large_3.png", "marble/highgrizzle_large_4.png", "marble/highgrizzle_large_5.png"},
-                    {"marble/highgrizzle_xl_1.png", "marble/highgrizzle_xl_2.png", "marble/highgrizzle_xl_3.png", "marble/highgrizzle_xl_4.png", "marble/highgrizzle_xl_5.png"},
+                    {"marble/highgrizzle_small_1.png", "marble/highgrizzle_small_2.png", "marble/highgrizzle_small_3.png", "marble/highgrizzle_small_4.png", "marble/highgrizzle_small_5.png",
+                            "marble/highgrizzle_small_1.png", "marble/highgrizzle_small_2.png", "marble/highgrizzle_small_3.png", "marble/highgrizzle_small_4.png", "marble/highgrizzle_small_5.png"},
+                    {"marble/highgrizzle_medium_1.png", "marble/highgrizzle_medium_2.png", "marble/highgrizzle_medium_3.png", "marble/highgrizzle_medium_4.png", "marble/highgrizzle_medium_5.png",
+                            "marble/highgrizzle_medium_6.png", "marble/highgrizzle_medium_7.png", "marble/highgrizzle_medium_3.png", "marble/highgrizzle_medium_4.png", "marble/highgrizzle_medium_5.png"},
+                    {"marble/highgrizzle_large_1.png", "marble/highgrizzle_large_2.png", "marble/highgrizzle_large_3.png", "marble/highgrizzle_large_4.png", "marble/highgrizzle_large_5.png",
+                            "marble/highgrizzle_large_1.png", "marble/highgrizzle_large_2.png", "marble/highgrizzle_large_3.png", "marble/highgrizzle_large_4.png", "marble/highgrizzle_large_5.png"},
+                    {"marble/highgrizzle_xl_1.png", "marble/highgrizzle_xl_2.png", "marble/highgrizzle_xl_3.png", "marble/highgrizzle_xl_4.png", "marble/highgrizzle_xl_5.png",
+                            "marble/highgrizzle_xl_1.png", "marble/highgrizzle_xl_2.png", "marble/highgrizzle_xl_3.png", "marble/highgrizzle_xl_4.png", "marble/highgrizzle_xl_5.png"},
                     {"mask/solid.png"}
 
             },
             {
                     //Medium Spots
                     {"mask/transparent.png"},
-                    {"marble/secondbestspots_small_1.png", "marble/secondbestspots_small_2.png", "marble/secondbestspots_small_3.png", "marble/secondbestspots_small_4.png", "marble/secondbestspots_small_5.png"},
-                    {"marble/secondbestspots_medium_1.png", "marble/secondbestspots_medium_2.png", "marble/secondbestspots_medium_3.png", "marble/secondbestspots_medium_4.png", "marble/secondbestspots_medium_5.png"},
-                    {"marble/secondbestspots_large_1.png", "marble/secondbestspots_large_2.png", "marble/secondbestspots_large_3.png", "marble/secondbestspots_large_4.png", "marble/secondbestspots_large_5.png"},
-                    {"marble/secondbestspots_xl_1.png", "marble/secondbestspots_xl_2.png", "marble/secondbestspots_xl_3.png", "marble/secondbestspots_xl_4.png", "marble/secondbestspots_xl_5.png"},
+                    {"marble/secondbestspots_small_1.png", "marble/secondbestspots_small_2.png", "marble/secondbestspots_small_3.png", "marble/secondbestspots_small_4.png", "marble/secondbestspots_small_5.png",
+                            "marble/secondbestspots_small_6.png", "marble/secondbestspots_small_7.png", "marble/secondbestspots_small_8.png", "marble/secondbestspots_small_9.png", "marble/secondbestspots_small_10.png"},
+                    {"marble/secondbestspots_medium_1.png", "marble/secondbestspots_medium_2.png", "marble/secondbestspots_medium_3.png", "marble/secondbestspots_medium_4.png", "marble/secondbestspots_medium_5.png",
+                            "marble/secondbestspots_medium_6.png", "marble/secondbestspots_medium_7.png", "marble/secondbestspots_medium_8.png", "marble/secondbestspots_medium_9.png", "marble/secondbestspots_medium_10.png"},
+                    {"marble/secondbestspots_large_1.png", "marble/secondbestspots_large_2.png", "marble/secondbestspots_large_3.png", "marble/secondbestspots_large_4.png", "marble/secondbestspots_large_5.png",
+                            "marble/secondbestspots_large_6.png", "marble/secondbestspots_large_7.png", "marble/secondbestspots_large_8.png", "marble/secondbestspots_large_4.png", "marble/secondbestspots_large_5.png"},
+                    {"marble/secondbestspots_xl_1.png", "marble/secondbestspots_xl_2.png", "marble/secondbestspots_xl_3.png", "marble/secondbestspots_xl_4.png", "marble/secondbestspots_xl_5.png",
+                            "marble/secondbestspots_xl_1.png", "marble/secondbestspots_xl_2.png", "marble/secondbestspots_xl_3.png", "marble/secondbestspots_xl_4.png", "marble/secondbestspots_xl_5.png"},
                     {"mask/solid.png"}
             },
             {
                     //Best Spots
                     {"mask/transparent.png"},
-                    {"marble/bestspots_small_1.png", "marble/bestspots_small_2.png", "marble/bestspots_small_3.png", "marble/bestspots_small_4.png", "marble/bestspots_small_5.png"},
-                    {"marble/bestspots_medium_1.png", "marble/bestspots_medium_2.png", "marble/bestspots_medium_3.png", "marble/bestspots_medium_4.png", "marble/bestspots_medium_5.png"},
-                    {"marble/bestspots_large_1.png", "marble/bestspots_large_2.png", "marble/bestspots_large_3.png", "marble/bestspots_large_4.png", "marble/bestspots_large_5.png"},
-                    {"marble/bestspots_xl_1.png", "marble/bestspots_xl_2.png", "marble/bestspots_xl_3.png", "marble/bestspots_xl_4.png", "marble/bestspots_xl_5.png"},
+                    {"marble/bestspots_small_1.png", "marble/bestspots_small_2.png", "marble/bestspots_small_3.png", "marble/bestspots_small_4.png", "marble/bestspots_small_5.png",
+                            "marble/bestspots_small_6.png", "marble/bestspots_small_7.png", "marble/bestspots_small_8.png", "marble/bestspots_small_9.png", "marble/bestspots_small_10.png"},
+                    {"marble/bestspots_medium_1.png", "marble/bestspots_medium_2.png", "marble/bestspots_medium_3.png", "marble/bestspots_medium_4.png", "marble/bestspots_medium_5.png",
+                            "marble/bestspots_medium_6.png", "marble/bestspots_medium_7.png", "marble/bestspots_medium_8.png", "marble/bestspots_medium_9.png", "marble/bestspots_medium_10.png"},
+                    {"marble/bestspots_large_1.png", "marble/bestspots_large_2.png", "marble/bestspots_large_3.png", "marble/bestspots_large_4.png", "marble/bestspots_large_5.png",
+                            "marble/bestspots_large_1.png", "marble/bestspots_large_2.png", "marble/bestspots_large_3.png", "marble/bestspots_large_4.png", "marble/bestspots_large_5.png"},
+                    {"marble/bestspots_xl_1.png", "marble/bestspots_xl_2.png", "marble/bestspots_xl_3.png", "marble/bestspots_xl_4.png", "marble/bestspots_xl_5.png",
+                            "marble/bestspots_xl_6.png", "marble/bestspots_xl_7.png", "marble/bestspots_xl_8.png", "marble/bestspots_xl_4.png", "marble/bestspots_xl_5.png"},
                     {"mask/solid.png"}
             },
     };
@@ -1008,7 +1020,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
                     //Random
                     if (marbleRedSize != 0 && marbleRedSize != 5) {
-                        marbleRedRand += uuidArry[3] % 5;
+                        marbleRedRand += uuidArry[3] % (marbleRedQual > 1 ? 10 : 5);
                     }
 
 
@@ -1046,7 +1058,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
                     //Random
                     if (marbleBlackSize != 0 && marbleBlackSize != 5) {
-                        marbleBlackRand += uuidArry[4] % 5;
+                        marbleBlackRand += uuidArry[4] % (marbleBlackQual > 1 ? 10 : 5);
                     }
 
                     // Bloodred Marble
@@ -1083,7 +1095,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
                     //Random
                     if (marbleBloodredSize != 0 && marbleBloodredSize != 5) {
-                        marbleBloodredRand += uuidArry[5] % 5;
+                        marbleBloodredRand += uuidArry[5] % (marbleBloodredQual > 1 ? 10 : 5);
                     }
 
                     // Iri Marble
@@ -1120,7 +1132,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
                     //Random
                     if (marbleIriSize != 0 && marbleIriSize != 5) {
-                        marbleIriRand += uuidArry[6] % 5;
+                        marbleIriRand += uuidArry[6] % (marbleIriQual > 1 ? 10 : 5);
                     }
 
                     // Opaque Marble
@@ -1157,7 +1169,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
                     //Random
                     if (marbleOpaqueSize != 0 && marbleOpaqueSize != 5) {
-                        marbleOpaqueRand += uuidArry[7] % 5;
+                        marbleOpaqueRand += uuidArry[7] % (marbleOpaqueQual > 1 ? 10 : 5);
                     }
                 }
             }
