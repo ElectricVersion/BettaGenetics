@@ -397,6 +397,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         if (genes[62] == 2 && genes[63] == 2) {
             health -= 2F;
         }
+        if (genes[172] == 2 && genes[173] == 2) {
+            health -= 2F;
+        }
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue((double) health);
         return health;
     }
