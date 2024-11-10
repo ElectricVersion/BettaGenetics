@@ -16,7 +16,7 @@ public class FindGoodNestLocation extends Behavior<EnhancedBetta> {
     public FindGoodNestLocation() {
         //Condition, Min Duration, Max Duration
         super(ImmutableMap.of(
-                ModMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
+                AddonMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
                 AddonMemoryModuleTypes.MAKING_NEST.get(), MemoryStatus.VALUE_PRESENT
         ), 1, 10);
     }

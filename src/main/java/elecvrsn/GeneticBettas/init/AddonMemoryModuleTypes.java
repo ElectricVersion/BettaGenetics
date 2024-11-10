@@ -24,6 +24,13 @@ public class AddonMemoryModuleTypes {
     public static final RegistryObject<MemoryModuleType<LivingEntity>> NEAREST_TRUSTABLE = MEMORY_MODULE_TYPE_DEFERRED_REGISTRY.register("nearest_trustable", () -> new MemoryModuleType<LivingEntity>(Optional.empty()));
     public static final RegistryObject<MemoryModuleType<List<UUID>>> TRUSTED_BETTAS = MEMORY_MODULE_TYPE_DEFERRED_REGISTRY.register("trusted_bettas", () -> new MemoryModuleType<>(Optional.of(Codec.list(SerializableUUID.CODEC))));
     public static final RegistryObject<MemoryModuleType<Boolean>> IS_ATTACK_NIP = MEMORY_MODULE_TYPE_DEFERRED_REGISTRY.register("is_attack_nip", () -> new MemoryModuleType<Boolean>(Optional.of(Codec.BOOL)));
+
+
+    public static final RegistryObject<MemoryModuleType<Boolean>> PAUSE_BRAIN = MEMORY_MODULE_TYPE_DEFERRED_REGISTRY.register("addon_pause_brain", () -> new MemoryModuleType<Boolean>(Optional.of(Codec.BOOL)));
+    public static final RegistryObject<MemoryModuleType<Boolean>> FOCUS_BRAIN = MEMORY_MODULE_TYPE_DEFERRED_REGISTRY.register("addon_focus_brain", () -> new MemoryModuleType<Boolean>(Optional.of(Codec.BOOL)));
+    public static final RegistryObject<MemoryModuleType<Boolean>> SLEEPING = MEMORY_MODULE_TYPE_DEFERRED_REGISTRY.register("sleeping", () -> new MemoryModuleType<Boolean>(Optional.of(Codec.BOOL)));
+    public static final RegistryObject<MemoryModuleType<Boolean>> HAS_EGG = MEMORY_MODULE_TYPE_DEFERRED_REGISTRY.register("has_egg", () -> new MemoryModuleType<Boolean>(Optional.of(Codec.BOOL)));
+
     public static void register(IEventBus modEventBus) {
         MEMORY_MODULE_TYPE_DEFERRED_REGISTRY.register(modEventBus);
     }

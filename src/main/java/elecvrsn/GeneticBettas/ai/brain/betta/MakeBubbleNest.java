@@ -20,8 +20,8 @@ public class MakeBubbleNest extends Behavior<EnhancedBetta> {
     public MakeBubbleNest() {
         //Condition, Min Duration, Max Duration
         super(ImmutableMap.of(
-                ModMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
-                ModMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
+                AddonMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
+                AddonMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
                 AddonMemoryModuleTypes.MAKING_NEST.get(), MemoryStatus.VALUE_PRESENT
         ), 5, 100);
     }

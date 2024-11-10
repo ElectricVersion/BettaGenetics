@@ -18,7 +18,8 @@ import static elecvrsn.GeneticBettas.util.AddonReference.MODID;
 
 public class AddonSensorTypes {
 
-    private static final Predicate<ItemStack> BETTA_FOOD = itemStack -> FoodSerialiser.getAnimalFoodMap("betta").isFoodItem(itemStack.getItem());
+//    private static final Predicate<ItemStack> BETTA_FOOD = itemStack -> FoodSerialiser.getAnimalFoodMap("betta").isFoodItem(itemStack.getItem());
+    private static final Predicate<ItemStack> BETTA_FOOD = itemStack -> FoodSerialiser.pigFoodMap().isFoodItem(itemStack.getItem());
     public static final DeferredRegister<SensorType<?>> ADDON_SENSOR_TYPES_DEFERRED_REGISTRY = DeferredRegister.create(ForgeRegistries.SENSOR_TYPES, MODID);
     public static final RegistryObject<SensorType<EnhancedTemptingSensor>> BETTA_FOOD_TEMPTATIONS = ADDON_SENSOR_TYPES_DEFERRED_REGISTRY.register("betta_food_temptations",
             () -> new SensorType<>(() -> new EnhancedTemptingSensor(BETTA_FOOD)));

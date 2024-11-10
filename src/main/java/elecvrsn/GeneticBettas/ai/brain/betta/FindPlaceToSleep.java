@@ -17,8 +17,8 @@ public class FindPlaceToSleep extends Behavior<EnhancedBetta> {
     public FindPlaceToSleep() {
         //Condition, Min Duration, Max Duration
         super(ImmutableMap.of(
-                ModMemoryModuleTypes.SLEEPING.get(), MemoryStatus.VALUE_PRESENT,
-                ModMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
+                AddonMemoryModuleTypes.SLEEPING.get(), MemoryStatus.VALUE_PRESENT,
+                AddonMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
                 AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), MemoryStatus.VALUE_ABSENT
         ), 1, 10);
     }

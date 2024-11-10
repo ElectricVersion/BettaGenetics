@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.entity.EnhancedBettaEgg;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
+import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
 import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import mokiyoki.enhancedanimals.util.Genes;
 import net.minecraft.core.BlockPos;
@@ -35,9 +36,9 @@ public class LayEgg extends Behavior<EnhancedBetta> {
     public LayEgg() {
         //Condition, Min Duration, Max Duration
         super(ImmutableMap.of(
-                ModMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
-                ModMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
-                ModMemoryModuleTypes.HAS_EGG.get(), MemoryStatus.VALUE_PRESENT
+                AddonMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
+                AddonMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
+                AddonMemoryModuleTypes.HAS_EGG.get(), MemoryStatus.VALUE_PRESENT
         ), 5, 10000);
     }
 

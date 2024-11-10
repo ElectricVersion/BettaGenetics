@@ -13,7 +13,7 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 public class ValidatePauseBrain extends Behavior<EnhancedBetta> {
     public ValidatePauseBrain() {
         super(ImmutableMap.of(
-                        ModMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_PRESENT
+                AddonMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_PRESENT
                 )
         );
     }
@@ -22,7 +22,7 @@ public class ValidatePauseBrain extends Behavior<EnhancedBetta> {
         Brain<EnhancedBetta> brain = eanimal.getBrain();
 
         if (!eanimal.isAnimalSleeping()) {
-            brain.eraseMemory(ModMemoryModuleTypes.PAUSE_BRAIN.get());
+            brain.eraseMemory(AddonMemoryModuleTypes.PAUSE_BRAIN.get());
             brain.eraseMemory(AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get());
             brain.useDefaultActivity();
         }

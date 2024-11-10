@@ -2,6 +2,7 @@ package elecvrsn.GeneticBettas.ai.brain.betta;
 
 import com.google.common.collect.ImmutableMap;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
+import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
 import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.Brain;
@@ -12,13 +13,13 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 public class PauseBrain extends Behavior<EnhancedBetta> {
     public PauseBrain() {
         super(ImmutableMap.of(
-                        ModMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_PRESENT
+                AddonMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_PRESENT
                 )
         );
     }
 
     protected boolean canStillUse(ServerLevel serverLevel, EnhancedBetta eanimal, long p_149324_) {
-        return eanimal.getBrain().hasMemoryValue(ModMemoryModuleTypes.PAUSE_BRAIN.get());
+        return eanimal.getBrain().hasMemoryValue(AddonMemoryModuleTypes.PAUSE_BRAIN.get());
     }
 
     protected void start(ServerLevel serverLevel, EnhancedBetta eanimal, long p_149332_) {

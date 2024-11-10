@@ -117,10 +117,10 @@ public class BettaBrain  {
                         Pair.of(0, new PauseBrain())
                 ),
                 ImmutableSet.of(
-                        Pair.of(ModMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_PRESENT)
+                        Pair.of(AddonMemoryModuleTypes.PAUSE_BRAIN.get(), MemoryStatus.VALUE_PRESENT)
                 ),
                 ImmutableSet.of(
-                        ModMemoryModuleTypes.PAUSE_BRAIN.get()
+                        AddonMemoryModuleTypes.PAUSE_BRAIN.get()
                 )
         );
     }
@@ -153,7 +153,7 @@ public class BettaBrain  {
                         new FindPlaceToSleep(),
                         new LookAtTargetSink(45, 90),
                         new MoveToTargetSink()),
-                ModMemoryModuleTypes.SLEEPING.get()
+                AddonMemoryModuleTypes.SLEEPING.get()
         );
     }
 
@@ -172,8 +172,8 @@ public class BettaBrain  {
                 Pair.of(4, new GateBehavior<>(
                                 ImmutableMap.of(
                                         MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT,
-                                        ModMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
-                                        ModMemoryModuleTypes.HAS_EGG.get(), MemoryStatus.VALUE_ABSENT),
+                                        AddonMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryStatus.VALUE_ABSENT,
+                                        AddonMemoryModuleTypes.HAS_EGG.get(), MemoryStatus.VALUE_ABSENT),
                                 ImmutableSet.of(),
                                 GateBehavior.OrderPolicy.ORDERED,
                                 GateBehavior.RunningPolicy.TRY_ALL,
@@ -205,13 +205,13 @@ public class BettaBrain  {
         Brain<EnhancedBetta> brain = betta.getBrain();
         Activity activity = brain.getActiveNonCoreActivity().orElse(null);
         if (betta.isAnimalSleeping()) {
-            brain.setMemory(ModMemoryModuleTypes.SLEEPING.get(), true);
+            brain.setMemory(AddonMemoryModuleTypes.SLEEPING.get(), true);
             if (betta.isOnGround()) {
-                brain.setMemory(ModMemoryModuleTypes.PAUSE_BRAIN.get(), true);
+                brain.setMemory(AddonMemoryModuleTypes.PAUSE_BRAIN.get(), true);
             }
         }
-        else if (brain.hasMemoryValue(ModMemoryModuleTypes.SLEEPING.get())) {
-            brain.eraseMemory(ModMemoryModuleTypes.SLEEPING.get());
+        else if (brain.hasMemoryValue(AddonMemoryModuleTypes.SLEEPING.get())) {
+            brain.eraseMemory(AddonMemoryModuleTypes.SLEEPING.get());
         }
         if (activity != ModActivities.PAUSE_BRAIN.get()) {
             brain.setActiveActivityToFirstValid(betta.isBaby() ? betta.getBabyActivities() : betta.getAdultActivities());
