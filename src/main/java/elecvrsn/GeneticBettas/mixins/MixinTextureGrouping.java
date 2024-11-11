@@ -2,22 +2,25 @@ package elecvrsn.GeneticBettas.mixins;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import elecvrsn.GeneticBettas.IMixinTextureGrouping;
+import elecvrsn.GeneticBettas.IMixinTextureLayer;
 import mokiyoki.enhancedanimals.entity.util.Colouration;
 import mokiyoki.enhancedanimals.renderer.texture.TextureGrouping;
 import mokiyoki.enhancedanimals.renderer.texture.TextureLayer;
 import mokiyoki.enhancedanimals.renderer.texture.TexturingType;
 import mokiyoki.enhancedanimals_backported.renderer.texture.UpdatedTextureGrouping;
 import mokiyoki.enhancedanimals_backported.renderer.texture.UpdatedTexturingType;
-import net.minecraft.server.packs.resources.ResourceManager;
 import org.spongepowered.asm.mixin.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static mokiyoki.enhancedanimals.renderer.texture.TexturingUtils.*;
+
 @Mixin(TextureGrouping.class)
 @Implements(@Interface(iface = IMixinTextureGrouping.class, prefix = "betta$"))
 public abstract class MixinTextureGrouping {
-    private UpdatedTexturingType updatedTexturingType = UpdatedTexturingType.NONE;
+    @Unique
+    public UpdatedTexturingType betta$updatedTexturingType = UpdatedTexturingType.NONE;
     @Shadow
     private List<TextureLayer> textureLayers;
     @Shadow
@@ -35,17 +38,21 @@ public abstract class MixinTextureGrouping {
 
     @Shadow
     protected abstract NativeImage applyGroupMerging(List<NativeImage> groupImages, Colouration colouration);
+
+    @Shadow
+    protected abstract void applyLayerSpecifics(TextureLayer layer, Colouration colouration);
+
     @Intrinsic(displace = true)
     public NativeImage betta$applyGroupMerging(List<NativeImage> groupImages, Colouration colouration) {
         if (!groupImages.isEmpty()) {
-            if (updatedTexturingType != UpdatedTexturingType.NONE && updatedTexturingType != null) {
+            if (betta$updatedTexturingType != UpdatedTexturingType.NONE && betta$updatedTexturingType != null) {
                 NativeImage baseImage = (NativeImage)groupImages.remove(0);
-                switch (this.updatedTexturingType) {
+                switch (this.betta$updatedTexturingType) {
                     case MASK_GROUP:
-                        this.layerGroups(baseImage, groupImages);
+                        this.maskAlpha(baseImage, groupImages);
                         break;
                     case CUTOUT_GROUP:
-                        this.layerGroups(baseImage, groupImages);
+                        this.cutoutTextures(baseImage, groupImages);
                         break;
                 }
                 return baseImage;
@@ -55,7 +62,39 @@ public abstract class MixinTextureGrouping {
         } else {
             return null;
         }
-//        return this.applyGroupMerging(groupImages, colouration);
+    }
+//    @Intrinsic(displace = true)
+//    private void betta$applyLayerSpecifics(TextureLayer layer, Colouration colouration) {
+//        if (((IMixinTextureLayer)layer).getUpdatedTexturingType() != UpdatedTexturingType.NONE && ((IMixinTextureLayer)layer).getUpdatedTexturingType() != null) {
+//            switch (((IMixinTextureLayer)layer).getUpdatedTexturingType()) {
+//                case APPLY_RGB -> layer.setTextureImage(applyBGRBlend(layer.getTextureImage(), layer.getRGB()));
+////            case APPLY_RGBA -> layer.setTextureImage(applyBGRABlend(layer.getTextureImage(), layer.getRGB()));
+//            }
+//        }
+//        else {
+//            this.applyLayerSpecifics(layer, colouration);
+//        }
+//    }
+
+    protected void cutoutTextures(NativeImage cutoutImage, List<NativeImage> groupImages) {
+        if (!groupImages.isEmpty()) {
+            NativeImage image = groupImages.remove(0);
+            if (!groupImages.isEmpty()) {
+                layerGroups(image, groupImages);
+            }
+            int h = cutoutImage.getHeight();
+            int w = cutoutImage.getWidth();
+            for (int i = 0; i < h; i++) {
+                for (int j = 0; j < w; j++) {
+                    UpdatedTextureGrouping.cutoutAlpha(j, i, cutoutImage, image);
+                }
+            }
+        }
+    }
+
+    @Unique
+    public void betta$setUpdatedTexturingType(UpdatedTexturingType betta$updatedTexturingType) {
+        this.betta$updatedTexturingType = betta$updatedTexturingType;
     }
 
 }

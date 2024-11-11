@@ -1,12 +1,13 @@
 package mokiyoki.enhancedanimals_backported.renderer.texture;
 
+import elecvrsn.GeneticBettas.IMixinTextureGrouping;
+import elecvrsn.GeneticBettas.IMixinTextureLayer;
 import mokiyoki.enhancedanimals.renderer.texture.TextureLayer;
 
 public class UpdatedTextureLayer extends TextureLayer {
-    private UpdatedTexturingType updatedTexturingType;
 
     public UpdatedTextureLayer(UpdatedTexturingType texturingType, String texture) {
         super(texture);
-        updatedTexturingType = texturingType;
+        ((IMixinTextureLayer)this).setUpdatedTexturingType(texturingType);
     }
 }

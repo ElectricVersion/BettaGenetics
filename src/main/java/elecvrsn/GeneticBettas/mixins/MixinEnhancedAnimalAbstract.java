@@ -21,16 +21,16 @@ public class MixinEnhancedAnimalAbstract implements IMixinEnhancedAnimalAbstract
 //    @Shadow
 //    protected static String CACHE_DELIMITER;
 
-    public void bettaGenetics$addTextureToAnimalTextureGrouping(TextureGrouping textureGroup, UpdatedTexturingType texturingType, String texture, String textureID, Integer RGB) {
+    public void betta$addTextureToAnimalTextureGrouping(TextureGrouping textureGroup, UpdatedTexturingType texturingType, String texture, String textureID, Integer RGB) {
         TextureLayer textureLayer = new UpdatedTextureLayer(texturingType, texture);
-        ((IMixinTextureLayer)textureLayer).bettaGenetics$setRGB(RGB);
+        ((IMixinTextureLayer)textureLayer).setRGB(RGB);
         textureGroup.addTextureLayers(textureLayer);
         this.texturesIndexes.add(textureID);
         this.texturesIndexes.add(String.valueOf(RGB));
         this.texturesIndexes.add("-");
     }
 
-    public void bettaGenetics$addTextureToAnimalTextureGrouping(TextureGrouping textureGroup, String texture, boolean hasTexture) {
+    public void betta$addTextureToAnimalTextureGrouping(TextureGrouping textureGroup, String texture, boolean hasTexture) {
         if (hasTexture) textureGroup.addTextureLayers(new TextureLayer(texture));
         this.texturesIndexes.add(String.valueOf(hasTexture?0:1));
         this.texturesIndexes.add("-");
