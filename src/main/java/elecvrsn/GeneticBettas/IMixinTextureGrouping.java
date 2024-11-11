@@ -10,9 +10,8 @@ import mokiyoki.enhancedanimals_backported.renderer.texture.UpdatedTexturingType
 import java.util.List;
 
 public interface IMixinTextureGrouping {
-    //    public void applyLayerSpecifics(TextureLayer layer, Colouration colouration);
-    //    public void cutoutTextures(NativeImage cutoutImage, List<NativeImage> groupImages);
     public NativeImage applyGroupMerging(List<NativeImage> groupImages, Colouration colouration);
+    public void applyLayerSpecifics(TextureLayer layer, Colouration colouration);
     public void setUpdatedTexturingType(UpdatedTexturingType updatedTexturingType);
 
 }

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static mokiyoki.enhancedanimals.renderer.texture.TexturingUtils.*;
+import static mokiyoki.enhancedanimals_backported.renderer.texture.UpdatedTextureGrouping.applyBGRABlend;
 
 @Mixin(TextureGrouping.class)
 @Implements(@Interface(iface = IMixinTextureGrouping.class, prefix = "betta$"))
@@ -38,7 +39,6 @@ public abstract class MixinTextureGrouping {
 
     @Shadow
     protected abstract NativeImage applyGroupMerging(List<NativeImage> groupImages, Colouration colouration);
-
     @Shadow
     protected abstract void applyLayerSpecifics(TextureLayer layer, Colouration colouration);
 
@@ -63,18 +63,19 @@ public abstract class MixinTextureGrouping {
             return null;
         }
     }
-//    @Intrinsic(displace = true)
-//    private void betta$applyLayerSpecifics(TextureLayer layer, Colouration colouration) {
-//        if (((IMixinTextureLayer)layer).getUpdatedTexturingType() != UpdatedTexturingType.NONE && ((IMixinTextureLayer)layer).getUpdatedTexturingType() != null) {
-//            switch (((IMixinTextureLayer)layer).getUpdatedTexturingType()) {
-//                case APPLY_RGB -> layer.setTextureImage(applyBGRBlend(layer.getTextureImage(), layer.getRGB()));
-////            case APPLY_RGBA -> layer.setTextureImage(applyBGRABlend(layer.getTextureImage(), layer.getRGB()));
-//            }
-//        }
-//        else {
-//            this.applyLayerSpecifics(layer, colouration);
-//        }
-//    }
+
+    @Intrinsic(displace = true)
+    public void betta$applyLayerSpecifics(TextureLayer layer, Colouration colouration) {
+        if (((IMixinTextureLayer)layer).getUpdatedTexturingType() != UpdatedTexturingType.NONE && ((IMixinTextureLayer)layer).getUpdatedTexturingType() != null) {
+            switch (((IMixinTextureLayer)layer).getUpdatedTexturingType()) {
+                case APPLY_RGB -> layer.setTextureImage(applyBGRBlend(layer.getTextureImage(), layer.getRGB()));
+                case APPLY_RGBA -> layer.setTextureImage(applyBGRABlend(layer.getTextureImage(), layer.getRGB()));
+            }
+        }
+        else {
+            this.applyLayerSpecifics(layer, colouration);
+        }
+    }
 
     protected void cutoutTextures(NativeImage cutoutImage, List<NativeImage> groupImages) {
         if (!groupImages.isEmpty()) {
