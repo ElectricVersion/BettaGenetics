@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 public class MixinTextureLayer implements IMixinTextureLayer {
     @Shadow
     private int RGB;
-    public void setRGB(Integer RGB) {
+    public void bettaGenetics$setRGB(Integer RGB) {
         this.RGB = RGB;
     }
 

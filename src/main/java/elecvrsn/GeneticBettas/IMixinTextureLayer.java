@@ -1,5 +1,5 @@
 package elecvrsn.GeneticBettas;
 
 public interface IMixinTextureLayer {
-    public void setRGB(Integer RGB);
+    public void bettaGenetics$setRGB(Integer RGB);
 }
