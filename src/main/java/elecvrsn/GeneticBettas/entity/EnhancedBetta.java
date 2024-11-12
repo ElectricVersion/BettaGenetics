@@ -92,7 +92,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     private static final int BETTA_TOTAL_AIR_SUPPLY = 2000;
 
-
+    private boolean isInTank;
     private TextureGrouping transRootGroup;
     private TextureGrouping iridescenceGroup;
 
@@ -1707,6 +1707,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             this.aggression /= 4;
         }
         return this.aggression;
+    }
+
+    public boolean isInTank() {
+        return isInTank;
+    }
+
+    public void setInTank(boolean inTank) {
+        isInTank = inTank;
     }
 
     class BettaLookControl extends SmoothSwimmingLookControl {

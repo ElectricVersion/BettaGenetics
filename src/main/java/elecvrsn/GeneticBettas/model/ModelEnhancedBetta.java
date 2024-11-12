@@ -390,7 +390,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
                     }
                 }
             }
-            else {
+            else if (!entityIn.isInTank()) {
                 setupFlopAnimation(ageInTicks);
             }
             float newxRot = yDelta * (yDelta > 0F ? 2.5F : 10F);

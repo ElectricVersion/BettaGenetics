@@ -20,6 +20,7 @@ public class FilledDisplayTankBlockEntity extends BlockEntity {
     public EnhancedBetta getOrCreateDisplayEntity(Level level) {
         if (displayEntity == null && entityTag != null && !entityTag.isEmpty()) {
             displayEntity = EnhancedBettaBucket.spawnBettaFromTag(level, entityTag, getBlockPos());
+            displayEntity.setInTank(true);
         }
         return displayEntity;
     }
