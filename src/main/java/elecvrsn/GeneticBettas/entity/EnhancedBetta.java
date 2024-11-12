@@ -2,25 +2,25 @@ package elecvrsn.GeneticBettas.entity;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
+import elecvrsn.GeneticBettas.IMixinEnhancedAnimalAbstract;
 import elecvrsn.GeneticBettas.IMixinFoodSerialiser;
 import elecvrsn.GeneticBettas.ai.brain.betta.BettaBrain;
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.entity.genetics.BettaGeneticsInitialiser;
 import elecvrsn.GeneticBettas.init.*;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
-import elecvrsn.GeneticBettas.IMixinEnhancedAnimalAbstract;
 import elecvrsn.GeneticBettas.model.modeldata.BettaModelData;
 import elecvrsn.GeneticBettas.util.AddonReference;
-import mokiyoki.enhancedanimals_backported.ai.brain.ValidatePath;
 import mokiyoki.enhancedanimals.config.EanimodCommonConfig;
 import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
 import mokiyoki.enhancedanimals.entity.EntityState;
 import mokiyoki.enhancedanimals.entity.util.Colouration;
 import mokiyoki.enhancedanimals.init.FoodSerialiser;
-import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import mokiyoki.enhancedanimals.model.modeldata.AnimalModelData;
-import mokiyoki.enhancedanimals.renderer.texture.*;
+import mokiyoki.enhancedanimals.renderer.texture.TextureGrouping;
+import mokiyoki.enhancedanimals.renderer.texture.TexturingType;
 import mokiyoki.enhancedanimals.util.Genes;
+import mokiyoki.enhancedanimals_backported.ai.brain.ValidatePath;
 import mokiyoki.enhancedanimals_backported.renderer.texture.UpdatedTextureGrouping;
 import mokiyoki.enhancedanimals_backported.renderer.texture.UpdatedTexturingType;
 import net.minecraft.client.resources.language.I18n;
@@ -72,7 +72,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Random;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 

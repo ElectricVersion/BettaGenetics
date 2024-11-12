@@ -56,8 +56,3 @@ Genetic Bettas!
     versionRange="[1.18.2,1.19)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.geneticbettas]]
-    modId="eanimod"
-    mandatory=true
-    ordering="NONE"
-    side="BOTH"
