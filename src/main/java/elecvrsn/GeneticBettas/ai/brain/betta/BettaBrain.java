@@ -106,7 +106,7 @@ public class BettaBrain  {
                     Pair.of(1, new LookAtTargetSink(45, 90)),
                     Pair.of(2, new MoveToTargetSink())
                 ),
-                ImmutableSet.of(Pair.of(ModMemoryModuleTypes.HAS_EGG.get(), MemoryStatus.VALUE_PRESENT))
+                ImmutableSet.of(Pair.of(AddonMemoryModuleTypes.HAS_EGG.get(), MemoryStatus.VALUE_PRESENT))
                 );
     }
 

@@ -21,21 +21,24 @@ public class ValidatePath {
     }
 
     private static boolean isPathReachable(ServerLevel serverLevel, Path path, BlockPos destination) {
-        BlockPos finalPathPoint = path.getEndNode().asBlockPos();
+        if (path.getEndNode() != null) {
+            BlockPos finalPathPoint = path.getEndNode().asBlockPos();
 
-        if (!finalPathPoint.closerThan(destination, 1.0)) {
-            return false;
-        }
-
-        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        for (int i = 0; i < path.getNodeCount(); i++) {
-            mutablePos.set(path.getNode(i).asBlockPos());
-            if (!isPathfindable(serverLevel.getBlockState(mutablePos), serverLevel, mutablePos, PathComputationType.LAND)) {
+            if (!finalPathPoint.closerThan(destination, 1.0)) {
                 return false;
             }
-        }
 
-        return true;
+            BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+            for (int i = 0; i < path.getNodeCount(); i++) {
+                mutablePos.set(path.getNode(i).asBlockPos());
+                if (!isPathfindable(serverLevel.getBlockState(mutablePos), serverLevel, mutablePos, PathComputationType.LAND)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        return false;
     }
 
     public static boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos destination, PathComputationType computationType) {
