@@ -29,10 +29,10 @@ public class BettaMakeLove extends AnimalMakeLove {
         if (mate != null) {
             if (betta.getOrSetIsFemale() && !mate.getOrSetIsFemale()) {
                 mate.getBrain().setMemory(AddonMemoryModuleTypes.MAKING_NEST.get(), true);
-                betta.getBrain().setMemory(ModMemoryModuleTypes.HAS_EGG.get(), true);
+                betta.getBrain().setMemory(AddonMemoryModuleTypes.HAS_EGG.get(), true);
             } else if (!betta.getOrSetIsFemale() && mate.getOrSetIsFemale()) {
                 betta.getBrain().setMemory(AddonMemoryModuleTypes.MAKING_NEST.get(), true);
-                mate.getBrain().setMemory(ModMemoryModuleTypes.HAS_EGG.get(), true);
+                mate.getBrain().setMemory(AddonMemoryModuleTypes.HAS_EGG.get(), true);
             }
         }
     }

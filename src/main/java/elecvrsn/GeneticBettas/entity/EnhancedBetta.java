@@ -2,6 +2,7 @@ package elecvrsn.GeneticBettas.entity;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
+import elecvrsn.GeneticBettas.IMixinFoodSerialiser;
 import elecvrsn.GeneticBettas.ai.brain.betta.BettaBrain;
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.entity.genetics.BettaGeneticsInitialiser;
@@ -394,7 +395,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 4.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.5D)
-                .add(Attributes.ATTACK_DAMAGE, 1.0D);
+                .add(Attributes.ATTACK_DAMAGE, 1.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.1D);
     }
 
     @Override
@@ -1554,7 +1556,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     protected FoodSerialiser.AnimalFoodMap getAnimalFoodType() {
-        return FoodSerialiser.pigFoodMap();
+        FoodSerialiser foodSerialiser = new FoodSerialiser();
+        return ((IMixinFoodSerialiser)foodSerialiser).betta$getAnimalFoodMap("betta");
     }
 
     public boolean isBreedingItem(ItemStack stack) {
