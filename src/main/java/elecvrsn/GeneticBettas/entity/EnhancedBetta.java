@@ -77,6 +77,7 @@ import java.util.Optional;
 import java.util.Random;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
+import static net.minecraft.world.level.block.Blocks.WATER;
 
 public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable {
     public static String speciesTranslationKey = "entity.geneticbettas.enhanced_betta";
@@ -398,7 +399,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 .add(Attributes.MAX_HEALTH, 4.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.5D)
                 .add(Attributes.ATTACK_DAMAGE, 1.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.1D);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.2D);
     }
 
     @Override
@@ -476,14 +477,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return Integer.MIN_VALUE | Math.min(color[0], 255) << 16 | Math.min(color[1], 255) << 8 | Math.min(color[2], 255);
     }
 
-
-    protected void incrementHunger() {
-        if (this.sleeping) {
-            hunger = hunger + (1.0F * getHungerModifier());
-        } else {
-            hunger = hunger + (2.0F * getHungerModifier());
-        }
-    }
+    @Override
+    protected void incrementHunger() {}
 
     @Override
     protected void runExtraIdleTimeTick() {
@@ -1536,7 +1531,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         enhancedBetta.calcSpeed();
         return enhancedBetta;
     }
-
+    @Override
     protected void createAndSpawnEnhancedChild(Level inWorld) {
         EnhancedBetta enhancedBetta = ENHANCED_BETTA.get().create(this.level);
         Genes babyGenes = new Genes(this.genetics).makeChild(this.getOrSetIsFemale(), this.mateGender, this.mateGenetics);
@@ -1757,7 +1752,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         }
 
         public boolean isStableDestination(BlockPos p_149224_) {
-            return !this.level.getBlockState(p_149224_.below()).isAir();
+            return !this.level.getBlockState(p_149224_.below()).isAir() || this.level.getBlockState(p_149224_).is(WATER);
         }
     }
 
@@ -1969,7 +1964,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public static boolean checkBettaSpawnRules(EntityType<EnhancedBetta> p_27578_, LevelAccessor p_27579_, MobSpawnType p_27580_, BlockPos p_27581_, Random p_27582_) {
         int i = p_27579_.getSeaLevel();
         int j = i - 13;
-        return p_27581_.getY() >= j && p_27579_.getBlockState(p_27581_.below()).is(Blocks.WATER);
+        return p_27581_.getY() >= j && p_27579_.getBlockState(p_27581_.below()).is(WATER);
     }
 
     public ImmutableList<Activity> getAdultActivities() {

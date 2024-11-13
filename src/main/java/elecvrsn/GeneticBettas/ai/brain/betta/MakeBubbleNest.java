@@ -31,7 +31,7 @@ public class MakeBubbleNest extends Behavior<EnhancedBetta> {
         if (nestPos != BlockPos.ZERO && nestPos.closerToCenterThan(enhancedBetta.position(), 1F) && serverLevel.isWaterAt(nestPos)) {
             enhancedBetta.getLevel().playSound((Player)null, nestPos, BUBBLE_COLUMN_UPWARDS_AMBIENT, enhancedBetta.getSoundSource(), 1.0F, 1.0F);
             serverLevel.setBlock(nestPos, AddonBlocks.BUBBLE_NEST.get().defaultBlockState(), 2);
-            if (serverLevel.getBlockEntity(nestPos) instanceof BubbleNestBlockEntity) {
+            if (serverLevel.getBlockEntity(nestPos) != null && serverLevel.getBlockEntity(nestPos) instanceof BubbleNestBlockEntity) {
                 ((BubbleNestBlockEntity) serverLevel.getBlockEntity(nestPos)).setPlacementTime(gameTime);
             }
             enhancedBetta.setNestPos(BlockPos.ZERO);
