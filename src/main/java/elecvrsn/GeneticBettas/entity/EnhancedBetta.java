@@ -1833,7 +1833,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     public boolean hasEgg() {
-        return this.entityData.get(HAS_EGG);
+//        return this.entityData.get(HAS_EGG);
+        return getBrain().hasMemoryValue(AddonMemoryModuleTypes.HAS_EGG.get());
     }
 
     @Override
@@ -1842,7 +1843,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     public void setHasEgg(boolean hasEgg) {
-        this.entityData.set(HAS_EGG, hasEgg);
+//        this.entityData.set(HAS_EGG, hasEgg);
+        this.getBrain().setMemory(AddonMemoryModuleTypes.HAS_EGG.get(), hasEgg ? Optional.of(true) : Optional.empty());
     }
 
     @Override
@@ -1881,7 +1883,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     public Boolean isAnimalSleeping() {
-        if (!this.isInWaterRainOrBubble()) {
+        if (!this.isInWaterRainOrBubble() || this.hasEgg()) {
             return false;
         } else if (!(this.getLeashHolder() instanceof LeashFenceKnotEntity) && this.getLeashHolder() != null) {
             return false;
