@@ -399,7 +399,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 .add(Attributes.MAX_HEALTH, 4.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.5D)
                 .add(Attributes.ATTACK_DAMAGE, 1.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.2D);
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
     }
 
     @Override
@@ -2045,7 +2045,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             } else {
                 this.setMateName("???"); //Reset mate name
             }
-        } else {
+        } else if (((EnhancedBetta) ageable).getOrSetIsFemale()) {
             ((EnhancedBetta) ageable).setMateGenes(this.genetics);
             ((EnhancedBetta) ageable).setHasEgg(true);
             ((EnhancedBetta) ageable).setMateGender(false);
