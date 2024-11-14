@@ -28,7 +28,7 @@ public class MakeBubbleNest extends Behavior<EnhancedBetta> {
 
     public void tick(ServerLevel serverLevel, EnhancedBetta enhancedBetta, long gameTime) {
         BlockPos nestPos = enhancedBetta.getNestPos();
-        if (nestPos != BlockPos.ZERO && nestPos.closerToCenterThan(enhancedBetta.position(), 1F) && serverLevel.isWaterAt(nestPos)) {
+        if (nestPos != BlockPos.ZERO && nestPos.closerToCenterThan(enhancedBetta.position(), 1.5F) && serverLevel.isWaterAt(nestPos)) {
             enhancedBetta.getLevel().playSound((Player)null, nestPos, BUBBLE_COLUMN_UPWARDS_AMBIENT, enhancedBetta.getSoundSource(), 1.0F, 1.0F);
             serverLevel.setBlock(nestPos, AddonBlocks.BUBBLE_NEST.get().defaultBlockState(), 2);
             if (serverLevel.getBlockEntity(nestPos) != null && serverLevel.getBlockEntity(nestPos) instanceof BubbleNestBlockEntity) {

@@ -62,10 +62,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.level.pathfinder.SwimNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -1728,7 +1727,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         private final EnhancedBetta betta;
 
         public BettaMoveControl(EnhancedBetta pBetta) {
-            super(pBetta, 85, 10, 0.1F, 0.5F, false);
+            super(pBetta, 85, 60, 0.1F, 0.5F, false);
             this.betta = pBetta;
         }
 
@@ -1747,12 +1746,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         }
 
         protected PathFinder createPathFinder(int p_149222_) {
-            this.nodeEvaluator = new AmphibiousNodeEvaluator(false);
+//            this.nodeEvaluator = new AmphibiousNodeEvaluator(false);
+            this.nodeEvaluator = new SwimNodeEvaluator(false);
             return new PathFinder(this.nodeEvaluator, p_149222_);
         }
 
         public boolean isStableDestination(BlockPos p_149224_) {
-            return !this.level.getBlockState(p_149224_.below()).isAir() || this.level.getBlockState(p_149224_).is(WATER);
+            return !this.level.getBlockState(p_149224_.below()).isAir();
         }
     }
 
@@ -1921,15 +1921,23 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         int maxSearchWidth = 5;
 
         for (int y = 0; y < maxSearchHeight; y++) {
-            for (int x = -maxSearchWidth; x < maxSearchWidth; x++) {
-                for (int z = -maxSearchWidth; z < maxSearchWidth; z++) {
-                    mutableBlockPos.set(baseBlockPos).move(x, y, z);
+            int x = 0;
+            boolean xi = true; //When true, increment x. otherwise multiply x by -1
+            while (x < maxSearchWidth) {
+                int z = 0;
+                boolean zi = true; //When true, increment z. otherwise multiply z by -1
+                while (z < maxSearchWidth) {
+                    mutableBlockPos.set(baseBlockPos).move(xi ? x : -x, y, zi ? z : -z);
                     if (this.level.getBlockState(mutableBlockPos).is(AddonBlocks.BUBBLE_NEST.get())) {
                         if (ValidatePath.isValidPath(this, mutableBlockPos, 16)) {
                             return mutableBlockPos;
                         }
                     }
+                    if (zi) z++;
+                    zi = !zi;
                 }
+                if (xi) x++;
+                xi = !xi;
             }
         }
         return null;
@@ -1940,12 +1948,19 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
 
         int maxSearchHeight = 8;
+        int maxSearchWidth = 1;
 
         for (int y = 0; y < maxSearchHeight; y++) {
-            mutableBlockPos.set(baseBlockPos).move(0, y, 0);
-            if (this.level.isWaterAt(mutableBlockPos) && !this.level.isWaterAt(mutableBlockPos.above())) {
-                setNestPos(mutableBlockPos);
-                return true;
+            for (int x = -maxSearchWidth; x < maxSearchWidth; x++) {
+                for (int z = -maxSearchWidth; z < maxSearchWidth; z++) {
+                    if (x == 0 && z == 0) continue; //Minecraft seems to be unable to pathfnd directly upwards.
+                    //Besides, it looks better if they move around a little
+                    mutableBlockPos.set(baseBlockPos).move(x, y, z);
+                    if (this.level.isWaterAt(mutableBlockPos) && !this.level.isWaterAt(mutableBlockPos.above())) {
+                        setNestPos(mutableBlockPos.move(2, 0, 2));
+                        return true;
+                    }
+                }
             }
         }
         return false;

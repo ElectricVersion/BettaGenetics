@@ -30,7 +30,7 @@ import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA_EGG;
 
 public class LayEgg extends Behavior<EnhancedBetta> {
     private int eggLayingTimer = -1;
-    private long startTime = -1;
+//    private long startTime = -1;
     private BlockPos existingNest;
 
     public LayEgg() {
@@ -54,12 +54,12 @@ public class LayEgg extends Behavior<EnhancedBetta> {
                 betta.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new BlockPosTracker(existingNest));
                 betta.getBrain().setMemory(MemoryModuleType.WALK_TARGET, walkTarget);
             }
-            else if (gameTime > startTime+100){
-                //If there's no existing nest nearby then just end the pregnancy I guess until I think of a better solution
-                betta.setHasEgg(false);
-                betta.getBrain().eraseMemory(AddonMemoryModuleTypes.HAS_EGG.get());
-                return;
-            }
+//            else if (gameTime > startTime+100){
+//                //If there's no existing nest nearby then just end the pregnancy I guess until I think of a better solution
+//                betta.setHasEgg(false);
+//                betta.getBrain().eraseMemory(AddonMemoryModuleTypes.HAS_EGG.get());
+//                return;
+//            }
         }
         if (existingNest != null) {
             if (existingNest.closerToCenterThan(betta.position(), 0.5F)) {
@@ -116,12 +116,13 @@ public class LayEgg extends Behavior<EnhancedBetta> {
     @Override
     protected void stop(ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {
         existingNest = null;
+        betta.setHasEgg(false);
     }
 
     @Override
     protected void start(ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {
         existingNest = null;
-        startTime = gameTime;
+//        startTime = gameTime;
     }
     protected boolean canStillUse(ServerLevel p_23586_, EnhancedBetta betta, long p_23588_) {
         return betta.getBrain().hasMemoryValue(AddonMemoryModuleTypes.HAS_EGG.get());

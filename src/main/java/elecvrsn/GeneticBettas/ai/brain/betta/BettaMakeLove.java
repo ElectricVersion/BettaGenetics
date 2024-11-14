@@ -27,12 +27,13 @@ public class BettaMakeLove extends AnimalMakeLove {
         super.stop(serverLevel, animal, gameTime);
         EnhancedBetta betta = ((EnhancedBetta) animal);
         if (mate != null) {
+            final int memoryExpiry = 500;
             if (betta.getOrSetIsFemale() && !mate.getOrSetIsFemale()) {
-                mate.getBrain().setMemory(AddonMemoryModuleTypes.MAKING_NEST.get(), true);
-                betta.getBrain().setMemory(AddonMemoryModuleTypes.HAS_EGG.get(), true);
+                mate.getBrain().setMemoryWithExpiry(AddonMemoryModuleTypes.MAKING_NEST.get(), true, memoryExpiry);
+                betta.getBrain().setMemoryWithExpiry(AddonMemoryModuleTypes.HAS_EGG.get(), true, memoryExpiry);
             } else if (!betta.getOrSetIsFemale() && mate.getOrSetIsFemale()) {
-                betta.getBrain().setMemory(AddonMemoryModuleTypes.MAKING_NEST.get(), true);
-                mate.getBrain().setMemory(AddonMemoryModuleTypes.HAS_EGG.get(), true);
+                betta.getBrain().setMemoryWithExpiry(AddonMemoryModuleTypes.MAKING_NEST.get(), true, memoryExpiry);
+                mate.getBrain().setMemoryWithExpiry(AddonMemoryModuleTypes.HAS_EGG.get(), true, memoryExpiry);
             }
         }
     }
