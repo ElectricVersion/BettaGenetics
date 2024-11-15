@@ -20,25 +20,26 @@ public class FindGoodNestLocation extends Behavior<EnhancedBetta> {
                 AddonMemoryModuleTypes.MAKING_NEST.get(), MemoryStatus.VALUE_PRESENT
         ), 1, 10);
     }
-
-    public void start(ServerLevel serverLevel, EnhancedBetta enhancedBetta, long gameTime) {
-        if (!enhancedBetta.findLocationForNest()) {
-            enhancedBetta.getBrain().eraseMemory(AddonMemoryModuleTypes.MAKING_NEST.get());
+    @Override
+    public void tick(ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {
+        if (!betta.findLocationForNest()) {
+            betta.getBrain().eraseMemory(AddonMemoryModuleTypes.MAKING_NEST.get());
             return;
         }
-        BlockPos nestPos = enhancedBetta.getNestPos();
-        if (nestPos != BlockPos.ZERO) {
+        BlockPos nestPos = betta.getNestPos();
+        if (nestPos != null) {
             WalkTarget walkTarget = new WalkTarget(nestPos, 0.5F, 0);
-            enhancedBetta.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new BlockPosTracker(nestPos));
-            enhancedBetta.getBrain().setMemory(MemoryModuleType.WALK_TARGET, walkTarget);
+            betta.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new BlockPosTracker(nestPos));
+            betta.getBrain().setMemory(MemoryModuleType.WALK_TARGET, walkTarget);
         }
     }
 
-    protected boolean canStillUse(ServerLevel p_23586_, EnhancedBetta betta, long p_23588_) {
-        return betta.getNestPos() == BlockPos.ZERO;
+    @Override
+    protected boolean canStillUse(ServerLevel p_23586_, EnhancedBetta betta, long gameTime) {
+        return betta.getNestPos() == null;
     }
-
-    protected boolean checkExtraStartConditions(ServerLevel serverLevel, EnhancedBetta enhancedBetta) {
-        return enhancedBetta.getNestPos() == BlockPos.ZERO;
+    @Override
+    protected boolean checkExtraStartConditions(ServerLevel serverLevel, EnhancedBetta betta) {
+        return betta.getNestPos() == null;
     }
 }

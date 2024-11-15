@@ -74,12 +74,12 @@ public class LayEgg extends Behavior<EnhancedBetta> {
         if (betta.isInWater() && this.isBlockBubbleNest(blockState)) {
             if (eggLayingTimer == -1) {
                 eggLayingTimer = 0;
-            } else if (eggLayingTimer >= 200) {
-                if (eggLayingTimer == 200) {
-                    eggLayingTimer = 200 + (betta.getRandom().nextInt(4) * 40);
+            } else if (eggLayingTimer >= 100) {
+                if (eggLayingTimer == 100) {
+                    eggLayingTimer = 100 + (betta.getRandom().nextInt(4) * 20);
                 }
 
-                if (eggLayingTimer%40 == 0) {
+                if (eggLayingTimer%20 == 0) {
                     Level level = betta.getLevel();
                     BlockPos pos = betta.blockPosition();
                     String mateName = betta.getMateName().isEmpty() ? "???" : betta.getMateName();
@@ -93,7 +93,7 @@ public class LayEgg extends Behavior<EnhancedBetta> {
                     level.addFreshEntity(egg);
                 }
 
-                if (eggLayingTimer > 320) {
+                if (eggLayingTimer > 180) {
                     betta.setHasEgg(false);
                     eggLayingTimer = -1;
                     betta.setMateName("???"); //Reset mate name
@@ -122,7 +122,6 @@ public class LayEgg extends Behavior<EnhancedBetta> {
     @Override
     protected void start(ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {
         existingNest = null;
-//        startTime = gameTime;
     }
     protected boolean canStillUse(ServerLevel p_23586_, EnhancedBetta betta, long p_23588_) {
         return betta.getBrain().hasMemoryValue(AddonMemoryModuleTypes.HAS_EGG.get());

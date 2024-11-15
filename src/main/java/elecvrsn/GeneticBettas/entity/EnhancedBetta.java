@@ -81,11 +81,9 @@ import static net.minecraft.world.level.block.Blocks.WATER;
 public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable {
     public static String speciesTranslationKey = "entity.geneticbettas.enhanced_betta";
     protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, AddonSensorTypes.BETTA_ATTACKABLES.get(), AddonSensorTypes.BETTA_TRUSTABLES.get(), AddonSensorTypes.BETTA_FOOD_TEMPTATIONS.get());
-    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(AddonMemoryModuleTypes.SLEEPING.get(), AddonMemoryModuleTypes.PAUSE_BRAIN.get(), AddonMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryModuleType.BREED_TARGET, AddonMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, AddonMemoryModuleTypes.NEAREST_TRUSTABLE.get(), AddonMemoryModuleTypes.TRUSTED_BETTAS.get(), MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN, AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), AddonMemoryModuleTypes.MAKING_NEST.get(), AddonMemoryModuleTypes.IS_ATTACK_NIP.get());
-//    private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
+    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(AddonMemoryModuleTypes.SLEEPING.get(), AddonMemoryModuleTypes.PAUSE_BRAIN.get(), AddonMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryModuleType.BREED_TARGET, AddonMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, AddonMemoryModuleTypes.NEAREST_TRUSTABLE.get(), AddonMemoryModuleTypes.TRUSTED_BETTAS.get(), MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN, AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), AddonMemoryModuleTypes.MAKING_NEST.get(), AddonMemoryModuleTypes.IS_ATTACK_NIP.get(), AddonMemoryModuleTypes.NEST_POS.get());
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<BlockPos> NEST_POS = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BLOCK_POS);
 
     private ImmutableList<Activity> babyActivities = null;
     private ImmutableList<Activity> adultActivities = null;
@@ -390,7 +388,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 //        this.entityData.define(HAS_EGG, false);
         this.entityData.define(IS_ANGRY, false);
         this.entityData.define(FROM_BUCKET, false);
-        this.entityData.define(NEST_POS, BlockPos.ZERO);
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {
@@ -1906,11 +1903,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     public void setNestPos(BlockPos position) {
-        this.entityData.set(NEST_POS, position);
+        this.getBrain().setMemory(AddonMemoryModuleTypes.NEST_POS.get(), position);
     }
 
     public BlockPos getNestPos() {
-        return this.entityData.get(NEST_POS);
+        return this.getBrain().getMemory(AddonMemoryModuleTypes.NEST_POS.get()).orElse(null);
     }
 
 
@@ -1957,7 +1954,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     if (x == 0 && z == 0) continue; //Minecraft seems to be unable to pathfnd directly upwards.
                     //Besides, it looks better if they move around a little
                     mutableBlockPos.set(baseBlockPos).move(x, y, z);
-                    if (this.level.isWaterAt(mutableBlockPos) && !this.level.isWaterAt(mutableBlockPos.above())) {
+                    if (this.level.getBlockState(mutableBlockPos).is(WATER) && !this.level.isWaterAt(mutableBlockPos.above())) {
                         setNestPos(mutableBlockPos);
                         return true;
                     }
