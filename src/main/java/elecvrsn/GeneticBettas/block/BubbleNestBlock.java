@@ -41,9 +41,9 @@ public class BubbleNestBlock extends BaseEntityBlock implements LiquidBlockConta
     }
 
     @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext p_154503_) {
-        FluidState fluidstate = p_154503_.getLevel().getFluidState(p_154503_.getClickedPos());
-        return fluidstate.is(FluidTags.WATER) && fluidstate.getAmount() == 8 ? super.getStateForPlacement(p_154503_) : null;
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+        return fluidstate.is(FluidTags.WATER) && fluidstate.getAmount() == 8 && context.getLevel().isEmptyBlock(context.getClickedPos().above()) ? super.getStateForPlacement(context) : null;
     }
 
     public BlockState updateShape(BlockState blockState, Direction direction, BlockState blockState1, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos1) {
