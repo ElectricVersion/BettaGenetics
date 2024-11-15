@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 
 import static net.minecraft.sounds.SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT;
@@ -37,6 +38,11 @@ public class MakeBubbleNest extends Behavior<EnhancedBetta> {
             enhancedBetta.setNestPos(BlockPos.ZERO);
             enhancedBetta.getBrain().eraseMemory(AddonMemoryModuleTypes.MAKING_NEST.get());
         }
+    }
+
+    @Override
+    protected void stop(ServerLevel level, EnhancedBetta betta, long gameTime) {
+        betta.setNestPos(BlockPos.ZERO);
     }
 
     protected boolean canStillUse(ServerLevel p_23586_, EnhancedBetta enhancedBetta, long p_23588_) {
