@@ -49,4 +49,9 @@ public class MakeBubbleNest extends Behavior<EnhancedBetta> {
     protected boolean canStillUse(ServerLevel p_23586_, EnhancedBetta enhancedBetta, long p_23588_) {
         return enhancedBetta.getBrain().hasMemoryValue(AddonMemoryModuleTypes.MAKING_NEST.get());
     }
+
+    @Override
+    protected boolean checkExtraStartConditions(ServerLevel serverLevel, EnhancedBetta betta) {
+        return betta.getNestPos() != null;
+    }
 }

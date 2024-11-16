@@ -36,7 +36,7 @@ public class FindGoodNestLocation extends Behavior<EnhancedBetta> {
 
     @Override
     protected boolean canStillUse(ServerLevel p_23586_, EnhancedBetta betta, long gameTime) {
-        return betta.getNestPos() == null;
+        return betta.getNestPos() == null && betta.getBrain().hasMemoryValue(AddonMemoryModuleTypes.MAKING_NEST.get());
     }
     @Override
     protected boolean checkExtraStartConditions(ServerLevel serverLevel, EnhancedBetta betta) {

@@ -42,11 +42,6 @@ public class LayEgg extends Behavior<EnhancedBetta> {
         ), 5, 10000);
     }
 
-    private boolean isBlockBubbleNest(BlockState blockState) {
-        Block block = blockState.getBlock();
-        return AddonBlocks.BUBBLE_NEST.get().equals(block);
-    }
-
     public void tick(ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {
         if (existingNest == null) {
             if ((existingNest = betta.findExistingNest()) != null) {
@@ -71,7 +66,7 @@ public class LayEgg extends Behavior<EnhancedBetta> {
         }
         BlockPos blockPos = betta.blockPosition();
         BlockState blockState = serverLevel.getBlockState(blockPos);
-        if (betta.isInWater() && this.isBlockBubbleNest(blockState)) {
+        if (betta.isInWater() && blockState.is(AddonBlocks.BUBBLE_NEST.get())) {
             if (eggLayingTimer == -1) {
                 eggLayingTimer = 0;
             } else if (eggLayingTimer >= 100) {
