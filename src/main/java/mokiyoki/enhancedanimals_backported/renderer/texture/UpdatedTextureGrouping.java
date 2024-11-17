@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 public class UpdatedTextureGrouping extends TextureGrouping {
 
-    private final static float COLOUR_DEGREE = 1F/255F;
+    public final static float COLOUR_DEGREE = 1F/255F;
 
     public UpdatedTextureGrouping(UpdatedTexturingType texturingType) {
         super(TexturingType.NONE);

@@ -4,9 +4,10 @@
   "compatibilityLevel": "JAVA_17",
   "package": "elecvrsn.GeneticBettas.mixins",
   "mixins": [
+    "IMixinFoodSerialiser",
+    "MixinTexturingUtils",
     "MixinEnhancedAnimalAbstract",
-    "MixinTextureLayer",
     "MixinTextureGrouping",
-    "IMixinFoodSerialiser"
+    "MixinTextureLayer"
   ]
 }
