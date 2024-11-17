@@ -1,7 +1,6 @@
 package elecvrsn.GeneticBettas.block;
 
 import elecvrsn.GeneticBettas.block.entity.BubbleNestBlockEntity;
-import elecvrsn.GeneticBettas.block.entity.FilledDisplayTankBlockEntity;
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -9,13 +8,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlockContainer;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -74,7 +74,7 @@ public class BubbleNestBlock extends BaseEntityBlock implements LiquidBlockConta
 
     public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, Random random) {
         if (serverLevel.getBlockEntity(blockPos) instanceof BubbleNestBlockEntity &&
-                ((BubbleNestBlockEntity) serverLevel.getBlockEntity(blockPos)).getPlacementTime() != -1 &&
+                ((BubbleNestBlockEntity) serverLevel.getBlockEntity(blockPos)).getPlacementTime() != 0 &&
                 serverLevel.getGameTime() > ((BubbleNestBlockEntity) serverLevel.getBlockEntity(blockPos)).getPlacementTime() + BettasCommonConfig.COMMON.bettaHatchTime.get()) {
             serverLevel.removeBlock(blockPos, false);
         }

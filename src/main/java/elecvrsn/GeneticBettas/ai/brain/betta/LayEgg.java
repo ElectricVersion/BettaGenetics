@@ -1,11 +1,11 @@
 package elecvrsn.GeneticBettas.ai.brain.betta;
 
 import com.google.common.collect.ImmutableMap;
+import elecvrsn.GeneticBettas.block.entity.BubbleNestBlockEntity;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.entity.EnhancedBettaEgg;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
-import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import mokiyoki.enhancedanimals.util.Genes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +19,7 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -86,6 +86,11 @@ public class LayEgg extends Behavior<EnhancedBetta> {
                     egg.setGenes(eggGenes);
                     egg.moveTo(pos.getX()+0.125D+(ThreadLocalRandom.current().nextFloat()*0.75F), betta.getY(), pos.getZ()+0.125D+(ThreadLocalRandom.current().nextFloat()*0.75F), ThreadLocalRandom.current().nextInt(4)* (Mth.HALF_PI*0.5F), 0.0F);
                     level.addFreshEntity(egg);
+                    // Refresh the placement time of the nest, so it doesn't break until all eggs hatch
+                    BlockEntity blockEntity = level.getBlockEntity(existingNest);
+                    if (blockEntity instanceof BubbleNestBlockEntity) {
+                        ((BubbleNestBlockEntity)blockEntity).setPlacementTime(gameTime);
+                    }
                 }
 
                 if (eggLayingTimer > 180) {

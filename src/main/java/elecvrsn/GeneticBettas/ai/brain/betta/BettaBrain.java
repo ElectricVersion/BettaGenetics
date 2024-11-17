@@ -9,7 +9,6 @@ import elecvrsn.GeneticBettas.init.AddonActivities;
 import elecvrsn.GeneticBettas.init.AddonEntities;
 import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
 import mokiyoki.enhancedanimals.init.ModActivities;
-import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Entity;
