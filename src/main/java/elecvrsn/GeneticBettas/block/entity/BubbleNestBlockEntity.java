@@ -34,14 +34,4 @@ public class BubbleNestBlockEntity extends BlockEntity {
         super.load(compound);
         placementTime = compound.getLong("placementTime");
     }
-
-    @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    @Override
-    public CompoundTag getUpdateTag() {
-        return this.saveWithoutMetadata();
-    }
 }
