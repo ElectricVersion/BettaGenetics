@@ -631,13 +631,15 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             /*** DRAGONSCALE ***/
             if (gene[172] == 2 || gene[173] == 2) {
+                boolean dragonscaleMod = gene[234] == 2 || gene[235] == 2;
+                int dragonRand = uuidArry[9];
                 if (gene[172] == gene[173]) {
                     //Homo
-                    dragonscale = bodyIri > 1 ? 10 : 5;
+                    dragonscale = dragonscaleMod ? (5 + (dragonRand % 5)) : (10 + (dragonRand % 2));
                 }
                 else {
                     //Het
-                    dragonscale = bodyIri > 1 ? 4 : 1;
+                    dragonscale = dragonscaleMod ? (1 + (dragonRand % 3)) : 4;
                 }
             }
 

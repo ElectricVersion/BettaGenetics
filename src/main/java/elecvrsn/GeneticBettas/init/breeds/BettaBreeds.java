@@ -24,4 +24,8 @@ public class BettaBreeds {
             .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(174, "1","1","1","1","1", "2","2","2","2","2").add(194, "1","1","1","1","1", "2","2","2","2","2").add(214, "1","1","1","1","1", "2","2","2","2","2")));
     public static final Breed MINRUFOUS = new Breed(new Breed.Properties().setData("MinRufous", Biomes.FOREST, Breed.Rarity.ORDINARY)
             .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(174, "2","2","2","2","2", "1","1","1","1","1").add(194, "2","2","2","2","2", "1","1","1","1","1").add(214, "2","2","2","2","2", "1","1","1","1","1")));
+
+    public static final Breed DRAGONSCALE = new Breed(new Breed.Properties().setData("Dragonscale", Biomes.FOREST, Breed.Rarity.ORDINARY)
+            .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(172, "2")));
+
 }

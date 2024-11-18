@@ -26,6 +26,7 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         this.breeds.add(BettaBreeds.KOI);
         this.breeds.add(BettaBreeds.MAXRUFOUS);
         this.breeds.add(BettaBreeds.MINRUFOUS);
+        this.breeds.add(BettaBreeds.DRAGONSCALE);
     }
 
     List<Breed> breeds = new ArrayList<>();
@@ -421,6 +422,11 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
                 autosomalGenes[i] = 1;
             }
         }
+
+        //Dragonscale Modifier [wildtype < Less Dragonscale]
+        autosomalGenes[234] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[235] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+
 
         return new Genes(sexlinkedGenes, autosomalGenes);
     }
