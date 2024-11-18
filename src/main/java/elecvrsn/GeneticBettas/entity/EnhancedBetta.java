@@ -1477,19 +1477,19 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             }
 
             nonCellophaneGroup.addGrouping(pigmentGroup);
+            /** BABY STRIPES IF APPLICABLE **/
+            if (babyColors) {
+                TextureGrouping babyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                addTextureToAnimalTextureGrouping(babyGroup, extendedRed ? TexturingType.APPLY_RED : TexturingType.APPLY_BLACK, TEXTURES_BABY, cambodian ? 0 : 1, l->l!=0);
+                addTextureToAnimalTextureGrouping(babyGroup, TexturingType.APPLY_BLACK, "mask/percent50.png"); // low opacity overlay helps dull the colors
+                nonCellophaneGroup.addGrouping(babyGroup);
+            }
             nonCellophaneGroup.addGrouping(iridescenceGroup);
             texturesGroup.addGrouping(nonCellophaneGroup);
             /** FIN DETAIL **/
             TextureGrouping detailGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(detailGroup, "halfmoon_fins_64.png", true);
             texturesGroup.addGrouping(detailGroup);
-            /** BABY STRIPES IF APPLICABLE **/
-            if (babyColors) {
-                TextureGrouping babyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                addTextureToAnimalTextureGrouping(babyGroup, extendedRed ? TexturingType.APPLY_RED : TexturingType.APPLY_BLACK, TEXTURES_BABY, cambodian ? 0 : 1, l->l!=0);
-                addTextureToAnimalTextureGrouping(babyGroup, TexturingType.APPLY_BLACK, "mask/percent50.png"); // low opacity overlay helps dull the colors
-                texturesGroup.addGrouping(babyGroup);
-            }
             /** EYES **/
             TextureGrouping eyeGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(eyeGroup, TEXTURES_EYES, 0, l -> true);
