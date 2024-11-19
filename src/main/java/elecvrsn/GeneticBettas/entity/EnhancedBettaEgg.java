@@ -147,7 +147,7 @@ public class EnhancedBettaEgg extends Entity {
         super.tick();
 
         if (!onEggAttachableBlock(this.blockPosition(), this.level)) {
-            fall(this.blockPosition(), this.level);
+            fallOrFloat(this.blockPosition(), this.level);
         }
 
         pushEntities();
@@ -182,7 +182,7 @@ public class EnhancedBettaEgg extends Entity {
         return false;
     }
 
-    private void fall(BlockPos blockPos, LevelReader level) {
+    private void fallOrFloat(BlockPos blockPos, LevelReader level) {
         if (!this.isNoGravity()) {
             if ((level.getBlockState(blockPos.above()).isAir() && level.getFluidState(blockPos).isSourceOfType(WATER) && this.getBoundingBox().getCenter().y >= blockPos.above().getY()-0.125 && this.getBoundingBox().getCenter().y <= blockPos.above().getY()+0.125)) {
                 this.setDeltaMovement(this.getDeltaMovement().scale(0D));
@@ -197,25 +197,24 @@ public class EnhancedBettaEgg extends Entity {
     }
 
     protected void pushEntities() {
-        List<EnhancedBettaEgg> list = this.level.getEntitiesOfClass(EnhancedBettaEgg.class, this.getBoundingBox().inflate(0.1D));
+        List<EnhancedBettaEgg> list = this.level.getEntitiesOfClass(EnhancedBettaEgg.class, this.getBoundingBox());
         if (!list.isEmpty()) {
-            int i = this.level.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
-            if (i > 0 && list.size() > i - 1 && this.random.nextInt(4) == 0) {
-                int j = 0;
+            int max_cramming = this.level.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
+            if (max_cramming > 0 && list.size() > max_cramming - 1 && this.random.nextInt(4) == 0) {
+                int colliding_entities = 0;
 
-                for(int k = 0; k < list.size(); ++k) {
-                    if (!list.get(k).isPassenger()) {
-                        ++j;
+                for (EnhancedBettaEgg enhancedBettaEgg : list) {
+                    if (!enhancedBettaEgg.isPassenger()) {
+                        colliding_entities++;
                     }
                 }
 
-                if (j > i - 1) {
+                if (colliding_entities > max_cramming - 1) {
                     this.hurt(DamageSource.CRAMMING, 6.0F);
                 }
             }
 
-            for(int l = 0; l < list.size(); ++l) {
-                Entity entity = list.get(l);
+            for (Entity entity : list) {
                 entity.push(this);
             }
         }
