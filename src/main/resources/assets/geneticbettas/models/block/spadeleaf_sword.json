@@ -110,10 +110,10 @@
 		},
 		{
 			"name": "leaf4",
-			"from": [12, 4, 4.5],
-			"to": [18, 4, 9.5],
+			"from": [12, 4, 5.5],
+			"to": [18, 4, 10.5],
 			"shade": false,
-			"rotation": {"angle": 0, "axis": "z", "origin": [10, 4, 7]},
+			"rotation": {"angle": 0, "axis": "z", "origin": [10, 4, 8]},
 			"faces": {
 				"up": {"uv": [9, 2, 14, 8], "rotation": 90, "texture": "#0"},
 				"down": {"uv": [9, 2, 14, 8], "rotation": 90, "texture": "#0"}
