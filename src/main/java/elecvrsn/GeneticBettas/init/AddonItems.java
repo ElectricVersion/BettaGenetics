@@ -22,6 +22,7 @@ public class AddonItems {
     public static final RegistryObject<Item> ENHANCED_BETTA_BUCKET = ITEMS_DEFERRED_REGISTRY.register("enhanced_betta_bucket", () -> new EnhancedBettaBucket(new Item.Properties().stacksTo(1), AddonEntities.ENHANCED_BETTA, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH));
     public static final RegistryObject<Item> BUBBLE_NEST_ITEM = ITEMS_DEFERRED_REGISTRY.register("bubble_nest", () -> new BlockItem(AddonBlocks.BUBBLE_NEST.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> DISPLAY_TANK_ITEM = ITEMS_DEFERRED_REGISTRY.register("display_tank", () -> new BlockItem(AddonBlocks.DISPLAY_TANK.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> SPADELEAF_SWORD_ITEM = ITEMS_DEFERRED_REGISTRY.register("spadeleaf_sword", () -> new BlockItem(AddonBlocks.SPADELEAF_SWORD.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> FILLED_DISPLAY_TANK_ITEM = ITEMS_DEFERRED_REGISTRY.register("filled_display_tank", () -> new BlockItem(AddonBlocks.FILLED_DISPLAY_TANK.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static void register(IEventBus modEventBus) {
         ITEMS_DEFERRED_REGISTRY.register(modEventBus);
