@@ -27,15 +27,15 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TankGlassBlock extends Block implements SimpleWaterloggedBlock {
-    protected static final VoxelShape FACE_NORTH = Block.box(0, 0, 14, 16, 16, 16);
-    protected static final VoxelShape FACE_SOUTH = Block.box(0, 0, 0, 16, 16, 2);
-    protected static final VoxelShape FACE_EAST = Block.box(0, 0, 0, 2, 16, 16);
-    protected static final VoxelShape FACE_WEST = Block.box(14, 0, 0, 16, 16, 16);
+    protected static final VoxelShape FACE_NORTH = Block.box(0, 0, 15, 16, 16, 16);
+    protected static final VoxelShape FACE_SOUTH = Block.box(0, 0, 0, 16, 16, 1);
+    protected static final VoxelShape FACE_EAST = Block.box(0, 0, 0, 1, 16, 16);
+    protected static final VoxelShape FACE_WEST = Block.box(15, 0, 0, 16, 16, 16);
 
-    protected static final VoxelShape CORNER_SOUTHEAST = Block.box(0, 0, 0, 2, 16, 2);
-    protected static final VoxelShape CORNER_SOUTHWEST = Block.box(14, 0, 0, 16, 16, 2);
-    protected static final VoxelShape CORNER_NORTHEAST = Block.box(0, 0, 14, 2, 16, 16);
-    protected static final VoxelShape CORNER_NORTHWEST = Block.box(14, 0, 14, 16, 16, 16);
+    protected static final VoxelShape CORNER_SOUTHEAST = Block.box(0, 0, 0, 1, 16, 1);
+    protected static final VoxelShape CORNER_SOUTHWEST = Block.box(15, 0, 0, 16, 16, 1);
+    protected static final VoxelShape CORNER_NORTHEAST = Block.box(0, 0, 15, 1, 16, 16);
+    protected static final VoxelShape CORNER_NORTHWEST = Block.box(15, 0, 15, 16, 16, 16);
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final EnumProperty<StairsShape> SHAPE = BlockStateProperties.STAIRS_SHAPE;
