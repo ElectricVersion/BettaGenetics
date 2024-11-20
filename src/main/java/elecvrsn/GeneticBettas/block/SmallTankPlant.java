@@ -4,7 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class SmallTankPlant extends BushBlock implements BonemealableBlock, SimpleWaterloggedBlock {
@@ -41,10 +44,6 @@ public class SmallTankPlant extends BushBlock implements BonemealableBlock, Simp
 
     protected boolean mayPlaceOn(BlockState state, BlockGetter getter, BlockPos pos) {
         return state.is(BlockTags.SMALL_DRIPLEAF_PLACEABLE) || getter.getFluidState(pos.above()).isSourceOfType(Fluids.WATER) && super.mayPlaceOn(state, getter, pos);
-    }
-
-    public FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
@@ -75,10 +74,16 @@ public class SmallTankPlant extends BushBlock implements BonemealableBlock, Simp
     public void performBonemeal(ServerLevel level, Random random, BlockPos pos, BlockState state) {
         popResource(level, pos, new ItemStack(this));
     }
-//    public BlockBehaviour.OffsetType getOffsetType() {
-//        return BlockBehaviour.OffsetType.XYZ;
-//    }
 
+    @Nullable
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+        return fluidstate.is(FluidTags.WATER) && fluidstate.getAmount() == 8 ? super.getStateForPlacement(context) : null;
+    }
+
+    public FluidState getFluidState(BlockState state) {
+        return Fluids.WATER.getSource(false);
+    }
     public float getMaxVerticalOffset() {
         return 0.1F;
     }
