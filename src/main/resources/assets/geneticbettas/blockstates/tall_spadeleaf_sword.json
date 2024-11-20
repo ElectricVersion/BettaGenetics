@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "geneticbettas:block/tall_spadeleaf_sword_bottom"
+    },
+    "half=upper": {
+      "model": "geneticbettas:block/tall_spadeleaf_sword_top"
+    }
+  }
+}

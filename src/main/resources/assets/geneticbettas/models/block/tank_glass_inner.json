@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
+    "ambientocclusion": false,
 	"textures": {
-		"1": "geneticbettas:block/glass_pane_top",
-		"particle": "geneticbettas:block/tank_glass"
+		"1": "geneticbettas:block/tank_glass_side"
 	},
 	"elements": [
 		{
