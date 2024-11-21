@@ -505,8 +505,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    protected void
-    setTexturePaths() {
+    protected void setTexturePaths() {
         if (this.getGenes() != null || this.genetics != null) {
             int[] gene = this.getGenes() != null ? getGenes().getAutosomalGenes() : genetics.getAutosomalGenes();
 

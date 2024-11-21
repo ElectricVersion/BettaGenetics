@@ -35,6 +35,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
+import static elecvrsn.GeneticBettas.util.AddonReference.BETTA_AUTOSOMAL_GENES_LENGTH;
 
 public class EnhancedBettaBucket extends MobBucketItem {
 
@@ -113,6 +114,11 @@ public class EnhancedBettaBucket extends MobBucketItem {
         betta.setDamName(data.getString("DamName"));
         if (this.getGenes(stack) != null) {
             Genes genes = this.getGenes(stack);
+            if (genes.getNumberOfAutosomalGenes() != BETTA_AUTOSOMAL_GENES_LENGTH) {
+                int[] newAGenes = new int[BETTA_AUTOSOMAL_GENES_LENGTH];
+                System.arraycopy(genes.getAutosomalGenes(), 0, newAGenes, 0, genes.getNumberOfAutosomalGenes());
+                genes.setGenes(newAGenes);
+            }
             if (!genes.isValid() && genes.getNumberOfAutosomalGenes() != 0) {
                 genes.fixGenes(1);
             }
@@ -151,6 +157,11 @@ public class EnhancedBettaBucket extends MobBucketItem {
         CompoundTag genetics = tag.getCompound("Genetics");
         Genes genes = new Genes(genetics.getIntArray("SGenes"), genetics.getIntArray("AGenes"));
         if (genes != null) {
+            if (genes.getNumberOfAutosomalGenes() != BETTA_AUTOSOMAL_GENES_LENGTH) {
+                int[] newAGenes = new int[BETTA_AUTOSOMAL_GENES_LENGTH];
+                System.arraycopy(genes.getAutosomalGenes(), 0, newAGenes, 0, genes.getNumberOfAutosomalGenes());
+                genes.setGenes(newAGenes);
+            }
             if (!genes.isValid() && genes.getNumberOfAutosomalGenes() != 0) {
                 genes.fixGenes(1);
             }
