@@ -19,7 +19,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
 
-version = '0.1.6'
+version = '0.1.7'
 group = 'com.elecvrsn.geneticbettas' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'geneticbettas'
 
