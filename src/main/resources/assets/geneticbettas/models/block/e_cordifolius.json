@@ -1,7 +1,6 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "block/block",
-    "ambientocclusion": false,
+	"ambientocclusion": false,
 	"textures": {
 		"0": "geneticbettas:block/e_cordifolius_leaf",
 		"1": "geneticbettas:block/e_cordifolius_stem",
@@ -118,5 +117,19 @@
 				"down": {"uv": [9, 2, 14, 8], "texture": "#0"}
 			}
 		}
-	]
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, 5.5, 0]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, 5.5, 0]
+		},
+		"gui": {
+			"rotation": [22.5, 22.5, 0]
+		},
+		"head": {
+			"translation": [0, 14, 0]
+		}
+	}
 }

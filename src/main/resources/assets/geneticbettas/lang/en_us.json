@@ -14,5 +14,11 @@
   "block.geneticbettas.filled_display_tank": "Filled Display Tank",
   "item.geneticbettas.filled_display_tank": "Filled Display Tank",
   "block.geneticbettas.e_cordifolius": "E. cordifolius",
-  "item.geneticbettas.e_cordifolius": "E. cordifolius"
+  "item.geneticbettas.e_cordifolius": "E. cordifolius",
+  "block.geneticbettas.tall_e_cordifolius": "Tall E. cordifolius",
+  "item.geneticbettas.tall_e_cordifolius": "Tall E. cordifolius",
+  "block.geneticbettas.a_barteri": "A. barteri",
+  "item.geneticbettas.a_barteri": "A. barteri",
+  "block.geneticbettas.variegated_a_barteri": "Variegated A. barteri",
+  "item.geneticbettas.variegated_a_barteri": "Variegated A. barteri"
 }

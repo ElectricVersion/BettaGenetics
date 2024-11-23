@@ -1,4 +1,5 @@
 {
+    "ambientocclusion": false,
 	"textures": {
 		"0": "geneticbettas:block/e_cordifolius_leaf",
 		"1": "geneticbettas:block/tall_e_cordifolius_top",
