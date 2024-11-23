@@ -1,10 +1,8 @@
 {
-	"credit": "Made with Blockbench",
-	"parent": "block/block",
 	"textures": {
-		"0": "geneticbettas:block/spadeleaf_sword_leaf",
-		"1": "geneticbettas:block/tall_spadeleaf_sword_top",
-		"particle": "geneticbettas:block/spadeleaf_sword_leaf"
+		"0": "geneticbettas:block/e_cordifolius_leaf",
+		"1": "geneticbettas:block/tall_e_cordifolius_top",
+		"particle": "geneticbettas:block/e_cordifolius_leaf"
 	},
 	"elements": [
 		{

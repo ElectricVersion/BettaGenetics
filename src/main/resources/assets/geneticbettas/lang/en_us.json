@@ -12,5 +12,7 @@
   "block.geneticbettas.display_tank": "Display Tank",
   "item.geneticbettas.display_tank": "Display Tank",
   "block.geneticbettas.filled_display_tank": "Filled Display Tank",
-  "item.geneticbettas.filled_display_tank": "Filled Display Tank"
+  "item.geneticbettas.filled_display_tank": "Filled Display Tank",
+  "block.geneticbettas.e_cordifolius": "E. cordifolius",
+  "item.geneticbettas.e_cordifolius": "E. cordifolius"
 }

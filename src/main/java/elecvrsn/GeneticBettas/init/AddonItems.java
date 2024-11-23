@@ -23,8 +23,9 @@ public class AddonItems {
     public static final RegistryObject<Item> BUBBLE_NEST_ITEM = ITEMS_DEFERRED_REGISTRY.register("bubble_nest", () -> new BlockItem(AddonBlocks.BUBBLE_NEST.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> TANK_GLASS_ITEM = ITEMS_DEFERRED_REGISTRY.register("tank_glass", () -> new BlockItem(AddonBlocks.TANK_GLASS.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> DISPLAY_TANK_ITEM = ITEMS_DEFERRED_REGISTRY.register("display_tank", () -> new BlockItem(AddonBlocks.DISPLAY_TANK.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> SPADELEAF_SWORD_ITEM = ITEMS_DEFERRED_REGISTRY.register("spadeleaf_sword", () -> new BlockItem(AddonBlocks.SPADELEAF_SWORD.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
-    public static final RegistryObject<Item> TALL_SPADELEAF_SWORD_ITEM = ITEMS_DEFERRED_REGISTRY.register("tall_spadeleaf_sword", () -> new BlockItem(AddonBlocks.TALL_SPADELEAF_SWORD.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> E_CORDIFOLIUS_ITEM = ITEMS_DEFERRED_REGISTRY.register("e_cordifolius", () -> new BlockItem(AddonBlocks.E_CORDIFOLIUS.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> TALL_E_CORDIFOLIUS_ITEM = ITEMS_DEFERRED_REGISTRY.register("tall_e_cordifolius", () -> new BlockItem(AddonBlocks.TALL_E_CORDIFOLIUS.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> A_BARTERI_ITEM = ITEMS_DEFERRED_REGISTRY.register("a_barteri", () -> new BlockItem(AddonBlocks.A_BARTERI.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> FILLED_DISPLAY_TANK_ITEM = ITEMS_DEFERRED_REGISTRY.register("filled_display_tank", () -> new BlockItem(AddonBlocks.FILLED_DISPLAY_TANK.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static void register(IEventBus modEventBus) {
         ITEMS_DEFERRED_REGISTRY.register(modEventBus);

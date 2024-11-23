@@ -39,8 +39,9 @@ public class GeneticBettas
         ItemBlockRenderTypes.setRenderLayer(AddonBlocks.DISPLAY_TANK.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AddonBlocks.TANK_GLASS.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AddonBlocks.FILLED_DISPLAY_TANK.get(), Predicate.<RenderType>isEqual(RenderType.cutout()).or(Predicate.isEqual(RenderType.translucent())));
-        ItemBlockRenderTypes.setRenderLayer(AddonBlocks.SPADELEAF_SWORD.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AddonBlocks.TALL_SPADELEAF_SWORD.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AddonBlocks.E_CORDIFOLIUS.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AddonBlocks.TALL_E_CORDIFOLIUS.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AddonBlocks.A_BARTERI.get(), RenderType.cutout());
     }
 
 //    @SubscribeEvent

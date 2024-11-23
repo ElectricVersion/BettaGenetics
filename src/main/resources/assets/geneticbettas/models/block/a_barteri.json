@@ -1,0 +1,90 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"0": "geneticbettas:block/a_barteri_leaf",
+		"1": "geneticbettas:block/a_barteri_stem",
+		"particle": "geneticbettas:block/a_barteri_leaf"
+	},
+	"elements": [
+		{
+			"name": "stem1",
+			"from": [8, 0, 3],
+			"to": [8, 14, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 7]},
+			"faces": {
+				"east": {"uv": [2, 2, 12, 16], "texture": "#1"},
+				"west": {"uv": [12, 2, 2, 16], "texture": "#1"}
+			}
+		},
+		{
+			"name": "stem2",
+			"from": [3, 0, 8],
+			"to": [13, 14, 8],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [12, 2, 2, 16], "texture": "#1"},
+				"south": {"uv": [2, 2, 12, 16], "texture": "#1"}
+			}
+		},
+		{
+			"name": "leaf2",
+			"from": [9.25, 9.25, 5.5],
+			"to": [16.25, 9.25, 10.5],
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [9.25, 9.25, 8]},
+			"faces": {
+				"up": {"uv": [1, 9, 6, 16], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [1, 0, 6, 8], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "leaf3",
+			"from": [-0.9, 7.75, 5.5],
+			"to": [5.1, 7.75, 10.5],
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [7.1, 7.75, 8]},
+			"faces": {
+				"up": {"uv": [9, 2, 14, 8], "rotation": 270, "texture": "#0"},
+				"down": {"uv": [9, 2, 14, 8], "rotation": 270, "texture": "#0"}
+			}
+		},
+		{
+			"name": "leaf2",
+			"from": [5.5, 10, -0.15],
+			"to": [10.5, 10, 6.85],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 10, 7.85]},
+			"faces": {
+				"up": {"uv": [1, 9, 6, 16], "texture": "#0"},
+				"down": {"uv": [1, 9, 6, 16], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"name": "leaf3",
+			"from": [5.75, 6, -0.25],
+			"to": [10.75, 6, 5.75],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8.25, 6, 5.75]},
+			"faces": {
+				"up": {"uv": [9, 2, 14, 8], "texture": "#0"},
+				"down": {"uv": [9, 2, 14, 8], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"name": "leaf4",
+			"from": [10.75, 6.5, 5.5],
+			"to": [16.75, 6.5, 10.5],
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [8.75, 6.5, 8]},
+			"faces": {
+				"up": {"uv": [9, 2, 14, 8], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [9, 2, 14, 8], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "leaf5",
+			"from": [5.5, 6, 10.4],
+			"to": [10.5, 6, 16.4],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 6, 10.4]},
+			"faces": {
+				"up": {"uv": [9, 2, 14, 8], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [9, 2, 14, 8], "texture": "#0"}
+			}
+		}
+	]
+}
