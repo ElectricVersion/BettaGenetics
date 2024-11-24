@@ -43,38 +43,28 @@ public class ConnectedBakedModel implements IDynamicBakedModel {
         return side == null ? this.unculledFaces : this.culledFaces.get(side);
     }
 
-    @Override
     public boolean useAmbientOcclusion() {
-        return false;
+        return this.hasAmbientOcclusion;
     }
 
-    @Override
     public boolean isGui3d() {
-        return false;
+        return this.isGui3d;
     }
 
-    @Override
     public boolean usesBlockLight() {
-        return false;
+        return this.usesBlockLight;
     }
 
-    @Override
     public boolean isCustomRenderer() {
         return false;
     }
 
-    @Override
-    public TextureAtlasSprite getParticleIcon() {
+    public @NotNull TextureAtlasSprite getParticleIcon() {
         return this.particleIcon;
     }
 
-    @Override
-    public TextureAtlasSprite getParticleIcon(IModelData modelData) {
-        return this.particleIcon;
-    }
-
-    @Override
     public @NotNull ItemOverrides getOverrides() {
-        return ItemOverrides.EMPTY;
+        return this.overrides;
     }
+
 }

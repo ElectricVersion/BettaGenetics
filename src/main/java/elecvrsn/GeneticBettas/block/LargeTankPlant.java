@@ -97,5 +97,13 @@ public class LargeTankPlant extends DoublePlantBlock implements BonemealableBloc
     public void performBonemeal(ServerLevel level, Random random, BlockPos pos, BlockState state) {
         popResource(level, pos, new ItemStack(this));
     }
+    @Override
+    public float getMaxHorizontalOffset() {
+        return 0.05F;
+    }
+    @Override
+    public float getMaxVerticalOffset() {
+        return 0.05F;
+    }
 
 }

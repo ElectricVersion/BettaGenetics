@@ -1,0 +1,29 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"2": "geneticbettas:block/v_americana_top",
+		"particle": "geneticbettas:block/v_americana_bottom"
+	},
+	"elements": [
+		{
+			"from": [8, 0, 0],
+			"to": [8, 10, 16],
+			"shade": false,
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"east": {"uv": [16, 6, 0, 16], "texture": "#2"},
+				"west": {"uv": [0, 6, 16, 16], "texture": "#2"}
+			}
+		},
+		{
+			"from": [0, 0, 8],
+			"to": [16, 10, 8],
+			"shade": false,
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 6, 16, 16], "texture": "#2"},
+				"south": {"uv": [16, 6, 0, 16], "texture": "#2"}
+			}
+		}
+	]
+}

@@ -84,7 +84,17 @@ public class SmallTankPlant extends BushBlock implements BonemealableBlock, Simp
     public FluidState getFluidState(BlockState state) {
         return Fluids.WATER.getSource(false);
     }
-    public float getMaxVerticalOffset() {
-        return 0.1F;
+    @Override
+    public float getMaxHorizontalOffset() {
+        return 0.05F;
     }
+    @Override
+    public float getMaxVerticalOffset() {
+        return 0.05F;
+    }
+    @Override
+    public BlockBehaviour.OffsetType getOffsetType() {
+        return BlockBehaviour.OffsetType.XZ;
+    }
+
 }

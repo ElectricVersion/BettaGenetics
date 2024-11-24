@@ -46,6 +46,7 @@ public class GeneticBettas
         ItemBlockRenderTypes.setRenderLayer(AddonBlocks.TALL_E_CORDIFOLIUS.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AddonBlocks.A_BARTERI.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AddonBlocks.VARIEGATED_A_BARTERI.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AddonBlocks.V_AMERICANA.get(), RenderType.cutout());
     }
 
 //    @SubscribeEvent
