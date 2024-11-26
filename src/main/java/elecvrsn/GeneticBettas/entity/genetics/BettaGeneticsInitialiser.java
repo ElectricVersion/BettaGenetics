@@ -201,9 +201,9 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         autosomalGenes[78] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 2;
         autosomalGenes[79] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 2;
 
-        //Marble [wildtype <> Marble] (Homoezygous decreases the size of marble)
-        autosomalGenes[80] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
-//        autosomalGenes[81] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        //Marble [wildtype <> Marble > Vanda] (Homoezygous decreases the size of marble)
+        autosomalGenes[80] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(3) + 1) : 1;
+//        autosomalGenes[81] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(3) + 1) : 1;
         autosomalGenes[81] = 1;
 
         //RED MARBLE GENES

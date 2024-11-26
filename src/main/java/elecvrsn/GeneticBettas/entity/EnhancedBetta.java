@@ -345,6 +345,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     private static final String[] TEXTURES_HYBRID_IRI = new String[]{
             "", "iri/hybrid_iri.png"
     };
+
+    private static final String[] TEXTURES_VANDA = new String[]{
+            "red/vanda/vanda_1.png", "red/vanda/vanda_2.png", "red/vanda/vanda_3.png", "red/vanda/vanda_4.png",
+            "red/vanda/vanda_high_1.png", "red/vanda/vanda_high_2.png", "red/vanda/vanda_high_3.png","red/vanda/vanda_high_4.png", "red/vanda/vanda_high_5.png", "red/vanda/vanda_high_6.png", "red/vanda/vanda_high_7.png"
+    };
     private boolean resetTexture = true;
 
     @OnlyIn(Dist.CLIENT)
@@ -548,6 +553,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             int marbleBloodredQual = 0;
             int marbleBloodredSize = 0;
             int marbleBloodredRand = 0;
+            boolean vanda = false;
+            int vandaLevel = 0;
             boolean dumbo = false;
             boolean isMale = !getOrSetIsFemale();
             boolean bloodred = false;
@@ -984,6 +991,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             }
 
             if (gene[80] == 2 || gene[81] == 2) {
+                //Marble
                 if (babyColors) {
                     //Set all babies to quality 1 without setting size, so they defualt to transparent for babies
                     marbleRedQual=1;
@@ -1179,6 +1187,23 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                         marbleOpaqueRand += uuidArry[7] % (marbleOpaqueQual > 2 ? 10 : 5);
                     }
                 }
+            } else if (gene[80] == 3 || gene[81] == 3) {
+                //Vanda
+                vanda = true;
+                //Size
+                int vandaSizeMod = 0;
+                for (int i = 110; i < 114; i++) {
+                    if (gene[i] == 2) {
+                        vandaSizeMod--;
+                    }
+                }
+                for (int i = 114; i < 120; i++) {
+                    if (gene[i] == 2) {
+                        vandaSizeMod++;
+                    }
+                }
+                if (vandaSizeMod > 0) vandaLevel = 4;
+                vandaLevel += uuidArry[5] % (vandaSizeMod > 0 ? 7 : 4);
             }
 
             // Fine Red Rufousing Genes
@@ -1353,7 +1378,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             if (bloodred) {
                 // Bloodred pigment also adds opacity
                 TextureGrouping finBloodredPigmentGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
-                addTextureToAnimalTextureGrouping(finBloodredPigmentGroup, TEXTURES_MARBLE, marbleBloodredQual, marbleBloodredSize, marbleBloodredRand, true);
+                if (vanda) {
+                    addTextureToAnimalTextureGrouping(finBloodredPigmentGroup, TEXTURES_VANDA, vandaLevel, true);
+                }
+                else {
+                    addTextureToAnimalTextureGrouping(finBloodredPigmentGroup, TEXTURES_MARBLE, marbleBloodredQual, marbleBloodredSize, marbleBloodredRand, true);
+                }
                 addTextureToAnimalTextureGrouping(finBloodredPigmentGroup, TEXTURES_RED_FIN, fins, doubletail, finBloodred, finBloodred != 0);
                 addTextureToAnimalTextureGrouping(finBloodredPigmentGroup, TEXTURES_RED_BODY, bodyBloodred, l -> l != 0);
                 finPigmentGroup.addGrouping(finBloodredPigmentGroup);
@@ -1427,7 +1457,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 addTextureToAnimalTextureGrouping(bloodredMaskGroup, TEXTURES_RED_FIN, fins, doubletail, finBloodred, finBloodred != 0);
                 bloodredGroup.addGrouping(bloodredMaskGroup);
                 TextureGrouping bloodredColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(bloodredColorGroup, UpdatedTexturingType.APPLY_RGB, TEXTURES_MARBLE[marbleBloodredQual][marbleBloodredSize][marbleBloodredRand], "br", bloodredRGB);
+                if (vanda) {
+                    ((IMixinEnhancedAnimalAbstract) this).betta$addTextureToAnimalTextureGrouping(bloodredColorGroup, UpdatedTexturingType.APPLY_RGB, TEXTURES_VANDA[vandaLevel], "br", bloodredRGB);
+                } else {
+                    ((IMixinEnhancedAnimalAbstract) this).betta$addTextureToAnimalTextureGrouping(bloodredColorGroup, UpdatedTexturingType.APPLY_RGB, TEXTURES_MARBLE[marbleBloodredQual][marbleBloodredSize][marbleBloodredRand], "br", bloodredRGB);
+                }
                 bloodredGroup.addGrouping(bloodredColorGroup);
                 pigmentGroup.addGrouping(bloodredGroup);
             }
