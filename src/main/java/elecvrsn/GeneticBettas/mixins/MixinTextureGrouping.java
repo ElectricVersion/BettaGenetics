@@ -46,14 +46,11 @@ public abstract class MixinTextureGrouping {
     public NativeImage betta$applyGroupMerging(List<NativeImage> groupImages, Colouration colouration) {
         if (!groupImages.isEmpty()) {
             if (betta$updatedTexturingType != UpdatedTexturingType.NONE && betta$updatedTexturingType != null) {
-                NativeImage baseImage = (NativeImage)groupImages.remove(0);
+                NativeImage baseImage = groupImages.remove(0);
                 switch (this.betta$updatedTexturingType) {
-                    case MASK_GROUP:
-                        this.maskAlpha(baseImage, groupImages);
-                        break;
-                    case CUTOUT_GROUP:
-                        this.cutoutTextures(baseImage, groupImages);
-                        break;
+                    case MASK_GROUP -> this.maskAlpha(baseImage, groupImages);
+                    case INTERSECT_GROUP -> this.intersectAlpha(baseImage, groupImages);
+                    case CUTOUT_GROUP -> this.cutoutTextures(baseImage, groupImages);
                 }
                 return baseImage;
             } else {
@@ -89,6 +86,15 @@ public abstract class MixinTextureGrouping {
                 for (int j = 0; j < w; j++) {
                     UpdatedTextureGrouping.cutoutAlpha(j, i, cutoutImage, image);
                 }
+            }
+        }
+    }
+
+    @Unique
+    protected void intersectAlpha(NativeImage colorImage, List<NativeImage> groupImages) {
+        if (!groupImages.isEmpty()) {
+            for (NativeImage groupImage : groupImages) {
+                applyAlphaMaskBlend(colorImage, groupImage);
             }
         }
     }

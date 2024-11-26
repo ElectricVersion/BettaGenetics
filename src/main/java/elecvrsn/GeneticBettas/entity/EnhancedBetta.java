@@ -341,6 +341,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     {"", "iri/rim/plakat_double_low.png", "iri/rim/plakat_double_med.png", "iri/rim/plakat_double_high.png", "iri/rim/plakat_double_max.png"},
             },
     };
+
+    private static final String[] TEXTURES_HYBRID_IRI = new String[]{
+            "", "iri/hybrid_iri.png"
+    };
     private boolean resetTexture = true;
 
     @OnlyIn(Dist.CLIENT)
@@ -551,6 +555,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             int finBloodred = 4;
             int bodyBloodred = 2;
             int dragonscale = 0;
+            int hybridIri = 0;
 
             /*** COLORATION ***/
             float[] melanin = {0.0427F, 0.527F, 0.251F};
@@ -916,6 +921,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 }
             }
 
+            //Hybrid Iridescence
+            if (gene[236] == 2 || gene[237] == 2) {
+                hybridIri = 1;
+            }
+
             if (gene[152] == 2 || gene[153] == 2) {
                 bloodred = true;
             }
@@ -1270,17 +1280,20 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             /*** TEXTURES ***/
 
+            //TODO: Optimize this all using INTERSECT_GROUP
             TextureGrouping iriAlphaGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
 
-            TextureGrouping iriOpacityAlphaGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
+            TextureGrouping iriAlphaIntersectGroup = new UpdatedTextureGrouping(UpdatedTexturingType.INTERSECT_GROUP);
             if (dragonscale > 0) {
-                addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_ALPHA, 4, true);
+                addTextureToAnimalTextureGrouping(iriAlphaIntersectGroup, TEXTURES_ALPHA, 4, true);
             }
             else {
-                addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, true);
-                addTextureToAnimalTextureGrouping(iriOpacityAlphaGroup, TEXTURES_ALPHA, iriIntensity, true);
+                addTextureToAnimalTextureGrouping(iriAlphaIntersectGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, true);
+                addTextureToAnimalTextureGrouping(iriAlphaIntersectGroup, TEXTURES_ALPHA, iriIntensity, true);
             }
-            iriAlphaGroup.addGrouping(iriOpacityAlphaGroup);
+            //Funky hybrid iridescence markings
+            addTextureToAnimalTextureGrouping(iriAlphaIntersectGroup, TEXTURES_HYBRID_IRI, hybridIri, l -> l!=0);
+            iriAlphaGroup.addGrouping(iriAlphaIntersectGroup);
 
             if (bodyIri != 0) {
                 TextureGrouping iriMaskAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
