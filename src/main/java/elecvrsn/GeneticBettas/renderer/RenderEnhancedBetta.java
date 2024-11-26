@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraftforge.api.distmarker.Dist;
@@ -107,32 +108,12 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
         this.model.setupAnim(betta, f5, f8, f7, f2, f6);
         Minecraft minecraft = Minecraft.getInstance();
         boolean flag = this.isBodyVisible(betta);
-        boolean flag1 = !flag && !betta.isInvisibleTo(minecraft.player);
-        boolean flag2 = minecraft.shouldEntityAppearGlowing(betta);
         RenderType mainRenderType = this.model.renderType(this.getTextureLocation(betta));
-//        RenderType translucentRenderType = this.model.renderType(this.getEyeAndFinLocation(betta));
-//        if (mainRenderType != null) {
-            //Normal
-//            int fullLight = (15 << 20) | (15 << 4);
-            VertexConsumer vertexConsumer = multiBufferSource.getBuffer(mainRenderType);
-            int i1 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
-            this.model.renderToBuffer(poseStack, vertexConsumer, packedLightIn, i1, 1.0F, 1.0F, 1.0F, 1.0F);
-            VertexConsumer translucentVertexConsumer = multiBufferSource.getBuffer(RenderType.entityTranslucent(this.getEyeAndFinLocation(betta)));
-//            int i2 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
-            this.model.renderToBuffer(poseStack, translucentVertexConsumer, packedLightIn, i1, 1.0F, 1.0F, 1.0F, 1.0F);
-
-        //Iridescence
-            /*int blockLight = (packedLightIn & 0xFFFF) >> 4;
-            int torchLight = (packedLightIn >> 20) & 0xFFFF;
-            blockLight = Math.min(15, blockLight+2);
-            torchLight = Math.min(15, torchLight+2);
-            int repackedLight = (torchLight << 20) | (blockLight << 4);
-            VertexConsumer iriVertexConsumer = multiBufferSource.getBuffer(RenderType.entityTranslucent(this.getIriLocation(betta)));
-            int i3 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
-//            poseStack.scale(1.001F, 1.001F, 1.001F);
-//            poseStack.translate(0.0025F, 0.0F, 0.0F);
-            this.model.renderToBuffer(poseStack, iriVertexConsumer, repackedLight, i1, 1.0F, 1.0F, 1.0F, 1.0F);
-//        }*/
+        VertexConsumer vertexConsumer = multiBufferSource.getBuffer(mainRenderType);
+        int i1 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
+        this.model.renderToBuffer(poseStack, vertexConsumer, packedLightIn, i1, 1.0F, 1.0F, 1.0F, 1.0F);
+        VertexConsumer translucentVertexConsumer = multiBufferSource.getBuffer(RenderType.entityTranslucent(this.getEyeAndFinLocation(betta)));
+        this.model.renderToBuffer(poseStack, translucentVertexConsumer, packedLightIn, i1, 1.0F, 1.0F, 1.0F, 1.0F);
 
         if (!betta.isSpectator()) {
             for(RenderLayer<EnhancedBetta, ModelEnhancedBetta<EnhancedBetta>> renderlayer : this.layers) {
@@ -148,7 +129,11 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
         if (renderNameplateEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameplateEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(betta))) {
             this.renderNameTag(betta, renderNameplateEvent.getContent(), poseStack, multiBufferSource, packedLightIn);
         }
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post<EnhancedBetta, ModelEnhancedBetta<EnhancedBetta>>(betta, this, p_115310_, poseStack, multiBufferSource, packedLightIn));
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post<>(betta, this, p_115310_, poseStack, multiBufferSource, packedLightIn));
+        Entity entity = betta.getLeashHolder();
+        if (entity != null) {
+            this.renderLeash(betta, p_115310_, poseStack, multiBufferSource, entity);
+        }
     }
 
     public ResourceLocation getEyeAndFinLocation(EnhancedBetta entity) {

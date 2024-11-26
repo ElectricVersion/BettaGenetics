@@ -1830,7 +1830,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     public boolean hasEgg() {
-//        return this.entityData.get(HAS_EGG);
         return getBrain().hasMemoryValue(AddonMemoryModuleTypes.HAS_EGG.get());
     }
 
@@ -1840,8 +1839,19 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     public void setHasEgg(boolean hasEgg) {
-//        this.entityData.set(HAS_EGG, hasEgg);
-        this.getBrain().setMemory(AddonMemoryModuleTypes.HAS_EGG.get(), hasEgg ? Optional.of(true) : Optional.empty());
+        if (hasEgg) {
+            this.getBrain().setMemoryWithExpiry(AddonMemoryModuleTypes.HAS_EGG.get(), true, 500);
+            return;
+        }
+        this.getBrain().eraseMemory(AddonMemoryModuleTypes.HAS_EGG.get());
+    }
+
+    public void setMakingNest(boolean makingNest) {
+        if (makingNest) {
+            this.getBrain().setMemoryWithExpiry(AddonMemoryModuleTypes.MAKING_NEST.get(), true, 500);
+            return;
+        }
+        this.getBrain().eraseMemory(AddonMemoryModuleTypes.MAKING_NEST.get());
     }
 
     @Override
