@@ -42,34 +42,6 @@ public class TankGlassBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private final BlockState baseState;
 
-//    private static VoxelShape[] makeShapes(VoxelShape p_56934_, VoxelShape p_56935_, VoxelShape p_56936_, VoxelShape p_56937_, VoxelShape p_56938_) {
-//        return IntStream.range(0, 16).mapToObj((p_56945_) -> {
-//            return makeStairShape(p_56945_, p_56934_, p_56935_, p_56936_, p_56937_, p_56938_);
-//        }).toArray((p_56949_) -> {
-//            return new VoxelShape[p_56949_];
-//        });
-//    }
-
-    private static VoxelShape makeStairShape(int p_56865_, VoxelShape p_56866_, VoxelShape p_56867_, VoxelShape p_56868_, VoxelShape p_56869_, VoxelShape p_56870_) {
-        VoxelShape voxelshape = p_56866_;
-        if ((p_56865_ & 1) != 0) {
-            voxelshape = Shapes.or(p_56866_, p_56867_);
-        }
-
-        if ((p_56865_ & 2) != 0) {
-            voxelshape = Shapes.or(voxelshape, p_56868_);
-        }
-
-        if ((p_56865_ & 4) != 0) {
-            voxelshape = Shapes.or(voxelshape, p_56869_);
-        }
-
-        if ((p_56865_ & 8) != 0) {
-            voxelshape = Shapes.or(voxelshape, p_56870_);
-        }
-
-        return voxelshape;
-    }
 
     public TankGlassBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -125,7 +97,6 @@ public class TankGlassBlock extends Block implements SimpleWaterloggedBlock {
         };
 
     }
-
 
     public void onPlace(BlockState p_56961_, Level p_56962_, BlockPos p_56963_, BlockState p_56964_, boolean p_56965_) {
         if (!p_56961_.is(p_56961_.getBlock())) {

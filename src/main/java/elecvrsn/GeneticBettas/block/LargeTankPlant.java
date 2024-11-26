@@ -41,9 +41,14 @@ public class LargeTankPlant extends DoublePlantBlock implements BonemealableBloc
         return SHAPE;
     }
 
-    protected boolean mayPlaceOn(BlockState p_154636_, BlockGetter p_154637_, BlockPos p_154638_) {
-        return p_154636_.is(BlockTags.SMALL_DRIPLEAF_PLACEABLE) || p_154637_.getFluidState(p_154638_.above()).isSourceOfType(Fluids.WATER) && super.mayPlaceOn(p_154636_, p_154637_, p_154638_);
+    protected boolean mayPlaceOn(BlockState state, BlockGetter p_154637_, BlockPos p_154638_) {
+        return p_154637_.getFluidState(p_154638_.above()).isSourceOfType(Fluids.WATER) && isGroundPlaceable(state);
     }
+
+    private boolean isGroundPlaceable(BlockState state) {
+        return state.is(BlockTags.DIRT) || state.is(BlockTags.SAND) || state.is(Blocks.GRAVEL) || state.is(Blocks.FARMLAND);
+    }
+
 
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext p_154592_) {

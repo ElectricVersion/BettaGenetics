@@ -11,10 +11,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -43,7 +40,11 @@ public class SmallTankPlant extends BushBlock implements BonemealableBlock, Simp
     }
 
     protected boolean mayPlaceOn(BlockState state, BlockGetter getter, BlockPos pos) {
-        return state.is(BlockTags.SMALL_DRIPLEAF_PLACEABLE) || getter.getFluidState(pos.above()).isSourceOfType(Fluids.WATER) && super.mayPlaceOn(state, getter, pos);
+        return getter.getFluidState(pos.above()).isSourceOfType(Fluids.WATER) && isGroundPlaceable(state);
+    }
+
+    private boolean isGroundPlaceable(BlockState state) {
+        return state.is(BlockTags.DIRT) || state.is(BlockTags.SAND) || state.is(Blocks.GRAVEL) || state.is(Blocks.FARMLAND);
     }
 
     public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
