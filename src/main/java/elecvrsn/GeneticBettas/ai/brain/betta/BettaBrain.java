@@ -169,7 +169,7 @@ public class BettaBrain  {
                 Pair.of(1, new BettaMakeLove(AddonEntities.ENHANCED_BETTA.get(), SPEED_MULTIPLIER_WHEN_MAKING_LOVE)),
                 Pair.of(1, new RunIf<>(EnhancedBetta::isAnimalSleeping, new FindPlaceToSleep())),
                 Pair.of(2, new RunOne<>(ImmutableList.of(
-                        Pair.of(new FollowTemptation(BettaBrain::getSpeedModifier), 1),
+                        Pair.of(new BettaFollowTemptation(BettaBrain::getSpeedModifier), 1),
                         Pair.of(new BabyFollowAdult<>(ADULT_FOLLOW_RANGE, BettaBrain::getSpeedModifierFollowingAdult), 1)))
                 ),
                 Pair.of(2, new RunSometimes<>(new StopAndLookIfNearWalkTarget(), UniformInt.of(10, 40))),
