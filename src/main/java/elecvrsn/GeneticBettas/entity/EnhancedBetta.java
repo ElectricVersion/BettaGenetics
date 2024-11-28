@@ -884,7 +884,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             if (gene[14] == 2 && gene[15] == 2) {
                 //Blonde
                 melanin[1] -= 0.1F;
-                melanin[2] += 0.2F;
+                melanin[2] += 0.1F;
                 pheomelanin[1] -= 0.3F;
                 pheomelanin[2] += 0.2F;
                 bloodredColor[1] -= 0.3F;
