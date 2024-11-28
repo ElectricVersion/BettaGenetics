@@ -5,13 +5,14 @@ import elecvrsn.GeneticBettas.block.entity.BubbleNestBlockEntity;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
-import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
+
+import java.util.UUID;
 
 import static net.minecraft.sounds.SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT;
 import static net.minecraft.world.level.block.Blocks.WATER;
@@ -35,6 +36,14 @@ public class MakeBubbleNest extends Behavior<EnhancedBetta> {
             serverLevel.setBlock(nestPos, AddonBlocks.BUBBLE_NEST.get().defaultBlockState(), 2);
             if (serverLevel.getBlockEntity(nestPos) != null && serverLevel.getBlockEntity(nestPos) instanceof BubbleNestBlockEntity) {
                 ((BubbleNestBlockEntity) serverLevel.getBlockEntity(nestPos)).setPlacementTime(gameTime);
+            }
+            //Broadcast the nest position to the mate if she hasn't already reached a nest
+            UUID mateUUID = enhancedBetta.getBrain().getMemory(AddonMemoryModuleTypes.LAST_MATE.get()).orElse(null);
+            Entity mate = null;
+            if (mateUUID != null && (mate = serverLevel.getEntity(mateUUID)) instanceof EnhancedBetta) {
+                if (((EnhancedBetta)mate).getNestPos() == null || nestPos.distToCenterSqr(((EnhancedBetta)mate).position()) > 1.5F ) {
+                    ((EnhancedBetta)mate).setNestPos(nestPos);
+                }
             }
             enhancedBetta.setNestPos(null);
             enhancedBetta.getBrain().eraseMemory(AddonMemoryModuleTypes.MAKING_NEST.get());

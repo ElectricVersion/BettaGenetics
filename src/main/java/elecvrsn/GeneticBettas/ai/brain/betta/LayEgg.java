@@ -30,9 +30,8 @@ import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA_EGG;
 
 public class LayEgg extends Behavior<EnhancedBetta> {
     private int eggLayingTimer = -1;
-//    private long startTime = -1;
-    private BlockPos existingNest;
 
+    BlockPos nestPos = null;
     public LayEgg() {
         //Condition, Min Duration, Max Duration
         super(ImmutableMap.of(
@@ -43,25 +42,23 @@ public class LayEgg extends Behavior<EnhancedBetta> {
     }
 
     public void tick(ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {
-        if (existingNest == null) {
-            if ((existingNest = betta.findExistingNest()) != null) {
-                WalkTarget walkTarget = new WalkTarget(existingNest, 0.45F, 0);
-                betta.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new BlockPosTracker(existingNest));
+        if (nestPos != betta.getNestPos()) {
+            nestPos = betta.getNestPos();
+            if (nestPos == null) {
+                nestPos = betta.setNestPos(betta.findExistingNest());
+            }
+            if (nestPos != null) {
+                WalkTarget walkTarget = new WalkTarget(nestPos, 0.45F, 0);
+                betta.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new BlockPosTracker(nestPos));
                 betta.getBrain().setMemory(MemoryModuleType.WALK_TARGET, walkTarget);
             }
-//            else if (gameTime > startTime+100){
-//                //If there's no existing nest nearby then just end the pregnancy I guess until I think of a better solution
-//                betta.setHasEgg(false);
-//                betta.getBrain().eraseMemory(AddonMemoryModuleTypes.HAS_EGG.get());
-//                return;
-//            }
         }
-        if (existingNest != null) {
-            if (existingNest.closerToCenterThan(betta.position(), 0.5F)) {
+        if (nestPos != null) {
+            if (nestPos.closerToCenterThan(betta.position(), 0.5F)) {
 //                betta.setPos(new Vec3(existingNest.getX()+0.5, existingNest.getY()+0.5, existingNest.getZ()+0.5));
             }
-            else if (existingNest.closerToCenterThan(betta.position(), 1.5F)) {
-                betta.setPos(EnhancedBetta.moveCloser(betta.position(), new Vec3(existingNest.getX()+0.5, existingNest.getY()+0.4, existingNest.getZ()+0.5), 0.01));
+            else if (nestPos.closerToCenterThan(betta.position(), 1.5F)) {
+                betta.setPos(EnhancedBetta.moveCloser(betta.position(), new Vec3(nestPos.getX()+0.5, nestPos.getY()+0.4, nestPos.getZ()+0.5), 0.01));
             }
         }
         BlockPos blockPos = betta.blockPosition();
@@ -87,7 +84,7 @@ public class LayEgg extends Behavior<EnhancedBetta> {
                     egg.moveTo(pos.getX()+0.125D+(ThreadLocalRandom.current().nextFloat()*0.75F), betta.getY(), pos.getZ()+0.125D+(ThreadLocalRandom.current().nextFloat()*0.75F), ThreadLocalRandom.current().nextInt(4)* (Mth.HALF_PI*0.5F), 0.0F);
                     level.addFreshEntity(egg);
                     // Refresh the placement time of the nest, so it doesn't break until all eggs hatch
-                    BlockEntity blockEntity = level.getBlockEntity(existingNest);
+                    BlockEntity blockEntity = level.getBlockEntity(blockPos);
                     if (blockEntity instanceof BubbleNestBlockEntity) {
                         ((BubbleNestBlockEntity)blockEntity).setPlacementTime(gameTime);
                     }
@@ -110,19 +107,21 @@ public class LayEgg extends Behavior<EnhancedBetta> {
             eggLayingTimer = -1;
             betta.setMateName("???"); //Reset mate name
             betta.getBrain().eraseMemory(AddonMemoryModuleTypes.HAS_EGG.get());
+            betta.setNestPos(null);
         }
     }
 
     @Override
     protected void stop(ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {
-        existingNest = null;
         betta.setHasEgg(false);
+        betta.setNestPos(null);
     }
 
     @Override
     protected void start(ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {
-        existingNest = null;
+        nestPos = null;
     }
+
     protected boolean canStillUse(ServerLevel p_23586_, EnhancedBetta betta, long p_23588_) {
         return betta.getBrain().hasMemoryValue(AddonMemoryModuleTypes.HAS_EGG.get());
     }

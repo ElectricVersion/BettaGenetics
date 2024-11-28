@@ -2,7 +2,6 @@ package elecvrsn.GeneticBettas.ai.brain.betta;
 
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
-import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.behavior.AnimalMakeLove;
@@ -29,9 +28,11 @@ public class BettaMakeLove extends AnimalMakeLove {
         if (mate != null) {
             if (betta.getOrSetIsFemale() && !mate.getOrSetIsFemale()) {
                 mate.setMakingNest(true);
+                mate.getBrain().setMemory(AddonMemoryModuleTypes.LAST_MATE.get(), betta.getUUID());
                 betta.setHasEgg(true);
             } else if (!betta.getOrSetIsFemale() && mate.getOrSetIsFemale()) {
                 betta.setMakingNest(true);
+                betta.getBrain().setMemory(AddonMemoryModuleTypes.LAST_MATE.get(), mate.getUUID());
                 mate.setHasEgg(true);
             }
         }

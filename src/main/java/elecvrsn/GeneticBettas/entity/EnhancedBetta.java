@@ -81,7 +81,17 @@ import static net.minecraft.world.level.block.Blocks.WATER;
 public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable {
     public static String speciesTranslationKey = "entity.geneticbettas.enhanced_betta";
     protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, AddonSensorTypes.BETTA_ATTACKABLES.get(), AddonSensorTypes.BETTA_TRUSTABLES.get(), AddonSensorTypes.BETTA_FOOD_TEMPTATIONS.get());
-    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(AddonMemoryModuleTypes.SLEEPING.get(), AddonMemoryModuleTypes.PAUSE_BRAIN.get(), AddonMemoryModuleTypes.FOCUS_BRAIN.get(), MemoryModuleType.BREED_TARGET, AddonMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, AddonMemoryModuleTypes.NEAREST_TRUSTABLE.get(), AddonMemoryModuleTypes.TRUSTED_BETTAS.get(), MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN, AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), AddonMemoryModuleTypes.MAKING_NEST.get(), AddonMemoryModuleTypes.IS_ATTACK_NIP.get(), AddonMemoryModuleTypes.NEST_POS.get());
+    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(
+            AddonMemoryModuleTypes.SLEEPING.get(), AddonMemoryModuleTypes.PAUSE_BRAIN.get(), AddonMemoryModuleTypes.FOCUS_BRAIN.get(),
+            MemoryModuleType.BREED_TARGET, AddonMemoryModuleTypes.HAS_EGG.get(), MemoryModuleType.NEAREST_LIVING_ENTITIES,
+            MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER,
+            MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
+            MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT,
+            MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, AddonMemoryModuleTypes.NEAREST_TRUSTABLE.get(),
+            AddonMemoryModuleTypes.TRUSTED_BETTAS.get(), MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS,
+            MemoryModuleType.IS_TEMPTED, MemoryModuleType.HAS_HUNTING_COOLDOWN, AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(),
+            AddonMemoryModuleTypes.MAKING_NEST.get(), AddonMemoryModuleTypes.IS_ATTACK_NIP.get(), AddonMemoryModuleTypes.NEST_POS.get(),
+            AddonMemoryModuleTypes.LAST_MATE.get());
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
 
@@ -1960,8 +1970,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return this.entityData.get(IS_ANGRY);
     }
 
-    public void setNestPos(BlockPos position) {
+    public BlockPos setNestPos(BlockPos position) {
         this.getBrain().setMemory(AddonMemoryModuleTypes.NEST_POS.get(), position);
+        return position;
     }
 
     public BlockPos getNestPos() {
@@ -2006,7 +2017,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         int maxSearchHeight = 8;
         int maxSearchWidth = 1;
 
-        for (int y = 0; y < maxSearchHeight; y++) {
+        for (int y = level.isWaterAt(baseBlockPos) ? 0 : -1; y < maxSearchHeight; y++) {
             for (int x = -maxSearchWidth; x < maxSearchWidth; x++) {
                 for (int z = -maxSearchWidth; z < maxSearchWidth; z++) {
                     if (x == 0 && z == 0) continue; //Minecraft seems to be unable to pathfnd directly upwards.

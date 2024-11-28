@@ -15,12 +15,12 @@ public class ValidatePath {
         if (eaa.level instanceof ServerLevel serverLevel) {
             Path path = eaa.getNavigation().createPath(destination, 0, nodeSearchLimit);
 
-            return path != null && !path.isDone() && path.getNodeCount() > 0 && isPathReachable(serverLevel, path, destination);
+            return path != null && !path.isDone() && path.getNodeCount() > 0 && isWaterPathReachable(serverLevel, path, destination);
         }
         return false;
     }
 
-    private static boolean isPathReachable(ServerLevel serverLevel, Path path, BlockPos destination) {
+    private static boolean isWaterPathReachable(ServerLevel serverLevel, Path path, BlockPos destination) {
         if (path.getEndNode() != null) {
             BlockPos finalPathPoint = path.getEndNode().asBlockPos();
 
@@ -31,7 +31,7 @@ public class ValidatePath {
             BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
             for (int i = 0; i < path.getNodeCount(); i++) {
                 mutablePos.set(path.getNode(i).asBlockPos());
-                if (!isPathfindable(serverLevel.getBlockState(mutablePos), serverLevel, mutablePos, PathComputationType.LAND)) {
+                if (!isPathfindable(serverLevel.getBlockState(mutablePos), serverLevel, mutablePos, PathComputationType.WATER)) {
                     return false;
                 }
             }
