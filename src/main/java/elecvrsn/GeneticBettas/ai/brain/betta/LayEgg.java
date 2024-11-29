@@ -42,9 +42,10 @@ public class LayEgg extends Behavior<EnhancedBetta> {
     }
 
     public void tick(ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {
-        if (nestPos != betta.getNestPos()) {
+        if (nestPos != betta.getNestPos() || nestPos == null) {
             nestPos = betta.getNestPos();
             if (nestPos == null) {
+                // TODO: Make this not run every tick if it fails
                 nestPos = betta.setNestPos(betta.findExistingNest());
             }
             if (nestPos != null) {

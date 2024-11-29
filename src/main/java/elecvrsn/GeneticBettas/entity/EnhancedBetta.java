@@ -1408,9 +1408,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             finTransparencyGroup.addGrouping(finPigmentGroup);
             finAlphaGroup.addGrouping(finTransparencyGroup);
             transAlphaGroup.addGrouping(finAlphaGroup);
-            TextureGrouping eyeAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(eyeAlphaGroup, "mask/eyes.png", true);
-            transAlphaGroup.addGrouping(eyeAlphaGroup);
             transRootGroup.addGrouping(transAlphaGroup);
 
             TextureGrouping rootGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
