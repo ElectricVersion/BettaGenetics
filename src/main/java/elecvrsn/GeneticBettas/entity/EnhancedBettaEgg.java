@@ -2,7 +2,7 @@ package elecvrsn.GeneticBettas.entity;
 
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
-import mokiyoki.enhancedanimals.config.EanimodCommonConfig;
+import mokiyoki.enhancedanimals.config.GeneticAnimalsConfig;
 import mokiyoki.enhancedanimals.util.Genes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -261,7 +261,7 @@ public class EnhancedBettaEgg extends Entity {
         this.getEntityData().set(SIRE, compound.getString("SireName"));
         this.getEntityData().set(DAM, compound.getString("DamName"));
         this.hasParents = compound.getBoolean("hasParents");
-        this.setHatchTime(compound.contains("HatchTime") ? compound.getInt("HatchTime") : EanimodCommonConfig.COMMON.axolotlHatchTime.get());
+        this.setHatchTime(compound.contains("HatchTime") ? compound.getInt("HatchTime") : GeneticAnimalsConfig.COMMON.axolotlHatchTime.get());
     }
 
     @Override

@@ -11,7 +11,7 @@ import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import elecvrsn.GeneticBettas.mixins.IMixinFoodSerialiser;
 import elecvrsn.GeneticBettas.model.modeldata.BettaModelData;
 import elecvrsn.GeneticBettas.util.AddonReference;
-import mokiyoki.enhancedanimals.config.EanimodCommonConfig;
+import mokiyoki.enhancedanimals.config.GeneticAnimalsConfig;
 import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
 import mokiyoki.enhancedanimals.entity.EntityState;
 import mokiyoki.enhancedanimals.entity.util.Colouration;
@@ -379,6 +379,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             return genes;
         }
         return this.genesSplitForClient;
+    }
+
+    @Override
+    protected void fixGeneLengths() {
     }
 
     public Genes getGenes() {
@@ -2102,7 +2106,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     protected void handlePartnerBreeding(AgeableMob ageable) {
-        if (EanimodCommonConfig.COMMON.omnigenders.get()) {
+        if (GeneticAnimalsConfig.COMMON.omnigenders.get()) {
             this.mateGenetics = ((EnhancedBetta) ageable).getGenes();
             this.setHasEgg(true);
             this.setMateGender(((EnhancedBetta) ageable).getOrSetIsFemale());
