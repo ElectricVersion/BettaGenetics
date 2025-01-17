@@ -2,6 +2,7 @@ package elecvrsn.GeneticBettas.items;
 
 import elecvrsn.GeneticBettas.block.DisplayTankBlock;
 import elecvrsn.GeneticBettas.block.FilledDisplayTankBlock;
+import elecvrsn.GeneticBettas.block.entity.FilledDisplayTankBlockEntity;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import mokiyoki.enhancedanimals.util.Genes;
@@ -203,7 +204,9 @@ public class EnhancedBettaBucket extends MobBucketItem {
         //If we're starting with an empty tank, consume the water for filling it. Otherwise you get to keep the water
         Item successItemStack = level.getBlockState(blockPos).is(AddonBlocks.DISPLAY_TANK.get()) ? Items.BUCKET : Items.WATER_BUCKET;
         BlockState blockState = DisplayTankBlock.fill(level.getBlockState(blockPos), level, blockPos);
-        if (blockState.is(AddonBlocks.FILLED_DISPLAY_TANK.get())) {
+        if (blockState.is(AddonBlocks.FILLED_DISPLAY_TANK.get()) &&
+                level.getBlockEntity(blockPos) instanceof FilledDisplayTankBlockEntity &&
+                !((FilledDisplayTankBlockEntity)level.getBlockEntity(blockPos)).hasEntityTag()) {
             FilledDisplayTankBlock.fillWithEntityTag(level, blockPos, blockState, context.getItemInHand());
             if (player != null) {
                 //Since we're filling a tank with water already in it, we want to keep the water in the bucket

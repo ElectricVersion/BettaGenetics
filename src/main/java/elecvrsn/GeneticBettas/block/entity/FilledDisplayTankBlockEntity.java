@@ -25,6 +25,10 @@ public class FilledDisplayTankBlockEntity extends BlockEntity {
         return displayEntity;
     }
 
+    public boolean hasEntityTag() {
+        return entityTag != null;
+    }
+
     public void setDisplayEntityTag(CompoundTag nbtData) {
         entityTag = nbtData;
         if (entityTag == null) displayEntity = null;
