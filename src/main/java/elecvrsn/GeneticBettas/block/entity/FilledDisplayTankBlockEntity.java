@@ -41,7 +41,8 @@ public class FilledDisplayTankBlockEntity extends BlockEntity {
             displayEntity = null;
         }
         if (level != null) {
-            level.setBlocksDirty(getBlockPos(), getBlockState(), getBlockState());
+            setChanged();
+            level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
         }
     }
 
