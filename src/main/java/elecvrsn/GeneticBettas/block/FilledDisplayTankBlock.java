@@ -70,25 +70,25 @@ public class FilledDisplayTankBlock extends BaseEntityBlock {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() == Items.WATER_BUCKET || stack.getItem() == Items.BUCKET) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof FilledDisplayTankBlockEntity)  {
-                if (((FilledDisplayTankBlockEntity)blockEntity).getOrCreateDisplayEntity(level) != null) {
-                    boolean isEmptyBucket = stack.getItem() == Items.BUCKET;
-                    EnhancedBettaBucket.bucketMobPickupAllowEmpty(player, hand, ((FilledDisplayTankBlockEntity) blockEntity).getOrCreateDisplayEntity(level));
-                    ((FilledDisplayTankBlockEntity) blockEntity).setDisplayEntityTag(null);
-                    if (isEmptyBucket) {
-                        //If the bucket was empty we need to take the water as well as the fish
+            if (blockEntity instanceof FilledDisplayTankBlockEntity) {
+                    if (((FilledDisplayTankBlockEntity) blockEntity).hasEntityTag()) {
+                        boolean isEmptyBucket = stack.getItem() == Items.BUCKET;
+                        EnhancedBettaBucket.bucketMobPickupAllowEmpty(player, hand, ((FilledDisplayTankBlockEntity) blockEntity).getOrCreateDisplayEntity(level));
+                        ((FilledDisplayTankBlockEntity) blockEntity).setDisplayEntityTag(null);
+                        if (isEmptyBucket) {
+                            //If the bucket was empty we need to take the water as well as the fish
+                            level.setBlock(pos, AddonBlocks.DISPLAY_TANK.get().withPropertiesOf(state), 2);
+                        }
+                    } else if (stack.getItem() == Items.BUCKET) {
+                        //Even if there is no entity in the tank, we can at least take the water with an empty bucket
                         level.setBlock(pos, AddonBlocks.DISPLAY_TANK.get().withPropertiesOf(state), 2);
+                        player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.WATER_BUCKET)));
                     }
-                }
-                else if (stack.getItem() == Items.BUCKET) {
-                    //Even if there is no entity in the tank, we can at least take the water with an empty bucket
-                    level.setBlock(pos, AddonBlocks.DISPLAY_TANK.get().withPropertiesOf(state), 2);
-                    player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.WATER_BUCKET)));
-                }
+                if (!level.isClientSide()) level.sendBlockUpdated(pos, state, state, 2);
                 return InteractionResult.SUCCESS;
             }
         }
-        return InteractionResult.PASS;
+        return InteractionResult.FAIL;
     }
 
 }

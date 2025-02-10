@@ -10,42 +10,47 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
+import static net.minecraft.world.entity.Entity.RemovalReason.DISCARDED;
+
 public class FilledDisplayTankBlockEntity extends BlockEntity {
-    public EnhancedBetta displayEntity;
+    private EnhancedBetta displayEntity;
     private CompoundTag entityTag;
     public FilledDisplayTankBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(AddonBlocks.FILLED_DISPLAY_TANK_BLOCK_ENTITY.get(), blockPos, blockState);
     }
 
     public EnhancedBetta getOrCreateDisplayEntity(Level level) {
-        if (displayEntity == null && entityTag != null && !entityTag.isEmpty()) {
-            displayEntity = EnhancedBettaBucket.spawnBettaFromTag(level, entityTag, getBlockPos());
-            displayEntity.setInTank(true);
-        }
-        return displayEntity;
+            if (displayEntity == null && hasEntityTag()) {
+                displayEntity = EnhancedBettaBucket.spawnBettaFromTag(level, entityTag, getBlockPos());
+                displayEntity.setInTank(true);
+            } else if (displayEntity != null && !hasEntityTag()) {
+                displayEntity.remove(DISCARDED);
+                displayEntity = null;
+            }
+            return displayEntity;
     }
 
     public boolean hasEntityTag() {
-        return entityTag != null;
+        return entityTag != null && !entityTag.isEmpty();
     }
 
     public void setDisplayEntityTag(CompoundTag nbtData) {
         entityTag = nbtData;
-        if (entityTag == null) displayEntity = null;
+        if (!hasEntityTag() && level != null && level.isClientSide()) {
+            displayEntity.remove(DISCARDED);
+            displayEntity = null;
+        }
+        if (level != null) {
+            level.setBlocksDirty(getBlockPos(), getBlockState(), getBlockState());
+        }
     }
 
-    public CompoundTag getDisplayEntityTag() {
-        return entityTag;
-    }
-//
     @Override
     public void saveAdditional(CompoundTag compound) {
         super.saveAdditional(compound);
-
-        if (entityTag != null) {
-            compound.put("EntityData", entityTag);
-        }
+        compound.put("EntityData", hasEntityTag() ? entityTag : new CompoundTag());
     }
+
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
