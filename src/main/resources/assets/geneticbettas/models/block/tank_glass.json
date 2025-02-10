@@ -20,5 +20,26 @@
 				"down": {"uv": [7, 0, 8, 16], "texture": "#1"}
 			}
 		}
-	]
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [-8.25, -2, -2],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"translation": [-15.75, -2, -2],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"translation": [15, 0, 0]
+		},
+		"head": {
+			"rotation": [0, 90, 0],
+			"translation": [0, 0, -15]
+		},
+		"fixed": {
+			"rotation": [0, -90, 0],
+			"translation": [0, 0, 7]
+		}
+	}
 }
