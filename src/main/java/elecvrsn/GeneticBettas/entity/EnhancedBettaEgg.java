@@ -261,7 +261,7 @@ public class EnhancedBettaEgg extends Entity {
         this.getEntityData().set(SIRE, compound.getString("SireName"));
         this.getEntityData().set(DAM, compound.getString("DamName"));
         this.hasParents = compound.getBoolean("hasParents");
-        this.setHatchTime(compound.contains("HatchTime") ? compound.getInt("HatchTime") : GeneticAnimalsConfig.COMMON.axolotlHatchTime.get());
+        this.setHatchTime(compound.contains("HatchTime") ? compound.getInt("HatchTime") : BettasCommonConfig.COMMON.bettaHatchTime.get());
     }
 
     @Override
