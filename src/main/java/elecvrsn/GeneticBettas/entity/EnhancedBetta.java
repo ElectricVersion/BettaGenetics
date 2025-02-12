@@ -2140,28 +2140,28 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     protected void calcSpeed() {
-//        float speed = 1.0F;
-//        float speedMod = 0.0F;
-//        int[] genes = this.getGenes().getAutosomalGenes();
-//        if (genes[60] == 2 || genes[61] == 2) {
-//            //Halfmoon/Delta                  Halfmoon : Delta
-//            speedMod -= (genes[60] == genes[61]) ? 0.1F : 0.05F;
-//        }
-//        if (genes[58] == 2 || genes[59] == 2) {
-//            //LongTail
-//            speedMod -= 0.15F;
-//        }
-//
-//        if (getOrSetIsFemale()) {
-//            speedMod *= 0.25F;
-//        }
-//        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5*(speed + speedMod));
+        float speed = 1.0F;
+        float speedMod = 0.0F;
+        int[] genes = this.getGenes().getAutosomalGenes();
+        if (genes[60] == 2 || genes[61] == 2) {
+            //Halfmoon/Delta                  Halfmoon : Delta
+            speedMod -= (genes[60] == genes[61]) ? 0.1F : 0.05F;
+        }
+
+        if (getOrSetIsFemale()) {
+            speedMod *= 0.25F;
+        }
+        else if (genes[58] == 2 || genes[59] == 2) {
+            //LongTail only impacts speed of males
+            speedMod -= 0.15F;
+        }
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5*(speed + speedMod));
     }
 
     @Override
     public void setInitialDefaults() {
         super.setInitialDefaults();
-//        calcSpeed();
+        calcSpeed();
     }
 
     @Override
