@@ -234,7 +234,6 @@ public class EnhancedBettaEgg extends Entity {
         }
         betta.setSireName(this.getSire());
         betta.setDamName(this.getDam());
-        betta.initilizeAnimalSize();
         betta.setAge(-betta.getAdultAge());
         betta.setBirthTime(String.valueOf(level.getGameTime()));
         betta.initilizeAnimalSize();
@@ -243,6 +242,7 @@ public class EnhancedBettaEgg extends Entity {
             betta.setCustomName(this.getCustomName());
         }
         level.addFreshEntity(betta);
+        betta.setInitialDefaults();
         this.remove(RemovalReason.DISCARDED);
     }
 

@@ -423,30 +423,15 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     protected void initializeHealth(EnhancedAnimalAbstract animal, float health) {
-//        int[] genes = this.genetics.getAutosomalGenes();
-//        super.initializeHealth(animal, (health + 15F));
-        calcMaxHealth(true);
-    }
-
-    private float calcMaxHealth() {
         int[] genes = this.getGenes().getAutosomalGenes();
-        float health = 8F;
+        health = 8F;
         if (genes[62] == 2 && genes[63] == 2) {
             health -= 2F;
         }
         if (genes[172] == 2 && genes[173] == 2) {
             health -= 2F;
         }
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue((double) health);
-        return health;
-    }
-
-    private float calcMaxHealth(boolean setHealth) {
-        float health = calcMaxHealth();
-        if (setHealth) {
-            this.setHealth(health);
-        }
-        return health;
+        super.initializeHealth(animal, health);
     }
 
     @Override
@@ -1582,8 +1567,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         enhancedBetta.initilizeAnimalSize();
         enhancedBetta.setEntityStatus(EntityState.CHILD_STAGE_ONE.toString());
         enhancedBetta.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-        enhancedBetta.calcMaxHealth(true);
-        enhancedBetta.calcSpeed();
+        enhancedBetta.setInitialDefaults();
         return enhancedBetta;
     }
     @Override
@@ -1591,9 +1575,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         EnhancedBetta enhancedBetta = ENHANCED_BETTA.get().create(this.level);
         Genes babyGenes = new Genes(this.genetics).makeChild(this.getOrSetIsFemale(), this.mateGender, this.mateGenetics);
         defaultCreateAndSpawn(enhancedBetta, inWorld, babyGenes, -this.getAdultAge());
-        enhancedBetta.calcMaxHealth(true);
-        enhancedBetta.calcSpeed();
         this.level.addFreshEntity(enhancedBetta);
+        enhancedBetta.setInitialDefaults();
     }
 
     @Override
@@ -1916,9 +1899,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public void loadFromBucketTag(CompoundTag tag) {
         Bucketable.loadDefaultDataFromBucketTag(this, tag);
         this.setIsFemale(tag.getCompound("Genetics"));
+        this.setInitialDefaults();
         this.toggleReloadTexture();
-        calcMaxHealth(true);
-//        calcSpeed();
     }
 
     @Override
@@ -2179,7 +2161,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     @Override
     public void setInitialDefaults() {
         super.setInitialDefaults();
-        calcSpeed();
+//        calcSpeed();
     }
 
     @Override
