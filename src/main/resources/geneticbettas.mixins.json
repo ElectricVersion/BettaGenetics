@@ -5,7 +5,6 @@
   "package": "elecvrsn.GeneticBettas.mixins",
   "mixins": [
     "MixinTexturingUtils",
-    "MixinTextureGrouping",
-    "MixinTextureLayer"
+    "MixinTextureGrouping"
   ]
 }
