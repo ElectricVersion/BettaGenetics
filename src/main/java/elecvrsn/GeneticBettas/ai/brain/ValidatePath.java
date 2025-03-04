@@ -1,4 +1,4 @@
-package mokiyoki.enhancedanimals_backported.ai.brain;
+package elecvrsn.GeneticBettas.ai.brain;
 
 import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
 import net.minecraft.core.BlockPos;

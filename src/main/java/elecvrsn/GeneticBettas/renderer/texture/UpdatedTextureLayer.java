@@ -1,6 +1,5 @@
-package mokiyoki.enhancedanimals_backported.renderer.texture;
+package elecvrsn.GeneticBettas.renderer.texture;
 
-import elecvrsn.GeneticBettas.IMixinTextureGrouping;
 import elecvrsn.GeneticBettas.IMixinTextureLayer;
 import mokiyoki.enhancedanimals.renderer.texture.TextureLayer;
 

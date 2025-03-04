@@ -2,13 +2,11 @@ package elecvrsn.GeneticBettas.entity;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
-import elecvrsn.GeneticBettas.IMixinEnhancedAnimalAbstract;
 import elecvrsn.GeneticBettas.ai.brain.betta.BettaBrain;
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.entity.genetics.BettaGeneticsInitialiser;
 import elecvrsn.GeneticBettas.init.*;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
-import elecvrsn.GeneticBettas.mixins.IMixinFoodSerialiser;
 import elecvrsn.GeneticBettas.model.modeldata.BettaModelData;
 import elecvrsn.GeneticBettas.util.AddonReference;
 import mokiyoki.enhancedanimals.config.GeneticAnimalsConfig;
@@ -20,9 +18,9 @@ import mokiyoki.enhancedanimals.model.modeldata.AnimalModelData;
 import mokiyoki.enhancedanimals.renderer.texture.TextureGrouping;
 import mokiyoki.enhancedanimals.renderer.texture.TexturingType;
 import mokiyoki.enhancedanimals.util.Genes;
-import mokiyoki.enhancedanimals_backported.ai.brain.ValidatePath;
-import mokiyoki.enhancedanimals_backported.renderer.texture.UpdatedTextureGrouping;
-import mokiyoki.enhancedanimals_backported.renderer.texture.UpdatedTexturingType;
+import elecvrsn.GeneticBettas.ai.brain.ValidatePath;
+import elecvrsn.GeneticBettas.renderer.texture.UpdatedTextureGrouping;
+import elecvrsn.GeneticBettas.renderer.texture.UpdatedTexturingType;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -426,9 +424,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         int[] genes = this.getGenes().getAutosomalGenes();
         health = 8F;
         if (genes[62] == 2 && genes[63] == 2) {
+            //Homo doubletail decreases health
             health -= 2F;
         }
         if (genes[172] == 2 && genes[173] == 2) {
+            //Homo dragonscale decreases health
             health -= 2F;
         }
         super.initializeHealth(animal, health);
@@ -1305,7 +1305,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             /*** TEXTURES ***/
 
             //TODO: Optimize this all using INTERSECT_GROUP
-            TextureGrouping iriAlphaGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
+            TextureGrouping iriAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
 
             TextureGrouping iriAlphaIntersectGroup = new UpdatedTextureGrouping(UpdatedTexturingType.INTERSECT_GROUP);
             if (dragonscale > 0) {
@@ -1322,14 +1322,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             if (bodyIri != 0) {
                 TextureGrouping iriMaskAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 if (dragonscale > 0) {
-                    TextureGrouping iriBodyAndFinAlphaGroup = new UpdatedTextureGrouping(UpdatedTexturingType.CUTOUT_GROUP);
-                    ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, "iri/scale_overlay.png", true);
+                    TextureGrouping iriBodyAndFinAlphaGroup = new TextureGrouping(TexturingType.CUTOUT_GROUP);
+                    addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, "iri/scale_overlay.png", true);
                     addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_DRAGONSCALE, dragonscale, l -> l != 0);
                     addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_DRAGONSCALE_MASK, maskIri >= 4 ? 2 : 1, maskIri > 0);
                     iriMaskAlphaGroup.addGrouping(iriBodyAndFinAlphaGroup);
                 }
                 else {
-                    TextureGrouping iriBodyAndFinAlphaGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
+                    TextureGrouping iriBodyAndFinAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                     addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_BODY, bodyIri, l -> l != 0);
                     addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_MASK, maskIri, true);
                     iriMaskAlphaGroup.addGrouping(iriBodyAndFinAlphaGroup);
@@ -1341,11 +1341,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 iriAlphaGroup.addGrouping(iriMaskAlphaGroup);
             }
 
-            transRootGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
+            transRootGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             TextureGrouping transAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
 
-            TextureGrouping finAlphaGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
-            TextureGrouping finShapeGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
+            TextureGrouping finAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+            TextureGrouping finShapeGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             //Remove the pectoral fins from the fin shape texture via masking when dumbo is present.
             addTextureToAnimalTextureGrouping(finShapeGroup, TEXTURES_DUMBO_ALPHA, dumbo ? 1 : 0, true);
             addTextureToAnimalTextureGrouping(finShapeGroup, TEXTURES_FINS, fins, doubletail, crowntail, true);
@@ -1356,19 +1356,19 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 //            TextureGrouping finCutoutGroup = new TextureGrouping(butterfly != 0 ? UpdatedTexturingType.CUTOUT_GROUP : TexturingType.MERGE_GROUP);
             TextureGrouping finCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             if (butterfly != 0 ) {
-                new UpdatedTextureGrouping(UpdatedTexturingType.CUTOUT_GROUP);
+                new TextureGrouping(TexturingType.CUTOUT_GROUP);
             }
             if (finAlpha == 1 && butterfly != 0) {
                 // Cut butterfly out of black lace
                 //Laced Black and Butterfly
-                ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(finCutoutGroup, UpdatedTexturingType.APPLY_RGBA, TEXTURES_BUTTERFLY[fins][doubletail][butterfly], "bf-lb", (int) (32) << 24 );
+                addTextureToAnimalTextureGrouping(finCutoutGroup, TexturingType.APPLY_RGBA, TEXTURES_BUTTERFLY[fins][doubletail][butterfly], "bf-lb", (int) (32) << 24 );
             }
             addTextureToAnimalTextureGrouping(finCutoutGroup, TEXTURES_FIN_ALPHA, finAlpha, l -> true);
             finTransparencyGroup.addGrouping(finCutoutGroup);
 
             TextureGrouping finPigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             // Things in this group cancel out the effect of finCutoutGroup
-            TextureGrouping finRedPigmentGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
+            TextureGrouping finRedPigmentGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             // Red pigment adds opacity
             addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, true);
             addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_FIN, fins, doubletail, finRed, finRed != 0);
@@ -1376,7 +1376,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             finPigmentGroup.addGrouping(finRedPigmentGroup);
             if (bloodred) {
                 // Bloodred pigment also adds opacity
-                TextureGrouping finBloodredPigmentGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
+                TextureGrouping finBloodredPigmentGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                 if (vanda) {
                     addTextureToAnimalTextureGrouping(finBloodredPigmentGroup, TEXTURES_VANDA, vandaLevel, true);
                 }
@@ -1399,32 +1399,32 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             transAlphaGroup.addGrouping(finAlphaGroup);
             transRootGroup.addGrouping(transAlphaGroup);
 
-            TextureGrouping rootGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
+            TextureGrouping rootGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             TextureGrouping bodyAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(bodyAlphaGroup, "mask/body.png", true);
-            ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(bodyAlphaGroup, "mask/gills.png", true);
+            addTextureToAnimalTextureGrouping(bodyAlphaGroup, "mask/body.png", true);
+            addTextureToAnimalTextureGrouping(bodyAlphaGroup, "mask/gills.png", true);
             rootGroup.addGrouping(bodyAlphaGroup);
 
             TextureGrouping texturesGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             /** CELLOPHANE **/
             TextureGrouping cellophaneGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(cellophaneGroup, UpdatedTexturingType.APPLY_RGB, TEXTURES_FIN_ALPHA[finAlpha], "ce-f", cellophaneRGB);
-            ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(cellophaneGroup, UpdatedTexturingType.APPLY_RGB, "mask/body.png", "ce-b", cellophaneRGB);
-            ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(cellophaneGroup, UpdatedTexturingType.APPLY_RGB, "mask/gills.png", "ce-g", cellophaneRGB);
+            addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, TEXTURES_FIN_ALPHA[finAlpha], "ce-f", cellophaneRGB);
+            addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/body.png", "ce-b", cellophaneRGB);
+            addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/gills.png", "ce-g", cellophaneRGB);
             if (dumbo) {
-                ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(cellophaneGroup, UpdatedTexturingType.APPLY_RGB, TEXTURES_DUMBO[crowntail], "ce-dumbo", cellophaneRGB);
+                addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, TEXTURES_DUMBO[crowntail], "ce-dumbo", cellophaneRGB);
             }
             texturesGroup.addGrouping(cellophaneGroup);
             /** Everything that isn't cellophane **/
 //            TextureGrouping nonCellophaneGroup = new TextureGrouping(butterfly != 0 ? UpdatedTexturingType.CUTOUT_GROUP : TexturingType.MERGE_GROUP);
             TextureGrouping nonCellophaneGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             if (butterfly != 0) {
-                nonCellophaneGroup = new UpdatedTextureGrouping(UpdatedTexturingType.CUTOUT_GROUP);
+                nonCellophaneGroup = new TextureGrouping(TexturingType.CUTOUT_GROUP);
             }
             /** BUTTERFLY **/
             if (butterfly != 0) {
                 TextureGrouping butterflyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(butterflyGroup, "mask/dumbo.png", dumbo);
+                addTextureToAnimalTextureGrouping(butterflyGroup, "mask/dumbo.png", dumbo);
                 addTextureToAnimalTextureGrouping(butterflyGroup, TEXTURES_BUTTERFLY, fins, doubletail, butterfly, true);
                 nonCellophaneGroup.addGrouping(butterflyGroup);
             }
@@ -1434,7 +1434,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             addTextureToAnimalTextureGrouping(redGroup, TexturingType.APPLY_RED, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, true);
             pigmentGroup.addGrouping(redGroup);
             /** BLACK **/
-            TextureGrouping blackGroup = new UpdatedTextureGrouping(UpdatedTexturingType.CUTOUT_GROUP);
+            TextureGrouping blackGroup = new TextureGrouping(TexturingType.CUTOUT_GROUP);
             TextureGrouping blackCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             //Cut the red layer out of the black
             addTextureToAnimalTextureGrouping(blackCutoutGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
@@ -1447,26 +1447,26 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             pigmentGroup.addGrouping(blackGroup);
             /*** BLOODRED ***/
             if (bloodred) {
-                TextureGrouping bloodredGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
+                TextureGrouping bloodredGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                 TextureGrouping bloodredMaskGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 addTextureToAnimalTextureGrouping(bloodredMaskGroup, TEXTURES_RED_BODY, bodyBloodred, l -> l != 0);
                 addTextureToAnimalTextureGrouping(bloodredMaskGroup, TEXTURES_RED_FIN, fins, doubletail, finBloodred, finBloodred != 0);
                 bloodredGroup.addGrouping(bloodredMaskGroup);
                 TextureGrouping bloodredColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 if (vanda) {
-                    ((IMixinEnhancedAnimalAbstract) this).betta$addTextureToAnimalTextureGrouping(bloodredColorGroup, UpdatedTexturingType.APPLY_RGB, TEXTURES_VANDA[vandaLevel], "br", bloodredRGB);
+                    addTextureToAnimalTextureGrouping(bloodredColorGroup, TexturingType.APPLY_RGB, TEXTURES_VANDA[vandaLevel], "br", bloodredRGB);
                 } else {
-                    ((IMixinEnhancedAnimalAbstract) this).betta$addTextureToAnimalTextureGrouping(bloodredColorGroup, UpdatedTexturingType.APPLY_RGB, TEXTURES_MARBLE[marbleBloodredQual][marbleBloodredSize][marbleBloodredRand], "br", bloodredRGB);
+                    addTextureToAnimalTextureGrouping(bloodredColorGroup, TexturingType.APPLY_RGB, TEXTURES_MARBLE[marbleBloodredQual][marbleBloodredSize][marbleBloodredRand], "br", bloodredRGB);
                 }
                 bloodredGroup.addGrouping(bloodredColorGroup);
                 pigmentGroup.addGrouping(bloodredGroup);
             }
             /** DETAILS **/
             TextureGrouping shadingGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(shadingGroup, "body_shading.png", true);
+            addTextureToAnimalTextureGrouping(shadingGroup, "body_shading.png", true);
             pigmentGroup.addGrouping(shadingGroup);
             /** IRIDESCENCE **/
-            iridescenceGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
+            iridescenceGroup = new TextureGrouping(TexturingType.MASK_GROUP);
 
 //            if (butterfly != 0) {
 //                TextureGrouping iridescenceCutoutGroup = new TextureGrouping(UpdatedTexturingType.CUTOUT_GROUP);
@@ -1478,20 +1478,20 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 iridescenceGroup.addGrouping(iriAlphaGroup);
 //            }
             TextureGrouping iriColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(iriColorGroup, UpdatedTexturingType.APPLY_RGB, "iri_base.png", "iri", iriRGB);
-            ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(iriColorGroup, UpdatedTexturingType.APPLY_RGB, "iri_dark.png", "iri-d", iriDarkRGB);
-            ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(iriColorGroup, UpdatedTexturingType.APPLY_RGB, "iri_light.png", "iri-l", iriLightRGB);
+            addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_base.png", "iri", iriRGB);
+            addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_dark.png", "iri-d", iriDarkRGB);
+            addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_light.png", "iri-l", iriLightRGB);
             iridescenceGroup.addGrouping(iriColorGroup);
             if (pastelOpaque) {
-                TextureGrouping opaqueGroup = new UpdatedTextureGrouping(UpdatedTexturingType.MASK_GROUP);
+                TextureGrouping opaqueGroup = new TextureGrouping(TexturingType.MASK_GROUP);
                 TextureGrouping opaqueAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 addTextureToAnimalTextureGrouping(opaqueAlphaGroup, TEXTURES_MARBLE, marbleOpaqueQual, marbleOpaqueSize, marbleOpaqueRand, true);
                 opaqueGroup.addGrouping(opaqueAlphaGroup);
                 TextureGrouping opaqueColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(opaqueColorGroup, UpdatedTexturingType.APPLY_RGB, "iri_base.png", "op", opaqueRGB);
-                ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(opaqueColorGroup, UpdatedTexturingType.APPLY_RGB, "iri_dark.png", "op-d", opaqueDarkRGB);
-                ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(opaqueColorGroup, UpdatedTexturingType.APPLY_RGB, "iri_light.png", "op-l", opaqueLightRGB);
-                ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(opaqueColorGroup, UpdatedTexturingType.APPLY_RGB, "body_shading_iri.png", "op-s", opaqueDarkRGB);
+                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri_base.png", "op", opaqueRGB);
+                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri_dark.png", "op-d", opaqueDarkRGB);
+                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri_light.png", "op-l", opaqueLightRGB);
+                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "body_shading_iri.png", "op-s", opaqueDarkRGB);
                 opaqueGroup.addGrouping(opaqueColorGroup);
                 iridescenceGroup.addGrouping(opaqueGroup);
             }
@@ -1499,19 +1499,19 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 TextureGrouping metallicGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
                 if (gene[0] == 2 && gene[1] == 2) {
                     //Steel Blue
-                    ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(metallicGroup, UpdatedTexturingType.APPLY_RGB, "iri/steel_metalliclayer1.png", "sb-mt1", metallic1RGB);
-                    ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(metallicGroup, UpdatedTexturingType.APPLY_RGB, "iri/steel_metalliclayer2.png", "sb-mt2", metallic2RGB);
-                    ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(metallicGroup, UpdatedTexturingType.APPLY_RGB, "iri/steel_metalliclayer3.png", "sb-mt3", metallic3RGB);
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer1.png", "sb-mt1", metallic1RGB);
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer2.png", "sb-mt2", metallic2RGB);
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer3.png", "sb-mt3", metallic3RGB);
                 } else if (gene[0] == 2 || gene[1] == 2) {
                     //Royal Blue
-                    ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(metallicGroup, UpdatedTexturingType.APPLY_RGB, "iri/royal_metalliclayer1.png", "rb-mt1", metallic1RGB);
-                    ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(metallicGroup, UpdatedTexturingType.APPLY_RGB, "iri/royal_metalliclayer2.png", "rb-mt2", metallic2RGB);
-                    ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(metallicGroup, UpdatedTexturingType.APPLY_RGB, "iri/royal_metalliclayer3.png", "rb-mt3", metallic3RGB);
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer1.png", "rb-mt1", metallic1RGB);
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer2.png", "rb-mt2", metallic2RGB);
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer3.png", "rb-mt3", metallic3RGB);
                 } else {
                     if (metallic == 2) {
-                        ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(metallicGroup, UpdatedTexturingType.APPLY_RGB, "iri/turq_metalliclayer2.png", "t-mt2", metallic2RGB);
+                        addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/turq_metalliclayer2.png", "t-mt2", metallic2RGB);
                     }
-                    ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(metallicGroup, UpdatedTexturingType.APPLY_RGB, "iri/turq_metalliclayer3.png", "t-mt3", metallic3RGB);
+                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/turq_metalliclayer3.png", "t-mt3", metallic3RGB);
                 }
                 iridescenceGroup.addGrouping(metallicGroup);
                 // Metallic seems to look better with normal shading
@@ -1530,7 +1530,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             texturesGroup.addGrouping(nonCellophaneGroup);
             /** FIN DETAIL **/
             TextureGrouping detailGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            ((IMixinEnhancedAnimalAbstract)this).betta$addTextureToAnimalTextureGrouping(detailGroup, "halfmoon_fins_64.png", true);
+            addTextureToAnimalTextureGrouping(detailGroup, "halfmoon_fins_64.png", true);
             texturesGroup.addGrouping(detailGroup);
             /** EYES **/
             TextureGrouping eyeGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
@@ -1591,7 +1591,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     protected FoodSerialiser.AnimalFoodMap getAnimalFoodType() {
-        return IMixinFoodSerialiser.getFoodMap().get("betta");
+        return FoodSerialiser.getAnimalFoodMap("betta");
     }
 
     public boolean isBreedingItem(ItemStack stack) {

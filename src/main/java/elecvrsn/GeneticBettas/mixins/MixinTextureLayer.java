@@ -1,9 +1,8 @@
 package elecvrsn.GeneticBettas.mixins;
 
-import elecvrsn.GeneticBettas.IMixinTextureGrouping;
 import elecvrsn.GeneticBettas.IMixinTextureLayer;
 import mokiyoki.enhancedanimals.renderer.texture.TextureLayer;
-import mokiyoki.enhancedanimals_backported.renderer.texture.UpdatedTexturingType;
+import elecvrsn.GeneticBettas.renderer.texture.UpdatedTexturingType;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;

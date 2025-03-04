@@ -1,6 +1,6 @@
 package elecvrsn.GeneticBettas;
 
-import mokiyoki.enhancedanimals_backported.renderer.texture.UpdatedTexturingType;
+import elecvrsn.GeneticBettas.renderer.texture.UpdatedTexturingType;
 
 public interface IMixinTextureLayer {
     public void setRGB(Integer RGB);

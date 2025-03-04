@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 import static com.mojang.blaze3d.platform.NativeImage.*;
-import static mokiyoki.enhancedanimals_backported.renderer.texture.UpdatedTextureGrouping.COLOUR_DEGREE;
+import static elecvrsn.GeneticBettas.renderer.texture.UpdatedTextureGrouping.COLOUR_DEGREE;
 
 @Mixin(TexturingUtils.class)
 public class MixinTexturingUtils {
