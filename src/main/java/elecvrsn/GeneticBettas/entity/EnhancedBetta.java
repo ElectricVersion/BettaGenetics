@@ -1804,7 +1804,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             CompoundTag nbtGenetics = compoundNBT.getCompound(key);
             genetics.setGenes(nbtGenetics.getIntArray("SGenes"), nbtGenetics.getIntArray("AGenes"));
         }
-        calcSpeed();
+        setSpeed();
     }
 
     public void bubble() {
@@ -2139,29 +2139,30 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return newVec;
     }
 
-    protected void calcSpeed() {
-        float speed = 1.0F;
+    protected void setSpeed() {
+        //Check to prevent wikizoomer bug
         float speedMod = 0.0F;
-        int[] genes = this.getGenes().getAutosomalGenes();
-        if (genes[60] == 2 || genes[61] == 2) {
-            //Halfmoon/Delta                  Halfmoon : Delta
-            speedMod -= (genes[60] == genes[61]) ? 0.1F : 0.05F;
-        }
+        if (this.getGenes() != null) {
+            int[] genes = this.getGenes().getAutosomalGenes();
+            if (genes[60] == 2 || genes[61] == 2) {
+                //Halfmoon/Delta                  Halfmoon : Delta
+                speedMod -= (genes[60] == genes[61]) ? 0.1F : 0.05F;
+            }
 
-        if (getOrSetIsFemale()) {
-            speedMod *= 0.25F;
+            if (getOrSetIsFemale()) {
+                speedMod *= 0.25F;
+            } else if (genes[58] == 2 || genes[59] == 2) {
+                //LongTail only impacts speed of males
+                speedMod -= 0.15F;
+            }
         }
-        else if (genes[58] == 2 || genes[59] == 2) {
-            //LongTail only impacts speed of males
-            speedMod -= 0.15F;
-        }
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5*(speed + speedMod));
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5 * (1.0 + speedMod));
     }
 
     @Override
     public void setInitialDefaults() {
         super.setInitialDefaults();
-        calcSpeed();
+        setSpeed();
     }
 
     @Override
