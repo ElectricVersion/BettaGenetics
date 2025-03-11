@@ -353,19 +353,20 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
     }
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        if (entityIn.isNoAi()) return;
         this.bettaModelData = getCreateBettaModelData(entityIn);
         if (this.bettaModelData != null && this.bettaModelData.getPhenotype() != null) {
             BettaPhenotype betta = this.bettaModelData.getPhenotype();
             this.setupInitialAnimationValues(this.bettaModelData, netHeadYaw, headPitch, betta);
 
-            boolean isMoving = false;
             float yDelta = 0F;
 
             if (entityIn.isInWater()) {
                 this.theBetta.setZRot(0F);
                 if (!entityIn.isAnimalSleeping()) {
-                    isMoving = entityIn.yOld != entityIn.getY() && (entityIn.xOld != entityIn.getX() || entityIn.zOld != entityIn.getZ());
-                    yDelta = isMoving ? (float) clamp(-entityIn.getDeltaMovement().y, -0.5, 0.5) * (float) Mth.HALF_PI : 0F;
+                    boolean isMoving = entityIn.yOld != entityIn.getY() && (entityIn.xOld != entityIn.getX() || entityIn.zOld != entityIn.getZ());
+                    yDelta = isMoving ? (float) clamp(-entityIn.getDeltaMovement().y, -0.5, 0.5) * Mth.HALF_PI : 0F;
+
                     if (this.bettaModelData.bubblingTimer <= ageInTicks) {
                         bettaModelData.bubblingTimer = (int) ageInTicks + entityIn.getRandom().nextInt(600) + 30;
                     } else if (this.bettaModelData.bubblingTimer <= ageInTicks + 10) {
@@ -373,18 +374,18 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
                     }
 
                     if (isMoving) {
-                        this.setupSwimmingAnimation(ageInTicks, headPitch, yDelta);
+                        this.setupSwimmingAnimation(ageInTicks);
                     } else {
                         this.setupIdleAnimation(ageInTicks, headPitch);
                     }
                 }
             }
-            else if (!entityIn.isInTank()) {
+            else if (ageInTicks > 1F) {
                 setupFlopAnimation(ageInTicks);
             }
-            float newxRot = yDelta * (yDelta > 0F ? 2.5F : 10F);
-            float rotDiff = Mth.abs(this.theBetta.getXRot()-newxRot);
-            this.theBetta.setXRot(this.lerpTo(rotDiff > 0.15 ? 0.03F : 0.02F, this.theBetta.getXRot(), newxRot));
+            float newXRot = yDelta * (yDelta > 0F ? 2.5F : 10F);
+            float rotDiff = Mth.abs(this.theBetta.getXRot()-newXRot);
+            this.theBetta.setXRot(this.lerpTo(rotDiff > 0.15 ? 0.03F : 0.02F, this.theBetta.getXRot(), newXRot));
 
             this.setupFlareAnimation(entityIn.getIsAngry());
 
@@ -392,12 +393,11 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         }
     }
 
-    private void setupSwimmingAnimation(float ageInTicks, float headPitch, float yDelta) {
+    private void setupSwimmingAnimation(float ageInTicks) {
         float f = ageInTicks * 0.33F;
         float f1 = Mth.sin(f);
         float f2 = Mth.sin(f*2F);
         float f3 = Mth.cos(f*2F);
-//        this.theBetta.setXRot(this.lerpTo(0.25F, this.theBetta.getXRot(), yDelta * (yDelta > 0F ? 2.5F : 10F)));
         this.theHead.setYRot(f1 * (float)Mth.HALF_PI*0.10F);
         this.theBodyBack.setYRot(f1 * (float)Mth.HALF_PI*0.075F);
         this.theTailFin.setYRot(f1 * (float)Mth.HALF_PI*0.05F);
