@@ -353,11 +353,11 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
     }
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entityIn.isNoAi()) return;
         this.bettaModelData = getCreateBettaModelData(entityIn);
         if (this.bettaModelData != null && this.bettaModelData.getPhenotype() != null) {
             BettaPhenotype betta = this.bettaModelData.getPhenotype();
             this.setupInitialAnimationValues(this.bettaModelData, netHeadYaw, headPitch, betta);
+            if (entityIn.isNoAi()) return;
 
             float yDelta = 0F;
 
