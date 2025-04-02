@@ -28,6 +28,7 @@ public class BettasCommonConfig {
         public final ForgeConfigSpec.IntValue bettaSpawnWeight;
         public final ForgeConfigSpec.IntValue bettaMinimumGroup;
         public final ForgeConfigSpec.IntValue bettaMaximumGroup;
+        public final ForgeConfigSpec.BooleanValue replaceOtherBettas;
 
 
         public CommonConfig(ForgeConfigSpec.Builder builder) {
@@ -44,6 +45,8 @@ public class BettasCommonConfig {
                     .defineInRange("The minimum number of Bettas you want to find in a group at spawn, Default is 4", 4, 1, 60);
             bettaMaximumGroup = builder
                     .defineInRange("The maximum number of Bettas you want to find in a group at spawn, Default is 6", 6, 1, 60);
+            replaceOtherBettas = builder
+                    .define("Replace Bettas from other mods", false);
             builder.pop();
         }
     }
