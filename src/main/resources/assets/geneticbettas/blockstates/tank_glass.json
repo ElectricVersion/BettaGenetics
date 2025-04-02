@@ -17,28 +17,6 @@
     "facing=east,shape=straight": {
       "model": "geneticbettas:block/tank_glass"
     },
-    "facing=east,shape=inner_left": {
-      "model": "geneticbettas:block/tank_glass_inner",
-      "x": 180
-    },
-    "facing=east,shape=inner_right": {
-      "model": "geneticbettas:block/tank_glass_inner",
-      "x": 180,
-      "y": 90
-    },
-    "facing=east,shape=outer_left": {
-      "model": "geneticbettas:block/tank_glass_outer",
-      "x": 180
-    },
-    "facing=east,shape=outer_right": {
-      "model": "geneticbettas:block/tank_glass_outer",
-      "x": 180,
-      "y": 90
-    },
-    "facing=east,shape=straight": {
-      "model": "geneticbettas:block/tank_glass",
-      "x": 180
-    },
     "facing=north,shape=inner_left": {
       "model": "geneticbettas:block/tank_glass_inner",
       "y": 180
@@ -57,29 +35,6 @@
     },
     "facing=north,shape=straight": {
       "model": "geneticbettas:block/tank_glass",
-      "y": 270
-    },
-    "facing=north,shape=inner_left": {
-      "model": "geneticbettas:block/tank_glass_inner",
-      "x": 180,
-      "y": 270
-    },
-    "facing=north,shape=inner_right": {
-      "model": "geneticbettas:block/tank_glass_inner",
-      "x": 180
-    },
-    "facing=north,shape=outer_left": {
-      "model": "geneticbettas:block/tank_glass_outer",
-      "x": 180,
-      "y": 270
-    },
-    "facing=north,shape=outer_right": {
-      "model": "geneticbettas:block/tank_glass_outer",
-      "x": 180
-    },
-    "facing=north,shape=straight": {
-      "model": "geneticbettas:block/tank_glass",
-      "x": 180,
       "y": 270
     },
     "facing=south,shape=inner_left": {
@@ -100,31 +55,6 @@
       "model": "geneticbettas:block/tank_glass",
       "y": 90
     },
-    "facing=south,shape=inner_left": {
-      "model": "geneticbettas:block/tank_glass_inner",
-      "x": 180,
-      "y": 90
-    },
-    "facing=south,shape=inner_right": {
-      "model": "geneticbettas:block/tank_glass_inner",
-      "x": 180,
-      "y": 180
-    },
-    "facing=south,shape=outer_left": {
-      "model": "geneticbettas:block/tank_glass_outer",
-      "x": 180,
-      "y": 90
-    },
-    "facing=south,shape=outer_right": {
-      "model": "geneticbettas:block/tank_glass_outer",
-      "x": 180,
-      "y": 180
-    },
-    "facing=south,shape=straight": {
-      "model": "geneticbettas:block/tank_glass",
-      "x": 180,
-      "y": 90
-    },
     "facing=west,shape=inner_left": {
       "model": "geneticbettas:block/tank_glass_inner",
       "y": 90
@@ -143,31 +73,6 @@
     },
     "facing=west,shape=straight": {
       "model": "geneticbettas:block/tank_glass",
-      "y": 180
-    },
-    "facing=west,shape=inner_left": {
-      "model": "geneticbettas:block/tank_glass_inner",
-      "x": 180,
-      "y": 180
-    },
-    "facing=west,shape=inner_right": {
-      "model": "geneticbettas:block/tank_glass_inner",
-      "x": 180,
-      "y": 270
-    },
-    "facing=west,shape=outer_left": {
-      "model": "geneticbettas:block/tank_glass_outer",
-      "x": 180,
-      "y": 180
-    },
-    "facing=west,shape=outer_right": {
-      "model": "geneticbettas:block/tank_glass_outer",
-      "x": 180,
-      "y": 270
-    },
-    "facing=west,shape=straight": {
-      "model": "geneticbettas:block/tank_glass",
-      "x": 180,
       "y": 180
     }
   }

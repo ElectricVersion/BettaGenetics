@@ -1,0 +1,10 @@
+{
+    "ctm": {
+        "ctm_version": 1,
+        "layer": "CUTOUT",
+        "type": "ctm",
+        "textures": [
+            "geneticbettas:block/tank_glass_ctm"
+        ]
+    }
+}
