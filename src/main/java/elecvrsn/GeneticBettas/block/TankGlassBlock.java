@@ -1,5 +1,6 @@
 package elecvrsn.GeneticBettas.block;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -25,6 +26,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 public class TankGlassBlock extends Block implements SimpleWaterloggedBlock {
     protected static final VoxelShape FACE_NORTH = Block.box(0, 0, 15, 16, 16, 16);
@@ -224,4 +228,60 @@ public class TankGlassBlock extends Block implements SimpleWaterloggedBlock {
     public boolean isPathfindable(BlockState p_56891_, BlockGetter p_56892_, BlockPos p_56893_, PathComputationType p_56894_) {
         return false;
     }
+
+    public boolean skipRendering(@NotNull BlockState state1, BlockState state2, @NotNull Direction direction) {
+        if (state2.is(this)) {
+            StairsShape state1Shape = state1.getValue(SHAPE);
+            StairsShape state2Shape = state2.getValue(SHAPE);
+            Direction state1Facing = state1.getValue(FACING);
+            Direction state2Facing = state2.getValue(FACING);
+            if (!direction.getAxis().isHorizontal()) {
+                return true;
+            }
+
+            if (state2Shape == StairsShape.INNER_LEFT || state2Shape == StairsShape.INNER_RIGHT) {
+                return false;
+            }
+            switch (state1Shape) {
+                case STRAIGHT -> {
+                    if (state1Facing == state2Facing) {
+                        return (state1Facing == direction.getClockWise() || state1Facing == direction.getCounterClockWise());
+                    }
+                    else if (state2Shape == StairsShape.OUTER_LEFT && state2Facing == state1Facing.getClockWise() && state2Facing == direction.getOpposite()) {
+                        return true;
+                    }
+                    else if (state2Shape == StairsShape.OUTER_RIGHT && state2Facing == state1Facing.getCounterClockWise() && state2Facing == direction.getOpposite()) {
+                        return true;
+                    }
+                }
+                case OUTER_LEFT -> {
+                    if (state1Facing == state2Facing && (state1Facing == direction.getClockWise() ||
+                            state1Facing == direction.getCounterClockWise())) {
+                        return true;
+                    }
+                    else if (state2Facing == state1Facing.getCounterClockWise() || direction == state1Facing.getOpposite()) {
+                        return true;
+                    }
+                }
+                case OUTER_RIGHT -> {
+                    if (state1Facing == state2Facing && (state1Facing == direction.getClockWise() ||
+                            state1Facing == direction.getCounterClockWise())) {
+                        return true;
+                    }
+                    else if (state2Facing == state1Facing.getClockWise() || direction == state1Facing.getOpposite()) {
+                        return true;
+                    }
+                }
+                case INNER_LEFT -> {
+                    return false;
+                }
+                case INNER_RIGHT -> {
+                    return false;
+                }
+            }
+        }
+
+        return super.skipRendering(state1, state2, direction);
+    }
+
 }
