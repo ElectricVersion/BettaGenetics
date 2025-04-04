@@ -236,7 +236,7 @@ public class TankGlassBlock extends Block implements SimpleWaterloggedBlock {
             Direction state1Facing = state1.getValue(FACING);
             Direction state2Facing = state2.getValue(FACING);
             if (!direction.getAxis().isHorizontal()) {
-                return true;
+                return state1Shape == state2Shape && state1Facing == state2Facing;
             }
 
             if (state2Shape == StairsShape.INNER_LEFT || state2Shape == StairsShape.INNER_RIGHT) {
