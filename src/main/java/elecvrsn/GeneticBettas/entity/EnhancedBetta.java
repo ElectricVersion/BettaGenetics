@@ -95,7 +95,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     private ImmutableList<Activity> babyActivities = null;
     private ImmutableList<Activity> adultActivities = null;
-    private boolean isTempted = false;
     private int aggression = -1;
 
     private static final int BETTA_TOTAL_AIR_SUPPLY = 2000;
@@ -174,9 +173,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             "mask/transparent.png", "mask/percent25.png", "mask/percent50.png", "mask/percent75.png", "mask/solid.png"
     };
 
-    private static final String[] TEXTURES_EYES = new String[]{
-            "eyes_wildtype.png"
+    private static final String[] TEXTURES_EYE_L = new String[]{
+            "eyes/eye_l_wildtype.png", "eyes/eye_l_dark.png"
     };
+
+    private static final String[] TEXTURES_EYE_R = new String[]{
+            "eyes/eye_r_wildtype.png", "eyes/eye_r_dark.png"
+    };
+
 
     private static final String[][][] TEXTURES_MARBLE = new String[][][]{
             {
@@ -552,6 +556,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             int marbleBloodredQual = 0;
             int marbleBloodredSize = 0;
             int marbleBloodredRand = 0;
+            int eyeLeft = 0;
+            int eyeRight = 0;
             boolean vanda = false;
             int vandaLevel = 0;
             boolean dumbo = false;
@@ -1186,6 +1192,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                         marbleOpaqueRand += uuidArry[7] % (marbleOpaqueQual > 2 ? 10 : 5);
                     }
                 }
+                // Eye Marble
+                eyeLeft = uuidArry[10] > 'c' ? 1 : 0;
+                eyeRight = uuidArry[11] > 'c' ? 1 : 0;
             } else if (gene[80] == 3 || gene[81] == 3) {
                 //Vanda
                 vanda = true;
@@ -1534,7 +1543,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             texturesGroup.addGrouping(detailGroup);
             /** EYES **/
             TextureGrouping eyeGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(eyeGroup, TEXTURES_EYES, 0, l -> true);
+            addTextureToAnimalTextureGrouping(eyeGroup, TEXTURES_EYE_L, eyeLeft, l -> true);
+            addTextureToAnimalTextureGrouping(eyeGroup, TEXTURES_EYE_R, eyeRight, l -> true);
             texturesGroup.addGrouping(eyeGroup);
 
             rootGroup.addGrouping(texturesGroup);
