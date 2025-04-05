@@ -174,11 +174,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     };
 
     private static final String[] TEXTURES_EYE_L = new String[]{
-            "eyes/eye_l_wildtype.png", "eyes/eye_l_dark.png"
+            "eyes/eye_l_wildtype.png", "eyes/eye_l_dark.png", "eyes/eye_l_light.png"
     };
 
     private static final String[] TEXTURES_EYE_R = new String[]{
-            "eyes/eye_r_wildtype.png", "eyes/eye_r_dark.png"
+            "eyes/eye_r_wildtype.png", "eyes/eye_r_dark.png", "eyes/eye_r_light.png"
     };
 
 
@@ -1193,8 +1193,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     }
                 }
                 // Eye Marble
-                eyeLeft = uuidArry[10] > 'c' ? 1 : 0;
-                eyeRight = uuidArry[11] > 'c' ? 1 : 0;
+                eyeLeft = uuidArry[10] > 'b' ? 1 : uuidArry[10] > '7' ? 2 : 0;
+                eyeRight = uuidArry[11] > 'b' ? 1 : uuidArry[10] > '7' ? 2 : 0;
             } else if (gene[80] == 3 || gene[81] == 3) {
                 //Vanda
                 vanda = true;
