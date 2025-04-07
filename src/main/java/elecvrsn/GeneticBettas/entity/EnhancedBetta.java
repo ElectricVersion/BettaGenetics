@@ -1886,7 +1886,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     protected int getPregnancyProgression() {
-        return this.hasEgg() ? 10 : 0;
+        return this.hasEgg() ? 10 : -1;
     }
 
     public void setHasEgg(boolean hasEgg) {
