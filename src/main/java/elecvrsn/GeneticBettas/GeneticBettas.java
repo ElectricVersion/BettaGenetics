@@ -2,6 +2,7 @@ package elecvrsn.GeneticBettas;
 
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.init.*;
+import elecvrsn.GeneticBettas.util.handlers.AnimalReplacementHandler;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.common.MinecraftForge;
@@ -24,6 +25,7 @@ public class GeneticBettas
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, BettasCommonConfig.getConfigSpecForLoader(), BettasCommonConfig.getFileNameForLoader());
 
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new AnimalReplacementHandler());
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         AddonEntities.register(modEventBus);
