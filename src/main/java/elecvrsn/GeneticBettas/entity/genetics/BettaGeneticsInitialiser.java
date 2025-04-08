@@ -16,17 +16,19 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
-    //Have to redeclare WTC for some reason, probably because addon?
+
     int WTC = BettasCommonConfig.COMMON.bettaWildTypeChance.get();
     public BettaGeneticsInitialiser() {
-        this.breeds.add(BettaBreeds.GENERIC);
+//        this.breeds.add(BettaBreeds.GENERIC);
+//        this.breeds.add(BettaBreeds.NEUTRAL);
+//        this.breeds.add(BettaBreeds.AGGRESSIVE);
         this.breeds.add(BettaBreeds.PASSIVE);
-        this.breeds.add(BettaBreeds.NEUTRAL);
-        this.breeds.add(BettaBreeds.AGGRESSIVE);
-        this.breeds.add(BettaBreeds.KOI);
         this.breeds.add(BettaBreeds.MAXRUFOUS);
         this.breeds.add(BettaBreeds.MINRUFOUS);
-        this.breeds.add(BettaBreeds.DRAGONSCALE);
+        this.breeds.add(BettaBreeds.KOI);
+        this.breeds.add(BettaBreeds.SAMURAI);
+        this.breeds.add(BettaBreeds.GIANT);
+        this.breeds.add(BettaBreeds.MUSTARDGAS);
     }
 
     List<Breed> breeds = new ArrayList<>();
