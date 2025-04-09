@@ -29,6 +29,8 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         this.breeds.add(BettaBreeds.SAMURAI);
         this.breeds.add(BettaBreeds.GIANT);
         this.breeds.add(BettaBreeds.MUSTARDGAS);
+        this.breeds.add(BettaBreeds.BLUEMARBLE);
+        this.breeds.add(BettaBreeds.SALAMANDER);
     }
 
     List<Breed> breeds = new ArrayList<>();

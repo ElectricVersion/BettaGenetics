@@ -32,6 +32,12 @@ public class BettaBreeds {
     public static final Breed GIANT = new Breed(new Breed.Properties().setData("Giant", Biomes.FOREST, Breed.Rarity.ORDINARY)
         .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(166, "2")));
 
-        public static final Breed MUSTARDGAS = new Breed(new Breed.Properties().setData("MustardGas", Biomes.FOREST, Breed.Rarity.ORDINARY)
-            .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(0, "1,2").add(6, "1|2", "2").add(24, "2", "1|2", "_", "_", "2").add(42, "3")));
+    public static final Breed MUSTARDGAS = new Breed(new Breed.Properties().setData("MustardGas", Biomes.FOREST, Breed.Rarity.ORDINARY)
+        .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(0, "1,2").add(6, "1|2", "2").add(24, "2", "1|2", "_", "_", "2").add(42, "3")));
+
+    public static final Breed BLUEMARBLE = new Breed(new Breed.Properties().setData("BlueMarble", Biomes.FOREST, Breed.Rarity.ORDINARY)
+            .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(0, "1,1|2", "2", "2").add(40, "2").add(50, "2", "2", "2").add(80, "2").add(124, "1", "1", "2", "2", "2").add(148, "3-5").add(172, "1")));
+
+    public static final Breed SALAMANDER = new Breed(new Breed.Properties().setData("Salamander", Biomes.FOREST, Breed.Rarity.ORDINARY)
+        .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(0, "2,1|2").add(4, "2").add(12, "2").add(16, "1", "2").add(24, "2", "2", "2", "2").add(32, "3|1").add(56, "2")));
 }
