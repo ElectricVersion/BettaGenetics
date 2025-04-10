@@ -57,8 +57,9 @@ public class EnhancedBettaBucket extends MobBucketItem {
         }
     }
 
-    public static boolean getIsFemale(ItemStack stack) {
-         return stack.getOrCreateTagElement("display").getString("UUID").toCharArray()[0] - 48 < 8;
+    public static Optional<Boolean> getIsFemale(ItemStack stack) {
+        String uuid = stack.getOrCreateTagElement("display").getString("UUID");
+        return uuid.isEmpty() ? Optional.empty() : Optional.of(uuid.toCharArray()[0] - 48 < 8);
     }
 
     public Genes getGenes(ItemStack stack) {
@@ -108,18 +109,24 @@ public class EnhancedBettaBucket extends MobBucketItem {
         EnhancedBetta betta = ENHANCED_BETTA.get().create(level);
         betta.setFromBucket(true);
         CompoundTag data = stack.getOrCreateTagElement("display");
-        if (level.getEntity(UUID.fromString(data.getString("UUID"))) == null) {
+        if (!data.getString("UUID").isEmpty() && level.getEntity(UUID.fromString(data.getString("UUID"))) == null) {
             betta.setUUID(UUID.fromString(data.getString("UUID")));
         }
         betta.setSireName(data.getString("SireName"));
         betta.setDamName(data.getString("DamName"));
         if (this.getGenes(stack) != null) {
             Genes genes = this.getGenes(stack);
-            if (genes.getNumberOfAutosomalGenes() != BETTA_AUTOSOMAL_GENES_LENGTH) {
+            if (genes.getNumberOfAutosomalGenes() == 0) { // No existing genes? let's just use a breed preset
+                genes = betta.createInitialBreedGenes(betta.getCommandSenderWorld(), betta.blockPosition(), "WanderingTrader");
+                betta.setGenes(genes);
+                betta.setSharedGenes(genes);
+            }
+            else if (genes.getNumberOfAutosomalGenes() != BETTA_AUTOSOMAL_GENES_LENGTH) {
                 int[] newAGenes = new int[BETTA_AUTOSOMAL_GENES_LENGTH];
                 System.arraycopy(genes.getAutosomalGenes(), 0, newAGenes, 0, genes.getNumberOfAutosomalGenes());
                 genes.setGenes(newAGenes);
             }
+
             if (!genes.isValid() && genes.getNumberOfAutosomalGenes() != 0) {
                 genes.fixGenes(1);
             }
@@ -130,7 +137,7 @@ public class EnhancedBettaBucket extends MobBucketItem {
             if (genes.isValid() && genes.getSexlinkedGenes().length > 0 && genes.getAutosomalGenes().length > 0) {
                 betta.setMateGender(this.getMateIsFemale(stack));
                 betta.setMateGenes(this.getMateGenes(stack));
-                if (getIsFemale(stack)) betta.setHasEgg(true);
+                if (getIsFemale(stack).orElse(false)) betta.setHasEgg(true);
             }
         }
         if (data.contains("collar")) {
@@ -194,7 +201,9 @@ public class EnhancedBettaBucket extends MobBucketItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> componentList, TooltipFlag flag) {
-        componentList.add(new TranslatableComponent((EnhancedBetta.speciesTranslationKey + (getIsFemale(stack) ? ".female":".male"))).withStyle(new ChatFormatting[]{ChatFormatting.ITALIC, ChatFormatting.GRAY}));
+        if (getIsFemale(stack).isPresent()) {
+            componentList.add(new TranslatableComponent((EnhancedBetta.speciesTranslationKey + (getIsFemale(stack).get() ? ".female" : ".male"))).withStyle(new ChatFormatting[]{ChatFormatting.ITALIC, ChatFormatting.GRAY}));
+        }
     }
 
     public InteractionResult useOn(UseOnContext context) {

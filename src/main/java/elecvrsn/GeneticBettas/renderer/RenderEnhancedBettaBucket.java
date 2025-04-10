@@ -30,7 +30,7 @@ public class RenderEnhancedBettaBucket extends BlockEntityWithoutLevelRenderer {
     @OnlyIn(Dist.CLIENT)
     public ResourceLocation getTexture(ItemStack stack) {
         if (stack.getItem() instanceof EnhancedBettaBucket) {
-            boolean isFemale = EnhancedBettaBucket.getIsFemale(stack);
+            boolean isFemale = EnhancedBettaBucket.getIsFemale(stack).orElse(false);
             ResourceLocation resourceLocation = new ResourceLocation(isFemale ? "geneticbettas:textures/item/enhanced_betta_bucket_female.png" : "geneticbettas:textures/item/enhanced_betta_bucket_male.png");
         }
         return ERROR_TEXTURE_LOCATION;
