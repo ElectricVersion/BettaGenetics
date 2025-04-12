@@ -10,6 +10,7 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 
@@ -23,7 +24,7 @@ public class AddonEventRegistry {
 
     @SubscribeEvent
     public static void onEntitiesRegistry(RegistryEvent.Register<EntityType<?>> event) {
-        SpawnPlacements.register(AddonEntities.ENHANCED_BETTA.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EnhancedBetta::checkBettaSpawnRules);
+        SpawnPlacements.register(AddonEntities.ENHANCED_BETTA.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EnhancedBetta::checkBettaSpawnRules);
     }
 
 }

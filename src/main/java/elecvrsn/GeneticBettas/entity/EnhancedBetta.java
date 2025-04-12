@@ -32,6 +32,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -60,6 +62,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.SwimNodeEvaluator;
@@ -2036,10 +2039,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return levelReader.isUnobstructed(this);
     }
 
-    public static boolean checkBettaSpawnRules(EntityType<EnhancedBetta> p_27578_, LevelAccessor p_27579_, MobSpawnType p_27580_, BlockPos p_27581_, Random p_27582_) {
-        int i = p_27579_.getSeaLevel();
-        int j = i - 13;
-        return p_27581_.getY() >= j && p_27579_.getBlockState(p_27581_.below()).is(WATER);
+    public static boolean checkBettaSpawnRules(EntityType<EnhancedBetta> entityType, LevelAccessor accessor, MobSpawnType spawnType, BlockPos pos, Random random) {
+        int maxY = 70;
+        int minY = 40;
+        return pos.getY() >= minY && pos.getY() <= maxY && accessor.getFluidState(pos.below()).is(FluidTags.WATER) && accessor.getBlockState(pos.above()).is(WATER);
     }
 
     public ImmutableList<Activity> getAdultActivities() {
