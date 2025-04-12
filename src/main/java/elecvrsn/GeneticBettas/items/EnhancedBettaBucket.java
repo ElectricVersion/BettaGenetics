@@ -20,7 +20,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Bucketable;
-import net.minecraft.world.entity.animal.TropicalFish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
@@ -63,8 +62,8 @@ public class EnhancedBettaBucket extends MobBucketItem {
         return uuid.isEmpty() ? Optional.empty() : Optional.of(uuid.toCharArray()[0] - 48 < 8);
     }
 
-    public Genes getGenes(ItemStack stack) {
-        CompoundTag genetics = stack.getOrCreateTagElement("Genetics");
+    public static Genes getGenes(CompoundTag tag) {
+        CompoundTag genetics = tag.getCompound("Genetics");
         return new Genes(genetics.getIntArray("SGenes"), genetics.getIntArray("AGenes"));
     }
 
@@ -101,101 +100,63 @@ public class EnhancedBettaBucket extends MobBucketItem {
     @Override
     public void checkExtraContent(@Nullable Player player, Level level, ItemStack stack, BlockPos pos) {
         if (level instanceof ServerLevel) {
-            this.spawnBetta((ServerLevel)level, stack, pos);
+            this.spawnBettaFromStack((ServerLevel)level, stack, pos);
             level.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
         }
     }
 
-    private void spawnBetta(ServerLevel level, ItemStack stack, BlockPos pos) {
-        EnhancedBetta betta = ENHANCED_BETTA.get().create(level);
-        if (betta == null) {
-            return;
-        }
-        betta.setFromBucket(true);
-        CompoundTag data = stack.getOrCreateTagElement("display");
-        if (!data.getString("UUID").isEmpty() && level.getEntity(UUID.fromString(data.getString("UUID"))) == null) {
-            betta.setUUID(UUID.fromString(data.getString("UUID")));
-        }
-        betta.setSireName(data.getString("SireName"));
-        betta.setDamName(data.getString("DamName"));
-        if (this.getGenes(stack) != null) {
-            Genes genes = this.getGenes(stack);
-            if (genes.getNumberOfAutosomalGenes() == 0) { // No existing genes? let's just use a breed preset
-                genes = betta.createInitialBreedGenes(betta.getCommandSenderWorld(), betta.blockPosition(), "WanderingTrader");
-                betta.setGenes(genes);
-                betta.setSharedGenes(genes);
-            }
-            else if (genes.getNumberOfAutosomalGenes() != BETTA_AUTOSOMAL_GENES_LENGTH) {
-                int[] newAGenes = new int[BETTA_AUTOSOMAL_GENES_LENGTH];
-                System.arraycopy(genes.getAutosomalGenes(), 0, newAGenes, 0, genes.getNumberOfAutosomalGenes());
-                genes.setGenes(newAGenes);
-            }
-
-            if (!genes.isValid() && genes.getNumberOfAutosomalGenes() != 0) {
-                genes.fixGenes(1);
-            }
-            betta.setGenes(genes);
-            betta.setSharedGenes(genes);
-
-            genes = this.getMateGenes(stack);
-            if (genes.isValid() && genes.getSexlinkedGenes().length > 0 && genes.getAutosomalGenes().length > 0) {
-                betta.setMateGender(this.getMateIsFemale(stack));
-                betta.setMateGenes(this.getMateGenes(stack));
-                if (getIsFemale(stack).orElse(false)) betta.setHasEgg(true);
-            }
-        }
-        if (data.contains("collar")) {
-            CompoundTag collar = data.getCompound("collar");
-            betta.getEnhancedInventory().setItem(1, ItemStack.of(collar));
-        }
-        if (stack.hasCustomHoverName()) {
-            betta.setCustomName(stack.getHoverName());
-        }
-        betta.setBirthTime(data.getString("BirthTime"));
-        betta.initilizeAnimalSize();
-        betta.loadFromBucketTag(stack.getOrCreateTag());
-        betta.moveTo((double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, 0.0F, 0.0F);
-        level.addFreshEntity(betta);
+    private void spawnBettaFromStack(ServerLevel level, ItemStack stack, BlockPos pos) {
+        spawnBetta(level, stack.getTag(), pos);
     }
 
-    public static EnhancedBetta spawnBettaFromTag(Level level, CompoundTag tag, BlockPos pos) {
+    public static EnhancedBetta spawnBetta(Level level, CompoundTag tag, BlockPos pos) {
         EnhancedBetta betta = ENHANCED_BETTA.get().create(level);
         if (betta == null) {
             return null;
         }
         betta.setFromBucket(true);
-        CompoundTag data = tag.getCompound("display");
-        betta.setUUID(UUID.fromString(data.getString("UUID")));
-        betta.setSireName(data.getString("SireName"));
-        betta.setDamName(data.getString("DamName"));
-        CompoundTag genetics = tag.getCompound("Genetics");
-        Genes genes = new Genes(genetics.getIntArray("SGenes"), genetics.getIntArray("AGenes"));
-        if (genes.getNumberOfAutosomalGenes() != BETTA_AUTOSOMAL_GENES_LENGTH) {
+        CompoundTag displayTag = tag.getCompound("display");
+        // UUID must be valid. Only need to verify that the UUID isn't taken if this is being called serverside.
+        if (!displayTag.getString("UUID").isEmpty() &&
+                (level.isClientSide() || ((ServerLevel)level).getEntity(UUID.fromString(displayTag.getString("UUID"))) == null)) {
+            betta.setUUID(UUID.fromString(displayTag.getString("UUID")));
+        }
+        betta.setSireName(displayTag.getString("SireName"));
+        betta.setDamName(displayTag.getString("DamName"));
+        Genes genes = getGenes(tag);
+
+        if (genes.getNumberOfAutosomalGenes() == 0) { // No existing genes? let's just use a breed preset
+            genes = betta.createInitialBreedGenes(betta.getCommandSenderWorld(), betta.blockPosition(), "WanderingTrader");
+            betta.setGenes(genes);
+            betta.setSharedGenes(genes);
+        } else if (genes.getNumberOfAutosomalGenes() != BETTA_AUTOSOMAL_GENES_LENGTH) {
             int[] newAGenes = new int[BETTA_AUTOSOMAL_GENES_LENGTH];
             System.arraycopy(genes.getAutosomalGenes(), 0, newAGenes, 0, genes.getNumberOfAutosomalGenes());
             genes.setGenes(newAGenes);
         }
+
         if (!genes.isValid() && genes.getNumberOfAutosomalGenes() != 0) {
             genes.fixGenes(1);
         }
+
         betta.setGenes(genes);
         betta.setSharedGenes(genes);
 
         CompoundTag mateGenetics = tag.getCompound("Genetics");
-        Genes mateGenes = new Genes(genetics.getIntArray("SGenes"), genetics.getIntArray("AGenes"));
-        if (mateGenes.isValid() && mateGenes.getSexlinkedGenes().length > 0 && mateGenes.getAutosomalGenes().length > 0) {
+        Genes mateGenes = new Genes(mateGenetics.getIntArray("SGenes"), mateGenetics.getIntArray("AGenes"));
+        if (genes.isValid() && genes.getSexlinkedGenes().length > 0 && genes.getAutosomalGenes().length > 0) {
             betta.setMateGender(mateGenetics.getBoolean("MateIsFemale"));
             betta.setMateGenes(mateGenes);
             betta.setHasEgg(true);
         }
-        if (data.contains("collar")) {
-            CompoundTag collar = data.getCompound("collar");
+        if (displayTag.contains("collar")) {
+            CompoundTag collar = displayTag.getCompound("collar");
             betta.getEnhancedInventory().setItem(1, ItemStack.of(collar));
         }
-        if (data.contains("Name", 8)) {
-            betta.setCustomName(Component.Serializer.fromJson(data.getString("Name")));
+        if (displayTag.contains("Name", 8)) {
+            betta.setCustomName(Component.Serializer.fromJson(displayTag.getString("Name")));
         }
-        betta.setBirthTime(data.getString("BirthTime"));
+        betta.setBirthTime(displayTag.getString("BirthTime"));
         betta.initilizeAnimalSize();
         betta.loadFromBucketTag(tag);
         betta.moveTo((double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, 0.0F, 0.0F);
