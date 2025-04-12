@@ -2068,10 +2068,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return mateGenetics;
     }
 
-    public Random getRandom() {
-        return random;
-    }
-
     @Override
     protected void handlePartnerBreeding(AgeableMob ageable) {
         if (GeneticAnimalsConfig.COMMON.omnigenders.get()) {
