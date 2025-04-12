@@ -75,6 +75,7 @@ import java.util.Optional;
 import java.util.Random;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
+import static elecvrsn.GeneticBettas.util.ColorUtil.getHSBFromHex;
 import static net.minecraft.world.level.block.Blocks.WATER;
 
 public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable {
@@ -458,32 +459,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor inWorld, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData livingData, @Nullable CompoundTag itemNbt) {
         return commonInitialSpawnSetup(inWorld, livingData, 60000, 30000, 80000, spawnReason);
-    }
-
-    public static float[] getHSBFromHex(String colourHex) {
-        if (colourHex.length() == 7) {
-            colourHex = colourHex.substring(1, 7);
-        }
-        int[] color =
-                {
-                    Integer.valueOf(colourHex.substring(0, 2), 16),
-                    Integer.valueOf(colourHex.substring(2, 4), 16),
-                    Integer.valueOf(colourHex.substring(4, 6), 16)
-                };
-        return Color.RGBtoHSB(color[0], color[1], color[2], (float[]) null);
-    }
-
-    public static int getARGBFromHex(String colourHex) {
-        if (colourHex.length() == 7) {
-            colourHex = colourHex.substring(1, 7);
-        }
-        int[] color =
-                {
-                        Integer.valueOf(colourHex.substring(0, 2), 16),
-                        Integer.valueOf(colourHex.substring(2, 4), 16),
-                        Integer.valueOf(colourHex.substring(4, 6), 16)
-                };
-        return Integer.MIN_VALUE | Math.min(color[0], 255) << 16 | Math.min(color[1], 255) << 8 | Math.min(color[2], 255);
     }
 
     @Override
