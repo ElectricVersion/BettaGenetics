@@ -104,7 +104,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     private boolean isInTank;
     private TextureGrouping transRootGroup;
-    private TextureGrouping iridescenceGroup;
 
     private static final String[] TEXTURES_FIN_ALPHA = new String[]{
             "mask/solid.png", "mask/lace_lg.png", "mask/cambodian_lg.png"
@@ -1400,7 +1399,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             }
             texturesGroup.addGrouping(cellophaneGroup);
             /** Everything that isn't cellophane **/
-//            TextureGrouping nonCellophaneGroup = new TextureGrouping(butterfly != 0 ? UpdatedTexturingType.CUTOUT_GROUP : TexturingType.MERGE_GROUP);
             TextureGrouping nonCellophaneGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             if (butterfly != 0) {
                 nonCellophaneGroup = new TextureGrouping(TexturingType.CUTOUT_GROUP);
@@ -1450,7 +1448,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             addTextureToAnimalTextureGrouping(shadingGroup, "body_shading.png", true);
             pigmentGroup.addGrouping(shadingGroup);
             /** IRIDESCENCE **/
-            iridescenceGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+            TextureGrouping iridescenceGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             iridescenceGroup.addGrouping(iriAlphaGroup);
             TextureGrouping iriColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_base.png", "iri", iriRGB);
