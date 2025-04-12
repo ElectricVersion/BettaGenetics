@@ -28,6 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluid;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -107,6 +108,9 @@ public class EnhancedBettaBucket extends MobBucketItem {
 
     private void spawnBetta(ServerLevel level, ItemStack stack, BlockPos pos) {
         EnhancedBetta betta = ENHANCED_BETTA.get().create(level);
+        if (betta == null) {
+            return;
+        }
         betta.setFromBucket(true);
         CompoundTag data = stack.getOrCreateTagElement("display");
         if (!data.getString("UUID").isEmpty() && level.getEntity(UUID.fromString(data.getString("UUID"))) == null) {
@@ -156,33 +160,33 @@ public class EnhancedBettaBucket extends MobBucketItem {
 
     public static EnhancedBetta spawnBettaFromTag(Level level, CompoundTag tag, BlockPos pos) {
         EnhancedBetta betta = ENHANCED_BETTA.get().create(level);
+        if (betta == null) {
+            return null;
+        }
         betta.setFromBucket(true);
         CompoundTag data = tag.getCompound("display");
-//        if (level.isClientSide() || (level instanceof ServerLevel && ((ServerLevel)level).getEntity(UUID.fromString(data.getString("UUID"))) == null) ) {
         betta.setUUID(UUID.fromString(data.getString("UUID")));
         betta.setSireName(data.getString("SireName"));
         betta.setDamName(data.getString("DamName"));
         CompoundTag genetics = tag.getCompound("Genetics");
         Genes genes = new Genes(genetics.getIntArray("SGenes"), genetics.getIntArray("AGenes"));
-        if (genes != null) {
-            if (genes.getNumberOfAutosomalGenes() != BETTA_AUTOSOMAL_GENES_LENGTH) {
-                int[] newAGenes = new int[BETTA_AUTOSOMAL_GENES_LENGTH];
-                System.arraycopy(genes.getAutosomalGenes(), 0, newAGenes, 0, genes.getNumberOfAutosomalGenes());
-                genes.setGenes(newAGenes);
-            }
-            if (!genes.isValid() && genes.getNumberOfAutosomalGenes() != 0) {
-                genes.fixGenes(1);
-            }
-            betta.setGenes(genes);
-            betta.setSharedGenes(genes);
+        if (genes.getNumberOfAutosomalGenes() != BETTA_AUTOSOMAL_GENES_LENGTH) {
+            int[] newAGenes = new int[BETTA_AUTOSOMAL_GENES_LENGTH];
+            System.arraycopy(genes.getAutosomalGenes(), 0, newAGenes, 0, genes.getNumberOfAutosomalGenes());
+            genes.setGenes(newAGenes);
+        }
+        if (!genes.isValid() && genes.getNumberOfAutosomalGenes() != 0) {
+            genes.fixGenes(1);
+        }
+        betta.setGenes(genes);
+        betta.setSharedGenes(genes);
 
-            CompoundTag mateGenetics = tag.getCompound("Genetics");
-            Genes mateGenes = new Genes(genetics.getIntArray("SGenes"), genetics.getIntArray("AGenes"));
-            if (mateGenes.isValid() && mateGenes.getSexlinkedGenes().length > 0 && mateGenes.getAutosomalGenes().length > 0) {
-                betta.setMateGender(mateGenetics.getBoolean("MateIsFemale"));
-                betta.setMateGenes(mateGenes);
-                betta.setHasEgg(true);
-            }
+        CompoundTag mateGenetics = tag.getCompound("Genetics");
+        Genes mateGenes = new Genes(genetics.getIntArray("SGenes"), genetics.getIntArray("AGenes"));
+        if (mateGenes.isValid() && mateGenes.getSexlinkedGenes().length > 0 && mateGenes.getAutosomalGenes().length > 0) {
+            betta.setMateGender(mateGenetics.getBoolean("MateIsFemale"));
+            betta.setMateGenes(mateGenes);
+            betta.setHasEgg(true);
         }
         if (data.contains("collar")) {
             CompoundTag collar = data.getCompound("collar");
@@ -206,7 +210,7 @@ public class EnhancedBettaBucket extends MobBucketItem {
         }
     }
 
-    public InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
         Player player = context.getPlayer();
         Level level = context.getLevel();
         BlockPos blockPos = context.getClickedPos();
