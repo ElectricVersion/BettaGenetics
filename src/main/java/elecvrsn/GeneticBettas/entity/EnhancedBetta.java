@@ -32,7 +32,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -62,7 +61,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.SwimNodeEvaluator;
@@ -411,9 +409,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public float getStepHeight() {
         return 0.75F;
     }
+
     protected void defineSynchedData() {
         super.defineSynchedData();
-//        this.entityData.define(HAS_EGG, false);
         this.entityData.define(IS_ANGRY, false);
         this.entityData.define(FROM_BUCKET, false);
     }
@@ -2105,8 +2103,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             this.mateGenetics = ((EnhancedBetta) ageable).getGenes();
             this.setHasEgg(true);
             this.setMateGender(((EnhancedBetta) ageable).getOrSetIsFemale());
-            if (((EnhancedBetta) ageable).hasCustomName()) {
-                this.setMateName(((EnhancedBetta) ageable).getCustomName().getString());
+            if (ageable.hasCustomName()) {
+                this.setMateName(ageable.getCustomName().getString());
             }
             ((EnhancedBetta) ageable).setMateGenes(this.genetics);
             ((EnhancedBetta) ageable).setHasEgg(true);
@@ -2118,8 +2116,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             this.mateGenetics = ((EnhancedBetta) ageable).getGenes();
             this.setHasEgg(true);
             this.setMateGender(false);
-            if (((EnhancedBetta) ageable).hasCustomName()) {
-                this.setMateName(((EnhancedBetta) ageable).getCustomName().getString());
+            if (ageable.hasCustomName()) {
+                this.setMateName(ageable.getCustomName().getString());
             } else {
                 this.setMateName("???"); //Reset mate name
             }
