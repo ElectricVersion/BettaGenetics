@@ -50,9 +50,8 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
         float f = Mth.rotLerp(p_115310_, betta.yBodyRotO, betta.yBodyRot);
         float f1 = Mth.rotLerp(p_115310_, betta.yHeadRotO, betta.yHeadRot);
         float f2 = f1 - f;
-        if (shouldSit && betta.getVehicle() instanceof LivingEntity) {
-            LivingEntity livingentity = (LivingEntity)betta.getVehicle();
-            f = Mth.rotLerp(p_115310_, livingentity.yBodyRotO, livingentity.yBodyRot);
+        if (shouldSit && betta.getVehicle() instanceof LivingEntity livingEntity) {
+            f = Mth.rotLerp(p_115310_, livingEntity.yBodyRotO, livingEntity.yBodyRot);
             f2 = f1 - f;
             float f3 = Mth.wrapDegrees(f2);
             if (f3 < -85.0F) {
@@ -81,7 +80,7 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
             Direction direction = betta.getBedOrientation();
             if (direction != null) {
                 float f4 = betta.getEyeHeight(Pose.STANDING) - 0.1F;
-                poseStack.translate((double)((float)(-direction.getStepX()) * f4), 0.0D, (double)((float)(-direction.getStepZ()) * f4));
+                poseStack.translate((float)(-direction.getStepX()) * f4, 0.0D, (float)(-direction.getStepZ()) * f4);
             }
         }
 
@@ -89,7 +88,7 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
         this.setupRotations(betta, poseStack, f7, f, p_115310_);
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         this.scale(betta, poseStack, p_115310_);
-        poseStack.translate(0.0D, (double)-1.501F, 0.0D);
+        poseStack.translate(0.0D, -1.501F, 0.0D);
         float f8 = 0.0F;
         float f5 = 0.0F;
         if (!shouldSit && betta.isAlive()) {
@@ -106,8 +105,6 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
 
         this.model.prepareMobModel(betta, f5, f8, p_115310_);
         this.model.setupAnim(betta, f5, f8, f7, f2, f6);
-        Minecraft minecraft = Minecraft.getInstance();
-        boolean flag = this.isBodyVisible(betta);
         RenderType mainRenderType = this.model.renderType(this.getTextureLocation(betta));
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(mainRenderType);
         int i1 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
@@ -172,42 +169,6 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
         return resourcelocation;
     }
 
-
-    public ResourceLocation getIriLocation(EnhancedBetta entity) {
-        String s = entity.getTexture();
-        Colouration colourRGB = entity.getRgb();
-
-        if (s == null || s.isEmpty() || colourRGB == null) {
-            return ERROR_TEXTURE_LOCATION;
-        }
-
-        s = s + "_iri";
-
-        s = s + colourRGB.getRGBStrings();
-
-        ResourceLocation resourcelocation = textureCache.getFromCache(s);
-
-        if (resourcelocation == null) {
-
-            TextureGrouping textureGrouping = entity.getIridescenceGroup();
-
-            if (textureGrouping == null || !textureGrouping.isPopulated()) {
-                return ERROR_TEXTURE_LOCATION;
-            }
-
-            try {
-                resourcelocation = new ResourceLocation(s);
-                EnhancedLayeredTexturer layeredTexture = new EnhancedLayeredTexturer(ENHANCED_BETTA_TEXTURE_LOCATION, textureGrouping, entity.colouration, 128, 128);
-                Minecraft.getInstance().getTextureManager().register(resourcelocation, layeredTexture);
-
-                textureCache.putInCache(s, resourcelocation);
-            } catch (IllegalStateException e) {
-                return ERROR_TEXTURE_LOCATION;
-            }
-        }
-
-        return resourcelocation;
-    }
 
     @Override
     public ResourceLocation getTextureLocation(EnhancedBetta entity) {
