@@ -80,17 +80,8 @@ public class EnhancedBettaBucket extends MobBucketItem {
         }
     }
 
-    private Genes getMateGenes(ItemStack stack) {
-        CompoundTag genetics = stack.getOrCreateTagElement("MateGenetics");
-        return new Genes(genetics.getIntArray("SGenes"), genetics.getIntArray("AGenes"));
-    }
-
     public static void setBettaUUID(ItemStack stack, String uuid) {
         stack.getOrCreateTagElement("display").putString("UUID", uuid);
-    }
-
-    private boolean getMateIsFemale(ItemStack stack) {
-        return stack.getOrCreateTagElement("MateGenetics").getBoolean("MateIsFemale");
     }
 
     public static void setBirthTime(ItemStack stack, String birthTime) {
