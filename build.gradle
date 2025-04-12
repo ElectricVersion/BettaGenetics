@@ -19,7 +19,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
 
-version = '0.1.16'
+version = '0.1.17'
 group = 'com.elecvrsn.geneticbettas' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'geneticbettas'
 
@@ -209,9 +209,9 @@ jar {
                 "Specification-Vendor"    : "ElectricVersion",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "examplemodsareus",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Implementation-Version"  : version,
+                "Implementation-Vendor"   : "ElectricVersion",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
         ])
     }
 }
