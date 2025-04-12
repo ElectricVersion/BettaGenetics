@@ -2,18 +2,13 @@ package elecvrsn.GeneticBettas.ai.brain.betta;
 
 import com.google.common.collect.ImmutableMap;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
-import elecvrsn.GeneticBettas.model.modeldata.BettaModelData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
-import net.minecraft.world.entity.ai.behavior.MeleeAttack;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ProjectileWeaponItem;
 
 public class BettaMeleeAttack extends Behavior<EnhancedBetta> {
 
@@ -28,7 +23,7 @@ public class BettaMeleeAttack extends Behavior<EnhancedBetta> {
 
 
     protected void start(ServerLevel serverLevel, EnhancedBetta enhancedBetta, long l) {
-        enhancedBetta.setIsAngry(true);
+        enhancedBetta.setIsFlaring(true);
         LivingEntity livingEntity = this.getAttackTarget(enhancedBetta);
         BehaviorUtils.lookAtEntity(enhancedBetta, livingEntity);
         enhancedBetta.swing(InteractionHand.MAIN_HAND);

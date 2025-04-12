@@ -25,7 +25,7 @@ public class BettaNip extends Behavior<EnhancedBetta> {
 
 
     protected void start(ServerLevel serverLevel, EnhancedBetta enhancedBetta, long l) {
-        enhancedBetta.setIsAngry(true);
+        enhancedBetta.setIsFlaring(true);
         LivingEntity livingEntity = this.getAttackTarget(enhancedBetta);
         BehaviorUtils.lookAtEntity(enhancedBetta, livingEntity);
         livingEntity.hurt(DamageSource.mobAttack(enhancedBetta), 0F);

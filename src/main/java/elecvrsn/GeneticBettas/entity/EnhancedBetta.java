@@ -69,7 +69,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
@@ -94,7 +93,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             AddonMemoryModuleTypes.MAKING_NEST.get(), AddonMemoryModuleTypes.IS_ATTACK_NIP.get(), AddonMemoryModuleTypes.NEST_POS.get(),
             AddonMemoryModuleTypes.LAST_MATE.get());
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> IS_ANGRY = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IS_FLARING = SynchedEntityData.defineId(EnhancedBetta.class, EntityDataSerializers.BOOLEAN);
 
     private ImmutableList<Activity> babyActivities = null;
     private ImmutableList<Activity> adultActivities = null;
@@ -413,7 +412,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(IS_ANGRY, false);
+        this.entityData.define(IS_FLARING, false);
         this.entityData.define(FROM_BUCKET, false);
     }
 
@@ -1872,7 +1871,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 }
             }
         }
-        enhancedBetta.setIsAngry(false);
+        enhancedBetta.setIsFlaring(false);
     }
 
     @Override
@@ -1892,12 +1891,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return (((this.level.getDayTime() % 24000 >= 12600 && this.level.getDayTime() % 24000 <= 22000) || this.level.isThundering()) && this.awokenTimer == 0 && !this.sleeping);
     }
 
-    public void setIsAngry(boolean angry) {
-        this.entityData.set(IS_ANGRY, angry);
+    public void setIsFlaring(boolean angry) {
+        this.entityData.set(IS_FLARING, angry);
     }
 
-    public boolean getIsAngry() {
-        return this.entityData.get(IS_ANGRY);
+    public boolean getIsFlaring() {
+        return this.entityData.get(IS_FLARING);
     }
 
     public BlockPos setNestPos(BlockPos position) {

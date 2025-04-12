@@ -98,6 +98,7 @@ public class BettaBrain  {
                 0,
                 ImmutableList.of(
                         new EraseMemoryIf<>(BettaBrain::isHurtByTimerExpired, MemoryModuleType.HURT_BY_ENTITY),
+                        new FlareIfHurt(),
                         SetWalkTargetAwayFrom.entity(MemoryModuleType.HURT_BY_ENTITY, 0.5F, 6, true)
                 ),
                 MemoryModuleType.HURT_BY_ENTITY
@@ -226,10 +227,11 @@ public class BettaBrain  {
                     brain.setMemoryWithExpiry(MemoryModuleType.HAS_HUNTING_COOLDOWN, true, 2400L);
                 }
                 else if (brain.getActiveNonCoreActivity().orElse(null) == Activity.FIGHT) {
-                    betta.setIsAngry(true);
+                    betta.setIsFlaring(true);
                 }
             }
         }
+
     }
 
     private static float getSpeedModifierChasing(LivingEntity livingEntity) {

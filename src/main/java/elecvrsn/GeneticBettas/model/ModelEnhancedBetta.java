@@ -15,7 +15,6 @@ import mokiyoki.enhancedanimals.model.util.WrappedModelPart;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -387,7 +386,7 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             float rotDiff = Mth.abs(this.theBetta.getXRot()-newXRot);
             this.theBetta.setXRot(this.lerpTo(rotDiff > 0.15 ? 0.03F : 0.02F, this.theBetta.getXRot(), newXRot));
 
-            this.setupFlareAnimation(entityIn.getIsAngry());
+            this.setupFlareAnimation(entityIn.getIsFlaring());
 
             this.saveAnimationValues(this.bettaModelData);
         }

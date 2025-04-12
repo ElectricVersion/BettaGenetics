@@ -8,4 +8,5 @@ public class BettaModelData extends AnimalModelData {
     }
     public int bubblingTimer = 0;
     public boolean isBubbling = false;
+    public boolean isFlaring = false;
 }
