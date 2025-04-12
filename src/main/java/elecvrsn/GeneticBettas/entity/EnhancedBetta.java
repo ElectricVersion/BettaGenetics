@@ -75,6 +75,7 @@ import java.util.Optional;
 import java.util.Random;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
+import static elecvrsn.GeneticBettas.util.ColorUtil.clampRGB;
 import static elecvrsn.GeneticBettas.util.ColorUtil.getHSBFromHex;
 import static net.minecraft.world.level.block.Blocks.WATER;
 
@@ -1254,18 +1255,18 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 metallic3[0] += r * 0.005F;
             }
 
-            clampRGB(melanin);
-            clampRGB(pheomelanin);
-            clampRGB(bloodredColor);
-            clampRGB(iridescence);
-            clampRGB(iridescenceLight);
-            clampRGB(iridescenceDark);
-            clampRGB(opaque);
-            clampRGB(opaqueLight);
-            clampRGB(opaqueDark);
-            clampRGB(metallic1);
-            clampRGB(metallic2);
-            clampRGB(metallic3);
+            melanin = clampRGB(melanin);
+            pheomelanin = clampRGB(pheomelanin);
+            bloodredColor = clampRGB(bloodredColor);
+            iridescence = clampRGB(iridescence);
+            iridescenceLight = clampRGB(iridescenceLight);
+            iridescenceDark = clampRGB(iridescenceDark);
+            opaque = clampRGB(opaque);
+            opaqueLight = clampRGB(opaqueLight);
+            opaqueDark = clampRGB(opaqueDark);
+            metallic1 = clampRGB(metallic1);
+            metallic2 = clampRGB(metallic2);
+            metallic3 = clampRGB(metallic3);
 
             int metallic1RGB = Colouration.HSBtoARGB(metallic1[0], metallic1[1], metallic1[2]);
             int metallic2RGB = Colouration.HSBtoARGB(metallic2[0], metallic2[1], metallic2[2]);
@@ -1337,7 +1338,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             finAlphaGroup.addGrouping(finShapeGroup);
 
             TextureGrouping finTransparencyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-//            TextureGrouping finCutoutGroup = new TextureGrouping(butterfly != 0 ? UpdatedTexturingType.CUTOUT_GROUP : TexturingType.MERGE_GROUP);
             TextureGrouping finCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             if (butterfly != 0 ) {
                 new TextureGrouping(TexturingType.CUTOUT_GROUP);
@@ -1451,16 +1451,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             pigmentGroup.addGrouping(shadingGroup);
             /** IRIDESCENCE **/
             iridescenceGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-
-//            if (butterfly != 0) {
-//                TextureGrouping iridescenceCutoutGroup = new TextureGrouping(UpdatedTexturingType.CUTOUT_GROUP);
-//                iridescenceCutoutGroup.addGrouping(butterflyGroup);
-//                iridescenceCutoutGroup.addGrouping(iriAlphaGroup);
-//                iridescenceGroup.addGrouping(iridescenceCutoutGroup);
-//            }
-//            else {
-                iridescenceGroup.addGrouping(iriAlphaGroup);
-//            }
+            iridescenceGroup.addGrouping(iriAlphaGroup);
             TextureGrouping iriColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_base.png", "iri", iriRGB);
             addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_dark.png", "iri-d", iriDarkRGB);
@@ -1621,9 +1612,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         this.getBrain().tick((ServerLevel) this.level, this);
         if (!this.isNoAi()) {
             BettaBrain.updateActivity(this);
-//            if ( Mth.sin(this.level.getGameTime() * 0.25F) > 0.99F ) {
-//                this.getBrain().setMemory(AddonMemoryModuleTypes.SEEKING_NEST.get(), true);
-//            }
         }
     }
 
@@ -1665,30 +1653,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     public TextureGrouping getFinGroup() {
         return transRootGroup;
-    }
-
-    private void clampRGB(float[] color) {
-//        if (clampHue) {
-//            float minHue = 0.020F;
-//            float maxHue = 0.101F;
-//            if (color[0] < minHue) {
-//                color[0] = minHue;
-//            }
-//            else if (color[0] > maxHue) {
-//                color[0] = maxHue;
-//            }
-//        }
-        for (int i = 0; i <= 2; i++) {
-            if (color[i] > 1.0F) {
-                color[i] = 1.0F;
-            } else if (color[i] < 0.0F) {
-                color[i] = 0.0F;
-            }
-        }
-    }
-
-    public TextureGrouping getIridescenceGroup() {
-        return iridescenceGroup;
     }
 
     public boolean isHighlyAggressive() {

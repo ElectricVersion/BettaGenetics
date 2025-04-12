@@ -29,4 +29,16 @@ public class ColorUtil {
         return Integer.MIN_VALUE | Math.min(color[0], 255) << 16 | Math.min(color[1], 255) << 8 | Math.min(color[2], 255);
     }
 
+    public static float[] clampRGB(float[] color) {
+        float[] clampedColor = {color[0], color[1], color[2]};
+        for (int i = 0; i <= 2; i++) {
+            if (clampedColor[i] > 1.0F) {
+                clampedColor[i] = 1.0F;
+            } else if (clampedColor[i] < 0.0F) {
+                clampedColor[i] = 0.0F;
+            }
+        }
+        return clampedColor;
+    }
+
 }
