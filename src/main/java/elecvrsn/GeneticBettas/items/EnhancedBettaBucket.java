@@ -97,7 +97,7 @@ public class EnhancedBettaBucket extends MobBucketItem {
     }
 
     private void spawnBettaFromStack(ServerLevel level, ItemStack stack, BlockPos pos) {
-        spawnBetta(level, stack.getTag(), pos);
+        spawnBetta(level, stack.getOrCreateTag(), pos);
     }
 
     public static EnhancedBetta spawnBetta(Level level, CompoundTag tag, BlockPos pos) {
@@ -135,7 +135,7 @@ public class EnhancedBettaBucket extends MobBucketItem {
 
         CompoundTag mateGenetics = tag.getCompound("Genetics");
         Genes mateGenes = new Genes(mateGenetics.getIntArray("SGenes"), mateGenetics.getIntArray("AGenes"));
-        if (genes.isValid() && genes.getSexlinkedGenes().length > 0 && genes.getAutosomalGenes().length > 0) {
+        if (mateGenes.isValid() && mateGenes.getSexlinkedGenes().length > 0 && mateGenes.getAutosomalGenes().length > 0) {
             betta.setMateGender(mateGenetics.getBoolean("MateIsFemale"));
             betta.setMateGenes(mateGenes);
             betta.setHasEgg(true);
