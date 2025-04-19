@@ -597,6 +597,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             if (gene[2] == 2 || gene[3] == 2) {
                 //Spread
+                iriIntensity = iriIntensity < 2 ? iriIntensity+2 : 4;
                 bodyIri = 4;
             }
 
