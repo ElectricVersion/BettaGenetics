@@ -11,12 +11,17 @@ import net.minecraft.world.entity.ai.sensing.Sensor;
 
 import java.util.Optional;
 
+import static net.minecraft.world.entity.EntityType.PLAYER;
+
 public class BettaAttackablesSensor extends NearestVisibleLivingEntitySensor {
     public static final float TARGET_DETECTION_DISTANCE = 8.0F;
     protected boolean isMatchingEntity(LivingEntity bettaEntity, LivingEntity target) {
         EnhancedBetta betta = (EnhancedBetta)bettaEntity;
+        // TODO: Clean up all of this. This sucks. Bad code
         return this.isClose(betta, target) && target.isInWaterOrBubble()
-                && (this.isHostileTarget(target) || (this.isBettaTarget(target)
+                && (isHostileTarget(target) ||
+                (isPlayerTarget(betta, target) && betta.isHighlyAggressive())
+                || (isBettaTarget(target)
                 && isAggressiveEnough(betta, target)
                 && !isTrusted(betta, target))) && Sensor.isEntityAttackable(betta, target);
     }
@@ -30,6 +35,14 @@ public class BettaAttackablesSensor extends NearestVisibleLivingEntitySensor {
         //So we can check it easily with VALUE_PRESENT
         betta.getBrain().setMemory(AddonMemoryModuleTypes.IS_ATTACK_NIP.get(), (!betta.getOrSetIsFemale() && !((EnhancedBetta)livingEntity).getOrSetIsFemale()) ? Optional.empty() : Optional.of(true));
         return betta.getBrain().hasMemoryValue(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()) && betta.getBrain().getMemory(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()).get().contains(livingEntity.getUUID());
+    }
+
+    private boolean isPlayerTarget(EnhancedBetta betta, LivingEntity livingEntity) {
+        if (livingEntity.getType() == PLAYER) {
+            betta.getBrain().setMemory(AddonMemoryModuleTypes.IS_ATTACK_NIP.get(), true);
+            return true;
+        }
+        return false;
     }
 
     private boolean isAggressiveEnough(EnhancedBetta betta, LivingEntity livingEntity) {

@@ -21,7 +21,7 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
     public BettaGeneticsInitialiser() {
 //        this.breeds.add(BettaBreeds.GENERIC);
 //        this.breeds.add(BettaBreeds.NEUTRAL);
-//        this.breeds.add(BettaBreeds.AGGRESSIVE);
+        this.breeds.add(BettaBreeds.AGGRESSIVE);
         this.breeds.add(BettaBreeds.PASSIVE);
         this.breeds.add(BettaBreeds.MAXRUFOUS);
         this.breeds.add(BettaBreeds.MINRUFOUS);
