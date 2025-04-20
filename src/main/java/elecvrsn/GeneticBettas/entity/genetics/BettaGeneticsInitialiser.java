@@ -20,7 +20,7 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
     int WTC = BettasCommonConfig.COMMON.bettaWildTypeChance.get();
     public BettaGeneticsInitialiser() {
 //        this.breeds.add(BettaBreeds.GENERIC);
-//        this.breeds.add(BettaBreeds.NEUTRAL);
+        this.breeds.add(BettaBreeds.NEUTRAL);
         this.breeds.add(BettaBreeds.AGGRESSIVE);
         this.breeds.add(BettaBreeds.PASSIVE);
         this.breeds.add(BettaBreeds.MAXRUFOUS);

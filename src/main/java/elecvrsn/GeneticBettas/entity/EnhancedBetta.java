@@ -1658,15 +1658,15 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     public boolean isNotHighlyAggressive() {
-        return getAggression() < 8;
+        return !isHighlyAggressive();
     }
 
-    public boolean isAggressive() {
-        return getAggression() >= 4;
+    public boolean isNotPassive() {
+        return !isPassive();
     }
 
     public boolean isPassive() {
-        return !isAggressive();
+        return getAggression() < 4;
     }
 
     public boolean hasReachedTarget() {
@@ -1681,6 +1681,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public int getAggression() {
         //Should return a value from 1 to 10
         if (this.aggression == -1 && this.getGenes() != null) {
+            this.aggression = 0;
             int[] gene = this.getGenes().getAutosomalGenes();
             for (int i = 72; i < 80; i++) {
                 this.aggression += gene[i];
@@ -1989,7 +1990,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             }
             mutableAdultActivities.add(AddonActivities.LAY_EGG.get());
             mutableAdultActivities.add(AddonActivities.MAKE_BUBBLE_NEST.get());
-            if ( (!this.getOrSetIsFemale() && isAggressive()) || (this.getOrSetIsFemale() && isHighlyAggressive()) ) {
+            if ( (!this.getOrSetIsFemale() && isNotPassive()) || (this.getOrSetIsFemale() && isHighlyAggressive()) ) {
                 mutableAdultActivities.add(AddonActivities.NIP.get());
                 if (!this.getOrSetIsFemale()) {
                     mutableAdultActivities.add(Activity.FIGHT);

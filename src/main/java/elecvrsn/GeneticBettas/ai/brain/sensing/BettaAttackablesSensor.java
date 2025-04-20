@@ -20,7 +20,7 @@ public class BettaAttackablesSensor extends NearestVisibleLivingEntitySensor {
         // TODO: Clean up all of this. This sucks. Bad code
         return this.isClose(betta, target) && target.isInWaterOrBubble()
                 && (isHostileTarget(target) ||
-                (isPlayerTarget(betta, target) && betta.isHighlyAggressive())
+                (betta.isHighlyAggressive() && isPlayerTarget(betta, target))
                 || (isBettaTarget(target)
                 && isAggressiveEnough(betta, target)
                 && !isTrusted(betta, target))) && Sensor.isEntityAttackable(betta, target);

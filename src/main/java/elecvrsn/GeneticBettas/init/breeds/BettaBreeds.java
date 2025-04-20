@@ -9,8 +9,8 @@ public class BettaBreeds {
 //            .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(0, "1")));
 //
 //
-//    public static final Breed NEUTRAL = new Breed(new Breed.Properties().setData("Neutral", Biomes.FOREST, Breed.Rarity.ORDINARY)
-//            .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(72, "2","2","2","2")));
+    public static final Breed NEUTRAL = new Breed(new Breed.Properties().setData("Neutral", Biomes.FOREST, Breed.Rarity.ORDINARY)
+            .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(72, "3","3","3","3")));
 //
     public static final Breed AGGRESSIVE = new Breed(new Breed.Properties().setData("Aggressive", Biomes.FOREST, Breed.Rarity.ORDINARY)
             .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(72, "5","5","5","5")));

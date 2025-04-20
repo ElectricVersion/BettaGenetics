@@ -2,7 +2,6 @@ package elecvrsn.GeneticBettas.ai.brain.betta;
 
 import com.google.common.collect.ImmutableMap;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
-import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -28,6 +27,6 @@ public class FlareIfHurt extends Behavior<EnhancedBetta> {
     }
 
     protected boolean checkExtraStartConditions(ServerLevel serverLevel, EnhancedBetta enhancedBetta) {
-        return enhancedBetta.isAggressive();
+        return enhancedBetta.isNotPassive();
     }
 }

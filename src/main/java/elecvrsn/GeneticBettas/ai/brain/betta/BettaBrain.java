@@ -222,7 +222,7 @@ public class BettaBrain  {
         }
         if (activity != ModActivities.PAUSE_BRAIN.get()) {
             brain.setActiveActivityToFirstValid(betta.isBaby() ? betta.getBabyActivities() : betta.getAdultActivities());
-            if (betta.isAggressive()) {
+            if (betta.isNotPassive()) {
                 if (activity == Activity.FIGHT && brain.getActiveNonCoreActivity().orElse(null) != Activity.FIGHT) {
                     brain.setMemoryWithExpiry(MemoryModuleType.HAS_HUNTING_COOLDOWN, true, 2400L);
                 }
