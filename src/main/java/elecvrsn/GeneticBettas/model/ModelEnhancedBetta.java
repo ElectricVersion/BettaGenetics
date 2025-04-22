@@ -285,25 +285,20 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
             Map<String, List<Float>> mapOfScale = new HashMap<>();
             BettaPhenotype betta = this.bettaModelData.getPhenotype();
 
-            float finScaleMult = betta.isFemale ? 0.75F : 1F;
-            List<Float> pectoralFinScalings = ModelHelper.createScalings(1F, betta.dumbo ? 0.8F : 0.75F, 0.75F, 0F, 0F, 0F);
-            mapOfScale.put("finL", pectoralFinScalings);
-            mapOfScale.put("finR", pectoralFinScalings);
-            List<Float> dorsalFinScalings = ModelHelper.createScalings(1F, betta.isFemale ? 0.725F : 1F, finScaleMult*betta.dorsalWidth, 0F, 0F, 0F);
-            mapOfScale.put("dorsalFin", dorsalFinScalings);
+            mapOfScale.put("finL", betta.pectoralFinScalings);
+            mapOfScale.put("finR", betta.pectoralFinScalings);
+            mapOfScale.put("dorsalFin", betta.dorsalFinScalings);
 //            List<Float> tailFinScalings = ModelHelper.createScalings(1F, finScaleMult, finScaleMult, 0F, 0F, 0F);
-            mapOfScale.put("tailFin", ModelHelper.createScalings(1F, 1F, 1F, 0F, 0F, (betta.isFemale && !betta.doubleTail) ? -1F/16F : 0F));
-            List<Float> ventralFinScalings = ModelHelper.createScalings(1F, betta.isFemale ? 0.725F : 1F, finScaleMult, 0F, 0F, 0F);
-            mapOfScale.put("ventralFinL", ventralFinScalings);
-            mapOfScale.put("ventralFinR", ventralFinScalings);
+            mapOfScale.put("tailFin", betta.tailFinScalings);
+            mapOfScale.put("ventralFinL", betta.ventralFinScalings);
+            mapOfScale.put("ventralFinR", betta.ventralFinScalings);
 //            List<Float> bottomFinScalings = ModelHelper.createScalings(1F, finScaleMult, betta.isFemale ? 0.875F : 1F, 0F, 0F, 0F);
-            mapOfScale.put("bottomFinF", ModelHelper.createScalings(1F, finScaleMult, betta.isFemale ? 0.875F : 1F, 0F, 0F, 0F));
-            mapOfScale.put("bottomFinB", ModelHelper.createScalings(1F, betta.isFemale ? 0.8F : 1F, betta.isFemale ? 0.85F : 1F, 0F, 0F, 0F));
-            mapOfScale.put("bBodyF", ModelHelper.createScalings(1F, (betta.isFemale ? 1F : 0.925F), 1F, 0F, 0F, 0F));
+            mapOfScale.put("bottomFinF", betta.bottomFinFrontScalings);
+            mapOfScale.put("bottomFinB", betta.bottomFinBackScalings);
+            mapOfScale.put("bBodyF", betta.bodyFrontScalings);
             float headScale = (1.25F-(bettaModelData.growthAmount*0.25F));
-            mapOfScale.put("bHead", ModelHelper.createScalings(headScale, headScale, headScale, 0F, 0F, 0F));
+            mapOfScale.put("bHead", ModelHelper.createScalings(headScale, 0F, 0F, 0F));
             poseStack.pushPose();
-
 
             float bettaScale = 0.25F + (0.375F*bettaModelData.growthAmount*betta.size);
             poseStack.scale(bettaScale, bettaScale, bettaScale);
