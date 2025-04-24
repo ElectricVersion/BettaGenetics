@@ -133,7 +133,7 @@ public class EnhancedBettaBucket extends MobBucketItem {
         betta.setGenes(genes);
         betta.setSharedGenes(genes);
 
-        CompoundTag mateGenetics = tag.getCompound("Genetics");
+        CompoundTag mateGenetics = tag.getCompound("MateGenetics");
         Genes mateGenes = new Genes(mateGenetics.getIntArray("SGenes"), mateGenetics.getIntArray("AGenes"));
         if (mateGenes.isValid() && mateGenes.getSexlinkedGenes().length > 0 && mateGenes.getAutosomalGenes().length > 0) {
             betta.setMateGender(mateGenetics.getBoolean("MateIsFemale"));
