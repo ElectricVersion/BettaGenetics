@@ -28,13 +28,13 @@ public class BettaNip extends Behavior<EnhancedBetta> {
         enhancedBetta.setIsFlaring(true);
         LivingEntity livingEntity = this.getAttackTarget(enhancedBetta);
         BehaviorUtils.lookAtEntity(enhancedBetta, livingEntity);
-        livingEntity.hurt(DamageSource.mobAttack(enhancedBetta), 0F);
-        livingEntity.knockback((enhancedBetta.getAttributeValue(Attributes.ATTACK_KNOCKBACK) * 0.5F), Mth.sin(enhancedBetta.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(enhancedBetta.getYRot() * ((float)Math.PI / 180F)));
+        livingEntity.hurt(DamageSource.mobAttack(enhancedBetta), 0.0F);
+        livingEntity.knockback((enhancedBetta.getAttributeValue(Attributes.ATTACK_KNOCKBACK) * 1F), Mth.sin(enhancedBetta.getYRot() * ((float)Math.PI / 180F)), -Mth.cos(enhancedBetta.getYRot() * ((float)Math.PI / 180F)));
         //Nipping and attacking should probably share a cooldown
         enhancedBetta.getBrain().setMemoryWithExpiry(MemoryModuleType.ATTACK_COOLING_DOWN, true, 70-(2L * enhancedBetta.getAggression()) );
     }
 
     private LivingEntity getAttackTarget(EnhancedBetta enhancedBetta) {
-        return enhancedBetta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get();
+        return enhancedBetta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).orElse(null);
     }
 }

@@ -67,6 +67,7 @@ import net.minecraft.world.level.pathfinder.SwimNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -114,7 +115,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     private static final String[] TEXTURES_IRI_BODY = new String[]{
             "", "iri/body/low_body_iri.png", "iri/body/med_body_iri.png", "iri/body/high_body_iri.png",
-            "mask/solid.png",
+            "mask/solid.png", "iri/body/spread_low_opacity.png"
     };
 
     private static final String[] TEXTURES_IRI_MASK = new String[]{
@@ -597,8 +598,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             if (gene[2] == 2 || gene[3] == 2) {
                 //Spread
-                iriIntensity = iriIntensity < 2 ? iriIntensity+2 : 4;
-                bodyIri = 4;
+//                iriIntensity = iriIntensity < 2 ? iriIntensity+2 : 4;
+                bodyIri = iriIntensity < 2 ? 5 : 4;
+                finIri = 0;
+                iriIntensity = 4;
             }
 
             if (gene[4] == 2 || gene[5] == 2) {
@@ -2147,6 +2150,19 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         int age = this.getEnhancedAnimalAge();
         int adultAge = this.getAdultAge();
         return age < adultAge/2F;
+    }
+
+    @Override
+    public boolean hurt(@NotNull DamageSource damageSource, float damageAmount) {
+        boolean flag = super.hurt(damageSource, damageAmount);
+        if (this.level.isClientSide) {
+            return false;
+        } else {
+            if (flag && damageSource.getEntity() instanceof LivingEntity && this.isHighlyAggressive()) {
+                BettaBrain.wasHurtBy(this, (LivingEntity)damageSource.getEntity());
+            }
+            return flag;
+        }
     }
 
 }

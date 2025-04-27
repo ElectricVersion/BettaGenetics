@@ -32,6 +32,6 @@ public class BettaMeleeAttack extends Behavior<EnhancedBetta> {
     }
 
     private LivingEntity getAttackTarget(EnhancedBetta enhancedBetta) {
-        return enhancedBetta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get();
+        return enhancedBetta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).orElse(null);
     }
 }

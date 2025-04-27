@@ -19,9 +19,7 @@ public class BettaAttackablesSensor extends NearestVisibleLivingEntitySensor {
         EnhancedBetta betta = (EnhancedBetta)bettaEntity;
         // TODO: Clean up all of this. This sucks. Bad code
         return this.isClose(betta, target) && target.isInWaterOrBubble()
-                && (isHostileTarget(target) ||
-                (betta.isHighlyAggressive() && isPlayerTarget(betta, target))
-                || (isBettaTarget(target)
+                && (isHostileTarget(target) || (isBettaTarget(target)
                 && isAggressiveEnough(betta, target)
                 && !isTrusted(betta, target))) && Sensor.isEntityAttackable(betta, target);
     }
@@ -35,14 +33,6 @@ public class BettaAttackablesSensor extends NearestVisibleLivingEntitySensor {
         //So we can check it easily with VALUE_PRESENT
         betta.getBrain().setMemory(AddonMemoryModuleTypes.IS_ATTACK_NIP.get(), (!betta.getOrSetIsFemale() && !((EnhancedBetta)livingEntity).getOrSetIsFemale()) ? Optional.empty() : Optional.of(true));
         return betta.getBrain().hasMemoryValue(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()) && betta.getBrain().getMemory(AddonMemoryModuleTypes.TRUSTED_BETTAS.get()).get().contains(livingEntity.getUUID());
-    }
-
-    private boolean isPlayerTarget(EnhancedBetta betta, LivingEntity livingEntity) {
-        if (livingEntity.getType() == PLAYER) {
-            betta.getBrain().setMemory(AddonMemoryModuleTypes.IS_ATTACK_NIP.get(), true);
-            return true;
-        }
-        return false;
     }
 
     private boolean isAggressiveEnough(EnhancedBetta betta, LivingEntity livingEntity) {

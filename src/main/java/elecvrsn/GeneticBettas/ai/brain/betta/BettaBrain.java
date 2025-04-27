@@ -98,7 +98,6 @@ public class BettaBrain  {
                 0,
                 ImmutableList.of(
                         new EraseMemoryIf<>(BettaBrain::isHurtByTimerExpired, MemoryModuleType.HURT_BY_ENTITY),
-                        new FlareIfHurt(),
                         SetWalkTargetAwayFrom.entity(MemoryModuleType.HURT_BY_ENTITY, 0.5F, 6, true)
                 ),
                 MemoryModuleType.HURT_BY_ENTITY
@@ -138,6 +137,7 @@ public class BettaBrain  {
                 new MoveToTargetSink(),
                 new ValidatePauseBrain(),
                 new TrustBetta(),
+                new FlareIfHurt(),
                 new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS))
         );
     }
@@ -174,7 +174,9 @@ public class BettaBrain  {
                         Pair.of(new BabyFollowAdult<>(ADULT_FOLLOW_RANGE, BettaBrain::getSpeedModifierFollowingAdult), 1)))
                 ),
                 Pair.of(2, new RunSometimes<>(new StopAndLookIfNearWalkTarget(), UniformInt.of(10, 40))),
-                Pair.of(3, new StartAttacking<>(BettaBrain::findNearestValidAttackTarget)),
+                Pair.of(3, new RunIf<>(
+                        ImmutableMap.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_ABSENT),
+                        new StartAttacking<>(BettaBrain::findNearestValidAttackTarget))),
                 Pair.of(3, new TryFindWater(6, SPEED_MULTIPLIER_WHEN_ON_LAND)),
                 Pair.of(4, new GateBehavior<>(
                                 ImmutableMap.of(
@@ -264,6 +266,11 @@ public class BettaBrain  {
             return betta.distanceToSqr(betta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get()) > (betta.isHighlyAggressive() ? 9 : 4);
         }
         return true;
+    }
+
+    public static void wasHurtBy(EnhancedBetta betta, LivingEntity attacker) {
+        betta.getBrain().setMemory(AddonMemoryModuleTypes.IS_ATTACK_NIP.get(), attacker instanceof EnhancedBetta ? Optional.empty() : Optional.of(true));
+        betta.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, attacker);
     }
 
 }
