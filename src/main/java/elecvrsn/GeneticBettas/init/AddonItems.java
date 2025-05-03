@@ -1,5 +1,6 @@
 package elecvrsn.GeneticBettas.init;
 
+import elecvrsn.GeneticBettas.items.DuckweedPlantItem;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import elecvrsn.GeneticBettas.util.AddonReference;
 import mokiyoki.enhancedanimals.EnhancedAnimals;
@@ -28,6 +29,7 @@ public class AddonItems {
     public static final RegistryObject<Item> A_BARTERI_ITEM = ITEMS_DEFERRED_REGISTRY.register("a_barteri", () -> new BlockItem(AddonBlocks.A_BARTERI.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> VARIEGATED_A_BARTERI_ITEM = ITEMS_DEFERRED_REGISTRY.register("variegated_a_barteri", () -> new BlockItem(AddonBlocks.VARIEGATED_A_BARTERI.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> V_AMERICANA_ITEM = ITEMS_DEFERRED_REGISTRY.register("v_americana", () -> new BlockItem(AddonBlocks.V_AMERICANA.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+    public static final RegistryObject<Item> DUCKWEED_ITEM = ITEMS_DEFERRED_REGISTRY.register("duckweed", () -> new DuckweedPlantItem(AddonBlocks.DUCKWEED.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> FILLED_DISPLAY_TANK_ITEM = ITEMS_DEFERRED_REGISTRY.register("filled_display_tank", () -> new BlockItem(AddonBlocks.FILLED_DISPLAY_TANK.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static void register(IEventBus modEventBus) {
         ITEMS_DEFERRED_REGISTRY.register(modEventBus);
