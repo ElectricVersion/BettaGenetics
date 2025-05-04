@@ -1,22 +1,106 @@
 {
     "variants": {
-        "age=0": {
-            "model": "geneticbettas:block/duckweed"
-        },
-        "age=1": {
-            "model": "geneticbettas:block/duckweed_thick"
-        },
-        "age=2": {
-            "model": "geneticbettas:block/duckweed_thick"
-        },
-        "age=3": {
-            "model": "geneticbettas:block/duckweed_thick"
-        },
-        "age=4": {
-            "model": "geneticbettas:block/duckweed_thick"
-        },
-        "age=5": {
-            "model": "geneticbettas:block/duckweed_thick"
-        }
+        "age=0": [
+            {
+                "model": "geneticbettas:block/duckweed"
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 90
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 180
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 270
+            }
+        ],
+        "age=1": [
+            {
+                "model": "geneticbettas:block/duckweed"
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 90
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 180
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 270
+            }
+        ],
+        "age=2": [
+            {
+                "model": "geneticbettas:block/duckweed"
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 90
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 180
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 270
+            }
+        ],
+        "age=3": [
+            {
+                "model": "geneticbettas:block/duckweed"
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 90
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 180
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 270
+            }
+        ],
+        "age=4": [
+            {
+                "model": "geneticbettas:block/duckweed"
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 90
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 180
+            },
+            {
+                "model": "geneticbettas:block/duckweed",
+                "y": 270
+            }
+        ],
+        "age=5": [
+            {
+                "model": "geneticbettas:block/duckweed_thick"
+            },
+            {
+                "model": "geneticbettas:block/duckweed_thick",
+                "y": 90
+            },
+            {
+                "model": "geneticbettas:block/duckweed_thick",
+                "y": 180
+            },
+            {
+                "model": "geneticbettas:block/duckweed_thick",
+                "y": 270
+            }
+        ]
     }
 }
