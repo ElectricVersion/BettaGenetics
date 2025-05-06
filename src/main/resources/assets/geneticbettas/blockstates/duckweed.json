@@ -2,35 +2,35 @@
     "variants": {
         "age=0": [
             {
-                "model": "geneticbettas:block/duckweed"
+                "model": "geneticbettas:block/sparse_duckweed"
             },
             {
-                "model": "geneticbettas:block/duckweed",
+                "model": "geneticbettas:block/sparse_duckweed",
                 "y": 90
             },
             {
-                "model": "geneticbettas:block/duckweed",
+                "model": "geneticbettas:block/sparse_duckweed",
                 "y": 180
             },
             {
-                "model": "geneticbettas:block/duckweed",
+                "model": "geneticbettas:block/sparse_duckweed",
                 "y": 270
             }
         ],
         "age=1": [
             {
-                "model": "geneticbettas:block/duckweed"
+                "model": "geneticbettas:block/sparse_duckweed"
             },
             {
-                "model": "geneticbettas:block/duckweed",
+                "model": "geneticbettas:block/sparse_duckweed",
                 "y": 90
             },
             {
-                "model": "geneticbettas:block/duckweed",
+                "model": "geneticbettas:block/sparse_duckweed",
                 "y": 180
             },
             {
-                "model": "geneticbettas:block/duckweed",
+                "model": "geneticbettas:block/sparse_duckweed",
                 "y": 270
             }
         ],

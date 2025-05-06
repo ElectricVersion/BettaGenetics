@@ -1,0 +1,7 @@
+{
+	"textures": {
+		"0": "geneticbettas:block/sparse_duckweed",
+		"particle": "geneticbettas:block/sparse_duckweed"
+	},
+    "parent": "geneticbettas:block/duckweed"
+}
