@@ -20,6 +20,11 @@
                   "source": "EntityData",
                   "target": "BlockEntityTag.EntityData",
                   "op": "replace"
+                },
+                {
+                  "source": "EntityData.display.Name",
+                  "target": "display.Lore",
+                  "op": "append"
                 }
               ]
             }

@@ -29,7 +29,13 @@ public class AddonBlockLootTables extends BlockLoot {
     }
 
     protected static LootTable.Builder createFilledTankDrop(Block block) {
-        return LootTable.lootTable().withPool((LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(block).apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("EntityData", "BlockEntityTag.EntityData")))));
+        return LootTable.lootTable().withPool((LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(
+                LootItem.lootTableItem(block)
+                        .apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
+                        .apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
+                        .copy("EntityData", "BlockEntityTag.EntityData")
+                        .copy("EntityData.display.Name", "display.Lore", CopyNbtFunction.MergeStrategy.APPEND)
+                        ))));
     }
 
     @Override
