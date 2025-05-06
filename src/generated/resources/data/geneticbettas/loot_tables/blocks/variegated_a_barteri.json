@@ -7,7 +7,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "geneticbettas:display_tank"
+          "name": "geneticbettas:variegated_a_barteri"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
         }
       ]
     }
