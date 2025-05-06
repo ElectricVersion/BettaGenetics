@@ -29,7 +29,7 @@ public class BettaPhenotype implements Phenotype {
         float pectoralFinWidth = 0.75F;
         if (gene[56] == 2 && gene[57] == 2) {
             dumbo = true;
-            float dumboFinMult = (gene[240]+gene[241]-2)*0.25F;
+            float dumboFinMult = (gene[238]+gene[239]-2)*0.125F;
             pectoralFinHeight = 0.8F+dumboFinMult;
             pectoralFinWidth = 0.75F+(dumboFinMult*0.75F);
         }
