@@ -25,9 +25,15 @@ public class BettaPhenotype implements Phenotype {
 
         bodyScaleY = isFemale ? 1F : 0.95F;
 
+        float pectoralFinHeight = 0.75F;
+        float pectoralFinWidth = 0.75F;
         if (gene[56] == 2 && gene[57] == 2) {
             dumbo = true;
+            float dumboFinMult = (gene[240]+gene[241]-2)*0.25F;
+            pectoralFinHeight = 0.8F+dumboFinMult;
+            pectoralFinWidth = 0.75F+(dumboFinMult*0.75F);
         }
+
         if (gene[62] == 2 || gene[63] == 2) {
             dorsalWidth = 1.09375F;
             if (gene[62] == gene[63]) {
@@ -48,7 +54,7 @@ public class BettaPhenotype implements Phenotype {
         float finScaleMult = isFemale ? 0.75F : 1F;
 
         tailFinScalings = ModelHelper.createScalings(1F, 1F, 1F, 0F, 0F, (isFemale && !doubleTail) ? -1F/16F : 0F);
-        pectoralFinScalings = ModelHelper.createScalings(1F, dumbo ? 0.8F : 0.75F, 0.75F, 0F, 0F, 0F);
+        pectoralFinScalings = ModelHelper.createScalings(1F, pectoralFinHeight, pectoralFinWidth, 0F, 0F, 0F);
         dorsalFinScalings = ModelHelper.createScalings(1F, isFemale ? 0.725F : 1F, finScaleMult*dorsalWidth, 0F, 0F, 0F);
         ventralFinScalings = ModelHelper.createScalings(1F, isFemale ? 0.725F : 1F, finScaleMult, 0F, 0F, 0F);
         bottomFinFrontScalings = ModelHelper.createScalings(1F, finScaleMult, isFemale ? 0.875F : 1F, 0F, 0F, 0F);
