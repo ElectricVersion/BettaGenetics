@@ -3,6 +3,7 @@ package elecvrsn.GeneticBettas.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -11,6 +12,8 @@ import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -25,10 +28,11 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 public class DuckweedPlant extends BushBlock implements BonemealableBlock {
     protected static final VoxelShape AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.5D, 16.0D);
     public static final IntegerProperty AGE = AGE_5;
+    public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
 
     public DuckweedPlant(BlockBehaviour.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0));
+        this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0).setValue(PERSISTENT, false));
     }
 
     public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
@@ -54,11 +58,11 @@ public class DuckweedPlant extends BushBlock implements BonemealableBlock {
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
-        stateBuilder.add(AGE);
+        stateBuilder.add(AGE).add(PERSISTENT);
     }
 
-    public boolean isRandomlyTicking(BlockState p_48930_) {
-        return p_48930_.getValue(AGE) < 5;
+    public boolean isRandomlyTicking(BlockState state) {
+        return state.getValue(PERSISTENT) && state.getValue(AGE) < 5;
     }
 
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
@@ -78,8 +82,12 @@ public class DuckweedPlant extends BushBlock implements BonemealableBlock {
             if (level.getBlockState(neighboringBlock).isAir()
                     && level.getFluidState(neighboringBlock.below()).getType()==Fluids.WATER
                     && level.getFluidState(neighboringBlock.above()).getType()==Fluids.EMPTY) {
-                level.setBlock(neighboringBlock, this.defaultBlockState(), 3);
+                level.setBlock(neighboringBlock, this.defaultBlockState().setValue(PERSISTENT, true), 3);
             }
         }
+    }
+
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(PERSISTENT, true);
     }
 }
