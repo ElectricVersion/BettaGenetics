@@ -11,6 +11,8 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import static elecvrsn.GeneticBettas.init.AddonEntities.BETTAS;
+
 @Mod.EventBusSubscriber(modid = AddonReference.MODID)
 public class AddonSpawnRegistry {
 
@@ -20,7 +22,7 @@ public class AddonSpawnRegistry {
         BettasCommonConfig.CommonConfig config = BettasCommonConfig.COMMON;
 
         if (event.getCategory() == Biome.BiomeCategory.SWAMP || (event.getCategory() != Biome.BiomeCategory.OCEAN && (climate.precipitation.equals(Biome.Precipitation.RAIN) && climate.temperature >= 0.8F && climate.downfall >= 0.85F))) {
-            event.getSpawns().addSpawn(MobCategory.WATER_CREATURE, new MobSpawnSettings.SpawnerData(AddonEntities.ENHANCED_BETTA.get(), config.bettaSpawnWeight.get(), config.bettaMinimumGroup.get(), config.bettaMaximumGroup.get()));
+            event.getSpawns().addSpawn(BETTAS, new MobSpawnSettings.SpawnerData(AddonEntities.ENHANCED_BETTA.get(), config.bettaSpawnWeight.get(), config.bettaMinimumGroup.get(), config.bettaMaximumGroup.get()));
         }
     }
 }
