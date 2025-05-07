@@ -1980,7 +1980,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public static boolean checkBettaSpawnRules(EntityType<EnhancedBetta> entityType, LevelAccessor accessor, MobSpawnType spawnType, BlockPos pos, Random random) {
         int maxY = 70;
         int minY = 40;
-        return pos.getY() >= minY && pos.getY() <= maxY && accessor.getFluidState(pos.below()).is(FluidTags.WATER) && accessor.getBlockState(pos.above()).is(WATER);
+        return random.nextFloat() > 0.75F && pos.getY() >= minY && pos.getY() <= maxY && accessor.getFluidState(pos.below()).is(FluidTags.WATER) && accessor.getBlockState(pos.above()).is(WATER);
     }
 
     public ImmutableList<Activity> getAdultActivities() {

@@ -40,7 +40,7 @@ public class BettasCommonConfig {
             bettaHatchTime = builder
                     .defineInRange("How long in ticks it takes a Betta egg to hatch, Default is 24000", 24000, 1, Integer.MAX_VALUE);
             bettaSpawnWeight = builder
-                    .defineInRange("How highly Betta spawning is weighted, larger numbers spawn more, Default is 10", 10, 1, 20);
+                    .defineInRange("How highly Betta spawning is weighted, larger numbers spawn more, Default is 5", 5, 1, 20);
             bettaMinimumGroup = builder
                     .defineInRange("The minimum number of Bettas you want to find in a group at spawn, Default is 4", 4, 1, 60);
             bettaMaximumGroup = builder
