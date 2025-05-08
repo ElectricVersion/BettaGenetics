@@ -20,8 +20,8 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
     int WTC = BettasCommonConfig.COMMON.bettaWildTypeChance.get();
     public BettaGeneticsInitialiser() {
 //        this.breeds.add(BettaBreeds.GENERIC);
-        this.breeds.add(BettaBreeds.NEUTRAL);
-        this.breeds.add(BettaBreeds.AGGRESSIVE);
+//        this.breeds.add(BettaBreeds.NEUTRAL);
+//        this.breeds.add(BettaBreeds.AGGRESSIVE);
         this.breeds.add(BettaBreeds.PASSIVE);
         this.breeds.add(BettaBreeds.MAXRUFOUS);
         this.breeds.add(BettaBreeds.MINRUFOUS);
@@ -31,7 +31,7 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         this.breeds.add(BettaBreeds.MUSTARDGAS);
         this.breeds.add(BettaBreeds.BLUEMARBLE);
         this.breeds.add(BettaBreeds.SALAMANDER);
-        this.breeds.add(BettaBreeds.NEMOKOI);
+        this.breeds.add(BettaBreeds.NEMO);
     }
 
     List<Breed> breeds = new ArrayList<>();
