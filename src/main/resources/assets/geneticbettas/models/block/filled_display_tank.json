@@ -15,7 +15,7 @@
         },
         "translucent": {
             "textures": {
-                "water": "block/water_still"
+                "water": "geneticbettas:block/tank_water"
             },
             "parent": "geneticbettas:block/display_tank_water",
             "elements": []
