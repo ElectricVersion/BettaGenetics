@@ -61,7 +61,7 @@ public class FilledDisplayTankBlock extends BaseEntityBlock {
     public static void fillWithEntityTag(Level level, BlockPos pos, BlockState state, ItemStack stack) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof FilledDisplayTankBlockEntity && state.is(AddonBlocks.FILLED_DISPLAY_TANK.get())) {
-            ((FilledDisplayTankBlockEntity)blockEntity).setDisplayEntityTag(stack.getOrCreateTag().copy());
+            ((FilledDisplayTankBlockEntity)blockEntity).setEntityTag(stack.getOrCreateTag().copy());
             blockEntity.setChanged();
         }
     }
@@ -70,11 +70,11 @@ public class FilledDisplayTankBlock extends BaseEntityBlock {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() == Items.WATER_BUCKET || stack.getItem() == Items.BUCKET) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof FilledDisplayTankBlockEntity) {
+            if (!level.isClientSide() && blockEntity instanceof FilledDisplayTankBlockEntity) {
                     if (((FilledDisplayTankBlockEntity) blockEntity).hasEntityTag()) {
                         boolean isEmptyBucket = stack.getItem() == Items.BUCKET;
-                        EnhancedBettaBucket.bucketMobPickupAllowEmpty(player, hand, ((FilledDisplayTankBlockEntity) blockEntity).getOrCreateDisplayEntity(level));
-                        ((FilledDisplayTankBlockEntity) blockEntity).setDisplayEntityTag(null);
+                        EnhancedBettaBucket.bucketMobPickupAllowEmpty(player, hand, ((FilledDisplayTankBlockEntity) blockEntity).getOrCreateDisplayEntity());
+                        ((FilledDisplayTankBlockEntity) blockEntity).setEntityTag(null);
                         if (isEmptyBucket) {
                             //If the bucket was empty we need to take the water as well as the fish
                             level.setBlock(pos, AddonBlocks.DISPLAY_TANK.get().withPropertiesOf(state), 2);
@@ -84,11 +84,11 @@ public class FilledDisplayTankBlock extends BaseEntityBlock {
                         level.setBlock(pos, AddonBlocks.DISPLAY_TANK.get().withPropertiesOf(state), 2);
                         player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.WATER_BUCKET)));
                     }
-                if (!level.isClientSide()) level.sendBlockUpdated(pos, state, state, 2);
-                return InteractionResult.SUCCESS;
+                level.sendBlockUpdated(pos, state, state, 2);
             }
+            return InteractionResult.sidedSuccess(level.isClientSide());
         }
-        return InteractionResult.FAIL;
+        return InteractionResult.PASS;
     }
 
 }

@@ -23,7 +23,7 @@ public class RenderFilledDisplayTank<T extends FilledDisplayTankBlockEntity> imp
     }
 
     private void renderEntity(T blockEntity, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight) {
-        Entity entity = blockEntity.getOrCreateDisplayEntity(blockEntity.getLevel());
+        Entity entity = blockEntity.getOrCreateDisplayEntity();
         if (entity != null) {
             EntityRenderDispatcher renderer = Minecraft.getInstance().getEntityRenderDispatcher();
 

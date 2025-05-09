@@ -101,7 +101,7 @@ public class EnhancedBettaBucket extends MobBucketItem {
     }
 
     public static EnhancedBetta spawnBetta(Level level, CompoundTag tag, BlockPos pos) {
-        EnhancedBetta betta = ENHANCED_BETTA.get().create(level);
+            EnhancedBetta betta = ENHANCED_BETTA.get().create(level);
         if (betta == null) {
             return null;
         }
@@ -178,7 +178,7 @@ public class EnhancedBettaBucket extends MobBucketItem {
                 player.setItemInHand(context.getHand(), !player.getAbilities().instabuild ? new ItemStack(successItemStack) : context.getItemInHand());
                 this.playEmptySound(player, level, blockPos);
             }
-            return InteractionResult.SUCCESS;
+            return InteractionResult.sidedSuccess(level.isClientSide());
         }
         return InteractionResult.PASS;
     }
