@@ -361,12 +361,6 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
                     boolean isMoving = entityIn.yOld != entityIn.getY() && (entityIn.xOld != entityIn.getX() || entityIn.zOld != entityIn.getZ());
                     yDelta = isMoving ? (float) clamp(-entityIn.getDeltaMovement().y, -0.5, 0.5) * Mth.HALF_PI : 0F;
 
-                    if (this.bettaModelData.bubblingTimer <= ageInTicks) {
-                        bettaModelData.bubblingTimer = (int) ageInTicks + entityIn.getRandom().nextInt(600) + 30;
-                    } else if (this.bettaModelData.bubblingTimer <= ageInTicks + 10) {
-                        setupBubbleAnimation(ageInTicks, headPitch);
-                    }
-
                     if (isMoving) {
                         this.setupSwimmingAnimation(ageInTicks);
                     } else {
@@ -399,11 +393,6 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         this.theFinRight.setYRot(-Mth.HALF_PI*0.5F + (f3 * (float)Mth.HALF_PI*0.15F));
     }
 
-    private void setupBubbleAnimation(float ageInTicks, float headPitch) {
-        if (this.bettaModelData != null) {
-            this.bettaModelData.isBubbling = true;
-        }
-    }
 
     private void setupFlareAnimation(boolean open) {
         if (theGillLeft.getYRot() < (-Mth.HALF_PI)+0.025F) { //Only check left gill because they move together

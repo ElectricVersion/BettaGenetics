@@ -102,6 +102,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     private static final int BETTA_TOTAL_AIR_SUPPLY = 2000;
 
+    private boolean isBubbling = false;
+    private int bubblingTimer = 0;
     private boolean isInTank;
     private TextureGrouping transRootGroup;
 
@@ -1623,15 +1625,21 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public void aiStep() {
         if (!this.isInWater() && this.onGround && this.verticalCollision) {
             //The flop on land
-            this.setDeltaMovement(this.getDeltaMovement().add((double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F), (double)0.4F, (double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
+            this.setDeltaMovement(this.getDeltaMovement().add((double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F), (double) 0.4F, (double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
             this.onGround = false;
             this.hasImpulse = true;
             this.playSound(this.getFlopSound(), this.getSoundVolume(), this.getVoicePitch());
         } else if (this.isAnimalSleeping() && !this.onGround) {
             this.setDeltaMovement(this.getDeltaMovement().add(0.0, this.brain.hasMemoryValue(AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get()) ? -0.001 : -0.01, 0.0));
+        } else {
+            if (bubblingTimer <= this.tickCount) {
+                bubblingTimer = tickCount + this.getRandom().nextInt(600) + 30;
+            } else if (bubblingTimer <= tickCount + 10) {
+                isBubbling = true;
+            }
+            bubble();
         }
         super.aiStep();
-        bubble();
     }
 
     private SoundEvent getFlopSound() {
@@ -1759,14 +1767,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     public void bubble() {
-        if (this.bettaModelData != null && bettaModelData.isBubbling) {
+        if (isBubbling) {
             if (this.isInWater()) {
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
                 this.level.addParticle(ParticleTypes.BUBBLE, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
             }
-            bettaModelData.isBubbling = false;
+            isBubbling = false;
         }
     }
 

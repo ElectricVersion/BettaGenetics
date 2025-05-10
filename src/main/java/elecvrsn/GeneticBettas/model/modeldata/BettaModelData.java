@@ -6,7 +6,4 @@ public class BettaModelData extends AnimalModelData {
     public BettaPhenotype getPhenotype() {
         return (BettaPhenotype) this.phenotype;
     }
-    public int bubblingTimer = 0;
-    public boolean isBubbling = false;
-    public boolean isFlaring = false;
 }
