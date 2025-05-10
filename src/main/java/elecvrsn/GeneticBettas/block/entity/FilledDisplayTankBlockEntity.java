@@ -6,8 +6,6 @@ import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -42,7 +40,10 @@ public class FilledDisplayTankBlockEntity extends BlockEntity {
     public void setEntityTag(CompoundTag nbtData) {
         if (level != null && !level.isClientSide()) {
             entityTag = nbtData;
-//            getOrCreateDisplayEntity();
+            if (displayEntity != null) {
+                displayEntity.remove(DISCARDED);
+                displayEntity = null;
+            }
             setChanged();
             level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
         }
