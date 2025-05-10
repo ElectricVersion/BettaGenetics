@@ -1769,10 +1769,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public void bubble() {
         if (isBubbling) {
             if (this.isInWater()) {
-                double d0 = this.random.nextGaussian() * 0.02D;
-                double d1 = this.random.nextGaussian() * 0.02D;
-                double d2 = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(ParticleTypes.BUBBLE, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+                double dX = this.random.nextGaussian() * 0.02D;
+                double dY = this.random.nextGaussian() * 0.02D;
+                double dZ = this.random.nextGaussian() * 0.02D;
+                this.level.addParticle(ParticleTypes.BUBBLE, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), dX, dY, dZ);
             }
             isBubbling = false;
         }
