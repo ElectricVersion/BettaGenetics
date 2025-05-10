@@ -3,7 +3,7 @@
   "required": true,
   "compatibilityLevel": "JAVA_17",
   "package": "elecvrsn.GeneticBettas.mixins",
-  "mixins": [
+  "client": [
     "MixinTextureGrouping"
   ]
 }
