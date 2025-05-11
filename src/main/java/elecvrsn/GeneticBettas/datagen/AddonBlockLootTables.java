@@ -1,4 +1,5 @@
 package elecvrsn.GeneticBettas.datagen;
+import elecvrsn.GeneticBettas.block.BubbleNestBlock;
 import elecvrsn.GeneticBettas.block.FilledDisplayTankBlock;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import net.minecraft.data.loot.BlockLoot;
@@ -20,6 +21,9 @@ public class AddonBlockLootTables extends BlockLoot {
         ) {
             if (i instanceof FilledDisplayTankBlock) {
                 this.add(i, createFilledTankDrop(i));
+            }
+            else if (i instanceof BubbleNestBlock) {
+                this.add(i, noDrop());
             }
             else {
                 this.dropSelf(i);
