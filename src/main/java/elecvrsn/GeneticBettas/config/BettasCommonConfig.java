@@ -34,18 +34,25 @@ public class BettasCommonConfig {
         public CommonConfig(ForgeConfigSpec.Builder builder) {
             builder.push("betta");
             bettaWildTypeChance = builder
-                    .defineInRange("How random the genes should be, 100 is all wildtype animals, 0 is completely random which often results in all white animals:", 90, 0, 100);
+                    .comment("Default: 90")
+                    .defineInRange("How random the genes should be, 100 is all wildtype animals, 0 is completely random:", 90, 0, 100);
             bettaAdultAge = builder
-                    .defineInRange("How many ticks it takes for a Betta to become an adult, 24000 = 1 Minecraft Day:", 60000, 1, Integer.MAX_VALUE);
+                    .comment("Default: 48000")
+                    .defineInRange("How many ticks it takes for a Betta to become an adult:", 48000, 1, Integer.MAX_VALUE);
             bettaHatchTime = builder
-                    .defineInRange("How long in ticks it takes a Betta egg to hatch, Default is 24000", 24000, 1, Integer.MAX_VALUE);
+                    .comment("Default: 24000")
+                    .defineInRange("How many ticks it takes a Betta egg to hatch:", 24000, 1, Integer.MAX_VALUE);
             bettaSpawnWeight = builder
-                    .defineInRange("How highly Betta spawning is weighted, larger numbers spawn more, Default is 10", 5, 1, 20);
+                    .comment("Default: 10")
+                    .defineInRange("How highly Betta spawning is weighted, larger numbers spawn more:", 5, 1, 20);
             bettaMinimumGroup = builder
-                    .defineInRange("The minimum number of Bettas you want to find in a group at spawn, Default is 4", 4, 1, 60);
+                    .comment("Default: 4")
+                    .defineInRange("The minimum number of Bettas you want to find in a group at spawn:", 4, 1, 60);
             bettaMaximumGroup = builder
-                    .defineInRange("The maximum number of Bettas you want to find in a group at spawn, Default is 6", 6, 1, 60);
+                    .comment("Default: 6")
+                    .defineInRange("The maximum number of Bettas you want to find in a group at spawn", 6, 1, 60);
             replaceOtherBettas = builder
+                    .comment("Default: false \nNOTE: I do not recommend enabling betta replacement unless you've disabled spawns for your other betta mod (e.g. DragN's or Coda's respective betta mods). Genetic bettas don't despawn, so you will get far too many spawns otherwise!")
                     .define("Replace Bettas from other mods", false);
             builder.pop();
         }
