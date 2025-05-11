@@ -80,7 +80,8 @@ import static elecvrsn.GeneticBettas.util.ColorUtil.getHSBFromHex;
 import static net.minecraft.world.level.block.Blocks.WATER;
 
 public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable {
-    public static String speciesTranslationKey = "entity.geneticbettas.enhanced_betta";
+    public static final String speciesTranslationKey = "entity.eanimod.enhanced_betta";
+
     protected static final ImmutableList<? extends SensorType<? extends Sensor<? super EnhancedBetta>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, AddonSensorTypes.BETTA_ATTACKABLES.get(), AddonSensorTypes.BETTA_TRUSTABLES.get(), AddonSensorTypes.BETTA_FOOD_TEMPTATIONS.get());
     protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(
             AddonMemoryModuleTypes.SLEEPING.get(), AddonMemoryModuleTypes.PAUSE_BRAIN.get(), AddonMemoryModuleTypes.FOCUS_BRAIN.get(),
@@ -444,7 +445,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     protected String getSpecies() {
-        return I18n.get(speciesTranslationKey);
+        return speciesTranslationKey;
     }
 
     @Override
