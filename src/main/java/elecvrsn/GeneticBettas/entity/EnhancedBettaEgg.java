@@ -2,7 +2,6 @@ package elecvrsn.GeneticBettas.entity;
 
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
-import mokiyoki.enhancedanimals.config.GeneticAnimalsConfig;
 import mokiyoki.enhancedanimals.util.Genes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -23,8 +22,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
@@ -38,7 +35,6 @@ public class EnhancedBettaEgg extends Entity {
     private static final EntityDataAccessor<String> DAM = SynchedEntityData.<String>defineId(EnhancedBettaEgg.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> HATCH_TIME = SynchedEntityData.<Integer>defineId(EnhancedBettaEgg.class, EntityDataSerializers.INT);
     private boolean hasParents = false;
-    private int animationTicks = this.level.isClientSide ? this.random.nextInt(500) : 0;
     public EnhancedBettaEgg(EntityType<? extends EnhancedBettaEgg> entityType, Level level) {
         super(entityType, level);
         setHatchTime(BettasCommonConfig.COMMON.bettaHatchTime.get());
@@ -51,26 +47,23 @@ public class EnhancedBettaEgg extends Entity {
             this.getEntityData().set(GENES, "INFERTILE");
         }
     }
-    public void setGenes(String genes) {
-        this.getEntityData().set(GENES, genes);
-    }
 
     public String getGenes() {
         return this.entityData.get(GENES);
     }
 
     public void setParentNames(String sireName, String damName) {
-        if (sireName!=null && !sireName.equals("")) {
+        if (sireName!=null && !sireName.isEmpty()) {
             this.getEntityData().set(SIRE, sireName);
         }
-        if (damName!=null && !damName.equals("")) {
+        if (damName!=null && !damName.isEmpty()) {
             this.getEntityData().set(DAM, damName);
         }
     }
 
     public String getSire() {
         String sireName = this.entityData.get(SIRE);
-        if (sireName!=null && !sireName.equals("")) {
+        if (sireName!=null && !sireName.isEmpty()) {
             return sireName;
         } else {
             return "???";
@@ -79,7 +72,7 @@ public class EnhancedBettaEgg extends Entity {
 
     public String getDam() {
         String damName = this.entityData.get(DAM);
-        if (damName!=null && !damName.equals("")) {
+        if (damName!=null && !damName.isEmpty()) {
             return damName;
         } else {
             return "???";
@@ -159,10 +152,6 @@ public class EnhancedBettaEgg extends Entity {
         } else if (this.getHatchTime() > 0){
             this.setHatchTime(this.getHatchTime() - 1);
         }
-
-        if (this.level.isClientSide && this.fallDistance == 0.0F && this.isInWater()) {
-            this.animationTicks++;
-        }
     }
 
     public static boolean isEggAttachableBlock(BlockState blockState) {
@@ -224,6 +213,8 @@ public class EnhancedBettaEgg extends Entity {
     private void createAndSpawnChild() {
         this.playSound(SoundEvents.SLIME_BLOCK_HIT, 1.0F, 1.0F);
         EnhancedBetta betta = ENHANCED_BETTA.get().create(level);
+        if (betta == null) return; // Prevent a server-crashing null pointer error, just in case
+
         if (!this.getGenes().isEmpty() && !this.getGenes().equals("INFERTILE")) {
             betta.setGenes(new Genes(this.getGenes()));
             betta.setSharedGenes(new Genes(this.getGenes()));
@@ -248,9 +239,9 @@ public class EnhancedBettaEgg extends Entity {
 
     @Override
     protected void defineSynchedData() {
-        this.getEntityData().define(GENES, new String());
-        this.getEntityData().define(SIRE, new String());
-        this.getEntityData().define(DAM, new String());
+        this.getEntityData().define(GENES, "");
+        this.getEntityData().define(SIRE, "");
+        this.getEntityData().define(DAM, "");
         this.getEntityData().define(HATCH_TIME, -1);
     }
 
@@ -274,11 +265,6 @@ public class EnhancedBettaEgg extends Entity {
         compound.putString("DamName", this.getDam());
         compound.putBoolean("hasParents", this.hasParents);
         compound.putInt("HatchTime", this.getHatchTime());
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public int getAddAnimationTick() {
-        return this.animationTicks;
     }
 
     @Override
