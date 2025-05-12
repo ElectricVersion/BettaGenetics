@@ -288,7 +288,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     };
 
     private static final String[] TEXTURES_BABY = new String[]{
-            "", "baby_stripes.png"
+            "", "baby/baby_stripes.png"
     };
     private static final String[] TEXTURES_DUMBO_BUTTERFLY = new String[]{
             "", "butterfly/dumbo_low.png", "butterfly/dumbo_med.png", "butterfly/dumbo_high.png", "butterfly/dumbo_max.png",
@@ -1451,15 +1451,15 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             }
             /** DETAILS **/
             TextureGrouping shadingGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(shadingGroup, "body_shading.png", true);
+            addTextureToAnimalTextureGrouping(shadingGroup, "detail/body_shading.png", true);
             pigmentGroup.addGrouping(shadingGroup);
             /** IRIDESCENCE **/
             TextureGrouping iridescenceGroup = new TextureGrouping(TexturingType.MASK_GROUP);
             iridescenceGroup.addGrouping(iriAlphaGroup);
             TextureGrouping iriColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_base.png", "iri", iriRGB);
-            addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_dark.png", "iri-d", iriDarkRGB);
-            addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri_light.png", "iri-l", iriLightRGB);
+            addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri/iri_base.png", "iri", iriRGB);
+            addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri/iri_dark.png", "iri-d", iriDarkRGB);
+            addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri/iri_light.png", "iri-l", iriLightRGB);
             iridescenceGroup.addGrouping(iriColorGroup);
             if (pastelOpaque) {
                 TextureGrouping opaqueGroup = new TextureGrouping(TexturingType.MASK_GROUP);
@@ -1467,10 +1467,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 addTextureToAnimalTextureGrouping(opaqueAlphaGroup, TEXTURES_MARBLE, marbleOpaqueQual, marbleOpaqueSize, marbleOpaqueRand, true);
                 opaqueGroup.addGrouping(opaqueAlphaGroup);
                 TextureGrouping opaqueColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri_base.png", "op", opaqueRGB);
-                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri_dark.png", "op-d", opaqueDarkRGB);
-                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri_light.png", "op-l", opaqueLightRGB);
-                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "body_shading_iri.png", "op-s", opaqueDarkRGB);
+                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri/iri_base.png", "op", opaqueRGB);
+                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri/iri_dark.png", "op-d", opaqueDarkRGB);
+                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri/iri_light.png", "op-l", opaqueLightRGB);
+                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "detail/body_shading_iri.png", "op-s", opaqueDarkRGB);
                 opaqueGroup.addGrouping(opaqueColorGroup);
                 iridescenceGroup.addGrouping(opaqueGroup);
             }
@@ -1509,7 +1509,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             texturesGroup.addGrouping(nonCellophaneGroup);
             /** FIN DETAIL **/
             TextureGrouping detailGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(detailGroup, "halfmoon_fins_64.png", true);
+            addTextureToAnimalTextureGrouping(detailGroup, "detail/halfmoon_fins_64.png", true);
             texturesGroup.addGrouping(detailGroup);
             /** EYES **/
             TextureGrouping eyeGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
