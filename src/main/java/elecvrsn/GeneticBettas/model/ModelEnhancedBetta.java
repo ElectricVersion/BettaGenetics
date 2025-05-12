@@ -84,7 +84,9 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
 
         theBodyFront = new WrappedModelPart(bBodyF, "bBodyF");
         bodyFront = new WrappedModelPart("bodyF", bBodyF);
+        collar = new WrappedModelPart("collar", bBodyF);
         theBodyFront.addChild(bodyFront);
+        theBodyFront.addChild(collar);
         theBetta.addChild(theBodyFront);
 
         theBodyBack = new WrappedModelPart(bBodyB, "bBodyB");
@@ -174,6 +176,12 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
         bBodyFront.addOrReplaceChild("bodyF", CubeListBuilder.create()
                         .texOffs(1, 1)
                         .addBox(-1F, 2F, -2F, 2, 4, 4),
+                PartPose.ZERO
+        );
+
+        bBodyFront.addOrReplaceChild("collar", CubeListBuilder.create()
+                        .texOffs(2, 37)
+                        .addBox(-1F, 2F, -1F, 2, 4, 1, new CubeDeformation(0.05F)),
                 PartPose.ZERO
         );
 
