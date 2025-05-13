@@ -25,6 +25,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 import java.util.Random;
 
+import static elecvrsn.GeneticBettas.init.AddonBlockTags.AQUATIC_PLANT_PLACEABLE;
+
 public class SmallTankPlant extends BushBlock implements BonemealableBlock, SimpleWaterloggedBlock {
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     protected static final float AABB_OFFSET = 6.0F;
@@ -44,7 +46,7 @@ public class SmallTankPlant extends BushBlock implements BonemealableBlock, Simp
     }
 
     private boolean isGroundPlaceable(BlockState state) {
-        return state.is(BlockTags.DIRT) || state.is(BlockTags.SAND) || state.is(Blocks.GRAVEL) || state.is(Blocks.FARMLAND);
+        return state.is(BlockTags.DIRT) || state.is(BlockTags.SAND) || state.is(AQUATIC_PLANT_PLACEABLE);
     }
 
     public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
