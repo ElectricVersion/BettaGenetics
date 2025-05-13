@@ -1,6 +1,7 @@
 package elecvrsn.GeneticBettas.block;
 
 import elecvrsn.GeneticBettas.block.entity.FilledDisplayTankBlockEntity;
+import elecvrsn.GeneticBettas.entity.genetics.BettaGeneticsInitialiser;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import net.minecraft.core.BlockPos;
@@ -61,6 +62,10 @@ public class FilledDisplayTankBlock extends BaseEntityBlock {
     public static void fillWithEntityTag(Level level, BlockPos pos, BlockState state, ItemStack stack) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof FilledDisplayTankBlockEntity && state.is(AddonBlocks.FILLED_DISPLAY_TANK.get())) {
+            if (stack.getTag() == null || EnhancedBettaBucket.getGenes(stack.getTag()).getNumberOfAutosomalGenes() == 0) {
+                // If no gene, set breed when unbucketed to make sure the genes dont shuffle
+                EnhancedBettaBucket.setGenes(stack, new BettaGeneticsInitialiser().generateWithBreed(level, pos, "WanderingTrader"));
+            }
             ((FilledDisplayTankBlockEntity)blockEntity).setEntityTag(stack.getOrCreateTag().copy());
             blockEntity.setChanged();
         }
