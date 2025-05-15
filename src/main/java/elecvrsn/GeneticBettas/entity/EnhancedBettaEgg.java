@@ -2,6 +2,7 @@ package elecvrsn.GeneticBettas.entity;
 
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
+import elecvrsn.GeneticBettas.items.EnhancedBettaEggBucket;
 import mokiyoki.enhancedanimals.util.Genes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -10,11 +11,15 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -27,6 +32,7 @@ import net.minecraftforge.network.NetworkHooks;
 import java.util.List;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
+import static elecvrsn.GeneticBettas.init.AddonItems.ENHANCED_BETTA_EGG_BUCKET;
 import static net.minecraft.world.level.material.Fluids.WATER;
 
 public class EnhancedBettaEgg extends Entity {
@@ -46,6 +52,10 @@ public class EnhancedBettaEgg extends Entity {
         } else {
             this.getEntityData().set(GENES, "INFERTILE");
         }
+    }
+
+    public void setGenes(String genes) {
+        this.getEntityData().set(GENES, genes);
     }
 
     public String getGenes() {
@@ -108,24 +118,23 @@ public class EnhancedBettaEgg extends Entity {
         }
     }
 
-//    public InteractionResult interact(Player player, InteractionHand interactionHand) {
-//        if (this.level.isClientSide) {
-//            return InteractionResult.SUCCESS;
-//        } else {
-//            ItemStack itemStack = player.getItemInHand(interactionHand);
-//            if (!itemStack.isEmpty() && itemStack.is(Items.WATER_BUCKET)) {
-//                this.discard();
-//                itemStack = new ItemStack(ModItems.ENHANCED_AXOLOTL_EGG_BUCKET.get());
-//                EnhancedAxolotlEggBucket.setData(itemStack, this.getSire(), this.getDam(), this.getGenes(), this.getHatchTime());
-//                if (this.hasCustomName()) {
-//                    itemStack.setHoverName(this.getCustomName());
-//                }
-//                player.setItemInHand(interactionHand, itemStack);
-//            }
-//
-//            return InteractionResult.CONSUME;
-//        }
-//    }
+    public InteractionResult interact(Player player, InteractionHand interactionHand) {
+        if (this.level.isClientSide) {
+            return InteractionResult.SUCCESS;
+        } else {
+            ItemStack itemStack = player.getItemInHand(interactionHand);
+            if (!itemStack.isEmpty() && itemStack.is(Items.WATER_BUCKET)) {
+                this.discard();
+                itemStack = new ItemStack(ENHANCED_BETTA_EGG_BUCKET.get());
+                EnhancedBettaEggBucket.setData(itemStack, this.getSire(), this.getDam(), this.getGenes(), this.getHatchTime());
+                if (this.hasCustomName()) {
+                    itemStack.setHoverName(this.getCustomName());
+                }
+                player.setItemInHand(interactionHand, itemStack);
+            }
+            return InteractionResult.CONSUME;
+        }
+    }
 
     protected Entity.MovementEmission getMovementEmission() {
         return Entity.MovementEmission.NONE;

@@ -2,6 +2,7 @@ package elecvrsn.GeneticBettas.init;
 
 import elecvrsn.GeneticBettas.items.DuckweedPlantItem;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
+import elecvrsn.GeneticBettas.items.EnhancedBettaEggBucket;
 import elecvrsn.GeneticBettas.util.AddonReference;
 import mokiyoki.enhancedanimals.EnhancedAnimals;
 import net.minecraft.sounds.SoundEvents;
@@ -22,6 +23,7 @@ public class AddonItems {
     public static final RegistryObject<Item> FISH_FOOD = ITEMS_DEFERRED_REGISTRY.register("fish_food", () ->  new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> BETTA = ITEMS_DEFERRED_REGISTRY.register("betta", () ->  new Item(new Item.Properties().tab(CreativeModeTab.TAB_FOOD).food((new FoodProperties.Builder()).nutrition(1).saturationMod(0.1F).build())));
     public static final RegistryObject<Item> ENHANCED_BETTA_BUCKET = ITEMS_DEFERRED_REGISTRY.register("enhanced_betta_bucket", () -> new EnhancedBettaBucket(new Item.Properties().stacksTo(1), AddonEntities.ENHANCED_BETTA, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH));
+    public static final RegistryObject<Item> ENHANCED_BETTA_EGG_BUCKET = ITEMS_DEFERRED_REGISTRY.register("enhanced_betta_egg_bucket", () -> new EnhancedBettaEggBucket(new Item.Properties().stacksTo(1), AddonEntities.ENHANCED_BETTA_EGG, () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH));
     public static final RegistryObject<Item> BUBBLE_NEST_ITEM = ITEMS_DEFERRED_REGISTRY.register("bubble_nest", () -> new BlockItem(AddonBlocks.BUBBLE_NEST.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> TANK_GLASS_ITEM = ITEMS_DEFERRED_REGISTRY.register("tank_glass", () -> new BlockItem(AddonBlocks.TANK_GLASS.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> DISPLAY_TANK_ITEM = ITEMS_DEFERRED_REGISTRY.register("display_tank", () -> new BlockItem(AddonBlocks.DISPLAY_TANK.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
