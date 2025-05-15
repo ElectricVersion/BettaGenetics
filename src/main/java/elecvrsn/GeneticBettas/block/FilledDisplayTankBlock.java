@@ -6,6 +6,7 @@ import elecvrsn.GeneticBettas.init.AddonBlocks;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -73,8 +74,8 @@ public class FilledDisplayTankBlock extends BaseEntityBlock {
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         ItemStack stack = player.getItemInHand(hand);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         if (stack.getItem() == Items.WATER_BUCKET || stack.getItem() == Items.BUCKET) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
             if (!level.isClientSide() && blockEntity instanceof FilledDisplayTankBlockEntity) {
                     if (((FilledDisplayTankBlockEntity) blockEntity).hasEntityTag()) {
                         boolean isEmptyBucket = stack.getItem() == Items.BUCKET;
@@ -92,6 +93,17 @@ public class FilledDisplayTankBlock extends BaseEntityBlock {
                 level.sendBlockUpdated(pos, state, state, 2);
             }
             return InteractionResult.sidedSuccess(level.isClientSide());
+        }
+        else if (stack.getItem() == Items.NAME_TAG) {
+            if (stack.hasCustomHoverName()) {
+                if (!level.isClientSide() && blockEntity instanceof FilledDisplayTankBlockEntity &&
+                        ((FilledDisplayTankBlockEntity) blockEntity).hasEntityTag()) {
+                    ((FilledDisplayTankBlockEntity) blockEntity).setName(Component.Serializer.toJson(stack.getHoverName()));
+                    stack.shrink(1);
+                }
+
+                return InteractionResult.sidedSuccess(level.isClientSide());
+            }
         }
         return InteractionResult.PASS;
     }

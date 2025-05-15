@@ -37,6 +37,16 @@ public class FilledDisplayTankBlockEntity extends BlockEntity {
         return entityTag != null && !entityTag.isEmpty();
     }
 
+    public void setName(String name) {
+        if (hasEntityTag()) {
+            CompoundTag addedTag = new CompoundTag();
+            CompoundTag displayTag = new CompoundTag();
+            addedTag.put("display", displayTag);
+            displayTag.putString("Name", name);
+            entityTag.merge(addedTag);
+        }
+    }
+
     public void setEntityTag(CompoundTag nbtData) {
         if (level != null && !level.isClientSide()) {
             entityTag = nbtData;
