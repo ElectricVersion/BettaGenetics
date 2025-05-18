@@ -23,6 +23,8 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 public class FilledDisplayTankBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
@@ -66,6 +68,7 @@ public class FilledDisplayTankBlock extends BaseEntityBlock {
             if (stack.getTag() == null || EnhancedBettaBucket.getGenes(stack.getTag()).getNumberOfAutosomalGenes() == 0) {
                 // If no gene, set breed when unbucketed to make sure the genes dont shuffle
                 EnhancedBettaBucket.setGenes(stack, new BettaGeneticsInitialiser().generateWithBreed(level, pos, "WanderingTrader"));
+                EnhancedBettaBucket.setBettaUUID(stack, UUID.randomUUID().toString());
             }
             ((FilledDisplayTankBlockEntity)blockEntity).setEntityTag(stack.getOrCreateTag().copy());
             blockEntity.setChanged();
