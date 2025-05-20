@@ -181,7 +181,9 @@ public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalM
 
         bBodyFront.addOrReplaceChild("collar", CubeListBuilder.create()
                         .texOffs(2, 37)
-                        .addBox(-1F, 2F, -1F, 2, 4, 1, new CubeDeformation(0.05F)),
+                        .addBox(-1F, 2F, -1F, 2, 4, 1, new CubeDeformation(0.05F))
+                        .texOffs(1, 3)
+                        .addBox(-0.5F, 6.25F, -1F, 1, 1, 1, new CubeDeformation(0.25F)),
                 PartPose.ZERO
         );
 
