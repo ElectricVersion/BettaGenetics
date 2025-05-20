@@ -1832,7 +1832,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     public void setHasEgg(boolean hasEgg) {
         if (hasEgg) {
-            this.getBrain().setMemoryWithExpiry(AddonMemoryModuleTypes.HAS_EGG.get(), true, 500);
+            Genes genes = getGenes();
+            if (genes == null || genes.getAutosomalGene(6) != 2 || genes.getAutosomalGene(7) != 2) {
+                this.getBrain().setMemoryWithExpiry(AddonMemoryModuleTypes.HAS_EGG.get(), true, 500);
+            }
             return;
         }
         this.getBrain().eraseMemory(AddonMemoryModuleTypes.HAS_EGG.get());
