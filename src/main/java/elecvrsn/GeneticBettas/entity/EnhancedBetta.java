@@ -1833,7 +1833,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public void setHasEgg(boolean hasEgg) {
         if (hasEgg) {
             Genes genes = getGenes();
-            if (genes == null || genes.getAutosomalGene(6) != 2 || genes.getAutosomalGene(7) != 2) {
+            if (genes == null) return; // If we can't get the genes then it probably shouldnt be breeding anyway
+            boolean isFertile = genes.getAutosomalGene(6) != 2 || genes.getAutosomalGene(7) != 2 || // Must not be homozygous melano black
+                    (genes.getAutosomalGene(8) == 2 && genes.getAutosomalGene(9) == 2); // OR must have laced black in addition
+            if (isFertile) {
                 this.getBrain().setMemoryWithExpiry(AddonMemoryModuleTypes.HAS_EGG.get(), true, 500);
             }
             return;
