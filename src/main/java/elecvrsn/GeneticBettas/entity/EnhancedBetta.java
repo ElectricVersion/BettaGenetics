@@ -105,7 +105,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     private boolean isBubbling = false;
     private int bubblingTimer = 0;
-    private boolean isInTank;
     private TextureGrouping transRootGroup;
 
     private static final String[] TEXTURES_FIN_ALPHA = new String[]{
@@ -1701,14 +1700,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             this.aggression /= 4;
         }
         return this.aggression;
-    }
-
-    public boolean isInTank() {
-        return isInTank;
-    }
-
-    public void setInTank(boolean inTank) {
-        isInTank = inTank;
     }
 
     class BettaLookControl extends SmoothSwimmingLookControl {
