@@ -28,6 +28,7 @@ public class AddonWorldgenRegistry {
             List<Holder<PlacedFeature>> base =
                     event.getGeneration().getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION);
             base.add(AddonPlacedFeatures.PATCH_DUCKWEED);
+            base.add(AddonPlacedFeatures.PATCH_E_CORDIFOLIUS);
         }
     }
 }
