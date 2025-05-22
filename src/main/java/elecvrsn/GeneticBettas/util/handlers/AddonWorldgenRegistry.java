@@ -29,6 +29,10 @@ public class AddonWorldgenRegistry {
                     event.getGeneration().getFeatures(GenerationStep.Decoration.VEGETAL_DECORATION);
             base.add(AddonPlacedFeatures.PATCH_DUCKWEED);
             base.add(AddonPlacedFeatures.PATCH_E_CORDIFOLIUS);
+            base.add(AddonPlacedFeatures.PATCH_TALL_E_CORDIFOLIUS);
+            base.add(AddonPlacedFeatures.PATCH_A_BARTERI);
+            base.add(AddonPlacedFeatures.PATCH_VARIEGATED_A_BARTERI);
+            base.add(AddonPlacedFeatures.PATCH_V_AMERICANA);
         }
     }
 }
