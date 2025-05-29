@@ -1,6 +1,7 @@
 package elecvrsn.GeneticBettas.world.feature;
 
 import elecvrsn.GeneticBettas.init.AddonBlocks;
+import elecvrsn.GeneticBettas.init.AddonFeatures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.FeatureUtils;
@@ -17,7 +18,7 @@ import net.minecraft.world.level.material.Fluids;
 public class AddonConfiguredFeatures {
     private static Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> aquaticPlantFeature(String name, Block block) {
         return FeatureUtils.register("patch_"+name, Feature.RANDOM_PATCH,
-                new RandomPatchConfiguration(5, 2, 0, PlacementUtils.filtered(Feature.SIMPLE_BLOCK,
+                new RandomPatchConfiguration(3, 15, 1, PlacementUtils.filtered(AddonFeatures.AQUATIC_PLANT.get(),
                         new SimpleBlockConfiguration(BlockStateProvider.simple(block)), BlockPredicate.matchesFluid(Fluids.WATER, BlockPos.ZERO))));
     }
 

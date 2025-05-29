@@ -31,6 +31,7 @@ public class GeneticBettas {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         AddonEntities.register(modEventBus);
+        AddonFeatures.register(modEventBus);
         AddonBlocks.register(modEventBus);
         AddonItems.register(modEventBus);
         AddonSensorTypes.register(modEventBus);
