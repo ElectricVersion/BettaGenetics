@@ -2,10 +2,10 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"0": "geneticbettas:block/spadeleaf_sword_leaf",
-		"1": "geneticbettas:block/tall_spadeleaf_sword_top",
-		"2": "geneticbettas:block/tall_spadeleaf_sword_bottom",
-		"particle": "geneticbettas:block/spadeleaf_sword_leaf"
+		"0": "geneticbettas:block/e_cordifolius_leaf",
+		"1": "geneticbettas:block/tall_e_cordifolius_top",
+		"2": "geneticbettas:block/tall_e_cordifolius_bottom",
+		"particle": "geneticbettas:block/e_cordifolius_leaf"
 	},
 	"elements": [
 		{
@@ -184,5 +184,38 @@
 				"down": {"uv": [9, 2, 14, 8], "texture": "#0"}
 			}
 		}
-	]
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, 2.5, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, 2.5, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_lefthand": {
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [22.5, 22.5, 0],
+			"translation": [0, -4, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"head": {
+			"translation": [0, 10.5, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"fixed": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 0, -8]
+		}
+	}
 }
