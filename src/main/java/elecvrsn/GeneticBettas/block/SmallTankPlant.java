@@ -1,5 +1,6 @@
 package elecvrsn.GeneticBettas.block;
 
+import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -67,7 +68,7 @@ public class SmallTankPlant extends BushBlock implements BonemealableBlock, Simp
     }
 
     public boolean isValidBonemealTarget(BlockGetter blockGetter, BlockPos pos, BlockState state, boolean b) {
-        return true;
+        return BettasCommonConfig.COMMON.allowPlantCloning.get();
     }
 
     public boolean isBonemealSuccess(Level level, Random random, BlockPos pos, BlockState state) {

@@ -29,6 +29,7 @@ public class BettasCommonConfig {
         public final ForgeConfigSpec.IntValue bettaMinimumGroup;
         public final ForgeConfigSpec.IntValue bettaMaximumGroup;
         public final ForgeConfigSpec.BooleanValue replaceOtherBettas;
+        public final ForgeConfigSpec.BooleanValue allowPlantCloning;
 
 
         public CommonConfig(ForgeConfigSpec.Builder builder) {
@@ -54,6 +55,9 @@ public class BettasCommonConfig {
             replaceOtherBettas = builder
                     .comment("Default: false \nNOTE: I do not recommend enabling betta replacement unless you've disabled spawns for your other betta mod (e.g. DragN's or Coda's respective betta mods). Genetic bettas don't despawn, so you will get far too many spawns otherwise!")
                     .define("Replace Bettas from other mods", false);
+            allowPlantCloning = builder
+                    .comment("Default: false")
+                    .define("Allow aquatic plants to be duplicated with bonemeal", false);
             builder.pop();
         }
     }
