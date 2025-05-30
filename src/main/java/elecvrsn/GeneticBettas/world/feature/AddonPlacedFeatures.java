@@ -20,9 +20,9 @@ public class AddonPlacedFeatures {
     public static final Holder<PlacedFeature> PATCH_DUCKWEED = PlacementUtils.register("patch_duckweed", AddonConfiguredFeatures.PATCH_DUCKWEED,
             RarityFilter.onAverageOnceEvery(16), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome());
 
-    public static final Holder<PlacedFeature> PATCH_E_CORDIFOLIUS = PlacementUtils.register("patch_e_cordifolius", AddonConfiguredFeatures.PATCH_E_CORDIFOLIUS, aquaticPlantPlacement(32));
-    public static final Holder<PlacedFeature> PATCH_TALL_E_CORDIFOLIUS = PlacementUtils.register("patch_tall_e_cordifolius", AddonConfiguredFeatures.PATCH_TALL_E_CORDIFOLIUS, aquaticPlantPlacement(32));
-    public static final Holder<PlacedFeature> PATCH_A_BARTERI = PlacementUtils.register("patch_a_barteri", AddonConfiguredFeatures.PATCH_A_BARTERI, aquaticPlantPlacement(32));
-    public static final Holder<PlacedFeature> PATCH_VARIEGATED_A_BARTERI = PlacementUtils.register("patch_variegated_a_barteri", AddonConfiguredFeatures.PATCH_VARIEGATED_A_BARTERI, aquaticPlantPlacement(64));
-    public static final Holder<PlacedFeature> PATCH_V_AMERICANA = PlacementUtils.register("patch_v_americana", AddonConfiguredFeatures.PATCH_V_AMERICANA, aquaticPlantPlacement(32));
+    public static final Holder<PlacedFeature> PATCH_E_CORDIFOLIUS = PlacementUtils.register("patch_e_cordifolius", AddonConfiguredFeatures.PATCH_E_CORDIFOLIUS, aquaticPlantPlacement(12));
+    public static final Holder<PlacedFeature> PATCH_TALL_E_CORDIFOLIUS = PlacementUtils.register("patch_tall_e_cordifolius", AddonConfiguredFeatures.PATCH_TALL_E_CORDIFOLIUS, aquaticPlantPlacement(12));
+    public static final Holder<PlacedFeature> PATCH_A_BARTERI = PlacementUtils.register("patch_a_barteri", AddonConfiguredFeatures.PATCH_A_BARTERI, aquaticPlantPlacement(12));
+    public static final Holder<PlacedFeature> PATCH_VARIEGATED_A_BARTERI = PlacementUtils.register("patch_variegated_a_barteri", AddonConfiguredFeatures.PATCH_VARIEGATED_A_BARTERI, aquaticPlantPlacement(48));
+    public static final Holder<PlacedFeature> PATCH_V_AMERICANA = PlacementUtils.register("patch_v_americana", AddonConfiguredFeatures.PATCH_V_AMERICANA, aquaticPlantPlacement(12));
 }

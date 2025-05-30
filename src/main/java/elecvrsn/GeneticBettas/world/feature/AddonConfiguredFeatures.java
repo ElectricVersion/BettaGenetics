@@ -18,7 +18,7 @@ import net.minecraft.world.level.material.Fluids;
 public class AddonConfiguredFeatures {
     private static Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> aquaticPlantFeature(String name, Block block) {
         return FeatureUtils.register("patch_"+name, Feature.RANDOM_PATCH,
-                new RandomPatchConfiguration(3, 15, 1, PlacementUtils.filtered(AddonFeatures.AQUATIC_PLANT.get(),
+                new RandomPatchConfiguration(8, 16, 0, PlacementUtils.filtered(AddonFeatures.AQUATIC_PLANT.get(),
                         new SimpleBlockConfiguration(BlockStateProvider.simple(block)), BlockPredicate.matchesFluid(Fluids.WATER, BlockPos.ZERO))));
     }
 
