@@ -52,12 +52,16 @@ public class AddonClientEventRegistry {
 
     @SubscribeEvent
     public static void blockColorSetup(ColorHandlerEvent.Block event) {
-        event.getBlockColors().register((p_92621_, p_92622_, p_92623_, p_92624_) -> {
-            return p_92622_ != null && p_92623_ != null ? lightenColor(BiomeColors.getAverageWaterColor(p_92622_, p_92623_)) : -1;
+        event.getBlockColors().register((state, getter, pos, i) -> {
+            return getter != null && pos != null ? lightenColor(BiomeColors.getAverageWaterColor(getter, pos)) : -1;
         }, AddonBlocks.BUBBLE_NEST.get());
-        event.getBlockColors().register((p_92621_, p_92622_, p_92623_, p_92624_) -> {
-            return p_92622_ != null && p_92623_ != null ? BiomeColors.getAverageWaterColor(p_92622_, p_92623_) : -1;
+        event.getBlockColors().register((state, getter, pos, i) -> {
+            return getter != null && pos != null ? BiomeColors.getAverageWaterColor(getter, pos) : -1;
         }, AddonBlocks.FILLED_DISPLAY_TANK.get());
+
+        event.getBlockColors().register((state, getter, pos, i) -> {
+            return getter != null && pos != null ? mixColor(BiomeColors.getAverageGrassColor(getter, pos), 167, 223, 110) : -1;
+        }, AddonBlocks.DUCKWEED.get());
     }
 
     @SubscribeEvent
@@ -68,14 +72,23 @@ public class AddonClientEventRegistry {
         event.getItemColors().register((p_92621_, p_92622_) -> {
             return 4159204;
         }, AddonItems.FILLED_DISPLAY_TANK_ITEM.get());
+
+        event.getItemColors().register((p_92621_, p_92622_) -> {
+            return 11001711;
+        }, AddonItems.DUCKWEED_ITEM.get());
     }
 
     private static int lightenColor(int colorIn) {
-        //TODO: remove this and figure out a better way to tint them while keeping the white "shine" pixels
-        //Because the water tint is too dark to look good with the bubble nest texture.
         int r = (3 * ((colorIn >> 16) & 255) + 255) / 4;
         int g = (3 * ((colorIn >> 8) & 255) + 255) / 4;
         int b = (3 * ((colorIn) & 255) + 255) / 4;
+        return r << 16 | g << 8 | b;
+    }
+
+    private static int mixColor(int colorIn, int targetR, int targetG, int targetB) {
+        int r = (1 * ((colorIn >> 16) & 255) + targetR) / 2;
+        int g = (1 * ((colorIn >> 8) & 255) + targetG) / 2;
+        int b = (1 * ((colorIn) & 255) + targetB) / 2;
         return r << 16 | g << 8 | b;
     }
 }
