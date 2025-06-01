@@ -86,9 +86,9 @@ public class AddonClientEventRegistry {
     }
 
     private static int mixColor(int colorIn, int targetR, int targetG, int targetB) {
-        int r = (1 * ((colorIn >> 16) & 255) + targetR) / 2;
-        int g = (1 * ((colorIn >> 8) & 255) + targetG) / 2;
-        int b = (1 * ((colorIn) & 255) + targetB) / 2;
+        int r = (2 * ((colorIn >> 16) & 255) + targetR) / 3;
+        int g = (2 * ((colorIn >> 8) & 255) + targetG) / 3;
+        int b = (2 * ((colorIn) & 255) + targetB) / 3;
         return r << 16 | g << 8 | b;
     }
 }
