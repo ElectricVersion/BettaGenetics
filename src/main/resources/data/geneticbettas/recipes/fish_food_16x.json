@@ -5,7 +5,7 @@
       "item": "minecraft:kelp"
     },
     {
-      "item": "minecraft:cod"
+      "tag": "minecraft:fishes"
     }],
   "result": {
     "item": "geneticbettas:fish_food",
