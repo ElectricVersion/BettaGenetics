@@ -1,5 +1,6 @@
 package elecvrsn.GeneticBettas.block;
 
+import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -60,7 +61,13 @@ public class DuckweedPlant extends BushBlock implements BonemealableBlock {
     }
 
     public void performBonemeal(ServerLevel level, Random random, BlockPos pos, BlockState state) {
-        popResource(level, pos, new ItemStack(this));
+        int age = state.getValue(AGE);
+        if (age < 5) {
+            level.setBlock(pos, state.setValue(AGE, age+1), 3);
+        }
+        else if (BettasCommonConfig.COMMON.allowPlantCloning.get()) {
+            popResource(level, pos, new ItemStack(this));
+        }
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateBuilder) {
