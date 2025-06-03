@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class AddonEntities {
-    public static final MobCategory BETTAS = MobCategory.create("BETTAS", "bettas", 10, true, false, 128);
+    public static final MobCategory BETTAS = MobCategory.create("BETTAS", "bettas", 10, true, true, 128);
 
     public static final DeferredRegister<EntityType<?>> ENTITIES_DEFERRED_REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITIES, AddonReference.MODID);
     public static final RegistryObject<EntityType<EnhancedBetta>> ENHANCED_BETTA = ENTITIES_DEFERRED_REGISTRY.register("enhanced_betta", () -> EntityType.Builder.of(EnhancedBetta::new, BETTAS).sized(0.4F, 0.35F).build(AddonReference.MODID + ":enhanced_betta"));
