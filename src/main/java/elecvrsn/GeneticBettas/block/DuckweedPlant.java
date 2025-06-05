@@ -53,7 +53,7 @@ public class DuckweedPlant extends BushBlock implements BonemealableBlock {
     }
 
     public boolean isValidBonemealTarget(BlockGetter getter, BlockPos pos, BlockState state, boolean isClientSide) {
-        return true;
+        return state.getValue(AGE) < 5 || BettasCommonConfig.COMMON.allowPlantCloning.get();
     }
 
     public boolean isBonemealSuccess(Level level, Random random, BlockPos pos, BlockState state) {
