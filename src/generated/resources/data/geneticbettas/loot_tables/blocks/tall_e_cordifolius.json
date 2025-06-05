@@ -7,6 +7,15 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "geneticbettas:tall_e_cordifolius",
+              "properties": {
+                "half": "lower"
+              }
+            }
+          ],
           "name": "geneticbettas:tall_e_cordifolius"
         }
       ],
