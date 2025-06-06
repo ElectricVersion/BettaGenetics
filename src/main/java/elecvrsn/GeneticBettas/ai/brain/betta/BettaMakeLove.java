@@ -7,6 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.behavior.AnimalMakeLove;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.animal.Animal;
+import org.jetbrains.annotations.NotNull;
 
 public class BettaMakeLove extends AnimalMakeLove {
     private EnhancedBetta mate = null;
@@ -25,7 +26,7 @@ public class BettaMakeLove extends AnimalMakeLove {
         mate = (EnhancedBetta) (((EnhancedBetta) animal).getBrain().getMemory(MemoryModuleType.BREED_TARGET).isPresent() ? ((EnhancedBetta) animal).getBrain().getMemory(MemoryModuleType.BREED_TARGET).get() : mate);
         super.stop(serverLevel, animal, gameTime);
         EnhancedBetta betta = ((EnhancedBetta) animal);
-        if (mate != null) {
+        if (mate != null && mate.canBreed()) {
             if (betta.getOrSetIsFemale() && !mate.getOrSetIsFemale()) {
                 mate.setMakingNest(true);
                 mate.getBrain().setMemory(AddonMemoryModuleTypes.LAST_MATE.get(), betta.getUUID());
@@ -42,5 +43,10 @@ public class BettaMakeLove extends AnimalMakeLove {
     protected void tick(ServerLevel serverLevel, Animal animal, long l) {
         mate = (EnhancedBetta) (((EnhancedBetta) animal).getBrain().getMemory(MemoryModuleType.BREED_TARGET).isPresent() ? ((EnhancedBetta) animal).getBrain().getMemory(MemoryModuleType.BREED_TARGET).get() : mate);
         super.tick(serverLevel, animal, l);
+    }
+
+    @Override
+    protected boolean checkExtraStartConditions(@NotNull ServerLevel level, @NotNull Animal animal) {
+        return super.checkExtraStartConditions(level, animal) && ((EnhancedBetta) animal).canBreed();
     }
 }
