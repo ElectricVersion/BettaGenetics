@@ -53,7 +53,7 @@ public class DuckweedPlant extends BushBlock implements BonemealableBlock {
     }
 
     public boolean isValidBonemealTarget(BlockGetter getter, BlockPos pos, BlockState state, boolean isClientSide) {
-        return state.getValue(AGE) < 5 || BettasCommonConfig.COMMON.allowPlantCloning.get();
+        return true;
     }
 
     public boolean isBonemealSuccess(Level level, Random random, BlockPos pos, BlockState state) {
@@ -65,8 +65,19 @@ public class DuckweedPlant extends BushBlock implements BonemealableBlock {
         if (age < 5) {
             level.setBlock(pos, state.setValue(AGE, age+1), 3);
         }
-        else if (BettasCommonConfig.COMMON.allowPlantCloning.get()) {
-            popResource(level, pos, new ItemStack(this));
+        else {
+            int direction = random.nextInt(4);
+            BlockPos neighboringBlock = switch (direction) {
+                case 0 -> pos.north();
+                case 1 -> pos.east();
+                case 2 -> pos.south();
+                default -> pos.west();
+            };
+            if (level.getBlockState(neighboringBlock).isAir()
+                    && level.getFluidState(neighboringBlock.below()).getType()==Fluids.WATER
+                    && level.getFluidState(neighboringBlock.above()).getType()==Fluids.EMPTY) {
+                level.setBlock(neighboringBlock, this.defaultBlockState().setValue(PERSISTENT, true), 3);
+            }
         }
     }
 
