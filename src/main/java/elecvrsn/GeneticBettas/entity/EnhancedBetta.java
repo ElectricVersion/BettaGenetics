@@ -421,7 +421,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 4.0D)
+                .add(Attributes.MAX_HEALTH, 8.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.5D)
                 .add(Attributes.ATTACK_DAMAGE, 1.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D);
