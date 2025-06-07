@@ -42,5 +42,5 @@ public class BettaBreeds {
         .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(0, "2,1|2").add(4, "2").add(12, "2").add(16, "1", "2").add(24, "2", "2", "2", "2").add(32, "3|1").add(56, "2")));
 
     public static final Breed NEMO = new Breed(new Breed.Properties().setData("Nemo", Biomes.FOREST, Breed.Rarity.ORDINARY)
-        .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(42, "2").add(24, "1","1","1","1","3").add(80, "2").add(90,  "2", "4-5", "4-5").add(96, "2", "2", "4-5", "4-5").add(124, "2", "1|2").add(120, "4-5", "4-5").add(152, "2").add(194, "2","2")));
+        .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(42, "2").add(24, "1","1","1","1","3").add(80, "2").add(90,  "2", "4-5", "4-5").add(96, "2", "2", "1", "1", "1", "4-5", "4-5").add(120, "4-5", "4-5").add(124, "2", "1|2").add(152, "2").add(194, "2","2")));
 }
