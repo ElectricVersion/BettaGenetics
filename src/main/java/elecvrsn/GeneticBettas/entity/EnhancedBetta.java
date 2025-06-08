@@ -170,7 +170,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     };
 
     private static final String[] TEXTURES_RED_BODY = new String[]{
-            "", "red/body/min.png", "red/body/low.png", "red/body/med.png", "red/body/high.png", "red/extended.png", "red/extended_het_mask.png", "red/extended_homo_mask.png"
+            "mask/transparent.png", "red/body/min.png", "red/body/low.png", "red/body/med.png", "red/body/high.png", "red/extended.png", "red/extended_het_mask.png", "red/extended_homo_mask.png"
     };
 
     private static final String[] TEXTURES_ALPHA = new String[]{
@@ -1360,7 +1360,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             // Red pigment adds opacity
             addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, true);
             addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_FIN, fins, doubletail, finRed, finRed != 0);
-            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
+            // There needs to be at least one texture here for the mask to always work, so make body red use transparent dummy texture
+            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_BODY, bodyRed, true);
             finPigmentGroup.addGrouping(finRedPigmentGroup);
             if (bloodred) {
                 // Bloodred pigment also adds opacity
