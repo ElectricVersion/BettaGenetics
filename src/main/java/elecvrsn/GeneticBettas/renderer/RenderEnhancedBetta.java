@@ -203,4 +203,9 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
 
         return resourcelocation;
     }
+
+    @Override
+    protected boolean shouldShowName(EnhancedBetta entity) {
+        return (!entity.isInPhotoMode) && super.shouldShowName(entity);
+    }
 }
