@@ -1,8 +1,6 @@
 package elecvrsn.GeneticBettas.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import elecvrsn.GeneticBettas.block.FilledDisplayTankBlock;
 import elecvrsn.GeneticBettas.block.entity.FilledDisplayTankBlockEntity;
 import net.minecraft.client.Minecraft;
@@ -12,6 +10,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public class RenderFilledDisplayTank<T extends FilledDisplayTankBlockEntity> implements BlockEntityRenderer<T> {
 
@@ -31,7 +31,8 @@ public class RenderFilledDisplayTank<T extends FilledDisplayTankBlockEntity> imp
             matrixStack.translate(0.5F, 0.25F, 0.5F);
             Direction facing = FilledDisplayTankBlock.getFacing(blockEntity.getBlockState());
             //TODO: Convert this to a switch statement that just picks from 4 predefined quaternions
-            matrixStack.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, -facing.toYRot(), 0)));
+
+            matrixStack.mulPose((new Quaternionf()).rotationY(-facing.toYRot()));
 //            matrixStack.scale(0.95F, 0.95F, 0.95F);
 
             renderer.setRenderShadow(false);

@@ -3,14 +3,12 @@ package elecvrsn.GeneticBettas.util.handlers;
 import elecvrsn.GeneticBettas.init.AddonEntities;
 import elecvrsn.GeneticBettas.util.AddonReference;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 
@@ -23,8 +21,8 @@ public class AddonEventRegistry {
     }
 
     @SubscribeEvent
-    public static void onEntitiesRegistry(RegistryEvent.Register<EntityType<?>> event) {
-        SpawnPlacements.register(AddonEntities.ENHANCED_BETTA.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EnhancedBetta::checkBettaSpawnRules);
+    public static void onEntitiesRegistry(SpawnPlacementRegisterEvent event) {
+        event.register(AddonEntities.ENHANCED_BETTA.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EnhancedBetta::checkBettaSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
     }
 
 }
