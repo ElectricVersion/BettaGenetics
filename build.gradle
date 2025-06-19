@@ -197,8 +197,6 @@ mixin {
     // MixinGradle Settings
     add sourceSets.main, 'mixins.geneticbettas.refmap.json'
     config 'geneticbettas.mixins.json'
-    debug.verbose = true
-    debug.export = true
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
