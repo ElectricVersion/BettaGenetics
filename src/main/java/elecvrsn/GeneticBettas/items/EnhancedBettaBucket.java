@@ -11,7 +11,6 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -158,7 +157,7 @@ public class EnhancedBettaBucket extends MobBucketItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> componentList, TooltipFlag flag) {
         if (getIsFemale(stack).isPresent()) {
-            componentList.add(new TranslatableComponent((EnhancedBetta.speciesTranslationKey + (getIsFemale(stack).get() ? ".female" : ".male"))).withStyle(new ChatFormatting[]{ChatFormatting.ITALIC, ChatFormatting.GRAY}));
+            componentList.add(Component.translatable((EnhancedBetta.speciesTranslationKey + (getIsFemale(stack).get() ? ".female" : ".male"))).withStyle(new ChatFormatting[]{ChatFormatting.ITALIC, ChatFormatting.GRAY}));
         }
     }
 
