@@ -3,6 +3,7 @@ package elecvrsn.GeneticBettas.block;
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -23,7 +25,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -49,24 +50,27 @@ public class DuckweedPlant extends BushBlock implements BonemealableBlock {
     protected boolean mayPlaceOn(BlockState state, BlockGetter getter, BlockPos pos) {
         FluidState fluidstate = getter.getFluidState(pos);
         FluidState fluidStateAbove = getter.getFluidState(pos.above());
-        return (fluidstate.getType() == Fluids.WATER || state.getMaterial() == Material.ICE) && fluidStateAbove.getType() == Fluids.EMPTY;
+        return (fluidstate.getType() == Fluids.WATER || state.is(Blocks.ICE)) && fluidStateAbove.getType() == Fluids.EMPTY;
     }
 
-    public boolean isValidBonemealTarget(BlockGetter getter, BlockPos pos, BlockState state, boolean isClientSide) {
+    @Override
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos pos, BlockState state, boolean isClientSide) {
         return true;
     }
 
-    public boolean isBonemealSuccess(Level level, Random random, BlockPos pos, BlockState state) {
+    @Override
+    public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos pos, BlockState state) {
         return true;
     }
 
-    public void performBonemeal(ServerLevel level, Random random, BlockPos pos, BlockState state) {
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource randomSource, BlockPos pos, BlockState state) {
         int age = state.getValue(AGE);
         if (age < 5) {
             level.setBlock(pos, state.setValue(AGE, age+1), 3);
         }
         else {
-            int direction = random.nextInt(4);
+            int direction = randomSource.nextInt(4);
             BlockPos neighboringBlock = switch (direction) {
                 case 0 -> pos.north();
                 case 1 -> pos.east();
@@ -89,7 +93,8 @@ public class DuckweedPlant extends BushBlock implements BonemealableBlock {
         return state.getValue(PERSISTENT) && state.getValue(AGE) < 5;
     }
 
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int age = state.getValue(AGE);
         if (age == 0) {
             level.setBlock(pos, state.setValue(AGE, 1), 3);
@@ -129,4 +134,5 @@ public class DuckweedPlant extends BushBlock implements BonemealableBlock {
             return reader.getFluidState(blockpos).getType() == Fluids.WATER;
         return this.mayPlaceOn(reader.getBlockState(blockpos), reader, blockpos);
     }
+
 }

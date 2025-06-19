@@ -4,7 +4,6 @@ import elecvrsn.GeneticBettas.items.DuckweedPlantItem;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import elecvrsn.GeneticBettas.items.EnhancedBettaEggBucket;
 import elecvrsn.GeneticBettas.util.AddonReference;
-import mokiyoki.enhancedanimals.EnhancedAnimals;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;

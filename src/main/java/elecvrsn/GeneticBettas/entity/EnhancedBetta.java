@@ -25,7 +25,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -2121,7 +2121,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     protected net.minecraft.network.chat.Component getTypeName() {
-        return new TranslatableComponent((speciesTranslationKey + (getOrSetIsFemale() ? ".female":".male")));
+        return new Component.translatable((speciesTranslationKey + (getOrSetIsFemale() ? ".female":".male")));
     }
 
     @Override
