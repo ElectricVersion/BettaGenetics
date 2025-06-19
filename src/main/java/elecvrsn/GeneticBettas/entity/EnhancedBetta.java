@@ -392,7 +392,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     public Genes getGenes() {
-        if (this.level instanceof ServerLevel) {
+        if (this.level() instanceof ServerLevel) {
             return this.genetics;
         } else {
             return this.getClientSidedGenes();
@@ -1535,7 +1535,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
 //    @Override
     protected EnhancedAnimalAbstract createEnhancedChild(Level level, EnhancedAnimalAbstract otherParent) {
-        EnhancedBetta enhancedBetta = ENHANCED_BETTA.get().create(this.level);
+        EnhancedBetta enhancedBetta = ENHANCED_BETTA.get().create(this.level());
         Genes babyGenes = new Genes(this.getGenes()).makeChild(this.getOrSetIsFemale(), otherParent.getOrSetIsFemale(), otherParent.getGenes());
         enhancedBetta.setGenes(babyGenes);
         enhancedBetta.setSharedGenes(babyGenes);
@@ -1552,10 +1552,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
     @Override
     protected void createAndSpawnEnhancedChild(Level inWorld) {
-        EnhancedBetta enhancedBetta = ENHANCED_BETTA.get().create(this.level);
+        EnhancedBetta enhancedBetta = ENHANCED_BETTA.get().create(this.level());
         Genes babyGenes = new Genes(this.genetics).makeChild(this.getOrSetIsFemale(), this.mateGender, this.mateGenetics);
         defaultCreateAndSpawn(enhancedBetta, inWorld, babyGenes, -this.getAdultAge());
-        this.level.addFreshEntity(enhancedBetta);
+        this.level().addFreshEntity(enhancedBetta);
         enhancedBetta.setInitialDefaults();
     }
 
@@ -1613,7 +1613,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     protected void customServerAiStep() {
-        this.getBrain().tick((ServerLevel) this.level, this);
+        this.getBrain().tick((ServerLevel) this.level(), this);
         if (!this.isNoAi()) {
             BettaBrain.updateActivity(this);
         }
@@ -1624,13 +1624,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     public void aiStep() {
-        if (!this.isInWater() && this.onGround && this.verticalCollision) {
+        if (!this.isInWater() && this.onGround() && this.verticalCollision) {
             //The flop on land
-            this.setDeltaMovement(this.getDeltaMovement().add((double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F), (double) 0.4F, (double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
-            this.onGround = false;
+            this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F, (double) 0.4F, (double) ((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
+            this.setOnGround(false);
             this.hasImpulse = true;
             this.playSound(this.getFlopSound(), this.getSoundVolume(), this.getVoicePitch());
-        } else if (this.isAnimalSleeping() && !this.onGround) {
+        } else if (this.isAnimalSleeping() && !this.onGround()) {
             this.setDeltaMovement(this.getDeltaMovement().add(0.0, this.brain.hasMemoryValue(AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get()) ? -0.001 : -0.01, 0.0));
         } else {
             if (bubblingTimer <= this.tickCount) {
@@ -1765,7 +1765,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 double dX = this.random.nextGaussian() * 0.02D;
                 double dY = this.random.nextGaussian() * 0.02D;
                 double dZ = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(ParticleTypes.BUBBLE, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), dX, dY, dZ);
+                this.level().addParticle(ParticleTypes.BUBBLE, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), dX, dY, dZ);
             }
             isBubbling = false;
         }
@@ -1874,7 +1874,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public static void onStopAttacking(EnhancedBetta enhancedBetta) {
         Optional<LivingEntity> optional = enhancedBetta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET);
         if (optional.isPresent()) {
-            Level level = enhancedBetta.level;
+            Level level = enhancedBetta.level();
             LivingEntity livingentity = optional.get();
             if (livingentity.isDeadOrDying()) {
                 DamageSource damagesource = livingentity.getLastDamageSource();
@@ -1900,7 +1900,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     public boolean sleepingConditional() {
-        return (((this.level.getDayTime() % 24000 >= 12600 && this.level.getDayTime() % 24000 <= 22000) || this.level.isThundering()) && this.awokenTimer == 0 && !this.sleeping);
+        return (((this.level().getDayTime() % 24000 >= 12600 && this.level().getDayTime() % 24000 <= 22000) || this.level().isThundering()) && this.awokenTimer == 0 && !this.sleeping);
     }
 
     public void setIsFlaring(boolean angry) {
@@ -1936,7 +1936,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 boolean zi = true; //When true, increment z. otherwise multiply z by -1
                 while (z < maxSearchWidth) {
                     mutableBlockPos.set(baseBlockPos).move(xi ? x : -x, y, zi ? z : -z);
-                    if (this.level.getBlockState(mutableBlockPos).is(AddonBlocks.BUBBLE_NEST.get())) {
+                    if (this.level().getBlockState(mutableBlockPos).is(AddonBlocks.BUBBLE_NEST.get())) {
                         if (ValidatePath.isValidPath(this, mutableBlockPos, 16)) {
                             return mutableBlockPos;
                         }
@@ -1958,13 +1958,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         int maxSearchHeight = 8;
         int maxSearchWidth = 1;
 
-        for (int y = level.isWaterAt(baseBlockPos) ? 0 : -1; y < maxSearchHeight; y++) {
+        for (int y = level().isWaterAt(baseBlockPos) ? 0 : -1; y < maxSearchHeight; y++) {
             for (int x = -maxSearchWidth; x < maxSearchWidth; x++) {
                 for (int z = -maxSearchWidth; z < maxSearchWidth; z++) {
                     if (x == 0 && z == 0) continue; //Minecraft seems to be unable to pathfnd directly upwards.
                     //Besides, it looks better if they move around a little
                     mutableBlockPos.set(baseBlockPos).move(x, y, z);
-                    if (this.level.getBlockState(mutableBlockPos).is(WATER) && !this.level.isWaterAt(mutableBlockPos.above())) {
+                    if (this.level().getBlockState(mutableBlockPos).is(WATER) && !this.level().isWaterAt(mutableBlockPos.above())) {
                         setNestPos(mutableBlockPos);
                         return true;
                     }
@@ -2121,7 +2121,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     protected net.minecraft.network.chat.Component getTypeName() {
-        return new Component.translatable((speciesTranslationKey + (getOrSetIsFemale() ? ".female":".male")));
+        return Component.translatable((speciesTranslationKey + (getOrSetIsFemale() ? ".female" : ".male")));
     }
 
     @Override
@@ -2134,7 +2134,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             this.setAirSupply(p_149194_ - 1);
             if (this.getAirSupply() < 0) {
                 this.setAirSupply(0);
-                this.hurt(DamageSource.DRY_OUT, 2.0F);
+                this.hurt(this.damageSources().dryOut(), 2.0F);
             }
         } else {
             this.setAirSupply(this.getMaxAirSupply());
@@ -2162,7 +2162,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     @Override
     public boolean hurt(@NotNull DamageSource damageSource, float damageAmount) {
         boolean flag = super.hurt(damageSource, damageAmount);
-        if (this.level.isClientSide) {
+        if (this.level().isClientSide) {
             return false;
         } else {
             if (flag && damageSource.getEntity() instanceof LivingEntity && this.isHighlyAggressive()) {
