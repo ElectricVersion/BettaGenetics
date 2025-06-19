@@ -3,9 +3,9 @@ import elecvrsn.GeneticBettas.block.BubbleNestBlock;
 import elecvrsn.GeneticBettas.block.FilledDisplayTankBlock;
 import elecvrsn.GeneticBettas.block.LargeTankPlant;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
-import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -17,12 +17,16 @@ import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.function.Function;
+import java.util.Set;
 
-public class AddonBlockLootTables extends BlockLoot {
+public class AddonBlockLootTables extends BlockLootSubProvider {
+
+    public AddonBlockLootTables() {
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+    }
 
     @Override
-    protected void addTables() {
+    protected void generate() {
         for (Block i: getKnownBlocks()
         ) {
             if (i instanceof FilledDisplayTankBlock) {
@@ -50,6 +54,7 @@ public class AddonBlockLootTables extends BlockLoot {
                         .copy("EntityData.display.Name", "display.Lore", CopyNbtFunction.MergeStrategy.APPEND)
                         ))));
     }
+
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
