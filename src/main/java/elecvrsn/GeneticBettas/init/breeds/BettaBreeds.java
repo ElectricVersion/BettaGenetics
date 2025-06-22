@@ -27,7 +27,7 @@ public class BettaBreeds {
         .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(80, "2").add(92, "5","5").add(106, "5","5").add(120, "5","5").add(134, "5","5").add(148, "5","5")));
 
     public static final Breed SAMURAI = new Breed(new Breed.Properties().setData("SamuraiDragonscale", 0.7F, 0.8F, Breed.Rarity.ORDINARY)
-        .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(0,"2").add(4, "1|2", "2").add(36, "2,1|2","2","2").add(46, "2").add(172, "2,1|2").add(234, "1|2")));
+        .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(0,"2").add(4, "1|2", "2", "2").add(36, "2,1|2","2","2").add(46, "2").add(172, "2,1|2").add(234, "1|2")));
 
     public static final Breed GIANT = new Breed(new Breed.Properties().setData("Giant", 0.7F, 0.8F, Breed.Rarity.ORDINARY)
         .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(166, "2")));
