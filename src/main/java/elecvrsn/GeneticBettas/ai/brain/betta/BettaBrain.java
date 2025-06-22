@@ -52,12 +52,12 @@ public class BettaBrain  {
         brain.addActivityAndRemoveMemoriesWhenStopped(
                 Activity.FIGHT,
                 ImmutableList.of(
-                        Pair.of(0, new StopAttackingIfTargetInvalid<>(EnhancedBetta::onStopAttacking)),
-                        Pair.of(0, new RunIf<>(BettaBrain::isAttackTargetFarEnough, new StopBeingMad())),
-                        Pair.of(0, new SetWalkTargetFromAttackTargetIfTargetOutOfReach(BettaBrain::getSpeedModifierChasing)),
+                        Pair.of(0, StopAttackingIfTargetInvalid.create(EnhancedBetta::onStopAttacking)),
+                        Pair.of(0, new StopBeingMad()),
+                        Pair.of(0, SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(BettaBrain::getSpeedModifierChasing)),
                         Pair.of(0, new BettaMeleeAttack()),
                         Pair.of(0, new RunIf<>(EnhancedBetta::isNotHighlyAggressive, SetWalkTargetAwayFrom.entity(MemoryModuleType.ATTACK_TARGET, 0.4F, 3, true))),
-                        Pair.of(0, new EraseMemoryIf<>(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET))
+                        Pair.of(0, EraseMemoryIf.create(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET))
                 ),
                 ImmutableSet.of(
                         Pair.of(AddonMemoryModuleTypes.IS_ATTACK_NIP.get(), MemoryStatus.VALUE_ABSENT),
@@ -76,8 +76,8 @@ public class BettaBrain  {
                         Pair.of(0, new EraseMemoryIf<>(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET)),
                         Pair.of(0, new EraseMemoryIf<>(EnhancedBetta::isInLove, MemoryModuleType.ATTACK_TARGET)),
                         Pair.of(0, new StopAttackingIfTargetInvalid<>(EnhancedBetta::onStopAttacking)),
-                        Pair.of(1, new RunIf<>(BettaBrain::isAttackTargetFarEnough, new StopBeingMad())),
-                        Pair.of(2, new SetWalkTargetFromAttackTargetIfTargetOutOfReach(BettaBrain::getSpeedModifierChasing)),
+                        Pair.of(1, new StopBeingMad()),
+                        Pair.of(2, SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(BettaBrain::getSpeedModifierChasing)),
                         Pair.of(3, new BettaNip()),
                         Pair.of(4, new RunIf<>(ImmutableMap.of(MemoryModuleType.ATTACK_COOLING_DOWN, MemoryStatus.VALUE_PRESENT), SetWalkTargetAwayFromWithExpiry.entity(MemoryModuleType.ATTACK_TARGET, 0.5F, 3, true, 70)))
                 ),
@@ -168,7 +168,7 @@ public class BettaBrain  {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
                 Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 9.0F), UniformInt.of(20, 60))),
                 Pair.of(1, new BettaMakeLove(AddonEntities.ENHANCED_BETTA.get(), SPEED_MULTIPLIER_WHEN_MAKING_LOVE)),
-                Pair.of(1, new RunIf<>(EnhancedBetta::isAnimalSleeping, new FindPlaceToSleep())),
+                Pair.of(1, new FindPlaceToSleep()),
                 Pair.of(2, new RunOne<>(ImmutableList.of(
                         Pair.of(new BettaFollowTemptation(BettaBrain::getSpeedModifier), 1),
                         Pair.of(new BabyFollowAdult<>(ADULT_FOLLOW_RANGE, BettaBrain::getSpeedModifierFollowingAdult), 1)))
@@ -187,8 +187,8 @@ public class BettaBrain  {
                                 GateBehavior.OrderPolicy.ORDERED,
                                 GateBehavior.RunningPolicy.TRY_ALL,
                                 ImmutableList.of(
-                                        Pair.of(new RandomSwim(0.5F), 2),
-                                        Pair.of(new RandomStroll(0.15F, false), 2),
+                                        Pair.of(RandomStroll.swim(0.5F), 2),
+                                        Pair.of(RandomStroll.stroll(0.15F, false), 2),
                                         Pair.of(new SetWalkTargetFromLookTarget(BettaBrain::canSetWalkTargetFromLookTarget, BettaBrain::getSpeedModifier, 3), 3),
                                         Pair.of(new RunIf<>(Entity::isInWaterOrBubble, new DoNothing(30, 60)), 5),
                                         Pair.of(new RunIf<>(Entity::isOnGround, new DoNothing(200, 400)), 5)
@@ -258,14 +258,6 @@ public class BettaBrain  {
 
     private static boolean isHurtByTimerExpired(EnhancedBetta betta) {
         return betta.getLastHurtByMobTimestamp()+100 < betta.tickCount;
-    }
-
-
-    private static boolean isAttackTargetFarEnough(EnhancedBetta betta) {
-        if (betta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
-            return betta.distanceToSqr(betta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get()) > (betta.isHighlyAggressive() ? 9 : 4);
-        }
-        return true;
     }
 
     public static void wasHurtBy(EnhancedBetta betta, LivingEntity attacker) {

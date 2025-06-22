@@ -16,9 +16,18 @@ public class StopBeingMad extends Behavior<EnhancedBetta> {
         );
     }
 
+    @Override
     protected void start(ServerLevel serverLevel, EnhancedBetta enhancedBetta, long p_149332_) {
         Brain<EnhancedBetta> brain = enhancedBetta.getBrain();
         brain.eraseMemory(MemoryModuleType.ATTACK_TARGET);
         enhancedBetta.setIsFlaring(false);
+    }
+
+    @Override
+    public boolean checkExtraStartConditions(ServerLevel level, EnhancedBetta betta) {
+        if (betta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
+            return betta.distanceToSqr(betta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get()) > (betta.isHighlyAggressive() ? 9 : 4);
+        }
+        return true;
     }
 }

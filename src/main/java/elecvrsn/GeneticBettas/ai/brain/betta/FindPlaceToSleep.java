@@ -44,7 +44,7 @@ public class FindPlaceToSleep extends Behavior<EnhancedBetta> {
                     for (int j1 = i1 < l && i1 > -l ? l : 0; j1 <= l; j1 = j1 > 0 ? -j1 : 1 - j1) {
                         mutableblockpos.set(baseBlockPos).move(i1, k - 1, j1);
                         // Is Dripleaf?
-                        if (betta.level.getBlockState(mutableblockpos).getBlock() instanceof BigDripleafBlock) {
+                        if (betta.level().getBlockState(mutableblockpos).getBlock() instanceof BigDripleafBlock) {
                             betta.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(mutableblockpos, 0.4F, 0));
                             betta.getBrain().setMemoryWithExpiry(AddonMemoryModuleTypes.FOUND_SLEEP_SPOT.get(), true, 500);
                             return;
@@ -53,5 +53,10 @@ public class FindPlaceToSleep extends Behavior<EnhancedBetta> {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean checkExtraStartConditions(ServerLevel level, EnhancedBetta betta) {
+        return betta.isAnimalSleeping();
     }
 }

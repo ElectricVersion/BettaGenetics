@@ -73,6 +73,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
+import java.util.function.BiConsumer;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 import static elecvrsn.GeneticBettas.util.ColorUtil.clampRGB;
@@ -1871,18 +1872,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return SoundEvents.BUCKET_FILL_FISH;
     }
 
-    public static void onStopAttacking(EnhancedBetta enhancedBetta) {
-        Optional<LivingEntity> optional = enhancedBetta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET);
-        if (optional.isPresent()) {
-            Level level = enhancedBetta.level();
-            LivingEntity livingentity = optional.get();
-            if (livingentity.isDeadOrDying()) {
-                DamageSource damagesource = livingentity.getLastDamageSource();
-                if (damagesource != null) {
-                    Entity entity = damagesource.getEntity();
-                }
-            }
-        }
+    public static void onStopAttacking(EnhancedBetta enhancedBetta, LivingEntity target) {
         enhancedBetta.setIsFlaring(false);
     }
 
