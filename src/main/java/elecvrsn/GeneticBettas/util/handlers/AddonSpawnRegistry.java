@@ -3,10 +3,9 @@ package elecvrsn.GeneticBettas.util.handlers;
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.init.AddonEntities;
 import elecvrsn.GeneticBettas.util.AddonReference;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -17,12 +16,13 @@ import static elecvrsn.GeneticBettas.init.AddonEntities.BETTAS;
 public class AddonSpawnRegistry {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void addBiomeSpawns(BiomeLoadingEvent event) {
-        Biome.ClimateSettings climate = event.getClimate();
+    public static void addBiomeSpawns(LevelEvent.PotentialSpawns event) {
+//        Biome.ClimateSettings climate = event.getClimate();
         BettasCommonConfig.CommonConfig config = BettasCommonConfig.COMMON;
 
-        if (event.getCategory() == Biome.BiomeCategory.SWAMP || (event.getCategory() != Biome.BiomeCategory.OCEAN && (climate.precipitation.equals(Biome.Precipitation.RAIN) && climate.temperature >= 0.8F && climate.downfall >= 0.85F))) {
-            event.getSpawns().addSpawn(BETTAS, new MobSpawnSettings.SpawnerData(AddonEntities.ENHANCED_BETTA.get(), config.bettaSpawnWeight.get(), config.bettaMinimumGroup.get(), config.bettaMaximumGroup.get()));
+//        if (event.getCategory() == Biome.BiomeCategory.SWAMP || (event.getCategory() != Biome.BiomeCategory.OCEAN && (climate.precipitation.equals(Biome.Precipitation.RAIN) && climate.temperature >= 0.8F && climate.downfall >= 0.85F))) {
+        if (event.getMobCategory() == BETTAS) {
+            event.addSpawnerData(new MobSpawnSettings.SpawnerData(AddonEntities.ENHANCED_BETTA.get(), config.bettaSpawnWeight.get(), config.bettaMinimumGroup.get(), config.bettaMaximumGroup.get()));
         }
     }
 }

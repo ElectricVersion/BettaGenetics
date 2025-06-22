@@ -3,7 +3,6 @@ package elecvrsn.GeneticBettas.util.handlers;
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.init.AddonItems;
-import mokiyoki.enhancedanimals.util.EanimodVillagerTrades;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MobSpawnType;
@@ -12,7 +11,6 @@ import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,13 +22,13 @@ import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 public class AnimalReplacementHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onLivingUpdateEvent(LivingEvent.LivingUpdateEvent event) {
+    public void onLivingUpdateEvent(LivingEvent.LivingTickEvent event) {
         Entity entity = event.getEntity();
         if (!entity.getCommandSenderWorld().isClientSide()) {
             if (entity instanceof AbstractFish) {
                 if (BettasCommonConfig.COMMON.replaceOtherBettas.get()) {
                     if (entity.getClass().getName().contains("Betta")) {
-                        EnhancedBetta enhancedBetta = ENHANCED_BETTA.get().spawn((ServerLevel) entity.getCommandSenderWorld(), null, null, null, entity.blockPosition(), MobSpawnType.NATURAL, false, false);
+                        EnhancedBetta enhancedBetta = ENHANCED_BETTA.get().spawn((ServerLevel) entity.getCommandSenderWorld(), (ItemStack) null, null, entity.blockPosition(), MobSpawnType.NATURAL, false, false);
                         if (enhancedBetta != null) {
                             if (entity.hasCustomName()) {
                                 enhancedBetta.setCustomName(entity.getCustomName());
