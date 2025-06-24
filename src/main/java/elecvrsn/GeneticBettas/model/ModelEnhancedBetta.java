@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static net.minecraft.util.Mth.*;
+import static net.minecraft.util.Mth.clamp;
 
 @OnlyIn(Dist.CLIENT)
 public class ModelEnhancedBetta<T extends EnhancedBetta> extends EnhancedAnimalModel<T> {

@@ -2,15 +2,15 @@ package elecvrsn.GeneticBettas.mixins;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import elecvrsn.GeneticBettas.IMixinTextureGrouping;
+import elecvrsn.GeneticBettas.renderer.texture.UpdatedTexturingType;
 import mokiyoki.enhancedanimals.entity.util.Colouration;
 import mokiyoki.enhancedanimals.renderer.texture.TextureGrouping;
 import mokiyoki.enhancedanimals.renderer.texture.TextureLayer;
-import elecvrsn.GeneticBettas.renderer.texture.UpdatedTexturingType;
 import org.spongepowered.asm.mixin.*;
 
 import java.util.List;
 
-import static mokiyoki.enhancedanimals.renderer.texture.TexturingUtils.*;
+import static mokiyoki.enhancedanimals.renderer.texture.TexturingUtils.applyAlphaMaskBlend;
 
 @Mixin(TextureGrouping.class)
 @Implements(@Interface(iface = IMixinTextureGrouping.class, prefix = "betta$"))
