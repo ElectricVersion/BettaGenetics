@@ -1,8 +1,8 @@
 package elecvrsn.GeneticBettas.init;
 
 import elecvrsn.GeneticBettas.block.*;
-import elecvrsn.GeneticBettas.block.entity.FilledDisplayTankBlockEntity;
 import elecvrsn.GeneticBettas.block.entity.BubbleNestBlockEntity;
+import elecvrsn.GeneticBettas.block.entity.FilledDisplayTankBlockEntity;
 import elecvrsn.GeneticBettas.util.AddonReference;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;

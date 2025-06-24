@@ -1,6 +1,5 @@
 package elecvrsn.GeneticBettas.block;
 
-import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;

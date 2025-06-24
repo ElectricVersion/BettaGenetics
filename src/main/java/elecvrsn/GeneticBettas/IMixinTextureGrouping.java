@@ -1,9 +1,9 @@
 package elecvrsn.GeneticBettas;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import elecvrsn.GeneticBettas.renderer.texture.UpdatedTexturingType;
 import mokiyoki.enhancedanimals.entity.util.Colouration;
 import mokiyoki.enhancedanimals.renderer.texture.TextureLayer;
-import elecvrsn.GeneticBettas.renderer.texture.UpdatedTexturingType;
 
 import java.util.List;
 

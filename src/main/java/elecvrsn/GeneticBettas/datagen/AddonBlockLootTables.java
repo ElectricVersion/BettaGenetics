@@ -1,11 +1,11 @@
 package elecvrsn.GeneticBettas.datagen;
+
 import elecvrsn.GeneticBettas.block.BubbleNestBlock;
 import elecvrsn.GeneticBettas.block.FilledDisplayTankBlock;
 import elecvrsn.GeneticBettas.block.LargeTankPlant;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -16,8 +16,6 @@ import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.function.Function;
 
 public class AddonBlockLootTables extends BlockLoot {
 

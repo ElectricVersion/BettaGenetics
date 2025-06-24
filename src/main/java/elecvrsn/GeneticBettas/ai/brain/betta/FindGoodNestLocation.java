@@ -3,7 +3,6 @@ package elecvrsn.GeneticBettas.ai.brain.betta;
 import com.google.common.collect.ImmutableMap;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
-import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.behavior.Behavior;
