@@ -7,6 +7,7 @@ import mokiyoki.enhancedanimals.util.Genes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -99,7 +100,7 @@ public class EnhancedBettaEgg extends Entity {
 
     public boolean skipAttackInteraction(Entity entity) {
         if (entity instanceof Player player) {
-            return !this.level().mayInteract(player, this.blockPosition()) || this.hurt(DamageSource.playerAttack(player), 0.0F);
+            return !this.level().mayInteract(player, this.blockPosition()) || this.hurt(this.damageSources().playerAttack(player), 0.0F);
         } else {
             return false;
         }
@@ -148,8 +149,8 @@ public class EnhancedBettaEgg extends Entity {
     public void tick() {
         super.tick();
 
-        if (!onEggAttachableBlock(this.blockPosition(), this.level)) {
-            fallOrFloat(this.blockPosition(), this.level);
+        if (!onEggAttachableBlock(this.blockPosition(), this.level())) {
+            fallOrFloat(this.blockPosition(), this.level());
         }
 
         pushEntities();
@@ -208,7 +209,7 @@ public class EnhancedBettaEgg extends Entity {
                 }
 
                 if (colliding_entities > max_cramming - 1) {
-                    this.hurt(DamageSource.CRAMMING, 6.0F);
+                    this.hurt(this.damageSources().cramming(), 6.0F);
                 }
             }
 
@@ -277,7 +278,7 @@ public class EnhancedBettaEgg extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }
