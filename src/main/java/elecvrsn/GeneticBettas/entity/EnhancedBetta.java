@@ -1174,7 +1174,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 // Eye Marble
                 eyeLeft = uuidArry[10] > 'b' ? 1 : uuidArry[10] > '7' ? 2 : 0;
                 eyeRight = uuidArry[11] > 'b' ? 1 : uuidArry[11] > '7' ? 2 : 0;
-            } else if (gene[80] == 3 || gene[81] == 3) {
+            }
+            if (gene[80] == 3 || gene[81] == 3) {
                 //Vanda
                 vanda = true;
                 //Size
