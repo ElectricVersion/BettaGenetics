@@ -24,6 +24,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RenderNameTagEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhancedBetta<EnhancedBetta>> {
@@ -49,11 +50,11 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
         this.model.young = betta.isBaby();
         float f = Mth.rotLerp(p_115310_, betta.yBodyRotO, betta.yBodyRot);
         float f1 = Mth.rotLerp(p_115310_, betta.yHeadRotO, betta.yHeadRot);
-        float f2 = f1 - f;
+        float netHeadYaw = f1 - f;
         if (shouldSit && betta.getVehicle() instanceof LivingEntity livingEntity) {
             f = Mth.rotLerp(p_115310_, livingEntity.yBodyRotO, livingEntity.yBodyRot);
-            f2 = f1 - f;
-            float f3 = Mth.wrapDegrees(f2);
+            netHeadYaw = f1 - f;
+            float f3 = Mth.wrapDegrees(netHeadYaw);
             if (f3 < -85.0F) {
                 f3 = -85.0F;
             }
@@ -67,13 +68,13 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
                 f += f3 * 0.2F;
             }
 
-            f2 = f1 - f;
+            netHeadYaw = f1 - f;
         }
 
-        float f6 = Mth.lerp(p_115310_, betta.xRotO, betta.getXRot());
+        float headPitch = Mth.lerp(p_115310_, betta.xRotO, betta.getXRot());
         if (isEntityUpsideDown(betta)) {
-            f6 *= -1.0F;
-            f2 *= -1.0F;
+            headPitch *= -1.0F;
+            netHeadYaw *= -1.0F;
         }
 
         if (betta.getPose() == Pose.SLEEPING) {
@@ -84,27 +85,27 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
             }
         }
 
-        float f7 = this.getBob(betta, p_115310_);
-        this.setupRotations(betta, poseStack, f7, f, p_115310_);
+        float ageInTicks = this.getBob(betta, p_115310_);
+        this.setupRotations(betta, poseStack, ageInTicks, f, p_115310_);
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         this.scale(betta, poseStack, p_115310_);
         poseStack.translate(0.0D, -1.501F, 0.0D);
-        float f8 = 0.0F;
-        float f5 = 0.0F;
+        float limbSwingAmount = 0.0F;
+        float limbSwing = 0.0F;
         if (!shouldSit && betta.isAlive()) {
-            f8 = Mth.lerp(p_115310_, betta.animationSpeedOld, betta.animationSpeed);
-            f5 = betta.animationPosition - betta.animationSpeed * (1.0F - p_115310_);
+            limbSwingAmount = betta.walkAnimation.speed(p_115310_);
+            limbSwing = betta.walkAnimation.position(p_115310_);
             if (betta.isBaby()) {
-                f5 *= 3.0F;
+                limbSwing *= 3.0F;
             }
 
-            if (f8 > 1.0F) {
-                f8 = 1.0F;
+            if (limbSwingAmount > 1.0F) {
+                limbSwingAmount = 1.0F;
             }
         }
 
-        this.model.prepareMobModel(betta, f5, f8, p_115310_);
-        this.model.setupAnim(betta, f5, f8, f7, f2, f6);
+        this.model.prepareMobModel(betta, limbSwing, limbSwingAmount, p_115310_);
+        this.model.setupAnim(betta, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         RenderType mainRenderType = this.model.renderType(this.getTextureLocation(betta));
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(mainRenderType);
         int i1 = getOverlayCoords(betta, this.getWhiteOverlayProgress(betta, p_115310_));
@@ -114,22 +115,23 @@ public class RenderEnhancedBetta extends MobRenderer<EnhancedBetta, ModelEnhance
 
         if (!betta.isSpectator()) {
             for(RenderLayer<EnhancedBetta, ModelEnhancedBetta<EnhancedBetta>> renderlayer : this.layers) {
-                renderlayer.render(poseStack, multiBufferSource, packedLightIn, betta, f5, f8, p_115310_, f7, f2, f6);
+                renderlayer.render(poseStack, multiBufferSource, packedLightIn, betta, limbSwing, limbSwingAmount, p_115310_, ageInTicks, netHeadYaw, headPitch);
             }
         }
 
         poseStack.popPose();
 //        super.render(betta, p_115309_, p_115310_, poseStack, multiBufferSource, packedLightIn);
         //Line above is replaced w the following block of code...
-        net.minecraftforge.client.event.RenderNameplateEvent renderNameplateEvent = new net.minecraftforge.client.event.RenderNameplateEvent(betta, betta.getDisplayName(), this, poseStack, multiBufferSource, packedLightIn, p_115310_);
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(renderNameplateEvent);
-        if (renderNameplateEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameplateEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(betta))) {
-            this.renderNameTag(betta, renderNameplateEvent.getContent(), poseStack, multiBufferSource, packedLightIn);
+        RenderNameTagEvent renderNameTagEvent = new RenderNameTagEvent(betta, betta.getDisplayName(), this, poseStack, multiBufferSource, packedLightIn, p_115310_);
+
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(renderNameTagEvent);
+        if (renderNameTagEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameTagEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(betta))) {
+            this.renderNameTag(betta, renderNameTagEvent.getContent(), poseStack, multiBufferSource, packedLightIn);
         }
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post<>(betta, this, p_115310_, poseStack, multiBufferSource, packedLightIn));
         Entity entity = betta.getLeashHolder();
         if (entity != null) {
-            this.renderLeash(betta, p_115310_, poseStack, multiBufferSource, entity);
+//            this.renderLeash(betta, p_115310_, poseStack, multiBufferSource, entity);
         }
     }
 
