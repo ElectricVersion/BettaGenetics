@@ -33,6 +33,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -1974,7 +1975,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return levelReader.isUnobstructed(this);
     }
 
-    public static boolean checkBettaSpawnRules(EntityType<EnhancedBetta> entityType, LevelAccessor accessor, MobSpawnType spawnType, BlockPos pos, Random random) {
+
+    public static boolean checkBettaSpawnRules(EntityType<EnhancedBetta> entityType, ServerLevelAccessor accessor, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() >= 40 && pos.getY() <= 70 && accessor.getFluidState(pos.below()).is(FluidTags.WATER) && accessor.getBlockState(pos.above()).is(WATER);
     }
 
