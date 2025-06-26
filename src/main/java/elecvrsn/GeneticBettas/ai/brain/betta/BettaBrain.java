@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
+import elecvrsn.GeneticBettas.ai.brain.ConditionalRun;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.init.AddonActivities;
 import elecvrsn.GeneticBettas.init.AddonEntities;
@@ -56,7 +57,7 @@ public class BettaBrain  {
                         Pair.of(0, new StopBeingMad()),
                         Pair.of(0, SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(BettaBrain::getSpeedModifierChasing)),
                         Pair.of(0, new BettaMeleeAttack()),
-                        Pair.of(0, new RunIf<>(EnhancedBetta::isNotHighlyAggressive, SetWalkTargetAwayFrom.entity(MemoryModuleType.ATTACK_TARGET, 0.4F, 3, true))),
+                        Pair.of(0, new ConditionalRun<>(EnhancedBetta::isNotHighlyAggressive, SetWalkTargetAwayFrom.entity(MemoryModuleType.ATTACK_TARGET, 0.4F, 3, true))),
                         Pair.of(0, EraseMemoryIf.create(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET))
                 ),
                 ImmutableSet.of(
@@ -73,13 +74,20 @@ public class BettaBrain  {
         brain.addActivityAndRemoveMemoriesWhenStopped(
                 AddonActivities.NIP.get(),
                 ImmutableList.of(
-                        Pair.of(0, new EraseMemoryIf<>(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET)),
-                        Pair.of(0, new EraseMemoryIf<>(EnhancedBetta::isInLove, MemoryModuleType.ATTACK_TARGET)),
-                        Pair.of(0, new StopAttackingIfTargetInvalid<>(EnhancedBetta::onStopAttacking)),
+                        Pair.of(0, EraseMemoryIf.create(BettaBrain::isBreeding, MemoryModuleType.ATTACK_TARGET)),
+                        Pair.of(0, EraseMemoryIf.create(EnhancedBetta::isInLove, MemoryModuleType.ATTACK_TARGET)),
+                        Pair.of(0, StopAttackingIfTargetInvalid.create(EnhancedBetta::onStopAttacking)),
                         Pair.of(1, new StopBeingMad()),
                         Pair.of(2, SetWalkTargetFromAttackTargetIfTargetOutOfReach.create(BettaBrain::getSpeedModifierChasing)),
                         Pair.of(3, new BettaNip()),
-                        Pair.of(4, new RunIf<>(ImmutableMap.of(MemoryModuleType.ATTACK_COOLING_DOWN, MemoryStatus.VALUE_PRESENT), SetWalkTargetAwayFromWithExpiry.entity(MemoryModuleType.ATTACK_TARGET, 0.5F, 3, true, 70)))
+                        Pair.of(4, new GateBehavior<>(
+                                ImmutableMap.of(MemoryModuleType.ATTACK_COOLING_DOWN, MemoryStatus.VALUE_PRESENT),
+                                ImmutableSet.of(),
+                                GateBehavior.OrderPolicy.ORDERED,
+                                GateBehavior.RunningPolicy.RUN_ONE,
+                                ImmutableList.of(Pair.of(SetWalkTargetAwayFromWithExpiry.entity(MemoryModuleType.ATTACK_TARGET, 0.5F, 3, true, 70),1))
+                                )
+                        )
                 ),
                 ImmutableSet.of(
                         Pair.of(MemoryModuleType.BREED_TARGET, MemoryStatus.VALUE_ABSENT),
@@ -97,7 +105,7 @@ public class BettaBrain  {
                 Activity.AVOID,
                 0,
                 ImmutableList.of(
-                        new EraseMemoryIf<>(BettaBrain::isHurtByTimerExpired, MemoryModuleType.HURT_BY_ENTITY),
+                        EraseMemoryIf.create(BettaBrain::isHurtByTimerExpired, MemoryModuleType.HURT_BY_ENTITY),
                         SetWalkTargetAwayFrom.entity(MemoryModuleType.HURT_BY_ENTITY, 0.5F, 6, true)
                 ),
                 MemoryModuleType.HURT_BY_ENTITY
@@ -166,18 +174,16 @@ public class BettaBrain  {
 
     private static void initIdleActivity(Brain<EnhancedBetta> brain) {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
-                Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 9.0F), UniformInt.of(20, 60))),
+//                Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 9.0F), UniformInt.of(20, 60))),
                 Pair.of(1, new BettaMakeLove(AddonEntities.ENHANCED_BETTA.get(), SPEED_MULTIPLIER_WHEN_MAKING_LOVE)),
                 Pair.of(1, new FindPlaceToSleep()),
                 Pair.of(2, new RunOne<>(ImmutableList.of(
                         Pair.of(new BettaFollowTemptation(BettaBrain::getSpeedModifier), 1),
-                        Pair.of(new BabyFollowAdult<>(ADULT_FOLLOW_RANGE, BettaBrain::getSpeedModifierFollowingAdult), 1)))
+                        Pair.of(BabyFollowAdult.create(ADULT_FOLLOW_RANGE, BettaBrain::getSpeedModifierFollowingAdult), 1)))
                 ),
-                Pair.of(2, new RunSometimes<>(new StopAndLookIfNearWalkTarget(), UniformInt.of(10, 40))),
-                Pair.of(3, new RunIf<>(
-                        ImmutableMap.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_ABSENT),
-                        new StartAttacking<>(BettaBrain::findNearestValidAttackTarget))),
-                Pair.of(3, new TryFindWater(6, SPEED_MULTIPLIER_WHEN_ON_LAND)),
+//                Pair.of(2, new RunSometimes<>(new StopAndLookIfNearWalkTarget(), UniformInt.of(10, 40))),
+                Pair.of(3, StartAttacking.create(BettaBrain::hasNoAttackTarget, BettaBrain::findNearestValidAttackTarget)),
+                Pair.of(3, TryFindWater.create(6, SPEED_MULTIPLIER_WHEN_ON_LAND)),
                 Pair.of(4, new GateBehavior<>(
                                 ImmutableMap.of(
                                         MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT,
@@ -189,9 +195,10 @@ public class BettaBrain  {
                                 ImmutableList.of(
                                         Pair.of(RandomStroll.swim(0.5F), 2),
                                         Pair.of(RandomStroll.stroll(0.15F, false), 2),
-                                        Pair.of(new SetWalkTargetFromLookTarget(BettaBrain::canSetWalkTargetFromLookTarget, BettaBrain::getSpeedModifier, 3), 3),
-                                        Pair.of(new RunIf<>(Entity::isInWaterOrBubble, new DoNothing(30, 60)), 5),
-                                        Pair.of(new RunIf<>(Entity::isOnGround, new DoNothing(200, 400)), 5)
+                                        Pair.of(SetWalkTargetFromLookTarget.create(BettaBrain::canSetWalkTargetFromLookTarget, BettaBrain::getSpeedModifier, 3), 3)
+//                                        ,
+//                                        Pair.of(new RunIf<>(Entity::isInWaterOrBubble, new DoNothing(30, 60)), 5),
+//                                        Pair.of(new RunIf<>(Entity::onGround, new DoNothing(200, 400)), 5)
                                 )
                         )
                 )
@@ -200,7 +207,7 @@ public class BettaBrain  {
 
 
     private static boolean canSetWalkTargetFromLookTarget(LivingEntity livingEntity) {
-        Level level = livingEntity.level;
+        Level level = livingEntity.level();
         Optional<PositionTracker> optional = livingEntity.getBrain().getMemory(MemoryModuleType.LOOK_TARGET);
         if (optional.isPresent()) {
             BlockPos blockpos = optional.get().currentBlockPosition();
@@ -215,7 +222,7 @@ public class BettaBrain  {
         Activity activity = brain.getActiveNonCoreActivity().orElse(null);
         if (betta.isAnimalSleeping()) {
             brain.setMemory(AddonMemoryModuleTypes.SLEEPING.get(), true);
-            if (betta.isOnGround()) {
+            if (betta.onGround()) {
                 brain.setMemory(AddonMemoryModuleTypes.PAUSE_BRAIN.get(), true);
             }
         }
@@ -265,4 +272,11 @@ public class BettaBrain  {
         betta.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, attacker);
     }
 
+    private static boolean hasNoAttackTarget(EnhancedBetta betta) {
+        return !betta.getBrain().hasMemoryValue(MemoryModuleType.ATTACK_TARGET);
+    }
+
+    private static boolean isAttackCoolingDown(EnhancedBetta betta) {
+        return betta.getBrain().hasMemoryValue(MemoryModuleType.ATTACK_COOLING_DOWN);
+    }
 }

@@ -1666,12 +1666,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         return transRootGroup;
     }
 
-    public boolean isHighlyAggressive() {
-        return getAggression() >= 8;
+    public static boolean isHighlyAggressive(EnhancedBetta betta) {
+        return betta.getAggression() >= 8;
     }
 
-    public boolean isNotHighlyAggressive() {
-        return !isHighlyAggressive();
+    public static boolean isNotHighlyAggressive(EnhancedBetta betta) {
+        return !isHighlyAggressive(betta);
     }
 
     public boolean isNotPassive() {
