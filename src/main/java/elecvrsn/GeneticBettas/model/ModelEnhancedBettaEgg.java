@@ -23,7 +23,6 @@ public class ModelEnhancedBettaEgg<T extends EnhancedBettaEgg> extends EntityMod
         super(renderType);
         this.root = modelPart;
         this.egg = modelPart.getChild("egg");
-        this.root.children.put("egg", this.egg);
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -39,12 +38,6 @@ public class ModelEnhancedBettaEgg<T extends EnhancedBettaEgg> extends EntityMod
 
     @Override
     public void setupAnim(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entityIn instanceof EnhancedBettaEgg) {
-            EnhancedBettaEgg bettaEgg = (EnhancedBettaEgg) entityIn;
-//            this.egg.y = 0.1F * ((float) Math.cos(0.03F * bettaEgg.getAddAnimationTick()));
-//            this.egg.x = 0.25F * ((float) Math.cos((0.05F * bettaEgg.getAddAnimationTick()+1)));
-//            this.egg.z = 0.25F * ((float) Math.cos((0.05F * bettaEgg.getAddAnimationTick()+2)));
-        }
     }
 
     @Override
