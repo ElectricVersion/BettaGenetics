@@ -1983,12 +1983,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             ArrayList<Activity> mutableAdultActivities = new ArrayList<>();
             mutableAdultActivities.add(AddonActivities.PAUSE_BRAIN.get());
             mutableAdultActivities.add(Activity.REST);
-            if (!isHighlyAggressive()) {
+            if (!isHighlyAggressive(this)) {
                 mutableAdultActivities.add(Activity.AVOID);
             }
             mutableAdultActivities.add(AddonActivities.LAY_EGG.get());
             mutableAdultActivities.add(AddonActivities.MAKE_BUBBLE_NEST.get());
-            if ( (!this.getOrSetIsFemale() && isNotPassive()) || (this.getOrSetIsFemale() && isHighlyAggressive()) ) {
+            if ( (!this.getOrSetIsFemale() && isNotPassive()) || (this.getOrSetIsFemale() && isHighlyAggressive(this)) ) {
                 mutableAdultActivities.add(AddonActivities.NIP.get());
                 if (!this.getOrSetIsFemale()) {
                     mutableAdultActivities.add(Activity.FIGHT);
@@ -2153,7 +2153,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         if (this.level().isClientSide) {
             return false;
         } else {
-            if (flag && damageSource.getEntity() instanceof LivingEntity && this.isHighlyAggressive()) {
+            if (flag && damageSource.getEntity() instanceof LivingEntity && this.isHighlyAggressive(this)) {
                 BettaBrain.wasHurtBy(this, (LivingEntity)damageSource.getEntity());
             }
             return flag;
