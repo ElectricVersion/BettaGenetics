@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -67,15 +68,18 @@ public class SmallTankPlant extends BushBlock implements BonemealableBlock, Simp
         stateBuilder.add(WATERLOGGED);
     }
 
-    public boolean isValidBonemealTarget(BlockGetter blockGetter, BlockPos pos, BlockState state, boolean b) {
+    @Override
+    public boolean isValidBonemealTarget(LevelReader blockGetter, BlockPos pos, BlockState state, boolean b) {
         return BettasCommonConfig.COMMON.allowPlantCloning.get();
     }
 
-    public boolean isBonemealSuccess(Level level, Random random, BlockPos pos, BlockState state) {
+    @Override
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
-    public void performBonemeal(ServerLevel level, Random random, BlockPos pos, BlockState state) {
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         popResource(level, pos, new ItemStack(this));
     }
 
@@ -92,13 +96,9 @@ public class SmallTankPlant extends BushBlock implements BonemealableBlock, Simp
     public float getMaxHorizontalOffset() {
         return 0.05F;
     }
+
     @Override
     public float getMaxVerticalOffset() {
         return 0.05F;
     }
-    @Override
-    public BlockBehaviour.OffsetType getOffsetType() {
-        return BlockBehaviour.OffsetType.XZ;
-    }
-
 }

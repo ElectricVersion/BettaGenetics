@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -95,15 +96,18 @@ public class LargeTankPlant extends DoublePlantBlock implements BonemealableBloc
         p_154632_.add(HALF, WATERLOGGED);
     }
 
-    public boolean isValidBonemealTarget(BlockGetter p_154594_, BlockPos p_154595_, BlockState p_154596_, boolean p_154597_) {
+    @Override
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos p_154595_, BlockState p_154596_, boolean p_154597_) {
         return BettasCommonConfig.COMMON.allowPlantCloning.get();
     }
 
-    public boolean isBonemealSuccess(Level p_154605_, Random p_154606_, BlockPos p_154607_, BlockState p_154608_) {
+    @Override
+    public boolean isBonemealSuccess(Level p_154605_, RandomSource p_154606_, BlockPos p_154607_, BlockState p_154608_) {
         return true;
     }
 
-    public void performBonemeal(ServerLevel level, Random random, BlockPos pos, BlockState state) {
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         popResource(level, pos, new ItemStack(this));
     }
     @Override
