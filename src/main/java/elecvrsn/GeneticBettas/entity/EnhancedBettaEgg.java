@@ -99,7 +99,7 @@ public class EnhancedBettaEgg extends Entity {
 
     public boolean skipAttackInteraction(Entity entity) {
         if (entity instanceof Player player) {
-            return !this.level.mayInteract(player, this.blockPosition()) || this.hurt(DamageSource.playerAttack(player), 0.0F);
+            return !this.level().mayInteract(player, this.blockPosition()) || this.hurt(DamageSource.playerAttack(player), 0.0F);
         } else {
             return false;
         }
@@ -109,7 +109,7 @@ public class EnhancedBettaEgg extends Entity {
         if (this.isInvulnerableTo(damageSource)) {
             return false;
         } else {
-            if (!this.isRemoved() && !this.level.isClientSide) {
+            if (!this.isRemoved() && !this.level().isClientSide) {
                 this.kill();
                 this.markHurt();
             }
@@ -119,7 +119,7 @@ public class EnhancedBettaEgg extends Entity {
     }
 
     public InteractionResult interact(Player player, InteractionHand interactionHand) {
-        if (this.level.isClientSide) {
+        if (this.level().isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
             ItemStack itemStack = player.getItemInHand(interactionHand);
@@ -155,7 +155,7 @@ public class EnhancedBettaEgg extends Entity {
         pushEntities();
 
         if (this.getHatchTime() == 0) {
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 createAndSpawnChild();
             }
         } else if (this.getHatchTime() > 0){
@@ -195,9 +195,9 @@ public class EnhancedBettaEgg extends Entity {
     }
 
     protected void pushEntities() {
-        List<EnhancedBettaEgg> list = this.level.getEntitiesOfClass(EnhancedBettaEgg.class, this.getBoundingBox());
+        List<EnhancedBettaEgg> list = this.level().getEntitiesOfClass(EnhancedBettaEgg.class, this.getBoundingBox());
         if (!list.isEmpty()) {
-            int max_cramming = this.level.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
+            int max_cramming = this.level().getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
             if (max_cramming > 0 && list.size() > max_cramming - 1 && this.random.nextInt(4) == 0) {
                 int colliding_entities = 0;
 
@@ -221,7 +221,7 @@ public class EnhancedBettaEgg extends Entity {
 
     private void createAndSpawnChild() {
         this.playSound(SoundEvents.SLIME_BLOCK_HIT, 1.0F, 1.0F);
-        EnhancedBetta betta = ENHANCED_BETTA.get().create(level);
+        EnhancedBetta betta = ENHANCED_BETTA.get().create(this.level());
         if (betta == null) return; // Prevent a server-crashing null pointer error, just in case
 
         if (!this.getGenes().isEmpty() && !this.getGenes().equals("INFERTILE")) {
@@ -235,13 +235,13 @@ public class EnhancedBettaEgg extends Entity {
         betta.setSireName(this.getSire());
         betta.setDamName(this.getDam());
         betta.setAge(-betta.getAdultAge());
-        betta.setBirthTime(String.valueOf(level.getGameTime()));
+        betta.setBirthTime(String.valueOf(this.level().getGameTime()));
         betta.initilizeAnimalSize();
         betta.moveTo(this.xo,this.yo, this.zo, this.xRotO, this.yRotO);
         if (this.hasCustomName()) {
             betta.setCustomName(this.getCustomName());
         }
-        level.addFreshEntity(betta);
+        this.level().addFreshEntity(betta);
         betta.setInitialDefaults();
         this.remove(RemovalReason.DISCARDED);
     }
