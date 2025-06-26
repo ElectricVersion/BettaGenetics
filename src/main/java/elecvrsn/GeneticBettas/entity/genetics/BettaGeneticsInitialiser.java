@@ -44,7 +44,7 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         return super.generateWithBreed(world, pos, this.breeds, breed);
     }
     @Override
-    public Genes generateLocalWildGenetics(Holder<Biome> biomeHolder, boolean isFlat) {
+    public Genes generateLocalWildGenetics(Holder<Biome> biomeHolder, BlockPos blockPos, boolean isFlat) {
         int[] sexlinkedGenes = new int[AddonReference.BETTA_SEXLINKED_GENES_LENGTH];
         int[] autosomalGenes = new int[AddonReference.BETTA_AUTOSOMAL_GENES_LENGTH];
         Biome biome = biomeHolder.value();
