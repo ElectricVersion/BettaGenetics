@@ -18,7 +18,7 @@ public class BettaMeleeAttack extends Behavior<EnhancedBetta> {
 
     protected boolean checkExtraStartConditions(ServerLevel serverLevel, EnhancedBetta enhancedBetta) {
         LivingEntity livingentity = this.getAttackTarget(enhancedBetta);
-        return BehaviorUtils.canSee(enhancedBetta, livingentity) && BehaviorUtils.isWithinMeleeAttackRange(enhancedBetta, livingentity);
+        return BehaviorUtils.canSee(enhancedBetta, livingentity) && enhancedBetta.isWithinMeleeAttackRange(livingentity);
     }
 
 

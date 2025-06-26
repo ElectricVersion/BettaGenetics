@@ -36,14 +36,14 @@ public class BettaAttackablesSensor extends NearestVisibleLivingEntitySensor {
     }
 
     private boolean isAggressiveEnough(EnhancedBetta betta, LivingEntity livingEntity) {
-        return betta.isHighlyAggressive() || (!betta.getOrSetIsFemale() && !((EnhancedBetta)livingEntity).getOrSetIsFemale());
+        return EnhancedBetta.isHighlyAggressive(betta) || (!betta.getOrSetIsFemale() && !((EnhancedBetta)livingEntity).getOrSetIsFemale());
     }
     private boolean isHostileTarget(LivingEntity livingEntity) {
         return livingEntity.getType().is(EntityTypeTags.AXOLOTL_ALWAYS_HOSTILES);
     }
 
-    private boolean isClose(EnhancedBetta betta, LivingEntity p_148276_) {
-        return betta.distanceToSqr(p_148276_) <= (betta.isHighlyAggressive() ? 6 : 3);
+    private boolean isClose(EnhancedBetta betta, LivingEntity livingEntity) {
+        return betta.distanceToSqr(livingEntity) <= (EnhancedBetta.isHighlyAggressive(betta) ? 6 : 3);
     }
 
     protected MemoryModuleType<LivingEntity> getMemory() {

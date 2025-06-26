@@ -73,7 +73,7 @@ public class LayEgg extends Behavior<EnhancedBetta> {
                 }
 
                 if (eggLayingTimer%20 == 0) {
-                    Level level = betta.getLevel();
+                    Level level = betta.level();
                     BlockPos pos = betta.blockPosition();
                     String mateName = betta.getMateName().isEmpty() ? "???" : betta.getMateName();
                     String name = betta.hasCustomName() ? betta.getName().getString() : "???";

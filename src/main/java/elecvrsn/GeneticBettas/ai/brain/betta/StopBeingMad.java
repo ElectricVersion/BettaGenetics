@@ -26,7 +26,7 @@ public class StopBeingMad extends Behavior<EnhancedBetta> {
     @Override
     public boolean checkExtraStartConditions(ServerLevel level, EnhancedBetta betta) {
         if (betta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).isPresent()) {
-            return betta.distanceToSqr(betta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get()) > (betta.isHighlyAggressive() ? 9 : 4);
+            return betta.distanceToSqr(betta.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).get()) > (EnhancedBetta.isHighlyAggressive(betta) ? 9 : 4);
         }
         return true;
     }
