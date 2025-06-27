@@ -520,6 +520,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             int iriIntensity = 3;
             boolean pastelOpaque = false;
             boolean cambodian = false;
+            boolean lacedBlack = false;
             int metallic = 0;
             int marbleRedQual = 0;
             int marbleRedSize = 0;
@@ -833,6 +834,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             // Black
             if (gene[8] == 2 && gene[9] == 2) {
                 //Laced Black
+                lacedBlack = true;
                 if (gene[6] == 2 && gene[7] == 2) {
                     //Double Black/Super Black
                     melanin[1] = 0.171F;
@@ -872,13 +874,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 iridescenceLight[2] += 0.2F;
                 iridescenceDark[1] -= 0.3F;
                 iridescenceDark[2] += 0.2F;
-            }
-
-            if (gene[8] == 2 && gene[9] == 2) {
-                //Laced Black should make cellophane match melanin
-                cellophane[0] = melanin[0];
-                cellophane[1] = melanin[1];
-                cellophane[2] = melanin[2];
             }
 
             if (gene[18] == 2 || gene[19] == 2) {
@@ -1398,13 +1393,21 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             TextureGrouping texturesGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             /** CELLOPHANE **/
-            TextureGrouping cellophaneGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, TEXTURES_FIN_ALPHA[finAlpha], "ce-f", cellophaneRGB);
-            addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/body.png", "ce-b", cellophaneRGB);
-            addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/gills.png", "ce-g", cellophaneRGB);
+            TextureGrouping cellophaneGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+            TextureGrouping cellophaneAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(cellophaneAlphaGroup, TEXTURES_FIN_ALPHA[finAlpha], true);
+            addTextureToAnimalTextureGrouping(cellophaneAlphaGroup, "mask/body.png", true);
+            addTextureToAnimalTextureGrouping(cellophaneAlphaGroup, "mask/gills.png", true);
             if (dumbo) {
-                addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, TEXTURES_DUMBO[crowntail], "ce-dumbo", cellophaneRGB);
+                addTextureToAnimalTextureGrouping(cellophaneAlphaGroup, TexturingType.APPLY_RGB, TEXTURES_DUMBO[crowntail], "ce-d", cellophaneRGB);
             }
+            cellophaneGroup.addGrouping(cellophaneAlphaGroup);
+            TextureGrouping cellophaneColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(cellophaneColorGroup, TexturingType.APPLY_RGB, "mask/solid.png", "ce-b", cellophaneRGB);
+            if (lacedBlack) {
+                addTextureToAnimalTextureGrouping(cellophaneColorGroup, TexturingType.APPLY_BLACK, TEXTURES_MARBLE, marbleBlackQual, marbleBlackSize, marbleBlackRand, true);
+            }
+            cellophaneGroup.addGrouping(cellophaneColorGroup);
             texturesGroup.addGrouping(cellophaneGroup);
             /** Everything that isn't cellophane **/
             TextureGrouping nonCellophaneGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
