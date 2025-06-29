@@ -1,9 +1,9 @@
 {
-    "loader": "forge:multi-layer",
+    "loader": "forge:composite",
 	"textures": {
 		"particle": "geneticbettas:block/display_tank_side"
 	},
-    "layers": {
+    "children": {
         "cutout": {
             "textures": {
                 "side": "geneticbettas:block/display_tank_side",

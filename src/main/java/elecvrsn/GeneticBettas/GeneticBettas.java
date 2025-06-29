@@ -45,7 +45,7 @@ public class GeneticBettas {
         ItemBlockRenderTypes.setRenderLayer(AddonBlocks.BUBBLE_NEST.get(), RenderType.cutout());
         //Tanks
         ItemBlockRenderTypes.setRenderLayer(AddonBlocks.DISPLAY_TANK.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AddonBlocks.FILLED_DISPLAY_TANK.get(), Predicate.<RenderType>isEqual(RenderType.cutout()).or(Predicate.isEqual(RenderType.translucent())));
+        ItemBlockRenderTypes.setRenderLayer(AddonBlocks.FILLED_DISPLAY_TANK.get(), RenderType.translucent());
         //Glass
 //        ItemBlockRenderTypes.setRenderLayer(AddonBlocks.TANK_GLASS.get(), RenderType.cutout());
         //Plants
