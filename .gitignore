@@ -24,3 +24,5 @@ run
 forge*changelog.txt
 /libs
 /extra-mods
+/src/generated
+/run-data

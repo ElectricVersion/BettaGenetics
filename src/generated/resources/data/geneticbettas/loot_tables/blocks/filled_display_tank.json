@@ -2,7 +2,6 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -14,24 +13,26 @@
             },
             {
               "function": "minecraft:copy_nbt",
-              "source": "block_entity",
               "ops": [
                 {
+                  "op": "replace",
                   "source": "EntityData",
-                  "target": "BlockEntityTag.EntityData",
-                  "op": "replace"
+                  "target": "BlockEntityTag.EntityData"
                 },
                 {
+                  "op": "append",
                   "source": "EntityData.display.Name",
-                  "target": "display.Lore",
-                  "op": "append"
+                  "target": "display.Lore"
                 }
-              ]
+              ],
+              "source": "block_entity"
             }
           ],
           "name": "geneticbettas:filled_display_tank"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "geneticbettas:blocks/filled_display_tank"
 }

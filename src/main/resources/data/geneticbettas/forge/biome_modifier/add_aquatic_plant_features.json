@@ -1,0 +1,13 @@
+{
+  "type": "forge:add_features",
+  "biomes": ["minecraft:swamp", "minecraft:mangrove_swamp"],
+  "features": [
+    "geneticbettas:placed_duckweed",
+    "geneticbettas:placed_e_cordifolius",
+    "geneticbettas:placed_tall_e_cordifolius",
+    "geneticbettas:placed_a_barteri",
+    "geneticbettas:placed_variegated_a_barteri",
+    "geneticbettas:placed_v_americana"
+  ],
+  "step": "vegetal_decoration"
+}
