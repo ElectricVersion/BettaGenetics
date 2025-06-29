@@ -2045,6 +2045,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     protected void handlePartnerBreeding(AgeableMob ageable) {
+        if (!(ageable instanceof EnhancedBetta)) {
+            return;
+        };
         if (GeneticAnimalsConfig.COMMON.omnigenders.get()) {
             this.mateGenetics = ((EnhancedBetta) ageable).getGenes();
             this.setHasEgg(true);

@@ -1,5 +1,6 @@
 package elecvrsn.GeneticBettas.entity;
 
+import com.mojang.logging.LogUtils;
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import elecvrsn.GeneticBettas.items.EnhancedBettaEggBucket;
@@ -28,6 +29,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 import java.util.List;
 
@@ -36,11 +39,13 @@ import static elecvrsn.GeneticBettas.init.AddonItems.ENHANCED_BETTA_EGG_BUCKET;
 import static net.minecraft.world.level.material.Fluids.WATER;
 
 public class EnhancedBettaEgg extends Entity {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     private static final EntityDataAccessor<String> GENES = SynchedEntityData.<String>defineId(EnhancedBettaEgg.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> SIRE = SynchedEntityData.<String>defineId(EnhancedBettaEgg.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> DAM = SynchedEntityData.<String>defineId(EnhancedBettaEgg.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> HATCH_TIME = SynchedEntityData.<Integer>defineId(EnhancedBettaEgg.class, EntityDataSerializers.INT);
-    private boolean hasParents = false;
+
     public EnhancedBettaEgg(EntityType<? extends EnhancedBettaEgg> entityType, Level level) {
         super(entityType, level);
         setHatchTime(BettasCommonConfig.COMMON.bettaHatchTime.get());
@@ -97,7 +102,7 @@ public class EnhancedBettaEgg extends Entity {
         this.entityData.set(HATCH_TIME, hatchTime);
     }
 
-    public boolean skipAttackInteraction(Entity entity) {
+    public boolean skipAttackInteraction(@NotNull Entity entity) {
         if (entity instanceof Player player) {
             return !this.level.mayInteract(player, this.blockPosition()) || this.hurt(DamageSource.playerAttack(player), 0.0F);
         } else {
@@ -105,7 +110,7 @@ public class EnhancedBettaEgg extends Entity {
         }
     }
 
-    public boolean hurt(DamageSource damageSource, float p_31716_) {
+    public boolean hurt(@NotNull DamageSource damageSource, float p_31716_) {
         if (this.isInvulnerableTo(damageSource)) {
             return false;
         } else {
@@ -118,7 +123,7 @@ public class EnhancedBettaEgg extends Entity {
         }
     }
 
-    public InteractionResult interact(Player player, InteractionHand interactionHand) {
+    public @NotNull InteractionResult interact(@NotNull Player player, @NotNull InteractionHand interactionHand) {
         if (this.level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -222,15 +227,20 @@ public class EnhancedBettaEgg extends Entity {
     private void createAndSpawnChild() {
         this.playSound(SoundEvents.SLIME_BLOCK_HIT, 1.0F, 1.0F);
         EnhancedBetta betta = ENHANCED_BETTA.get().create(level);
-        if (betta == null) return; // Prevent a server-crashing null pointer error, just in case
+        if (betta == null) {
+            LOGGER.warn("Hatched Betta was null. Coordinates: {}", this.position());
+            this.remove(RemovalReason.DISCARDED);
+            return; // Prevent a server-crashing null pointer error, just in case
+        }
 
         if (!this.getGenes().isEmpty() && !this.getGenes().equals("INFERTILE")) {
             betta.setGenes(new Genes(this.getGenes()));
             betta.setSharedGenes(new Genes(this.getGenes()));
         } else {
-            Genes genes = betta.createInitialBreedGenes(betta.getCommandSenderWorld(), betta.blockPosition(), "WanderingTrader");
-            betta.setGenes(genes);
-            betta.setSharedGenes(genes);
+            LOGGER.warn("Hatched Betta had invalid genes. Coordinates: {}", this.position());
+            betta.remove(RemovalReason.DISCARDED);
+            this.remove(RemovalReason.DISCARDED);
+            return;
         }
         betta.setSireName(this.getSire());
         betta.setDamName(this.getDam());
@@ -260,24 +270,22 @@ public class EnhancedBettaEgg extends Entity {
         this.getEntityData().set(GENES, genes);
         this.getEntityData().set(SIRE, compound.getString("SireName"));
         this.getEntityData().set(DAM, compound.getString("DamName"));
-        this.hasParents = compound.getBoolean("hasParents");
         this.setHatchTime(compound.contains("HatchTime") ? compound.getInt("HatchTime") : BettasCommonConfig.COMMON.bettaHatchTime.get());
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {
+    protected void addAdditionalSaveData(@NotNull CompoundTag compound) {
         String genes = this.getGenes();
         if (!genes.isEmpty()) {
             compound.putString("genes", genes);
         }
         compound.putString("SireName", this.getSire());
         compound.putString("DamName", this.getDam());
-        compound.putBoolean("hasParents", this.hasParents);
         compound.putInt("HatchTime", this.getHatchTime());
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public @NotNull Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }
