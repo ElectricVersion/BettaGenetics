@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -32,7 +33,7 @@ public class RenderFilledDisplayTank<T extends FilledDisplayTankBlockEntity> imp
             Direction facing = FilledDisplayTankBlock.getFacing(blockEntity.getBlockState());
             //TODO: Convert this to a switch statement that just picks from 4 predefined quaternions
 
-            matrixStack.mulPose((new Quaternionf()).rotationY(-facing.toYRot()));
+            matrixStack.mulPose((new Quaternionf()).rotationY(-facing.toYRot() * Mth.PI / 180));
 //            matrixStack.scale(0.95F, 0.95F, 0.95F);
 
             renderer.setRenderShadow(false);
