@@ -3,10 +3,13 @@ package elecvrsn.GeneticBettas;
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.init.*;
 import elecvrsn.GeneticBettas.util.handlers.AnimalReplacementHandler;
+import mokiyoki.enhancedanimals.init.ModCreativeTabs;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -39,6 +42,7 @@ public class GeneticBettas {
         AddonActivities.register(modEventBus);
         modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::creativeTabSetup);
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
@@ -68,5 +72,28 @@ public class GeneticBettas {
         ComposterBlock.COMPOSTABLES.put(AddonItems.V_AMERICANA_ITEM.get(), 0.5F);
         // Since duckweed spreads, make it compost for less
         ComposterBlock.COMPOSTABLES.put(AddonItems.DUCKWEED_ITEM.get(), 0.3F);
+    }
+
+    private void creativeTabSetup(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+            event.accept(AddonItems.ENHANCED_BETTA_EGG);
+        } else if (event.getTabKey() == ModCreativeTabs.CREATIVE_MODE_TAB.getKey()) {
+            event.accept(AddonItems.ENHANCED_BETTA_EGG);
+        } else if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
+            event.accept(AddonItems.BUBBLE_NEST_ITEM);
+            event.accept(AddonItems.DISPLAY_TANK_ITEM);
+            event.accept(AddonItems.FILLED_DISPLAY_TANK_ITEM);
+        } else if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(AddonItems.FISH_FOOD);
+        } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
+            event.accept(AddonItems.BETTA);
+        } else if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
+            event.accept(AddonItems.E_CORDIFOLIUS_ITEM);
+            event.accept(AddonItems.TALL_E_CORDIFOLIUS_ITEM);
+            event.accept(AddonItems.A_BARTERI_ITEM);
+            event.accept(AddonItems.VARIEGATED_A_BARTERI_ITEM);
+            event.accept(AddonItems.V_AMERICANA_ITEM);
+            event.accept(AddonItems.DUCKWEED_ITEM);
+        }
     }
 }
