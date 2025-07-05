@@ -47,6 +47,10 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
     public Genes generateLocalWildGenetics(Holder<Biome> biomeHolder, boolean isFlat) {
         int[] sexlinkedGenes = new int[AddonReference.BETTA_SEXLINKED_GENES_LENGTH];
         int[] autosomalGenes = new int[AddonReference.BETTA_AUTOSOMAL_GENES_LENGTH];
+
+        sexlinkedGenes[0] = 1;
+        sexlinkedGenes[1] = 1;
+
         Biome biome = biomeHolder.value();
 //        //Temporary Filler WTs
 //        for (int i = 0; i < AddonReference.BETTA_AUTOSOMAL_GENES_LENGTH; i++) {
@@ -206,7 +210,7 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         autosomalGenes[78] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 2;
         autosomalGenes[79] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(5) + 1) : 2;
 
-        //Marble [wildtype <> Marble > Vanda] (Homoezygous decreases the size of marble)
+        //Marble [wildtype <> Marble <> Vanda] (Homozygous decreases the size of marble; vanda overrides the bloodred marble layer)
         autosomalGenes[80] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(3) + 1) : 1;
 //        autosomalGenes[81] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(3) + 1) : 1;
         autosomalGenes[81] = 1;
@@ -435,6 +439,8 @@ public class BettaGeneticsInitialiser extends AbstractGeneticsInitialiser {
         //Hybrid Iridescence [wildtype < Hybrid]
 //        autosomalGenes[236] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
 //        autosomalGenes[237] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(2) + 1) : 1;
+        autosomalGenes[236] = 1;
+        autosomalGenes[237] = 1;
 
         //Dumbo Fin Size Adder [normal <> bigger <> biggest]
         autosomalGenes[238] = ThreadLocalRandom.current().nextInt(100) > WTC ? (ThreadLocalRandom.current().nextInt(3) + 1) : 1;

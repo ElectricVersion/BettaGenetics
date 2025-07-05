@@ -3,7 +3,6 @@ package elecvrsn.GeneticBettas.util.handlers;
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.init.AddonEntities;
 import elecvrsn.GeneticBettas.util.AddonReference;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraftforge.event.world.BiomeLoadingEvent;

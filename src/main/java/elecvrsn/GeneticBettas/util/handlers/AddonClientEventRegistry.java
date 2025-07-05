@@ -1,35 +1,24 @@
 package elecvrsn.GeneticBettas.util.handlers;
 
 
-import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import elecvrsn.GeneticBettas.init.AddonItems;
 import elecvrsn.GeneticBettas.model.ModelEnhancedBetta;
 import elecvrsn.GeneticBettas.model.ModelEnhancedBettaEgg;
-import elecvrsn.GeneticBettas.renderer.RenderFilledDisplayTank;
 import elecvrsn.GeneticBettas.renderer.RenderEnhancedBetta;
 import elecvrsn.GeneticBettas.renderer.RenderEnhancedBettaEgg;
+import elecvrsn.GeneticBettas.renderer.RenderFilledDisplayTank;
 import elecvrsn.GeneticBettas.util.AddonReference;
-import mokiyoki.enhancedanimals.config.GeneticAnimalsConfig;
-import mokiyoki.enhancedanimals.entity.EnhancedPig;
 import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.animal.AbstractFish;
-import net.minecraft.world.entity.animal.Pig;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA_EGG;
-import static mokiyoki.enhancedanimals.init.ModEntities.ENHANCED_PIG;
 
 @Mod.EventBusSubscriber(modid = AddonReference.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AddonClientEventRegistry {

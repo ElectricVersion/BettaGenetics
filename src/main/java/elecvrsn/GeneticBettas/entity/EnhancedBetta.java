@@ -2,12 +2,15 @@ package elecvrsn.GeneticBettas.entity;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
+import elecvrsn.GeneticBettas.ai.brain.ValidatePath;
 import elecvrsn.GeneticBettas.ai.brain.betta.BettaBrain;
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.entity.genetics.BettaGeneticsInitialiser;
 import elecvrsn.GeneticBettas.init.*;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import elecvrsn.GeneticBettas.model.modeldata.BettaModelData;
+import elecvrsn.GeneticBettas.renderer.texture.UpdatedTextureGrouping;
+import elecvrsn.GeneticBettas.renderer.texture.UpdatedTexturingType;
 import elecvrsn.GeneticBettas.util.AddonReference;
 import mokiyoki.enhancedanimals.config.GeneticAnimalsConfig;
 import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
@@ -18,10 +21,6 @@ import mokiyoki.enhancedanimals.model.modeldata.AnimalModelData;
 import mokiyoki.enhancedanimals.renderer.texture.TextureGrouping;
 import mokiyoki.enhancedanimals.renderer.texture.TexturingType;
 import mokiyoki.enhancedanimals.util.Genes;
-import elecvrsn.GeneticBettas.ai.brain.ValidatePath;
-import elecvrsn.GeneticBettas.renderer.texture.UpdatedTextureGrouping;
-import elecvrsn.GeneticBettas.renderer.texture.UpdatedTexturingType;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -518,6 +517,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             int iriIntensity = 3;
             boolean pastelOpaque = false;
             boolean cambodian = false;
+            boolean lacedBlack = false;
             int metallic = 0;
             int marbleRedQual = 0;
             int marbleRedSize = 0;
@@ -831,6 +831,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             // Black
             if (gene[8] == 2 && gene[9] == 2) {
                 //Laced Black
+                lacedBlack = true;
                 if (gene[6] == 2 && gene[7] == 2) {
                     //Double Black/Super Black
                     melanin[1] = 0.171F;
@@ -870,13 +871,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 iridescenceLight[2] += 0.2F;
                 iridescenceDark[1] -= 0.3F;
                 iridescenceDark[2] += 0.2F;
-            }
-
-            if (gene[8] == 2 && gene[9] == 2) {
-                //Laced Black should make cellophane match melanin
-                cellophane[0] = melanin[0];
-                cellophane[1] = melanin[1];
-                cellophane[2] = melanin[2];
             }
 
             if (gene[18] == 2 || gene[19] == 2) {
@@ -1175,7 +1169,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 // Eye Marble
                 eyeLeft = uuidArry[10] > 'b' ? 1 : uuidArry[10] > '7' ? 2 : 0;
                 eyeRight = uuidArry[11] > 'b' ? 1 : uuidArry[11] > '7' ? 2 : 0;
-            } else if (gene[80] == 3 || gene[81] == 3) {
+            }
+            if (gene[80] == 3 || gene[81] == 3) {
                 //Vanda
                 vanda = true;
                 //Size
@@ -1396,13 +1391,21 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             TextureGrouping texturesGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
             /** CELLOPHANE **/
-            TextureGrouping cellophaneGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, TEXTURES_FIN_ALPHA[finAlpha], "ce-f", cellophaneRGB);
-            addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/body.png", "ce-b", cellophaneRGB);
-            addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, "mask/gills.png", "ce-g", cellophaneRGB);
+            TextureGrouping cellophaneGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+            TextureGrouping cellophaneAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(cellophaneAlphaGroup, TEXTURES_FIN_ALPHA[finAlpha], true);
+            addTextureToAnimalTextureGrouping(cellophaneAlphaGroup, "mask/body.png", true);
+            addTextureToAnimalTextureGrouping(cellophaneAlphaGroup, "mask/gills.png", true);
             if (dumbo) {
-                addTextureToAnimalTextureGrouping(cellophaneGroup, TexturingType.APPLY_RGB, TEXTURES_DUMBO[crowntail], "ce-dumbo", cellophaneRGB);
+                addTextureToAnimalTextureGrouping(cellophaneAlphaGroup, TexturingType.APPLY_RGB, TEXTURES_DUMBO[crowntail], "ce-d", cellophaneRGB);
             }
+            cellophaneGroup.addGrouping(cellophaneAlphaGroup);
+            TextureGrouping cellophaneColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            addTextureToAnimalTextureGrouping(cellophaneColorGroup, TexturingType.APPLY_RGB, "mask/solid.png", "ce-b", cellophaneRGB);
+            if (lacedBlack) {
+                addTextureToAnimalTextureGrouping(cellophaneColorGroup, TexturingType.APPLY_BLACK, TEXTURES_MARBLE, marbleBlackQual, marbleBlackSize, marbleBlackRand, true);
+            }
+            cellophaneGroup.addGrouping(cellophaneColorGroup);
             texturesGroup.addGrouping(cellophaneGroup);
             /** Everything that isn't cellophane **/
             TextureGrouping nonCellophaneGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
@@ -2042,6 +2045,9 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
     @Override
     protected void handlePartnerBreeding(AgeableMob ageable) {
+        if (!(ageable instanceof EnhancedBetta)) {
+            return;
+        };
         if (GeneticAnimalsConfig.COMMON.omnigenders.get()) {
             this.mateGenetics = ((EnhancedBetta) ageable).getGenes();
             this.setHasEgg(true);

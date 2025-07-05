@@ -11,8 +11,6 @@ import net.minecraft.world.entity.ai.sensing.Sensor;
 
 import java.util.Optional;
 
-import static net.minecraft.world.entity.EntityType.PLAYER;
-
 public class BettaAttackablesSensor extends NearestVisibleLivingEntitySensor {
     public static final float TARGET_DETECTION_DISTANCE = 8.0F;
     protected boolean isMatchingEntity(LivingEntity bettaEntity, LivingEntity target) {
