@@ -30,7 +30,7 @@ public class BettaBreeds {
         .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(0,"2").add(4, "1|2", "2", "2").add(36, "2,1|2","2","2").add(46, "2").add(172, "2,1|2").add(234, "1|2")));
 
     public static final Breed GIANT = new Breed(new Breed.Properties().setData("Giant", Biomes.FOREST, Breed.Rarity.ORDINARY)
-        .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(166, "2")));
+        .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(166, "2", "3|4|5", "1")));
 
     public static final Breed MUSTARDGAS = new Breed(new Breed.Properties().setData("MustardGas", Biomes.FOREST, Breed.Rarity.ORDINARY)
         .setGeneSketch(new GeneSketch().add(0, "1"), new GeneSketch().add(0, "1,2").add(6, "1|2", "2").add(24, "2", "1|2", "_", "_", "2").add(42, "3")));
