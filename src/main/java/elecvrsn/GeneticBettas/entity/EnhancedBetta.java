@@ -995,6 +995,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     }
                     marbleRedSize = 2 + (marbleRedSizeMod / 2);
 
+                    if (finRed == 0 && bodyRed == 0) {
+                        marbleRedSize = 0;
+                    }
+                    else if (finRed < 4 && bodyRed < 2) {
+                        marbleRedSize = Math.max(marbleRedSize-1, 0);
+                    }
+
                     //Quality
                     int marbleRedQualMod = 0;
                     for (int i = 92; i < 96; i++) {
