@@ -850,15 +850,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 melanin[2] = 0.115F;
             }
 
-            if (gene[10] == 2 && gene[11] == 2) {
-                //Cambodian
-                cambodian = true;
-                finAlpha = 2;
-//                shading = 1;
-//                bodyRed = 1;
-                melanin = getHSBFromHex("D1C5B7");
-            }
-
             if (gene[14] == 2 && gene[15] == 2) {
                 //Blonde
                 melanin[1] -= 0.1F;
@@ -1196,6 +1187,16 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 }
                 if (vandaSizeMod > 0) vandaLevel = 4;
                 vandaLevel += uuidArry[5] % (vandaSizeMod > 0 ? 7 : 4);
+            }
+
+            if (gene[10] == 2 && gene[11] == 2) {
+                //Cambodian
+                cambodian = true;
+                finAlpha = 2;
+                // Force set black marble to be transparent just to get rid of the black layer
+                marbleBlackQual = 1;
+                marbleBlackSize = 0;
+                marbleBlackRand = 0;
             }
 
             // Fine Red Rufousing Genes
