@@ -1193,10 +1193,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 //Cambodian
                 cambodian = true;
                 finAlpha = 2;
-                // Force set black marble to be transparent just to get rid of the black layer
-                marbleBlackQual = 1;
-                marbleBlackSize = 0;
-                marbleBlackRand = 0;
+                melanin = getHSBFromHex("ebe8e4");
+                if (marbleBlackQual > 0) {
+                    // Force set black marble to be transparent just to get rid of the black layer
+                    marbleBlackQual = 1;
+                    marbleBlackSize = 0;
+                    marbleBlackRand = 0;
+                }
             }
 
             // Fine Red Rufousing Genes
