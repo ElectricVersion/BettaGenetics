@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -41,7 +42,7 @@ public class LayEgg extends Behavior<EnhancedBetta> {
         ), 5, 10000);
     }
 
-    public void tick(ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {
+    public void tick(@NotNull ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {
         if (nestPos != betta.getNestPos() || nestPos == null) {
             nestPos = betta.getNestPos();
             if (nestPos == null) {
@@ -65,6 +66,10 @@ public class LayEgg extends Behavior<EnhancedBetta> {
         BlockPos blockPos = betta.blockPosition();
         BlockState blockState = serverLevel.getBlockState(blockPos);
         if (betta.isInWater() && blockState.is(AddonBlocks.BUBBLE_NEST.get())) {
+            if (!betta.getMateGenetics().isValid()) {
+                betta.setHasEgg(false);
+                return;
+            }
             if (eggLayingTimer == -1) {
                 eggLayingTimer = 0;
             } else if (eggLayingTimer >= 100) {
