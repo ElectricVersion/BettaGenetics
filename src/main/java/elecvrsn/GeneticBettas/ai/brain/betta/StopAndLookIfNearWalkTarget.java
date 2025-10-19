@@ -3,16 +3,10 @@ package elecvrsn.GeneticBettas.ai.brain.betta;
 import com.google.common.collect.ImmutableMap;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.init.AddonMemoryModuleTypes;
-import mokiyoki.enhancedanimals.init.ModMemoryModuleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.behavior.Behavior;
-import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.entity.ai.memory.WalkTarget;
-
-import java.util.Optional;
 
 public class StopAndLookIfNearWalkTarget extends Behavior<EnhancedBetta> {
     protected boolean canStillUse(ServerLevel serverLevel, EnhancedBetta betta, long gameTime) {

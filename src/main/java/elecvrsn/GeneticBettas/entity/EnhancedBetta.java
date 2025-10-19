@@ -2,12 +2,15 @@ package elecvrsn.GeneticBettas.entity;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
+import elecvrsn.GeneticBettas.ai.brain.ValidatePath;
 import elecvrsn.GeneticBettas.ai.brain.betta.BettaBrain;
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.entity.genetics.BettaGeneticsInitialiser;
 import elecvrsn.GeneticBettas.init.*;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import elecvrsn.GeneticBettas.model.modeldata.BettaModelData;
+import elecvrsn.GeneticBettas.renderer.texture.UpdatedTextureGrouping;
+import elecvrsn.GeneticBettas.renderer.texture.UpdatedTexturingType;
 import elecvrsn.GeneticBettas.util.AddonReference;
 import mokiyoki.enhancedanimals.config.GeneticAnimalsConfig;
 import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
@@ -18,10 +21,6 @@ import mokiyoki.enhancedanimals.model.modeldata.AnimalModelData;
 import mokiyoki.enhancedanimals.renderer.texture.TextureGrouping;
 import mokiyoki.enhancedanimals.renderer.texture.TexturingType;
 import mokiyoki.enhancedanimals.util.Genes;
-import elecvrsn.GeneticBettas.ai.brain.ValidatePath;
-import elecvrsn.GeneticBettas.renderer.texture.UpdatedTextureGrouping;
-import elecvrsn.GeneticBettas.renderer.texture.UpdatedTexturingType;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -851,15 +850,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 melanin[2] = 0.115F;
             }
 
-            if (gene[10] == 2 && gene[11] == 2) {
-                //Cambodian
-                cambodian = true;
-                finAlpha = 2;
-//                shading = 1;
-//                bodyRed = 1;
-                melanin = getHSBFromHex("D1C5B7");
-            }
-
             if (gene[14] == 2 && gene[15] == 2) {
                 //Blonde
                 melanin[1] -= 0.1F;
@@ -997,6 +987,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                         }
                     }
                     marbleRedSize = 2 + (marbleRedSizeMod / 2);
+
+                    if (finRed == 0 && bodyRed == 0) {
+                        marbleRedSize = 0;
+                    }
+                    else if (finRed < 4 && bodyRed < 2) {
+                        marbleRedSize = Math.max(marbleRedSize-1, 0);
+                    }
 
                     //Quality
                     int marbleRedQualMod = 0;
@@ -1190,6 +1187,19 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                 }
                 if (vandaSizeMod > 0) vandaLevel = 4;
                 vandaLevel += uuidArry[5] % (vandaSizeMod > 0 ? 7 : 4);
+            }
+
+            if (gene[10] == 2 && gene[11] == 2) {
+                //Cambodian
+                cambodian = true;
+                finAlpha = 2;
+                melanin = getHSBFromHex("ebe8e4");
+                if (marbleBlackQual > 0) {
+                    // Force set black marble to be transparent just to get rid of the black layer
+                    marbleBlackQual = 1;
+                    marbleBlackSize = 0;
+                    marbleBlackRand = 0;
+                }
             }
 
             // Fine Red Rufousing Genes
