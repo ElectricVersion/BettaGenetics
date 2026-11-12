@@ -41,4 +41,8 @@ public class ColorUtil {
         return clampedColor;
     }
 
+    public static int swapRedBlue(int colour) {
+        return colour & 0xFF00FF00 | (colour & 0xFF) << 16 | colour >> 16 & 0xFF;
+    }
+
 }

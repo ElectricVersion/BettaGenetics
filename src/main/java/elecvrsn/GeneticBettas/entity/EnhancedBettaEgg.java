@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import elecvrsn.GeneticBettas.config.BettasCommonConfig;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import elecvrsn.GeneticBettas.items.EnhancedBettaEggBucket;
+import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
 import mokiyoki.enhancedanimals.util.Genes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -123,7 +124,6 @@ public class EnhancedBettaEgg extends Entity {
             return true;
         }
     }
-
 
     public @NotNull InteractionResult interact(@NotNull Player player, @NotNull InteractionHand interactionHand) {
         if (this.level().isClientSide) {
@@ -246,8 +246,8 @@ public class EnhancedBettaEgg extends Entity {
         }
         betta.setSireName(this.getSire());
         betta.setDamName(this.getDam());
-        betta.setAge(-betta.getAdultAge());
-        betta.setBirthTime(String.valueOf(this.level().getGameTime()));
+        betta.setAge(EnhancedAnimalAbstract.clampToInt(-betta.getAdultAge()));
+        betta.setBirthTime(this.level().getGameTime());
         betta.initilizeAnimalSize();
         betta.moveTo(this.xo,this.yo, this.zo, this.xRotO, this.yRotO);
         if (this.hasCustomName()) {
