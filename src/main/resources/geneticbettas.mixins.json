@@ -1,9 +1,8 @@
-
 {
   "required": true,
   "compatibilityLevel": "JAVA_17",
   "package": "elecvrsn.GeneticBettas.mixins",
-  "client": [
-    "MixinTextureGrouping"
+  "mixins": [
+    "VariationKeyInvoker"
   ]
 }
