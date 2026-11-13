@@ -80,7 +80,6 @@ import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
 import static elecvrsn.GeneticBettas.util.BettaVariationKeys.*;
 import static elecvrsn.GeneticBettas.util.ColorUtil.clampRGB;
 import static elecvrsn.GeneticBettas.util.ColorUtil.getHSBFromHex;
-import static elecvrsn.GeneticBettas.util.ColorUtil.swapRedBlue;
 import static net.minecraft.world.level.block.Blocks.WATER;
 
 public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable {
@@ -1288,8 +1287,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             float saturationMult = babyColors ? 0.75F : 1F;
 
-            int pheomelaninRGB = Colouration.HSBtoABGR(pheomelanin[0], pheomelanin[1]*saturationMult, pheomelanin[2]);
-            int melaninRGB = Colouration.HSBtoABGR(melanin[0], melanin[1]*saturationMult, melanin[2]);
+            int pheomelaninRGB = Colouration.HSBtoARGB(pheomelanin[0], pheomelanin[1]*saturationMult, pheomelanin[2]);
+            int melaninRGB = Colouration.HSBtoARGB(melanin[0], melanin[1]*saturationMult, melanin[2]);
             int bloodredRGB = Colouration.HSBtoARGB(bloodredColor[0], bloodredColor[1]*saturationMult, bloodredColor[2]);
             int iriRGB = Colouration.HSBtoARGB(iridescence[0], iridescence[1], iridescence[2]);
             int iriLightRGB = Colouration.HSBtoARGB(iridescenceLight[0], iridescenceLight[1], iridescenceLight[2]);
@@ -1300,8 +1299,6 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             int cellophaneRGB = Colouration.HSBtoARGB(cellophane[0], cellophane[1], cellophane[2]);
             this.colouration.setMelaninColour(melaninRGB);
             this.colouration.setPheomelaninColour(pheomelaninRGB);
-            int pheomelaninTint = swapRedBlue(pheomelaninRGB);
-            int melaninTint = swapRedBlue(melaninRGB);
 
             /*** TEXTURES ***/
 
@@ -1334,7 +1331,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             }
             cellophaneMask.content().addTexture("mask/solid.png").rgb(cellophaneRGB);
             if (lacedBlack) {
-                cellophaneMask.content().addTexture(TEXTURES_MARBLE[marbleBlackQual][marbleBlackSize][marbleBlackRand]).rgb(melaninTint);
+                cellophaneMask.content().addTexture(TEXTURES_MARBLE[marbleBlackQual][marbleBlackSize][marbleBlackRand]).rgb(melaninRGB);
             }
             /** Everything that isn't cellophane **/
             TextureGroup nonCellophaneGroup;
@@ -1350,14 +1347,14 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             }
             TextureGroup pigmentGroup = nonCellophaneGroup.addMergeGroup();
             /** RED **/
-            pigmentGroup.addTexture(TEXTURES_MARBLE[marbleRedQual][marbleRedSize][marbleRedRand]).rgb(pheomelaninTint);
+            pigmentGroup.addTexture(TEXTURES_MARBLE[marbleRedQual][marbleRedSize][marbleRedRand]).rgb(pheomelaninRGB);
             /** BLACK **/
             Cutout blackCutout = pigmentGroup.addCutoutGroup();
             //Cut the red layer out of the black
             blackCutout.cutoutTexture().addTextureIf(bodyRed != 0, TEXTURES_RED_BODY[bodyRed]);
             blackCutout.cutoutTexture().addTextureIf(finRed != 0, TEXTURES_RED_FIN[fins][doubletail][finRed]);
             //The marble gene(s) cut holes in each layer
-            blackCutout.content().addTexture(TEXTURES_MARBLE[marbleBlackQual][marbleBlackSize][marbleBlackRand]).rgb(melaninTint);
+            blackCutout.content().addTexture(TEXTURES_MARBLE[marbleBlackQual][marbleBlackSize][marbleBlackRand]).rgb(melaninRGB);
             /*** BLOODRED ***/
             if (bloodred) {
                 Mask bloodredMask = pigmentGroup.addMaskGroup();
@@ -1374,8 +1371,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             /** BABY STRIPES IF APPLICABLE **/
             if (babyColors) {
                 TextureGroup babyGroup = nonCellophaneGroup.addMergeGroup();
-                babyGroup.addTextureIf(!cambodian, TEXTURES_BABY[1]).rgb(extendedRed ? pheomelaninTint : melaninTint);
-                babyGroup.addTexture("mask/percent50.png").rgb(melaninTint); // low opacity overlay helps dull the colors
+                babyGroup.addTextureIf(!cambodian, TEXTURES_BABY[1]).rgb(extendedRed ? pheomelaninRGB : melaninRGB);
+                babyGroup.addTexture("mask/percent50.png").rgb(melaninRGB); // low opacity overlay helps dull the colors
             }
             /** IRIDESCENCE **/
             Mask iridescenceMask = nonCellophaneGroup.addMaskGroup();
