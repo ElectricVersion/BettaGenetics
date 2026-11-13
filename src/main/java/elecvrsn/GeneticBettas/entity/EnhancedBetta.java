@@ -9,17 +9,19 @@ import elecvrsn.GeneticBettas.entity.genetics.BettaGeneticsInitialiser;
 import elecvrsn.GeneticBettas.init.*;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
 import elecvrsn.GeneticBettas.model.modeldata.BettaModelData;
-import elecvrsn.GeneticBettas.renderer.texture.UpdatedTextureGrouping;
-import elecvrsn.GeneticBettas.renderer.texture.UpdatedTexturingType;
 import elecvrsn.GeneticBettas.util.AddonReference;
 import mokiyoki.enhancedanimals.config.GeneticAnimalsConfig;
 import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
 import mokiyoki.enhancedanimals.entity.EntityState;
 import mokiyoki.enhancedanimals.entity.util.Colouration;
+import mokiyoki.enhancedanimals.entity.util.Variation;
 import mokiyoki.enhancedanimals.init.FoodSerialiser;
 import mokiyoki.enhancedanimals.model.modeldata.AnimalModelData;
+import mokiyoki.enhancedanimals.renderer.texture.Cutout;
+import mokiyoki.enhancedanimals.renderer.texture.Mask;
+import mokiyoki.enhancedanimals.renderer.texture.TextureBuilder;
+import mokiyoki.enhancedanimals.renderer.texture.TextureGroup;
 import mokiyoki.enhancedanimals.renderer.texture.TextureGrouping;
-import mokiyoki.enhancedanimals.renderer.texture.TexturingType;
 import mokiyoki.enhancedanimals.util.Genes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -70,10 +72,12 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
 import static elecvrsn.GeneticBettas.init.AddonEntities.ENHANCED_BETTA;
+import static elecvrsn.GeneticBettas.util.BettaVariationKeys.*;
 import static elecvrsn.GeneticBettas.util.ColorUtil.clampRGB;
 import static elecvrsn.GeneticBettas.util.ColorUtil.getHSBFromHex;
 import static net.minecraft.world.level.block.Blocks.WATER;
@@ -447,7 +451,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     }
 
     @Override
-    protected int getAdultAge() {
+    protected long getAdultAge() {
         return BettasCommonConfig.COMMON.bettaAdultAge.get();
     }
 
@@ -498,7 +502,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         if (this.getGenes() != null || this.genetics != null) {
             int[] gene = this.getGenes() != null ? getGenes().getAutosomalGenes() : genetics.getAutosomalGenes();
 
-            char[] uuidArry = getStringUUID().toCharArray();
+            Variation variation = this.getVariation();
 
             boolean babyColors = this.isVeryBaby();
 
@@ -628,14 +632,13 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             /*** DRAGONSCALE ***/
             if (gene[172] == 2 || gene[173] == 2) {
                 boolean dragonscaleMod = gene[234] == 2 || gene[235] == 2;
-                int dragonRand = uuidArry[9];
                 if (gene[172] == gene[173]) {
                     //Homo
-                    dragonscale = dragonscaleMod ? (5 + (dragonRand % 5)) : (10 + (dragonRand % 2));
+                    dragonscale = dragonscaleMod ? (5 + variation.get(DRAGONSCALE, 5)) : (10 + variation.get(DRAGONSCALE, 2));
                 }
                 else {
                     //Het
-                    dragonscale = dragonscaleMod ? (1 + (dragonRand % 3)) : 4;
+                    dragonscale = dragonscaleMod ? (1 + variation.get(DRAGONSCALE, 3)) : 4;
                 }
             }
 
@@ -1012,7 +1015,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
                     //Random
                     if (marbleRedSize != 0 && marbleRedSize != 5) {
-                        marbleRedRand += uuidArry[3] % (marbleRedQual > 2 ? 10 : 5);
+                        marbleRedRand += variation.get(MARBLE_RED, marbleRedQual > 2 ? 10 : 5);
                     }
 
 
@@ -1050,7 +1053,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
                     //Random
                     if (marbleBlackSize != 0 && marbleBlackSize != 5) {
-                        marbleBlackRand += uuidArry[4] % (marbleBlackQual > 2 ? 10 : 5);
+                        marbleBlackRand += variation.get(MARBLE_BLACK, marbleBlackQual > 2 ? 10 : 5);
                     }
 
                     // Bloodred Marble
@@ -1087,7 +1090,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
                     //Random
                     if (marbleBloodredSize != 0 && marbleBloodredSize != 5) {
-                        marbleBloodredRand += uuidArry[5] % (marbleBloodredQual > 2 ? 10 : 5);
+                        marbleBloodredRand += variation.get(MARBLE_BLOODRED, marbleBloodredQual > 2 ? 10 : 5);
                     }
 
                     // Iri Marble
@@ -1124,7 +1127,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
                     //Random
                     if (marbleIriSize != 0 && marbleIriSize != 5) {
-                        marbleIriRand += uuidArry[6] % (marbleIriQual > 2 ? 10 : 5);
+                        marbleIriRand += variation.get(MARBLE_IRI, marbleIriQual > 2 ? 10 : 5);
                     }
 
                     // Opaque Marble
@@ -1161,12 +1164,12 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
                     //Random
                     if (marbleOpaqueSize != 0 && marbleOpaqueSize != 5) {
-                        marbleOpaqueRand += uuidArry[7] % (marbleOpaqueQual > 2 ? 10 : 5);
+                        marbleOpaqueRand += variation.get(MARBLE_OPAQUE, marbleOpaqueQual > 2 ? 10 : 5);
                     }
                 }
                 // Eye Marble
-                eyeLeft = uuidArry[10] > 'b' ? 1 : uuidArry[10] > '7' ? 2 : 0;
-                eyeRight = uuidArry[11] > 'b' ? 1 : uuidArry[11] > '7' ? 2 : 0;
+                eyeLeft = variation.hex(EYE_LEFT) > 11 ? 1 : variation.hex(EYE_LEFT) > 7 ? 2 : 0;
+                eyeRight = variation.hex(EYE_RIGHT) > 11 ? 1 : variation.hex(EYE_RIGHT) > 7 ? 2 : 0;
             }
             if (gene[80] == 3 || gene[81] == 3) {
                 //Vanda
@@ -1184,7 +1187,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
                     }
                 }
                 if (vandaSizeMod > 0) vandaLevel = 4;
-                vandaLevel += uuidArry[5] % (vandaSizeMod > 0 ? 7 : 4);
+                vandaLevel += variation.get(VANDA, vandaSizeMod > 0 ? 7 : 4);
             }
 
             if (gene[10] == 2 && gene[11] == 2) {
@@ -1284,8 +1287,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             float saturationMult = babyColors ? 0.75F : 1F;
 
-            int pheomelaninRGB = Colouration.HSBtoABGR(pheomelanin[0], pheomelanin[1]*saturationMult, pheomelanin[2]);
-            int melaninRGB = Colouration.HSBtoABGR(melanin[0], melanin[1]*saturationMult, melanin[2]);
+            int pheomelaninRGB = Colouration.HSBtoARGB(pheomelanin[0], pheomelanin[1]*saturationMult, pheomelanin[2]);
+            int melaninRGB = Colouration.HSBtoARGB(melanin[0], melanin[1]*saturationMult, melanin[2]);
             int bloodredRGB = Colouration.HSBtoARGB(bloodredColor[0], bloodredColor[1]*saturationMult, bloodredColor[2]);
             int iriRGB = Colouration.HSBtoARGB(iridescence[0], iridescence[1], iridescence[2]);
             int iriLightRGB = Colouration.HSBtoARGB(iridescenceLight[0], iridescenceLight[1], iridescenceLight[2]);
@@ -1299,248 +1302,201 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
 
             /*** TEXTURES ***/
 
-            //TODO: Optimize this all using INTERSECT_GROUP
-            TextureGrouping iriAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-
-            TextureGrouping iriAlphaIntersectGroup = new UpdatedTextureGrouping(UpdatedTexturingType.INTERSECT_GROUP);
+            List<String> iriAlphaTextures = new ArrayList<>();
             if (dragonscale > 0) {
-                addTextureToAnimalTextureGrouping(iriAlphaIntersectGroup, TEXTURES_ALPHA, 4, true);
+                iriAlphaTextures.add(TEXTURES_ALPHA[4]);
             }
             else {
-                addTextureToAnimalTextureGrouping(iriAlphaIntersectGroup, TEXTURES_MARBLE, marbleIriQual, marbleIriSize, marbleIriRand, true);
-                addTextureToAnimalTextureGrouping(iriAlphaIntersectGroup, TEXTURES_ALPHA, iriIntensity, true);
+                iriAlphaTextures.add(TEXTURES_MARBLE[marbleIriQual][marbleIriSize][marbleIriRand]);
+                iriAlphaTextures.add(TEXTURES_ALPHA[iriIntensity]);
             }
             //Funky hybrid iridescence markings
-            addTextureToAnimalTextureGrouping(iriAlphaIntersectGroup, TEXTURES_HYBRID_IRI, hybridIri, l -> l!=0);
-            iriAlphaGroup.addGrouping(iriAlphaIntersectGroup);
+            if (hybridIri != 0) {
+                iriAlphaTextures.add(TEXTURES_HYBRID_IRI[hybridIri]);
+            }
 
+            TextureBuilder bettaTexture = TextureBuilder.of(this, gene);
+            Mask bodyMask = bettaTexture.root().addMaskGroup();
+            bodyMask.maskTexture().addTexture("mask/body.png");
+            bodyMask.maskTexture().addTexture("mask/gills.png");
+            TextureGroup texturesGroup = bodyMask.content();
+
+            /** CELLOPHANE **/
+            Mask cellophaneMask = texturesGroup.addMaskGroup();
+            cellophaneMask.maskTexture().addTexture(TEXTURES_FIN_ALPHA[finAlpha]);
+            cellophaneMask.maskTexture().addTexture("mask/body.png");
+            cellophaneMask.maskTexture().addTexture("mask/gills.png");
+            if (dumbo) {
+                cellophaneMask.maskTexture().addTexture(TEXTURES_DUMBO[crowntail]).rgb(cellophaneRGB);
+            }
+            cellophaneMask.content().addTexture("mask/solid.png").rgb(cellophaneRGB);
+            if (lacedBlack) {
+                cellophaneMask.content().addTexture(TEXTURES_MARBLE[marbleBlackQual][marbleBlackSize][marbleBlackRand]).rgb(melaninRGB);
+            }
+            /** Everything that isn't cellophane **/
+            TextureGroup nonCellophaneGroup;
+            /** BUTTERFLY **/
+            if (butterfly != 0) {
+                Cutout butterflyCutout = texturesGroup.addCutoutGroup();
+                butterflyCutout.cutoutTexture().addTextureIf(dumbo, "mask/dumbo.png");
+                butterflyCutout.cutoutTexture().addTexture(TEXTURES_BUTTERFLY[fins][doubletail][butterfly]);
+                nonCellophaneGroup = butterflyCutout.content();
+            }
+            else {
+                nonCellophaneGroup = texturesGroup.addMergeGroup();
+            }
+            TextureGroup pigmentGroup = nonCellophaneGroup.addMergeGroup();
+            /** RED **/
+            pigmentGroup.addTexture(TEXTURES_MARBLE[marbleRedQual][marbleRedSize][marbleRedRand]).rgb(pheomelaninRGB);
+            /** BLACK **/
+            Cutout blackCutout = pigmentGroup.addCutoutGroup();
+            //Cut the red layer out of the black
+            blackCutout.cutoutTexture().addTextureIf(bodyRed != 0, TEXTURES_RED_BODY[bodyRed]);
+            blackCutout.cutoutTexture().addTextureIf(finRed != 0, TEXTURES_RED_FIN[fins][doubletail][finRed]);
+            //The marble gene(s) cut holes in each layer
+            blackCutout.content().addTexture(TEXTURES_MARBLE[marbleBlackQual][marbleBlackSize][marbleBlackRand]).rgb(melaninRGB);
+            /*** BLOODRED ***/
+            if (bloodred) {
+                Mask bloodredMask = pigmentGroup.addMaskGroup();
+                bloodredMask.maskTexture().addTextureIf(bodyBloodred != 0, TEXTURES_RED_BODY[bodyBloodred]);
+                bloodredMask.maskTexture().addTextureIf(finBloodred != 0, TEXTURES_RED_FIN[fins][doubletail][finBloodred]);
+                if (vanda) {
+                    bloodredMask.content().addTexture(TEXTURES_VANDA[vandaLevel]).rgb(bloodredRGB);
+                } else {
+                    bloodredMask.content().addTexture(TEXTURES_MARBLE[marbleBloodredQual][marbleBloodredSize][marbleBloodredRand]).rgb(bloodredRGB);
+                }
+            }
+            /** DETAILS **/
+            pigmentGroup.addTexture("detail/body_shading.png");
+            /** BABY STRIPES IF APPLICABLE **/
+            if (babyColors) {
+                TextureGroup babyGroup = nonCellophaneGroup.addMergeGroup();
+                babyGroup.addTextureIf(!cambodian, TEXTURES_BABY[1]).rgb(extendedRed ? pheomelaninRGB : melaninRGB);
+                babyGroup.addTexture("mask/percent50.png").rgb(melaninRGB); // low opacity overlay helps dull the colors
+            }
+            /** IRIDESCENCE **/
+            Mask iridescenceMask = nonCellophaneGroup.addMaskGroup();
+            TextureGroup iriAlphaGroup = iridescenceMask.maskTexture();
             if (bodyIri != 0) {
-                TextureGrouping iriMaskAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+                Mask iriAlphaMask = iriAlphaGroup.addMaskGroup();
+                addIntersectedTextures(iriAlphaMask.maskTexture(), iriAlphaTextures);
                 if (dragonscale > 0) {
-                    TextureGrouping iriBodyAndFinAlphaGroup = new TextureGrouping(TexturingType.CUTOUT_GROUP);
-                    addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, "iri/scale_overlay.png", true);
-                    addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_DRAGONSCALE, dragonscale, l -> l != 0);
-                    addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_DRAGONSCALE_MASK, maskIri >= 4 ? 2 : 1, maskIri > 0);
-                    iriMaskAlphaGroup.addGrouping(iriBodyAndFinAlphaGroup);
+                    Cutout dragonscaleCutout = iriAlphaMask.content().addCutoutGroup();
+                    dragonscaleCutout.cutoutTexture().addTexture("iri/scale_overlay.png");
+                    dragonscaleCutout.content().addTexture(TEXTURES_DRAGONSCALE[dragonscale]);
+                    dragonscaleCutout.content().addTextureIf(maskIri > 0, TEXTURES_DRAGONSCALE_MASK[maskIri >= 4 ? 2 : 1]);
                 }
                 else {
-                    TextureGrouping iriBodyAndFinAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-                    addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_BODY, bodyIri, l -> l != 0);
-                    addTextureToAnimalTextureGrouping(iriBodyAndFinAlphaGroup, TEXTURES_IRI_MASK, maskIri, true);
-                    iriMaskAlphaGroup.addGrouping(iriBodyAndFinAlphaGroup);
+                    Mask bodyIriMask = iriAlphaMask.content().addMaskGroup();
+                    bodyIriMask.maskTexture().addTexture(TEXTURES_IRI_BODY[bodyIri]);
+                    bodyIriMask.content().addTexture(TEXTURES_IRI_MASK[maskIri]);
                 }
-                TextureGrouping iriBodyAndFinGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_FINS, finIri, l -> l != 0);
-                addTextureToAnimalTextureGrouping(iriBodyAndFinGroup, TEXTURES_IRI_RIM, fins, doubletail, iriRim, iriRim != 0);
-                iriMaskAlphaGroup.addGrouping(iriBodyAndFinGroup);
-                iriAlphaGroup.addGrouping(iriMaskAlphaGroup);
+                TextureGroup iriBodyAndFinGroup = iriAlphaMask.content().addMergeGroup();
+                iriBodyAndFinGroup.addTextureIf(finIri != 0, TEXTURES_IRI_FINS[finIri]);
+                iriBodyAndFinGroup.addTextureIf(iriRim != 0, TEXTURES_IRI_RIM[fins][doubletail][iriRim]);
             }
+            else {
+                addIntersectedTextures(iriAlphaGroup, iriAlphaTextures);
+            }
+            TextureGroup iriColorGroup = iridescenceMask.content().addMergeGroup();
+            iriColorGroup.addTexture("iri/iri_base.png").rgb(iriRGB);
+            iriColorGroup.addTexture("iri/iri_dark.png").rgb(iriDarkRGB);
+            iriColorGroup.addTexture("iri/iri_light.png").rgb(iriLightRGB);
+            if (pastelOpaque) {
+                Mask opaqueMask = iridescenceMask.content().addMaskGroup();
+                opaqueMask.maskTexture().addTexture(TEXTURES_MARBLE[marbleOpaqueQual][marbleOpaqueSize][marbleOpaqueRand]);
+                opaqueMask.content().addTexture("iri/iri_base.png").rgb(opaqueRGB);
+                opaqueMask.content().addTexture("iri/iri_dark.png").rgb(opaqueDarkRGB);
+                opaqueMask.content().addTexture("iri/iri_light.png").rgb(opaqueLightRGB);
+                opaqueMask.content().addTexture("detail/body_shading_iri.png").rgb(opaqueDarkRGB);
+            }
+            if (metallic != 0) {
+                TextureGroup metallicGroup = iridescenceMask.content().addMergeGroup();
+                if (gene[0] == 2 && gene[1] == 2) {
+                    //Steel Blue
+                    metallicGroup.addTexture("iri/steel_metalliclayer1.png").rgb(metallic1RGB);
+                    metallicGroup.addTexture("iri/steel_metalliclayer2.png").rgb(metallic2RGB);
+                    metallicGroup.addTexture("iri/steel_metalliclayer3.png").rgb(metallic3RGB);
+                } else if (gene[0] == 2 || gene[1] == 2) {
+                    //Royal Blue
+                    metallicGroup.addTexture("iri/royal_metalliclayer1.png").rgb(metallic1RGB);
+                    metallicGroup.addTexture("iri/royal_metalliclayer2.png").rgb(metallic2RGB);
+                    metallicGroup.addTexture("iri/royal_metalliclayer3.png").rgb(metallic3RGB);
+                } else {
+                    if (metallic == 2) {
+                        metallicGroup.addTexture("iri/turq_metalliclayer2.png").rgb(metallic2RGB);
+                    }
+                    metallicGroup.addTexture("iri/turq_metalliclayer3.png").rgb(metallic3RGB);
+                }
+                // Metallic seems to look better with normal shading
+                iridescenceMask.content().addTexture("detail/body_shading.png");
+            }
+            /** FIN DETAIL **/
+            texturesGroup.addTexture("detail/halfmoon_fins_64.png");
+            /** EYES **/
+            texturesGroup.addMergeGroup(TEXTURES_EYE_L[eyeLeft], TEXTURES_EYE_R[eyeRight]);
 
-            transRootGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            TextureGrouping transAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
+            bettaTexture.finishTexture();
 
-            TextureGrouping finAlphaGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            TextureGrouping finShapeGroup = new TextureGrouping(TexturingType.MASK_GROUP);
+            TextureBuilder finTexture = new TextureBuilder(this, this.getVariation(), gene, this::getOrSetIsFemale, this::getSexVariation, this::isBaby, this::growthAmount, grouping -> this.transRootGroup = grouping);
+            Mask transRootMask = finTexture.root().addMaskGroup();
+            Mask finAlphaMask = transRootMask.maskTexture().addMaskGroup();
+            Mask finShapeMask = finAlphaMask.maskTexture().addMaskGroup();
             //Remove the pectoral fins from the fin shape texture via masking when dumbo is present.
-            addTextureToAnimalTextureGrouping(finShapeGroup, TEXTURES_DUMBO_ALPHA, dumbo ? 1 : 0, true);
-            addTextureToAnimalTextureGrouping(finShapeGroup, TEXTURES_FINS, fins, doubletail, crowntail, true);
-            addTextureToAnimalTextureGrouping(finShapeGroup, TEXTURES_DUMBO, crowntail, dumbo);
-            finAlphaGroup.addGrouping(finShapeGroup);
+            finShapeMask.maskTexture().addTexture(TEXTURES_DUMBO_ALPHA[dumbo ? 1 : 0]);
+            finShapeMask.content().addTexture(TEXTURES_FINS[fins][doubletail][crowntail]);
+            finShapeMask.content().addTextureIf(dumbo, TEXTURES_DUMBO[crowntail]);
 
-            TextureGrouping finTransparencyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            TextureGrouping finCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            if (butterfly != 0 ) {
-                new TextureGrouping(TexturingType.CUTOUT_GROUP);
-            }
+            TextureGroup finTransparencyGroup = finAlphaMask.content();
+            TextureGroup finCutoutGroup = finTransparencyGroup.addMergeGroup();
             if (finAlpha == 1 && butterfly != 0) {
                 // Cut butterfly out of black lace
                 //Laced Black and Butterfly
-                addTextureToAnimalTextureGrouping(finCutoutGroup, TexturingType.APPLY_RGBA, TEXTURES_BUTTERFLY[fins][doubletail][butterfly], "bf-lb", (int) (32) << 24 );
+                finCutoutGroup.addTexture(TEXTURES_BUTTERFLY[fins][doubletail][butterfly]).rgba(32 << 24);
             }
-            addTextureToAnimalTextureGrouping(finCutoutGroup, TEXTURES_FIN_ALPHA, finAlpha, l -> true);
-            finTransparencyGroup.addGrouping(finCutoutGroup);
-
-            TextureGrouping finPigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            // Things in this group cancel out the effect of finCutoutGroup
-            TextureGrouping finRedPigmentGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            // Red pigment adds opacity
-            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, true);
-            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_FIN, fins, doubletail, finRed, finRed != 0);
-            // There needs to be at least one texture here for the mask to always work, so make body red use transparent dummy texture
-            addTextureToAnimalTextureGrouping(finRedPigmentGroup, TEXTURES_RED_BODY, bodyRed, true);
-            finPigmentGroup.addGrouping(finRedPigmentGroup);
-            if (bloodred) {
-                // Bloodred pigment also adds opacity
-                TextureGrouping finBloodredPigmentGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-                if (vanda) {
-                    addTextureToAnimalTextureGrouping(finBloodredPigmentGroup, TEXTURES_VANDA, vandaLevel, true);
-                }
-                else {
-                    addTextureToAnimalTextureGrouping(finBloodredPigmentGroup, TEXTURES_MARBLE, marbleBloodredQual, marbleBloodredSize, marbleBloodredRand, true);
-                }
-                addTextureToAnimalTextureGrouping(finBloodredPigmentGroup, TEXTURES_RED_FIN, fins, doubletail, finBloodred, finBloodred != 0);
-                addTextureToAnimalTextureGrouping(finBloodredPigmentGroup, TEXTURES_RED_BODY, bodyBloodred, l -> l != 0);
-                finPigmentGroup.addGrouping(finBloodredPigmentGroup);
-            }
+            finCutoutGroup.addTexture(TEXTURES_FIN_ALPHA[finAlpha]);
 
             //Iridescence adds opacity but isnt cut through by butterfly
-            finTransparencyGroup.addGrouping(iriAlphaGroup);
+            finTransparencyGroup.grouping().addGrouping(iriAlphaGroup.grouping());
 
-            TextureGrouping finDumboGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(finDumboGroup, TEXTURES_DUMBO, crowntail, dumbo);
-            finPigmentGroup.addGrouping(finDumboGroup);
-            finTransparencyGroup.addGrouping(finPigmentGroup);
-            finAlphaGroup.addGrouping(finTransparencyGroup);
-            transAlphaGroup.addGrouping(finAlphaGroup);
-            transRootGroup.addGrouping(transAlphaGroup);
-
-            TextureGrouping rootGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            TextureGrouping bodyAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(bodyAlphaGroup, "mask/body.png", true);
-            addTextureToAnimalTextureGrouping(bodyAlphaGroup, "mask/gills.png", true);
-            rootGroup.addGrouping(bodyAlphaGroup);
-
-            TextureGrouping texturesGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            /** CELLOPHANE **/
-            TextureGrouping cellophaneGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            TextureGrouping cellophaneAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(cellophaneAlphaGroup, TEXTURES_FIN_ALPHA[finAlpha], true);
-            addTextureToAnimalTextureGrouping(cellophaneAlphaGroup, "mask/body.png", true);
-            addTextureToAnimalTextureGrouping(cellophaneAlphaGroup, "mask/gills.png", true);
-            if (dumbo) {
-                addTextureToAnimalTextureGrouping(cellophaneAlphaGroup, TexturingType.APPLY_RGB, TEXTURES_DUMBO[crowntail], "ce-d", cellophaneRGB);
-            }
-            cellophaneGroup.addGrouping(cellophaneAlphaGroup);
-            TextureGrouping cellophaneColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(cellophaneColorGroup, TexturingType.APPLY_RGB, "mask/solid.png", "ce-b", cellophaneRGB);
-            if (lacedBlack) {
-                addTextureToAnimalTextureGrouping(cellophaneColorGroup, TexturingType.APPLY_BLACK, TEXTURES_MARBLE, marbleBlackQual, marbleBlackSize, marbleBlackRand, true);
-            }
-            cellophaneGroup.addGrouping(cellophaneColorGroup);
-            texturesGroup.addGrouping(cellophaneGroup);
-            /** Everything that isn't cellophane **/
-            TextureGrouping nonCellophaneGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            if (butterfly != 0) {
-                nonCellophaneGroup = new TextureGrouping(TexturingType.CUTOUT_GROUP);
-            }
-            /** BUTTERFLY **/
-            if (butterfly != 0) {
-                TextureGrouping butterflyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                addTextureToAnimalTextureGrouping(butterflyGroup, "mask/dumbo.png", dumbo);
-                addTextureToAnimalTextureGrouping(butterflyGroup, TEXTURES_BUTTERFLY, fins, doubletail, butterfly, true);
-                nonCellophaneGroup.addGrouping(butterflyGroup);
-            }
-            TextureGrouping pigmentGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            /** RED **/
-            TextureGrouping redGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(redGroup, TexturingType.APPLY_RED, TEXTURES_MARBLE, marbleRedQual, marbleRedSize, marbleRedRand, true);
-            pigmentGroup.addGrouping(redGroup);
-            /** BLACK **/
-            TextureGrouping blackGroup = new TextureGrouping(TexturingType.CUTOUT_GROUP);
-            TextureGrouping blackCutoutGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            //Cut the red layer out of the black
-            addTextureToAnimalTextureGrouping(blackCutoutGroup, TEXTURES_RED_BODY, bodyRed, l -> l != 0);
-            addTextureToAnimalTextureGrouping(blackCutoutGroup, TEXTURES_RED_FIN, fins, doubletail, finRed, finRed != 0);
-            blackGroup.addGrouping(blackCutoutGroup);
-            TextureGrouping blackColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            //The marble gene(s) cut holes in each layer
-            addTextureToAnimalTextureGrouping(blackColorGroup, TexturingType.APPLY_BLACK, TEXTURES_MARBLE, marbleBlackQual, marbleBlackSize, marbleBlackRand, true);
-            blackGroup.addGrouping(blackColorGroup);
-            pigmentGroup.addGrouping(blackGroup);
-            /*** BLOODRED ***/
+            TextureGroup finPigmentGroup = finTransparencyGroup.addMergeGroup();
+            // Things in this group cancel out the effect of finCutoutGroup
+            Mask finRedPigmentMask = finPigmentGroup.addMaskGroup();
+            // Red pigment adds opacity
+            finRedPigmentMask.maskTexture().addTexture(TEXTURES_MARBLE[marbleRedQual][marbleRedSize][marbleRedRand]);
+            finRedPigmentMask.content().addTextureIf(finRed != 0, TEXTURES_RED_FIN[fins][doubletail][finRed]);
+            // There needs to be at least one texture here for the mask to always work, so make body red use transparent dummy texture
+            finRedPigmentMask.content().addTexture(TEXTURES_RED_BODY[bodyRed]);
             if (bloodred) {
-                TextureGrouping bloodredGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-                TextureGrouping bloodredMaskGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                addTextureToAnimalTextureGrouping(bloodredMaskGroup, TEXTURES_RED_BODY, bodyBloodred, l -> l != 0);
-                addTextureToAnimalTextureGrouping(bloodredMaskGroup, TEXTURES_RED_FIN, fins, doubletail, finBloodred, finBloodred != 0);
-                bloodredGroup.addGrouping(bloodredMaskGroup);
-                TextureGrouping bloodredColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                if (vanda) {
-                    addTextureToAnimalTextureGrouping(bloodredColorGroup, TexturingType.APPLY_RGB, TEXTURES_VANDA[vandaLevel], "br", bloodredRGB);
-                } else {
-                    addTextureToAnimalTextureGrouping(bloodredColorGroup, TexturingType.APPLY_RGB, TEXTURES_MARBLE[marbleBloodredQual][marbleBloodredSize][marbleBloodredRand], "br", bloodredRGB);
+                // Bloodred pigment also adds opacity
+                String finBloodredPigment = vanda ? TEXTURES_VANDA[vandaLevel] : TEXTURES_MARBLE[marbleBloodredQual][marbleBloodredSize][marbleBloodredRand];
+                if (finBloodred != 0 || bodyBloodred != 0) {
+                    Mask finBloodredPigmentMask = finPigmentGroup.addMaskGroup();
+                    finBloodredPigmentMask.maskTexture().addTexture(finBloodredPigment);
+                    finBloodredPigmentMask.content().addTextureIf(finBloodred != 0, TEXTURES_RED_FIN[fins][doubletail][finBloodred]);
+                    finBloodredPigmentMask.content().addTextureIf(bodyBloodred != 0, TEXTURES_RED_BODY[bodyBloodred]);
                 }
-                bloodredGroup.addGrouping(bloodredColorGroup);
-                pigmentGroup.addGrouping(bloodredGroup);
-            }
-            /** DETAILS **/
-            TextureGrouping shadingGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(shadingGroup, "detail/body_shading.png", true);
-            pigmentGroup.addGrouping(shadingGroup);
-            /** IRIDESCENCE **/
-            TextureGrouping iridescenceGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-            iridescenceGroup.addGrouping(iriAlphaGroup);
-            TextureGrouping iriColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri/iri_base.png", "iri", iriRGB);
-            addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri/iri_dark.png", "iri-d", iriDarkRGB);
-            addTextureToAnimalTextureGrouping(iriColorGroup, TexturingType.APPLY_RGB, "iri/iri_light.png", "iri-l", iriLightRGB);
-            iridescenceGroup.addGrouping(iriColorGroup);
-            if (pastelOpaque) {
-                TextureGrouping opaqueGroup = new TextureGrouping(TexturingType.MASK_GROUP);
-                TextureGrouping opaqueAlphaGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                addTextureToAnimalTextureGrouping(opaqueAlphaGroup, TEXTURES_MARBLE, marbleOpaqueQual, marbleOpaqueSize, marbleOpaqueRand, true);
-                opaqueGroup.addGrouping(opaqueAlphaGroup);
-                TextureGrouping opaqueColorGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri/iri_base.png", "op", opaqueRGB);
-                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri/iri_dark.png", "op-d", opaqueDarkRGB);
-                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "iri/iri_light.png", "op-l", opaqueLightRGB);
-                addTextureToAnimalTextureGrouping(opaqueColorGroup, TexturingType.APPLY_RGB, "detail/body_shading_iri.png", "op-s", opaqueDarkRGB);
-                opaqueGroup.addGrouping(opaqueColorGroup);
-                iridescenceGroup.addGrouping(opaqueGroup);
-            }
-            if (metallic != 0) {
-                TextureGrouping metallicGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                if (gene[0] == 2 && gene[1] == 2) {
-                    //Steel Blue
-                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer1.png", "sb-mt1", metallic1RGB);
-                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer2.png", "sb-mt2", metallic2RGB);
-                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/steel_metalliclayer3.png", "sb-mt3", metallic3RGB);
-                } else if (gene[0] == 2 || gene[1] == 2) {
-                    //Royal Blue
-                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer1.png", "rb-mt1", metallic1RGB);
-                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer2.png", "rb-mt2", metallic2RGB);
-                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/royal_metalliclayer3.png", "rb-mt3", metallic3RGB);
-                } else {
-                    if (metallic == 2) {
-                        addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/turq_metalliclayer2.png", "t-mt2", metallic2RGB);
-                    }
-                    addTextureToAnimalTextureGrouping(metallicGroup, TexturingType.APPLY_RGB, "iri/turq_metalliclayer3.png", "t-mt3", metallic3RGB);
+                else {
+                    finPigmentGroup.addTexture(finBloodredPigment);
                 }
-                iridescenceGroup.addGrouping(metallicGroup);
-                // Metallic seems to look better with normal shading
-                iridescenceGroup.addGrouping(shadingGroup);
             }
+            finPigmentGroup.addTextureIf(dumbo, TEXTURES_DUMBO[crowntail]);
 
-            nonCellophaneGroup.addGrouping(pigmentGroup);
-            /** BABY STRIPES IF APPLICABLE **/
-            if (babyColors) {
-                TextureGrouping babyGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-                addTextureToAnimalTextureGrouping(babyGroup, extendedRed ? TexturingType.APPLY_RED : TexturingType.APPLY_BLACK, TEXTURES_BABY, cambodian ? 0 : 1, l->l!=0);
-                addTextureToAnimalTextureGrouping(babyGroup, TexturingType.APPLY_BLACK, "mask/percent50.png"); // low opacity overlay helps dull the colors
-                nonCellophaneGroup.addGrouping(babyGroup);
-            }
-            nonCellophaneGroup.addGrouping(iridescenceGroup);
-            texturesGroup.addGrouping(nonCellophaneGroup);
-            /** FIN DETAIL **/
-            TextureGrouping detailGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(detailGroup, "detail/halfmoon_fins_64.png", true);
-            texturesGroup.addGrouping(detailGroup);
-            /** EYES **/
-            TextureGrouping eyeGroup = new TextureGrouping(TexturingType.MERGE_GROUP);
-            addTextureToAnimalTextureGrouping(eyeGroup, TEXTURES_EYE_L, eyeLeft, l -> true);
-            addTextureToAnimalTextureGrouping(eyeGroup, TEXTURES_EYE_R, eyeRight, l -> true);
-            texturesGroup.addGrouping(eyeGroup);
+            transRootMask.content().grouping().addGrouping(texturesGroup.grouping());
 
-            rootGroup.addGrouping(texturesGroup);
-            transRootGroup.addGrouping(texturesGroup);
-
-            this.setTextureGrouping(rootGroup);
+            finTexture.finishTexture();
         }
     }
 
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    protected void setAlphaTexturePaths() {
+    private static void addIntersectedTextures(TextureGroup group, List<String> textures) {
+        if (textures.size() == 1) {
+            group.addTexture(textures.get(0));
+        }
+        else {
+            Mask intersection = group.addMaskGroup();
+            addIntersectedTextures(intersection.maskTexture(), textures.subList(0, textures.size() - 1));
+            intersection.content().addTexture(textures.get(textures.size() - 1));
+        }
     }
 
     public void initilizeAnimalSize() {
@@ -1833,6 +1789,18 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
             }
             EnhancedBettaBucket.setBettaUUID(stack, this.getUUID().toString());
             EnhancedBettaBucket.setBirthTime(stack, this.getBirthTime());
+            this.writeVariation(stack.getOrCreateTagElement("display"));
+        }
+    }
+
+    public void readVariationFromBucket(CompoundTag displayTag) {
+        if (displayTag.contains("VariationSeed")) {
+            this.readVariation(displayTag);
+        } else {
+            CompoundTag variation = new CompoundTag();
+            variation.putInt("VariationSeed", Variation.seedFrom(this.getUUID()));
+            variation.putString("LegacyVariationUUID", this.getStringUUID());
+            this.readVariation(variation);
         }
     }
 
@@ -2171,8 +2139,8 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public boolean isVeryBaby() {
         // GA's definition of "baby" is anything under adulthood.
         // We don't really need bettas to keep their baby appearance that long
-        int age = this.getEnhancedAnimalAge();
-        int adultAge = this.getAdultAge();
+        long age = this.getEnhancedAnimalAge();
+        long adultAge = this.getAdultAge();
         return age < adultAge/2F;
     }
 
