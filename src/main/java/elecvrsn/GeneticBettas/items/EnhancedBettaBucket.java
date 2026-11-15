@@ -5,11 +5,13 @@ import elecvrsn.GeneticBettas.block.FilledDisplayTankBlock;
 import elecvrsn.GeneticBettas.block.entity.FilledDisplayTankBlockEntity;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
+import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
 import mokiyoki.enhancedanimals.util.Genes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -84,8 +86,8 @@ public class EnhancedBettaBucket extends MobBucketItem {
         stack.getOrCreateTagElement("display").putString("UUID", uuid);
     }
 
-    public static void setBirthTime(ItemStack stack, String birthTime) {
-        stack.getOrCreateTagElement("display").putString("BirthTime", birthTime);
+    public static void setBirthTime(ItemStack stack, long birthTime) {
+        stack.getOrCreateTagElement("display").putLong("BirthTime", birthTime);
     }
 
     @Override
@@ -112,6 +114,7 @@ public class EnhancedBettaBucket extends MobBucketItem {
                 (level.isClientSide() || ((ServerLevel)level).getEntity(UUID.fromString(displayTag.getString("UUID"))) == null)) {
             betta.setUUID(UUID.fromString(displayTag.getString("UUID")));
         }
+        betta.readVariationFromBucket(displayTag);
         betta.setSireName(displayTag.getString("SireName"));
         betta.setDamName(displayTag.getString("DamName"));
         Genes genes = getGenes(tag);
@@ -147,7 +150,11 @@ public class EnhancedBettaBucket extends MobBucketItem {
         if (displayTag.contains("Name", 8)) {
             betta.setCustomName(Component.Serializer.fromJson(displayTag.getString("Name")));
         }
-        betta.setBirthTime(displayTag.getString("BirthTime"));
+        if (displayTag.contains("BirthTime", Tag.TAG_LONG)) {
+            betta.setBirthTime(displayTag.getLong("BirthTime"));
+        } else {
+            betta.setBirthTime(EnhancedAnimalAbstract.parseBirthTime(displayTag.getString("BirthTime")));
+        }
         betta.initilizeAnimalSize();
         betta.loadFromBucketTag(tag);
         betta.moveTo((double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, 0.0F, 0.0F);
