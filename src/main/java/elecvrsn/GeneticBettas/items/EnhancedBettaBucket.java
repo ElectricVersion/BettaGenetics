@@ -54,6 +54,10 @@ public class EnhancedBettaBucket extends MobBucketItem {
         }
     }
 
+    public static void setIsFemale(ItemStack stack, Boolean isFemale) {
+        stack.getOrCreateTagElement("display").putBoolean("IsFemale", isFemale);
+    }
+
     public static void setGenes(ItemStack stack, Genes genes) {
         if (genes != null) {
             stack.getOrCreateTagElement("Genetics").putIntArray("SGenes", genes.getSexlinkedGenes());
@@ -171,6 +175,9 @@ public class EnhancedBettaBucket extends MobBucketItem {
             betta.setBirthTime(displayTag.getLong("BirthTime"));
         } else {
             betta.setBirthTime(EnhancedAnimalAbstract.parseBirthTime(displayTag.getString("BirthTime")));
+        }
+        if (getIsFemale(displayTag).isPresent()) {
+            betta.setIsFemale(getIsFemale(displayTag).get());
         }
         betta.initilizeAnimalSize();
         betta.loadFromBucketTag(tag);

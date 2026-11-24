@@ -1781,6 +1781,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     public void saveToBucketTag(ItemStack stack) {
         Bucketable.saveDefaultDataToBucketTag(this, stack);
         if (stack.getItem() instanceof EnhancedBettaBucket) {
+            EnhancedBettaBucket.setIsFemale(stack, this.getOrSetIsFemale());
             EnhancedBettaBucket.setGenes(stack, this.genetics != null ? this.genetics : getGenes());
             EnhancedBettaBucket.setIsFemale(stack, this.getOrSetIsFemale());
             EnhancedBettaBucket.setParentNames(stack, this.sireName, this.damName);
