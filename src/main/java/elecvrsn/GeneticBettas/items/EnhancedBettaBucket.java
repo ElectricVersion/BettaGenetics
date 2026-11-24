@@ -52,6 +52,10 @@ public class EnhancedBettaBucket extends MobBucketItem {
         }
     }
 
+    public static void setIsFemale(ItemStack stack, Boolean isFemale) {
+        stack.getOrCreateTagElement("display").putBoolean("IsFemale", isFemale);
+    }
+
     public static void setGenes(ItemStack stack, Genes genes) {
         if (genes != null) {
             stack.getOrCreateTagElement("Genetics").putIntArray("SGenes", genes.getSexlinkedGenes());
@@ -59,8 +63,11 @@ public class EnhancedBettaBucket extends MobBucketItem {
         }
     }
 
-    public static Optional<Boolean> getIsFemale(ItemStack stack) {
-        String uuid = stack.getOrCreateTagElement("display").getString("UUID");
+    public static Optional<Boolean> getIsFemale(CompoundTag displayTag) {
+        if (displayTag.contains("IsFemale")) {
+            return Optional.of(displayTag.getBoolean("IsFemale"));
+        }
+        String uuid = displayTag.getString("UUID");
         return uuid.isEmpty() ? Optional.empty() : Optional.of(uuid.toCharArray()[0] - 48 < 8);
     }
 
@@ -155,6 +162,9 @@ public class EnhancedBettaBucket extends MobBucketItem {
         } else {
             betta.setBirthTime(EnhancedAnimalAbstract.parseBirthTime(displayTag.getString("BirthTime")));
         }
+        if (getIsFemale(displayTag).isPresent()) {
+            betta.setIsFemale(getIsFemale(displayTag).get());
+        }
         betta.initilizeAnimalSize();
         betta.loadFromBucketTag(tag);
         betta.moveTo((double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, 0.0F, 0.0F);
@@ -164,8 +174,9 @@ public class EnhancedBettaBucket extends MobBucketItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> componentList, TooltipFlag flag) {
-        if (getIsFemale(stack).isPresent()) {
-            componentList.add(new TranslatableComponent((EnhancedBetta.speciesTranslationKey + (getIsFemale(stack).get() ? ".female" : ".male"))).withStyle(new ChatFormatting[]{ChatFormatting.ITALIC, ChatFormatting.GRAY}));
+        Optional<Boolean> isFemale = getIsFemale(stack.getOrCreateTagElement("display"));
+        if (isFemale.isPresent()) {
+            componentList.add(new TranslatableComponent((EnhancedBetta.speciesTranslationKey + (isFemale.get() ? ".female" : ".male"))).withStyle(new ChatFormatting[]{ChatFormatting.ITALIC, ChatFormatting.GRAY}));
         }
     }
 
