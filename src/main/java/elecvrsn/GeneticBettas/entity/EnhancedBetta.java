@@ -1782,6 +1782,7 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         Bucketable.saveDefaultDataToBucketTag(this, stack);
         if (stack.getItem() instanceof EnhancedBettaBucket) {
             EnhancedBettaBucket.setGenes(stack, this.genetics != null ? this.genetics : getGenes());
+            EnhancedBettaBucket.setIsFemale(stack, this.getOrSetIsFemale());
             EnhancedBettaBucket.setParentNames(stack, this.sireName, this.damName);
             EnhancedBettaBucket.setEquipment(stack, this.animalInventory.getItem(1));
             if (this.hasEgg() && this.mateGenetics != null) {
@@ -1793,10 +1794,11 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
         }
     }
 
-    public void readVariationFromBucket(CompoundTag displayTag) {
+    public void readVariationFromBucket(CompoundTag tag) {
+        CompoundTag displayTag = tag.getCompound("display");
         if (displayTag.contains("VariationSeed")) {
             this.readVariation(displayTag);
-        } else {
+        } else if (EnhancedBettaBucket.getGenes(tag).getNumberOfAutosomalGenes() > 0) {
             CompoundTag variation = new CompoundTag();
             variation.putInt("VariationSeed", Variation.seedFrom(this.getUUID()));
             variation.putString("LegacyVariationUUID", this.getStringUUID());
@@ -1838,7 +1840,10 @@ public class EnhancedBetta extends EnhancedAnimalAbstract implements Bucketable 
     @Override
     public void loadFromBucketTag(CompoundTag tag) {
         Bucketable.loadDefaultDataFromBucketTag(this, tag);
-        this.setIsFemale(tag.getCompound("Genetics"));
+        CompoundTag displayTag = tag.getCompound("display");
+        if (displayTag.contains("IsFemale")) {
+            this.setIsFemale(displayTag.getBoolean("IsFemale"));
+        }
         this.setInitialDefaults();
         this.toggleReloadTexture();
     }

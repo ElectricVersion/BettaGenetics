@@ -6,6 +6,8 @@ import elecvrsn.GeneticBettas.block.entity.FilledDisplayTankBlockEntity;
 import elecvrsn.GeneticBettas.entity.EnhancedBetta;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import mokiyoki.enhancedanimals.entity.EnhancedAnimalAbstract;
+import mokiyoki.enhancedanimals.entity.util.Variation;
+import mokiyoki.enhancedanimals.entity.util.VariationKeys;
 import mokiyoki.enhancedanimals.util.Genes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -59,8 +61,23 @@ public class EnhancedBettaBucket extends MobBucketItem {
         }
     }
 
-    public static Optional<Boolean> getIsFemale(ItemStack stack) {
-        String uuid = stack.getOrCreateTagElement("display").getString("UUID");
+    public static void setIsFemale(ItemStack stack, boolean isFemale) {
+        stack.getOrCreateTagElement("display").putBoolean("IsFemale", isFemale);
+    }
+
+    public static void setVariationSeed(ItemStack stack, int seed) {
+        stack.getOrCreateTagElement("display").putInt("VariationSeed", seed);
+    }
+
+    public static Optional<Boolean> getIsFemale(CompoundTag displayTag) {
+        if (displayTag.contains("IsFemale")) {
+            return Optional.of(displayTag.getBoolean("IsFemale"));
+        }
+        if (displayTag.contains("VariationSeed")) {
+            Variation variation = new Variation(displayTag.getInt("VariationSeed"), displayTag.getString("LegacyVariationUUID"));
+            return Optional.of(variation.hex(VariationKeys.SEX) < 8);
+        }
+        String uuid = displayTag.getString("UUID");
         return uuid.isEmpty() ? Optional.empty() : Optional.of(uuid.toCharArray()[0] - 48 < 8);
     }
 
@@ -114,7 +131,7 @@ public class EnhancedBettaBucket extends MobBucketItem {
                 (level.isClientSide() || ((ServerLevel)level).getEntity(UUID.fromString(displayTag.getString("UUID"))) == null)) {
             betta.setUUID(UUID.fromString(displayTag.getString("UUID")));
         }
-        betta.readVariationFromBucket(displayTag);
+        betta.readVariationFromBucket(tag);
         betta.setSireName(displayTag.getString("SireName"));
         betta.setDamName(displayTag.getString("DamName"));
         Genes genes = getGenes(tag);
@@ -164,8 +181,9 @@ public class EnhancedBettaBucket extends MobBucketItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> componentList, TooltipFlag flag) {
-        if (getIsFemale(stack).isPresent()) {
-            componentList.add(new TranslatableComponent((EnhancedBetta.speciesTranslationKey + (getIsFemale(stack).get() ? ".female" : ".male"))).withStyle(new ChatFormatting[]{ChatFormatting.ITALIC, ChatFormatting.GRAY}));
+        Optional<Boolean> isFemale = getIsFemale(stack.getOrCreateTagElement("display"));
+        if (isFemale.isPresent()) {
+            componentList.add(new TranslatableComponent((EnhancedBetta.speciesTranslationKey + (isFemale.get() ? ".female" : ".male"))).withStyle(new ChatFormatting[]{ChatFormatting.ITALIC, ChatFormatting.GRAY}));
         }
     }
 

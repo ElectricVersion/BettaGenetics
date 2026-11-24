@@ -4,6 +4,7 @@ import elecvrsn.GeneticBettas.block.entity.FilledDisplayTankBlockEntity;
 import elecvrsn.GeneticBettas.entity.genetics.BettaGeneticsInitialiser;
 import elecvrsn.GeneticBettas.init.AddonBlocks;
 import elecvrsn.GeneticBettas.items.EnhancedBettaBucket;
+import mokiyoki.enhancedanimals.entity.util.Variation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -68,7 +69,9 @@ public class FilledDisplayTankBlock extends BaseEntityBlock {
             if (stack.getTag() == null || EnhancedBettaBucket.getGenes(stack.getTag()).getNumberOfAutosomalGenes() == 0) {
                 // If no gene, set breed when unbucketed to make sure the genes dont shuffle
                 EnhancedBettaBucket.setGenes(stack, new BettaGeneticsInitialiser().generateWithBreed(level, pos, "WanderingTrader"));
-                EnhancedBettaBucket.setBettaUUID(stack, UUID.randomUUID().toString());
+                UUID uuid = UUID.randomUUID();
+                EnhancedBettaBucket.setBettaUUID(stack, uuid.toString());
+                EnhancedBettaBucket.setVariationSeed(stack, Variation.seedFrom(uuid));
             }
             ((FilledDisplayTankBlockEntity)blockEntity).setEntityTag(stack.getOrCreateTag().copy());
             blockEntity.setChanged();
